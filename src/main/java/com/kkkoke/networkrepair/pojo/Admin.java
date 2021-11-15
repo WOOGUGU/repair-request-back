@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class Admin {
-    private Long id;
-    private String username;
-    private String password;
-    private String name;
+    private Long id; // 管理员id
+    private String username; // 管理员账号
+    private String password; // 管理员密码
+    private String name; // 管理员真实姓名
 }
