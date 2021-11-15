@@ -1,12 +1,10 @@
-package com.kkkoke.networkrepair.dao;
+package com.kkkoke.networkrepair.service;
 
 import com.kkkoke.networkrepair.pojo.Order;
-import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
-@Mapper
-public interface OrderDao {
+public interface OrderService {
     // 增加报修工单
     int addOrder(Order order);
 

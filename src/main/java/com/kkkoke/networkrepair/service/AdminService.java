@@ -1,12 +1,10 @@
-package com.kkkoke.networkrepair.dao;
+package com.kkkoke.networkrepair.service;
 
 import com.kkkoke.networkrepair.pojo.Admin;
-import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
-@Mapper
-public interface AdminDao {
+public interface AdminService {
     // 添加管理员
     int addAdmin(Admin admin);
 
