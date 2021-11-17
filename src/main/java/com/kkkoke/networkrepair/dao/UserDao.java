@@ -23,5 +23,5 @@ public interface UserDao {
     List<User> selectAllUser();
 
     // 修改用户信息
-    User updateUser(User user);
+    Integer updateUser(User user);
 }

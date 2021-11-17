@@ -104,8 +104,6 @@ public class UserController {
     // 修改用户信息
     @PostMapping("/updateUser")
     public StatusAndDataFeedback updateUser(User user) {
-        System.out.println("==============ok==============");
-        System.out.println(user);
         // 判断前端传过来的参数是否为空
         if (user == null) {
             return new StatusAndDataFeedback(null, "Incomplete_data");

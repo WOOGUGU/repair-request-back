@@ -25,7 +25,7 @@
         select * from `user`
     </select>
 
-    <update id="updateUser" parameterType="com.kkkoke.networkrepair.pojo.User">
+    <update id="updateUser">
         update `user`
         set `username` = #{username}, `password` = #{password}, `name` = #{name}
         where id = #{id}

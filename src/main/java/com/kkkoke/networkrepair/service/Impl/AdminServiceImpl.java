@@ -6,6 +6,7 @@ import com.kkkoke.networkrepair.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
 
 @Service
@@ -45,7 +46,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     // 修改管理员信息
-    public Admin updateAdmin(Admin admin) {
+    public Integer updateAdmin(Admin admin) {
         return adminDao.updateAdmin(admin);
     }
 }

@@ -21,5 +21,5 @@ public interface AdminService {
     List<Admin> selectAllAdmin();
 
     // 修改管理员信息
-    Admin updateAdmin(Admin admin);
+    Integer updateAdmin(Admin admin);
 }
