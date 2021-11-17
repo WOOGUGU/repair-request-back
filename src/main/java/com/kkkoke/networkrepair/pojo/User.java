@@ -14,4 +14,11 @@ public class User {
     private String username; // 用户名/账号
     private String password; // 用户密码
     private String name; // 用户真实姓名
+
+    // 不带id的用户构造函数
+    public User(String username, String password, String name) {
+        this.username = username;
+        this.password = password;
+        this.name = name;
+    }
 }
