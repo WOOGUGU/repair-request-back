@@ -5,4 +5,29 @@
         insert into `user`(username, password, name)
         values(#{username}, #{password}, #{name})
     </insert>
+    
+    <delete id="deleteUser" parameterType="long">
+        delete from `user`
+        where id = #{id}
+    </delete>
+
+    <select id="selectUserByUsername" parameterType="string" resultType="com.kkkoke.networkrepair.pojo.User">
+        select * from `user`
+        where username = #{username}
+    </select>
+
+    <select id="selectUserById" parameterType="long" resultType="com.kkkoke.networkrepair.pojo.User">
+        select * from `user`
+        where id = #{id}
+    </select>
+
+    <select id="selectAllUser" resultType="list">
+        select * from `user`
+    </select>
+
+    <update id="updateUser" parameterType="com.kkkoke.networkrepair.pojo.User">
+        update `user`
+        set `username` = #{username}, `password` = #{password}, `name` = #{name}
+        where id = #{id}
+    </update>
 </mapper>

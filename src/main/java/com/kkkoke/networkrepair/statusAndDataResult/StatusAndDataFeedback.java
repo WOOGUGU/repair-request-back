@@ -13,6 +13,7 @@ public class StatusAndDataFeedback {
     // 返回给前端的状态值
     public final static String INCOMPLETE_DATA = "Incomplete_data"; // 前端传入的数据不完整
     public final static String HANDLE_SUCCESS = "handle_success"; // 处理成功
+    public final static String DATA_NOT_EXIST = "data_not_exist"; // 数据库中不存在此数据
 
     public StatusAndDataFeedback(Object data, String status) {
         this.data = data;

@@ -8,11 +8,8 @@ public interface AdminService {
     // 添加管理员
     int addAdmin(Admin admin);
 
-    // 通过用户名删除管理员
-    int deleteAdminByUsername(String username);
-
-    // 通过id删除管理员
-    int deleteAdminById(Long id);
+    // 删除管理员
+    int deleteAdmin(Long id);
 
     // 通过用户名查找管理员
     Admin selectAdminByUsername(String username);

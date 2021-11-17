@@ -19,16 +19,10 @@ public class UserServiceImpl implements UserService {
         return userDao.addUser(user);
     }
 
-    // 通过用户名删除用户
+    // 删除用户
     @Override
-    public int deleteUserByUsername(String username) {
-        return userDao.deleteUserByUsername(username);
-    }
-
-    // 通过id删除用户
-    @Override
-    public int deleteUserById(Long id) {
-        return userDao.deleteUserById(id);
+    public int deleteUser(Long id) {
+        return userDao.deleteUser(id);
     }
 
     @Override

@@ -20,15 +20,9 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    // 通过用户名删除管理员
-    public int deleteAdminByUsername(String username) {
-        return adminDao.deleteAdminByUsername(username);
-    }
-
-    @Override
-    // 通过id删除管理员
-    public int deleteAdminById(Long id) {
-        return adminDao.deleteAdminById(id);
+    // 删除管理员
+    public int deleteAdmin(Long id) {
+        return adminDao.deleteAdmin(id);
     }
 
     @Override
