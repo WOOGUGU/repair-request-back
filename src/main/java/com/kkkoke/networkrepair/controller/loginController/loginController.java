@@ -6,6 +6,7 @@ import com.kkkoke.networkrepair.pojo.User;
 import com.kkkoke.networkrepair.service.AdminService;
 import com.kkkoke.networkrepair.service.UserService;
 import com.kkkoke.networkrepair.statusAndDataResult.StatusAndDataFeedback;
+import com.kkkoke.networkrepair.util.MD5Util;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -37,7 +38,7 @@ public class loginController {
         Admin admin = adminService.selectAdminByUsername(username);
         // 判断登录密码是否正确
         if (Objects.equals(admin, null)) {
-            if (user.getPassword().equals(password)) {
+            if (user.getPassword().equals(MD5Util.md5(password))) {
                 return new StatusAndDataFeedback(user, "login_success");
             }
             else {
@@ -45,7 +46,7 @@ public class loginController {
             }
         }
         else {
-            if (admin.getPassword().equals(password)) {
+            if (admin.getPassword().equals(MD5Util.md5(password))) {
                 return new StatusAndDataFeedback(admin, "login_success");
             }
             else {
