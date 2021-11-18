@@ -37,6 +37,9 @@
                 if (res.status === 'handle_success') {
                     alert("删除成功！");
                 }
+                else if (res.status === 'data_not_exist') {
+                    alert("此用户不存在，请输入正确的用户名！");
+                }
                 else {
                     alert("出现异常，请重试！");
                 }
@@ -57,6 +60,9 @@
                 if (res.status === 'handle_success') {
                     alert("查询成功！");
                 }
+                else if (res.status === 'data_not_exist') {
+                    alert("此用户不存在，请输入正确的用户名！");
+                }
                 else {
                     alert("出现异常，请重试！");
                 }
@@ -72,10 +78,7 @@
             'password': $("#update_password").val(),
             'name': $("#update_name").val()
         }
-        console.log(user);
-        let data = JSON.stringify(user);
 
-        console.log(data);
         $.ajax({
             type: "post",
             url: "/updateUser",
@@ -87,7 +90,30 @@
             },
             success: function (res) {
                 if (res.status === 'handle_success') {
-                    alert("更新成功！");
+                    alert("修改成功！");
+                }
+                else if (res.status === 'data_not_exist') {
+                    alert("此用户不存在，请输入正确的用户名！");
+                }
+                else {
+                    alert("出现异常，请重试！");
+                }
+            }
+        })
+    }
+
+    // 查询所有用户
+    function submitSelectAllUser() {
+        $.ajax({
+            type: "post",
+            url: "/selectAllUser",
+            data: {},
+            success: function (res) {
+                if (res.status === 'data_not_exist') {
+                    alert("当前没有用户，请添加用户！");
+                }
+                else if (res.status === 'handle_success') {
+                    alert("查询成功！");
                 }
                 else {
                     alert("出现异常，请重试！");

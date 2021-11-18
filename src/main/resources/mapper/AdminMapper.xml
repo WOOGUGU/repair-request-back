@@ -1,5 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kkkoke.networkrepair.dao.AdminDao">
+    <insert id="addAdmin" parameterType="com.kkkoke.networkrepair.pojo.Admin">
+        insert into `admin`(username, password, name)
+        values(#{username}, #{password}, #{name})
+    </insert>
 
+    <delete id="deleteAdmin" parameterType="long">
+        delete from `admin`
+        where id = #{id}
+    </delete>
+
+    <select id="selectAdminByUsername" parameterType="string" resultType="com.kkkoke.networkrepair.pojo.Admin">
+        select * from `admin`
+        where username = #{username}
+    </select>
+
+    <select id="selectAdminById" parameterType="long" resultType="com.kkkoke.networkrepair.pojo.Admin">
+        select * from `admin`
+        where id = #{id}
+    </select>
+
+    <select id="selectAllAdmin">
+        select * from `admin`
+    </select>
+
+    <update id="updateAdmin">
+        update `admin`
+        set `username` = #{username}, `password` = #{password}, `name` = #{name}
+        where id = #{id}
+    </update>
 </mapper>

@@ -4,8 +4,6 @@ import com.kkkoke.networkrepair.pojo.User;
 import com.kkkoke.networkrepair.service.UserService;
 import com.kkkoke.networkrepair.statusAndDataResult.StatusAndDataFeedback;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.Objects;
@@ -40,11 +38,11 @@ public class UserController {
         }
 
         // 查询数据库，查看要删除的用户是否存在
-        if (Objects.equals(userService.selectUserById(id).getId(), id)) {
-            userService.deleteUser(id);
+        if (Objects.equals(userService.selectUserById(id), null)) {
+            return new StatusAndDataFeedback(null, "data_not_exist");
         }
         else {
-            return new StatusAndDataFeedback(null, "data_not_exist");
+            userService.deleteUser(id);
         }
 
         return new StatusAndDataFeedback(null, "handle_success");
@@ -54,18 +52,18 @@ public class UserController {
     @PostMapping("/selectUserByUsername")
     public StatusAndDataFeedback selectUserByUsername(String username) {
         // 判断前端传过来的参数是否为空
-        if (Objects.equals(username, "")) {
+        if (Objects.equals(username, null)) {
             return new StatusAndDataFeedback(null, "Incomplete_data");
         }
 
         // 根据用户名查找用户
         User user = userService.selectUserByUsername(username);
         // 判断查询结果是否为空
-        if (Objects.equals(userService.selectUserByUsername(username).getUsername(), username)) {
-            return new StatusAndDataFeedback(user, "handle_success");
+        if (Objects.equals(userService.selectUserByUsername(username), null)) {
+            return new StatusAndDataFeedback(null, "data_not_exist");
         }
         else {
-            return new StatusAndDataFeedback(null, "data_not_exist");
+            return new StatusAndDataFeedback(user, "handle_success");
         }
     }
 
