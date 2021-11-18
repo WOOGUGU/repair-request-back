@@ -10,7 +10,6 @@ import com.kkkoke.networkrepair.util.MD5Util;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
 import java.util.Objects;
 
 @RestController
@@ -38,7 +37,8 @@ public class loginController {
         Admin admin = adminService.selectAdminByUsername(username);
         // 判断登录密码是否正确
         if (Objects.equals(admin, null)) {
-            if (user.getPassword().equals(MD5Util.md5(password))) {
+            // 与MD5加密后的字符串进行比较
+            if (MD5Util.md5(user.getPassword()).equals(password)) {
                 return new StatusAndDataFeedback(user, "login_success");
             }
             else {
@@ -46,7 +46,8 @@ public class loginController {
             }
         }
         else {
-            if (admin.getPassword().equals(MD5Util.md5(password))) {
+            // 与MD5加密后的字符串进行比较
+            if (MD5Util.md5(admin.getPassword()).equals(password)) {
                 return new StatusAndDataFeedback(admin, "login_success");
             }
             else {
