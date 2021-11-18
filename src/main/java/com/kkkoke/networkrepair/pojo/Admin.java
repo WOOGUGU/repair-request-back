@@ -21,7 +21,7 @@ public class Admin {
     private String password; // 管理员密码
     private String name; // 管理员真实姓名
 
-    // 不带id的用户构造函数
+    // 不带id的管理员构造函数
     public Admin(String username, String password, String name) {
         this.username = username;
         this.password = password;

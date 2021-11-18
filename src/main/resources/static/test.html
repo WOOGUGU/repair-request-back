@@ -32,6 +32,37 @@
     <br>
     <button type="button" onclick="submitSelectAllUser()">查找所有用户</button>
 
+    <br>
+    <br>
+    <br>
+
+    <div id="addAdmin">
+        管理员账号：<input type="text" id="admin_username">
+        密码：<input type="password" id="admin_password">
+        管理员真实姓名：<input type="text" id="admin_name">
+        <button type="button" id="submitAddAdmin" onclick="submitAddAdmin()">提交</button>
+    </div>
+    <br>
+    <div>
+        管理员id：<input type="text" id="admin_id">
+        <button type="button" onclick="submitDeleteAdmin()">删除</button>
+    </div>
+    <br>
+    <div>
+        管理员账号：<input type="text" id="adminUsername">
+        <button type="button" onclick="submitSelectAdminByUsername()">查询</button>
+    </div>
+    <br>
+    <div>
+        id：<input type="text" id="update_admin_id">
+        管理员账号：<input type="text" id="update_admin_username">
+        密码：<input type="text" id="update_admin_password">
+        管理员真实姓名：<input type="text" id="update_admin_name">
+        <button type="button" onclick="submitUpdateAdmin()">修改</button>
+    </div>
+    <br>
+    <button type="button" onclick="submitSelectAllAdmin()">查找所有管理员</button>
+
 <script src="jquery-3.6.0.min.js"></script>
 <script src="js/main.js"></script>
 </body>

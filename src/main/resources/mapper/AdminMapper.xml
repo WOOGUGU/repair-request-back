@@ -21,7 +21,7 @@
         where id = #{id}
     </select>
 
-    <select id="selectAllAdmin">
+    <select id="selectAllAdmin" resultMap="adminMap">
         select * from `admin`
     </select>
 
@@ -30,4 +30,11 @@
         set `username` = #{username}, `password` = #{password}, `name` = #{name}
         where id = #{id}
     </update>
+
+    <resultMap id="adminMap" type="com.kkkoke.networkrepair.pojo.Admin">
+        <id property="id" column="id"/>
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
+        <result property="name" column="name"/>
+    </resultMap>
 </mapper>

@@ -3,13 +3,13 @@ package com.kkkoke.networkrepair.controller;
 import com.kkkoke.networkrepair.pojo.Admin;
 import com.kkkoke.networkrepair.service.AdminService;
 import com.kkkoke.networkrepair.statusAndDataResult.StatusAndDataFeedback;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Objects;
 
-@Controller
+@RestController
 public class AdminController {
     private final AdminService adminService;
 
@@ -17,28 +17,28 @@ public class AdminController {
         this.adminService = adminService;
     }
 
-    // 添加用户
+    // 添加管理员
     @PostMapping("/addAdmin")
-    public StatusAndDataFeedback addUser(String username, String password, String name) {
+    public StatusAndDataFeedback addAdmin(String username, String password, String name) {
         if (Objects.equals(username, "") || Objects.equals(password, "") || Objects.equals(name, "")) {
             return new StatusAndDataFeedback(null, "Incomplete_data");
         }
         Admin admin = new Admin(username, password, name);
-        // 调用service层添加用户
+        // 调用service层添加管理员
         adminService.addAdmin(admin);
-        // 返回给前端添加的用户数据及处理的状态值
+        // 返回给前端添加的管理员数据及处理的状态值
         return new StatusAndDataFeedback(admin, "handle_success");
     }
 
-    // 通过用户名删除用户
+    // 通过用户名删除管理员
     @PostMapping("/deleteAdmin")
-    public StatusAndDataFeedback deleteUser(Long id) {
+    public StatusAndDataFeedback deleteAdmin(Long id) {
         // 判断前端传过来的参数是否为空
         if (id == null) {
             return new StatusAndDataFeedback(null, "Incomplete_data");
         }
 
-        // 查询数据库，查看要删除的用户是否存在
+        // 查询数据库，查看要删除的管理员是否存在
         if (Objects.equals(adminService.selectAdminById(id), null)) {
             return new StatusAndDataFeedback(null, "data_not_exist");
         }
@@ -49,7 +49,7 @@ public class AdminController {
         return new StatusAndDataFeedback(null, "handle_success");
     }
 
-    // 通过用户名查找用户
+    // 通过用户名查找管理员
     @PostMapping("/selectAdminByUsername")
     public StatusAndDataFeedback selectAdminByUsername(String username) {
         // 判断前端传过来的参数是否为空
@@ -57,7 +57,7 @@ public class AdminController {
             return new StatusAndDataFeedback(null, "Incomplete_data");
         }
 
-        // 根据用户名查找用户
+        // 根据用户名查找管理员
         Admin admin = adminService.selectAdminByUsername(username);
         // 判断查询结果是否为空
         if (Objects.equals(adminService.selectAdminByUsername(username), null)) {
@@ -68,15 +68,15 @@ public class AdminController {
         }
     }
 
-    // 通过id查找用户
+    // 通过id查找管理员
     @PostMapping("/selectAdminById")
-    public StatusAndDataFeedback selectUserById(Long id) {
+    public StatusAndDataFeedback selectAdminById(Long id) {
         // 判断前端传过来的参数是否为空
         if (id == null) {
             return new StatusAndDataFeedback(null, "Incomplete_data");
         }
 
-        // 根据用户传入的id查询对应的用户
+        // 根据管理员传入的id查询对应的管理员
         Admin admin = adminService.selectAdminById(id);
         // 判断查询结果是否为空
         if (Objects.equals(adminService.selectAdminById(id).getId(), id)) {
@@ -87,9 +87,9 @@ public class AdminController {
         }
     }
 
-    // 查找所有用户
+    // 查找所有管理员
     @PostMapping("/selectAllAdmin")
-    public StatusAndDataFeedback selectAllUser() {
+    public StatusAndDataFeedback selectAllAdmin() {
         List<Admin> admins = adminService.selectAllAdmin();
         // 判断查询结果是否为空
         if (admins.isEmpty()) {
@@ -100,9 +100,9 @@ public class AdminController {
         }
     }
 
-    // 修改用户信息
+    // 修改管理员信息
     @PostMapping("/updateAdmin")
-    public StatusAndDataFeedback updateUser(Admin admin) {
+    public StatusAndDataFeedback updateAdmin(Admin admin) {
         // 判断前端传过来的参数是否为空
         if (admin == null) {
             return new StatusAndDataFeedback(null, "Incomplete_data");
