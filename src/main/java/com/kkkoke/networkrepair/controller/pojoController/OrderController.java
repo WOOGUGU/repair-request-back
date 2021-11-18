@@ -1,4 +1,4 @@
-package com.kkkoke.networkrepair.controller;
+package com.kkkoke.networkrepair.controller.pojoController;
 
 import com.kkkoke.networkrepair.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

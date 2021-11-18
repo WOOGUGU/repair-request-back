@@ -1,4 +1,4 @@
-package com.kkkoke.networkrepair.controller;
+package com.kkkoke.networkrepair.controller.pojoController;
 
 import com.kkkoke.networkrepair.pojo.Admin;
 import com.kkkoke.networkrepair.service.AdminService;

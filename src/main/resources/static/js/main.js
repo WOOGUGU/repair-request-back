@@ -249,3 +249,25 @@
         })
     }
 }
+
+// 处理登录请求
+{
+    function submitLogin() {
+        let login = {
+            username: $("#login_username").val(),
+            password: $("#login_password").val()
+        }
+        console.log(login);
+        let login_json = JSON.stringify(login);
+        console.log(login_json);
+        $.ajax({
+            type: "post",
+            url: "/handleLogin",
+            contentType: "application/json",
+            data: login_json,
+            success: function (res) {
+                console.log(res);
+            }
+        })
+    }
+}
