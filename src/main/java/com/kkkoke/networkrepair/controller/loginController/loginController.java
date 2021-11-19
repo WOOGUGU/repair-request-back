@@ -39,7 +39,7 @@ public class loginController {
         if (Objects.equals(admin, null)) {
             // 与MD5加密后的字符串进行比较
             if (MD5Util.md5(user.getPassword()).equals(password)) {
-                return new StatusAndDataFeedback(user, "login_success");
+                return new StatusAndDataFeedback(user, "user");
             }
             else {
                 return new StatusAndDataFeedback(null, "wrong_password");
@@ -48,7 +48,7 @@ public class loginController {
         else {
             // 与MD5加密后的字符串进行比较
             if (MD5Util.md5(admin.getPassword()).equals(password)) {
-                return new StatusAndDataFeedback(admin, "login_success");
+                return new StatusAndDataFeedback(admin, "admin");
             }
             else {
                 return new StatusAndDataFeedback(null, "wrong_password");
