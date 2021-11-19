@@ -28,4 +28,18 @@ public class Order {
     private LocalDateTime timeStart; // 工单发起时间
     private LocalDateTime timeEnd; // 工单解决时间
     private String feedBack; // 用户反馈
+
+    // 不带id的报修工单构造函数
+    public Order(String sender, String tel, String type, String des, String position, Integer progress, String solver, LocalDateTime timeStart, LocalDateTime timeEnd, String feedBack) {
+        this.sender = sender;
+        this.tel = tel;
+        this.type = type;
+        this.des = des;
+        this.position = position;
+        this.progress = progress;
+        this.solver = solver;
+        this.timeStart = timeStart;
+        this.timeEnd = timeEnd;
+        this.feedBack = feedBack;
+    }
 }

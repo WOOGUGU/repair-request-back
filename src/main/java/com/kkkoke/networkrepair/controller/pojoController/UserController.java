@@ -111,7 +111,7 @@ public class UserController {
     @PostMapping("/updateUser")
     public StatusAndDataFeedback updateUser(User user) {
         // 判断前端传过来的参数是否为空
-        if (user == null) {
+        if (Objects.equals(user, null)) {
             return new StatusAndDataFeedback(null, "Incomplete_data");
         }
 

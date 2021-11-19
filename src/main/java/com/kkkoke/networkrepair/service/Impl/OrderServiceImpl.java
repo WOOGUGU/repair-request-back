@@ -39,7 +39,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     // 修改报修工单
-    public Order updateOrder(Order order) {
+    public Integer updateOrder(Order order) {
         return orderDao.updateOrder(order);
     }
 }

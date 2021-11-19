@@ -18,5 +18,5 @@ public interface OrderService {
     List<Order> selectAllOrder();
 
     // 修改报修工单
-    Order updateOrder(Order order);
+    Integer updateOrder(Order order);
 }

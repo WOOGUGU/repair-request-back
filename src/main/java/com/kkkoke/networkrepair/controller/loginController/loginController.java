@@ -24,7 +24,6 @@ public class loginController {
 
     // 处理登录请求
     @PostMapping("/handleLogin")
-
     public StatusAndDataFeedback handleLogin(@RequestBody JSONObject userJson) {
         String username = (String) userJson.get("username");
         String password = (String) userJson.get("password");
