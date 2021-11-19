@@ -24,10 +24,17 @@ public class AdminController {
             return new StatusAndDataFeedback(null, "Incomplete_data");
         }
         Admin admin = new Admin(username, password, name);
-        // 调用service层添加管理员
-        adminService.addAdmin(admin);
-        // 返回给前端添加的管理员数据及处理的状态值
-        return new StatusAndDataFeedback(admin, "handle_success");
+        // 查看数据库中是否已经存在此管理员
+        if (Objects.equals(adminService.selectAdminByUsername(username), null)) {
+            // 调用service层添加管理员
+            adminService.addAdmin(admin);
+            // 返回给前端添加的管理员数据及处理的状态值
+            return new StatusAndDataFeedback(admin, "handle_success");
+        }
+        else {
+            // 数据库中已经存在此数据
+            return new StatusAndDataFeedback(admin, "data_exist");
+        }
     }
 
     // 通过用户名删除管理员
@@ -107,7 +114,13 @@ public class AdminController {
         if (admin == null) {
             return new StatusAndDataFeedback(null, "Incomplete_data");
         }
+
+        // 查找数据库中是否存在此管理员
+        if (Objects.equals(adminService.selectAdminById(admin.getId()), null)) {
+            return new StatusAndDataFeedback(admin, "data_not_exist");
+        }
         else {
+            // 如果管理员存在就更新数据
             adminService.updateAdmin(admin);
             return new StatusAndDataFeedback(admin, "handle_success");
         }

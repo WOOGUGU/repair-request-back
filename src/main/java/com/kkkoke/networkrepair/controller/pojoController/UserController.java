@@ -3,7 +3,6 @@ package com.kkkoke.networkrepair.controller.pojoController;
 import com.kkkoke.networkrepair.pojo.User;
 import com.kkkoke.networkrepair.service.UserService;
 import com.kkkoke.networkrepair.statusAndDataResult.StatusAndDataFeedback;
-import com.kkkoke.networkrepair.util.MD5Util;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
@@ -20,14 +19,22 @@ public class UserController {
     // 添加用户
     @PostMapping("/addUser")
     public StatusAndDataFeedback addUser(String username, String password, String name) {
+        // 判断前端传入的数据是否完整
         if (Objects.equals(username, "") || Objects.equals(password, "") || Objects.equals(name, "")) {
             return new StatusAndDataFeedback(null, "Incomplete_data");
         }
         User user = new User(username, password, name);
-        // 调用service层添加用户
-        userService.addUser(user);
-        // 返回给前端添加的用户数据及处理的状态值
-        return new StatusAndDataFeedback(user, "handle_success");
+        // 查看数据库中是否已经存在此用户
+        if (Objects.equals(userService.selectUserByUsername(username), null)) {
+            // 调用service层添加用户
+            userService.addUser(user);
+            // 返回给前端添加的用户数据及处理的状态值
+            return new StatusAndDataFeedback(user, "handle_success");
+        }
+        else {
+            // 数据库中已经存在此数据
+            return new StatusAndDataFeedback(user, "data_exist");
+        }
     }
 
     // 通过用户名删除用户
@@ -107,7 +114,13 @@ public class UserController {
         if (user == null) {
             return new StatusAndDataFeedback(null, "Incomplete_data");
         }
+
+        // 查找数据库中是否存在此用户
+        if (Objects.equals(userService.selectUserById(user.getId()), null)) {
+            return new StatusAndDataFeedback(user, "data_not_exist");
+        }
         else {
+            // 如果用户存在就更新数据
             userService.updateUser(user);
             return new StatusAndDataFeedback(user, "handle_success");
         }
