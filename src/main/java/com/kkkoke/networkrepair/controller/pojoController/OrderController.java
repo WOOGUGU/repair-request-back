@@ -7,7 +7,6 @@ import com.kkkoke.networkrepair.statusAndDataResult.StatusAndDataFeedback;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -33,13 +32,15 @@ public class OrderController {
         String type = (String) orderJson.get("type"); // 工单类型
         String des = (String) orderJson.get("des"); // 故障描述
         String position = (String) orderJson.get("position"); // 故障位置
-        Integer progress = (Integer) orderJson.get("progress"); // -2：审核不通过，-1：用户取消，0：待审核，1：待处理，2：已处理
+        String timeSubscribe = (String) orderJson.get("timeSubscribe"); // 工单预约上门时间
+        Integer progress = Integer.parseInt((String) orderJson.get("progress")); // -2：审核不通过，-1：用户取消，0：待审核，1：待处理，2：已处理
         String solver = (String) orderJson.get("solver"); // 解决工单的技术人员
-        LocalDateTime timeStart = (LocalDateTime) orderJson.get("timeStart"); // 工单发起时间
-        LocalDateTime timeEnd = (LocalDateTime) orderJson.get("timeEnd"); // 工单解决时间
+        String timeStart = (String) orderJson.get("timeStart"); // 工单发起时间
+        String timeDistribution = (String) orderJson.get("timeDistribution"); // 工单分配时间
+        String timeEnd = (String) orderJson.get("timeEnd"); // 工单解决时间
         String feedBack = (String) orderJson.get("feedBack"); // 用户反馈
 
-        Order order = new Order(sender, tel, type, des, position, progress, solver, timeStart, timeEnd, feedBack);
+        Order order = new Order(sender, tel, type, des, position, timeSubscribe, progress, solver, timeStart, timeDistribution, timeEnd, feedBack);
         // 增加工单
         orderService.addOrder(order);
 
@@ -112,12 +113,14 @@ public class OrderController {
         String type = (String) orderJson.get("type"); // 工单类型
         String des = (String) orderJson.get("des"); // 故障描述
         String position = (String) orderJson.get("position"); // 故障位置
+        String timeSubscribe = (String) orderJson.get("timeSubscribe"); // 工单预约上门时间
         Integer progress = (Integer) orderJson.get("progress"); // -2：审核不通过，-1：用户取消，0：待审核，1：待处理，2：已处理
         String solver = (String) orderJson.get("solver"); // 解决工单的技术人员
-        LocalDateTime timeStart = (LocalDateTime) orderJson.get("timeStart"); // 工单发起时间
-        LocalDateTime timeEnd = (LocalDateTime) orderJson.get("timeEnd"); // 工单解决时间
+        String timeStart = (String) orderJson.get("timeStart"); // 工单发起时间
+        String timeDistribution = (String) orderJson.get("timeDistribution"); // 工单分配时间
+        String timeEnd = (String) orderJson.get("timeEnd"); // 工单解决时间
         String feedBack = (String) orderJson.get("feedBack"); // 用户反馈
-        Order order = new Order(id, sender, tel, type, des, position, progress, solver, timeStart, timeEnd, feedBack);
+        Order order = new Order(id, sender, tel, type, des, position, timeSubscribe, progress, solver, timeStart, timeDistribution, timeEnd, feedBack);
 
         // 查找数据库中是否存在此工单
         if (Objects.equals(orderService.selectOrderById(id), null)) {

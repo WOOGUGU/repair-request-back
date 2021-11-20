@@ -271,3 +271,37 @@
         })
     }
 }
+
+// 工单逻辑处理
+{
+    // 添加工单
+    function submitAddOrder() {
+        let order = {
+            sender: $("#add_sender").val(),
+            tel: $("#add_tel").val(),
+            type: $("#add_type").val(),
+            des: $("#add_des").val(),
+            position: $("#add_position").val(),
+            timeSubscribe: $("#add_timeSubscribe").val(),
+            progress: $("#add_progress").val(),
+            solver: $("#add_solver").val(),
+            timeStart: $("#add_timeStart").val(),
+            timeDistribution: $("#add_timeDistribution").val(),
+            timeEnd: $("#add_timeEnd").val(),
+            feedBack: $("#add_feedBack").val()
+        }
+        console.log(order);
+        let order_json = JSON.stringify(order);
+        console.log(order_json);
+
+        $.ajax({
+            type: "post",
+            url: "/addOrder",
+            contentType: "application/json",
+            data: order_json,
+            success: function (res) {
+                console.log(res);
+            }
+        })
+    }
+}

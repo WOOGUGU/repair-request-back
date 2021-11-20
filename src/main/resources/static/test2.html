@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>工单测试</title>
+</head>
+<body>
+    <div id="addOrder">
+        工单发起者：<input type="text" id="add_sender">
+        工单发起者联系方式：<input type="text" id="add_tel">
+        工单类型：<input type="text" id="add_type">
+        故障描述：<input type="text" id="add_des">
+        故障位置：<input type="text" id="add_position">
+        工单预约时间：<input type="text" id="add_timeSubscribe">
+        处理状态：<input type="text" id="add_progress">
+        解决工单的技术人员：<input type="text" id="add_solver">
+        工单发起时间：<input type="datetime-local" id="add_timeStart">
+        工单分配时间：<input type="datetime-local" id="add_timeDistribution">
+        工单解决时间：<input type="date" id="add_timeEnd">
+        用户反馈：<input type="text" id="add_feedBack">
+        <button type="button" onclick="submitAddOrder()">提交</button>
+    </div>
+
+
+<script src="jquery-3.6.0.min.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

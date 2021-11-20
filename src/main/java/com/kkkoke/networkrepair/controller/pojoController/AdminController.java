@@ -18,11 +18,11 @@ public class AdminController {
 
     // 添加管理员
     @PostMapping("/addAdmin")
-    public StatusAndDataFeedback addAdmin(String username, String password, String name) {
+    public StatusAndDataFeedback addAdmin(String username, String password, String name, String status) {
         if (Objects.equals(username, "") || Objects.equals(password, "") || Objects.equals(name, "")) {
             return new StatusAndDataFeedback(null, "Incomplete_data");
         }
-        Admin admin = new Admin(username, password, name);
+        Admin admin = new Admin(username, password, name, status);
         // 查看数据库中是否已经存在此管理员
         if (Objects.equals(adminService.selectAdminByUsername(username), null)) {
             // 调用service层添加管理员

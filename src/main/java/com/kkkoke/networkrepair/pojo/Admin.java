@@ -20,11 +20,13 @@ public class Admin {
     private String username; // 管理员账号
     private String password; // 管理员密码
     private String name; // 管理员真实姓名
+    private String status; // 管理员身份
 
     // 不带id的管理员构造函数
-    public Admin(String username, String password, String name) {
+    public Admin(String username, String password, String name, String status) {
         this.username = username;
         this.password = password;
         this.name = name;
+        this.status = status;
     }
 }
