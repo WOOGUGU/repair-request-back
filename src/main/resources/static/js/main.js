@@ -304,4 +304,68 @@
             }
         })
     }
+
+    // 删除工单
+    function submitDeleteOrder() {
+        $.ajax({
+            type: "post",
+            url: "/deleteOrder",
+            data: {
+                'id': $("#delete_id").val()
+            },
+            success: function (res) {
+                if (res.status === 'handle_success') {
+                    alert("删除成功！");
+                }
+                else if (res.status === 'data_not_exist') {
+                    alert("此用户不存在，请输入正确的用户名！");
+                }
+                else {
+                    alert("出现异常，请重试！");
+                }
+            }
+        })
+    }
+
+    // 根据id查找工单
+    function submitSelectOrderById() {
+        $.ajax({
+            type: "post",
+            url: "/selectOrderById",
+            data: {
+                'id': $("#select_id").val()
+            },
+            success: function (res) {
+                if (res.status === 'handle_success') {
+                    alert("查找成功！");
+                }
+                else if (res.status === 'data_not_exist') {
+                    alert("此用户不存在，请输入正确的用户名！");
+                }
+                else {
+                    alert("出现异常，请重试！");
+                }
+            }
+        })
+    }
+
+    // 查找所有用户的工单
+    function submitSelectAllOrder() {
+        $.ajax({
+            type: "post",
+            url: "/selectAllOrder",
+            data: {},
+            success: function (res) {
+                if (res.status === 'handle_success') {
+                    alert("查找成功！");
+                }
+                else if (res.status === 'data_not_exist') {
+                    alert("此用户不存在，请输入正确的用户名！");
+                }
+                else {
+                    alert("出现异常，请重试！");
+                }
+            }
+        })
+    }
 }

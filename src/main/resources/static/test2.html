@@ -21,7 +21,19 @@
         <button type="button" onclick="submitAddOrder()">提交</button>
     </div>
 
+    <div id="deleteOrder">
+        输入要删除的工单id：<input type="text" id="delete_id">
+        <button type="button" onclick="submitDeleteOrder()">删除</button>
+    </div>
 
+    <div id="selectOrderById">
+        输入要查找的工单id：<input type="text" id="select_id">
+        <button type="button" onclick="submitSelectOrderById()">查找</button>
+    </div>
+
+    <div>
+        <button type="button" onclick="submitSelectAllOrder()">查找所有工单</button>
+    </div>
 <script src="jquery-3.6.0.min.js"></script>
 <script src="js/main.js"></script>
 </body>
