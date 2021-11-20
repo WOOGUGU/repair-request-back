@@ -1,9 +1,11 @@
 package com.kkkoke.networkrepair.controller.pojoController;
 
+import com.alibaba.fastjson.JSONObject;
 import com.kkkoke.networkrepair.pojo.Admin;
 import com.kkkoke.networkrepair.service.AdminService;
 import com.kkkoke.networkrepair.statusAndDataResult.StatusAndDataFeedback;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.Objects;
@@ -18,10 +20,16 @@ public class AdminController {
 
     // 添加管理员
     @PostMapping("/addAdmin")
-    public StatusAndDataFeedback addAdmin(String username, String password, String name, String status) {
-        if (Objects.equals(username, "") || Objects.equals(password, "") || Objects.equals(name, "")) {
+    public StatusAndDataFeedback addAdmin(@RequestBody JSONObject adminJson) {
+        // 判断前端传过来的参数是否为空
+        if (Objects.equals(adminJson.toJSONString(), null)) {
             return new StatusAndDataFeedback(null, "Incomplete_data");
         }
+        // 从json字符串中获取要添加的数据
+        String username = (String) adminJson.get("username");
+        String password = (String) adminJson.get("password");
+        String name = (String) adminJson.get("name");
+        String status = (String) adminJson.get("status");
         Admin admin = new Admin(username, password, name, status);
         // 查看数据库中是否已经存在此管理员
         if (Objects.equals(adminService.selectAdminByUsername(username), null)) {
@@ -38,12 +46,13 @@ public class AdminController {
 
     // 通过用户名删除管理员
     @PostMapping("/deleteAdmin")
-    public StatusAndDataFeedback deleteAdmin(Long id) {
+    public StatusAndDataFeedback deleteAdmin(@RequestBody JSONObject idJson) {
         // 判断前端传过来的参数是否为空
-        if (id == null) {
+        if (Objects.equals(idJson.toJSONString(), null)) {
             return new StatusAndDataFeedback(null, "Incomplete_data");
         }
-
+        // 从json字符串中获取要添加的数据
+        Long id = Long.parseLong((String) idJson.get("id"));
         // 查询数据库，查看要删除的管理员是否存在
         if (Objects.equals(adminService.selectAdminById(id), null)) {
             return new StatusAndDataFeedback(null, "data_not_exist");
@@ -57,12 +66,13 @@ public class AdminController {
 
     // 通过用户名查找管理员
     @PostMapping("/selectAdminByUsername")
-    public StatusAndDataFeedback selectAdminByUsername(String username) {
+    public StatusAndDataFeedback selectAdminByUsername(@RequestBody JSONObject usernameJson) {
         // 判断前端传过来的参数是否为空
-        if (Objects.equals(username, null)) {
+        if (Objects.equals(usernameJson.toJSONString(), null)) {
             return new StatusAndDataFeedback(null, "Incomplete_data");
         }
-
+        // 从json字符串中获取要添加的数据
+        String username = (String) usernameJson.get("username");
         // 根据用户名查找管理员
         Admin admin = adminService.selectAdminByUsername(username);
         // 判断查询结果是否为空
@@ -76,12 +86,13 @@ public class AdminController {
 
     // 通过id查找管理员
     @PostMapping("/selectAdminById")
-    public StatusAndDataFeedback selectAdminById(Long id) {
+    public StatusAndDataFeedback selectAdminById(@RequestBody JSONObject idJson) {
         // 判断前端传过来的参数是否为空
-        if (id == null) {
+        if (Objects.equals(idJson.toJSONString(), null)) {
             return new StatusAndDataFeedback(null, "Incomplete_data");
         }
-
+        // 从json字符串中获取要添加的数据
+        Long id = Long.parseLong((String) idJson.get("id"));
         // 根据管理员传入的id查询对应的管理员
         Admin admin = adminService.selectAdminById(id);
         // 判断查询结果是否为空
@@ -108,11 +119,18 @@ public class AdminController {
 
     // 修改管理员信息
     @PostMapping("/updateAdmin")
-    public StatusAndDataFeedback updateAdmin(Admin admin) {
+    public StatusAndDataFeedback updateAdmin(@RequestBody JSONObject adminJson) {
         // 判断前端传过来的参数是否为空
-        if (admin == null) {
+        if (Objects.equals(adminJson.toJSONString(), null)) {
             return new StatusAndDataFeedback(null, "Incomplete_data");
         }
+        // 从json字符串中获取要添加的数据
+        Long id = Long.parseLong((String) adminJson.get("id"));
+        String username = (String) adminJson.get("username");
+        String password = (String) adminJson.get("password");
+        String name = (String) adminJson.get("name");
+        String status = (String) adminJson.get("status");
+        Admin admin = new Admin(username, password, name, status);
 
         // 查找数据库中是否存在此管理员
         if (Objects.equals(adminService.selectAdminById(admin.getId()), null)) {

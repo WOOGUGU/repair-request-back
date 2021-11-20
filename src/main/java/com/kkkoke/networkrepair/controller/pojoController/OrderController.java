@@ -49,12 +49,13 @@ public class OrderController {
 
     // 通过id删除报修工单
     @PostMapping("/deleteOrder")
-    public StatusAndDataFeedback deleteOrder(Long id) {
+    public StatusAndDataFeedback deleteOrder(@RequestBody JSONObject idJson) {
         // 判断前端传过来的参数是否为空
-        if (Objects.equals(id, null)) {
+        if (Objects.equals(idJson.toJSONString(), null)) {
             return new StatusAndDataFeedback(null, "Incomplete_data");
         }
-
+        // 从json字符串中获取要添加的数据
+        Long id = Long.parseLong((String) idJson.get("id"));
         // 查询数据库，查看要删除的工单是否存在
         if (Objects.equals(orderService.selectOrderById(id), null)) {
             return new StatusAndDataFeedback(null, "data_not_exist");
@@ -68,11 +69,13 @@ public class OrderController {
 
     // 通过工单id查找报修工单
     @PostMapping("/selectOrderById")
-    public StatusAndDataFeedback selectOrderById(Long id) {
+    public StatusAndDataFeedback selectOrderById(@RequestBody JSONObject idJson) {
         // 判断前端传过来的参数是否为空
-        if (Objects.equals(id, null)) {
+        if (Objects.equals(idJson.toJSONString(), null)) {
             return new StatusAndDataFeedback(null, "Incomplete_data");
         }
+        // 从json字符串中获取要添加的数据
+        Long id = Long.parseLong((String) idJson.get("id"));
 
         // 根据id查找工单
         Order order = orderService.selectOrderById(id);
@@ -114,7 +117,7 @@ public class OrderController {
         String des = (String) orderJson.get("des"); // 故障描述
         String position = (String) orderJson.get("position"); // 故障位置
         String timeSubscribe = (String) orderJson.get("timeSubscribe"); // 工单预约上门时间
-        Integer progress = (Integer) orderJson.get("progress"); // -2：审核不通过，-1：用户取消，0：待审核，1：待处理，2：已处理
+        Integer progress = Integer.parseInt((String) orderJson.get("progress")); // -2：审核不通过，-1：用户取消，0：待审核，1：待处理，2：已处理
         String solver = (String) orderJson.get("solver"); // 解决工单的技术人员
         String timeStart = (String) orderJson.get("timeStart"); // 工单发起时间
         String timeDistribution = (String) orderJson.get("timeDistribution"); // 工单分配时间

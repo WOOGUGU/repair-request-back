@@ -131,6 +131,7 @@
         let username = $("#admin_username").val();
         let password = $("#admin_password").val();
         let name = $("#admin_name").val();
+        let status = $("#admin_status").val();
 
         $.ajax({
             type: "post",
@@ -138,7 +139,8 @@
             data: {
                 'username': username,
                 'password': password,
-                'name': name
+                'name': name,
+                'status': status
             },
             success: function (res) {
                 if (res.status === 'handle_success') {
@@ -365,6 +367,37 @@
                 else {
                     alert("出现异常，请重试！");
                 }
+            }
+        })
+    }
+
+    // 更新工单
+    function submitUpdateOrder() {
+        let order = {
+            sender: $("#update_sender").val(),
+            tel: $("#update_tel").val(),
+            type: $("#update_type").val(),
+            des: $("#update_des").val(),
+            position: $("#update_position").val(),
+            timeSubscribe: $("#update_timeSubscribe").val(),
+            progress: $("#update_progress").val(),
+            solver: $("#update_solver").val(),
+            timeStart: $("#update_timeStart").val(),
+            timeDistribution: $("#update_timeDistribution").val(),
+            timeEnd: $("#update_timeEnd").val(),
+            feedBack: $("#update_feedBack").val()
+        }
+        console.log(order);
+        let order_json = JSON.stringify(order);
+        console.log(order_json);
+
+        $.ajax({
+            type: "post",
+            url: "/updateOrder",
+            contentType: "application/json",
+            data: order_json,
+            success: function (res) {
+                console.log(res);
             }
         })
     }
