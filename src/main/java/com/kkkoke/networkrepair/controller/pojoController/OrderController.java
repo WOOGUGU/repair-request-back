@@ -6,7 +6,6 @@ import com.kkkoke.networkrepair.service.OrderService;
 import com.kkkoke.networkrepair.statusAndDataResult.StatusAndDataFeedback;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -36,12 +35,7 @@ public class OrderController {
         String des = (String) orderJson.get("des"); // 故障描述
         String position = (String) orderJson.get("position"); // 故障位置
         String timeSubscribe = (String) orderJson.get("timeSubscribe"); // 工单预约上门时间
-//        Integer progress = Integer.parseInt((String) orderJson.get("progress")); // -2：审核不通过，-1：用户取消，0：待审核，1：待处理，2：已处理
-//        String solver = (String) orderJson.get("solver"); // 解决工单的技术人员
         String timeStart = LocalDateTime.now().toString(); // 工单发起时间
-//        String timeDistribution = (String) orderJson.get("timeDistribution"); // 工单分配时间
-//        String timeEnd = (String) orderJson.get("timeEnd"); // 工单解决时间
-//        String feedback = (String) orderJson.get("feedBack"); // 用户反馈
 
         Order order = new Order(username, sender, tel, type, des, position, timeSubscribe, timeStart);
         // 增加工单
