@@ -1,7 +1,6 @@
 package com.kkkoke.networkrepair.service;
 
 import com.kkkoke.networkrepair.pojo.Order;
-
 import java.util.List;
 
 public interface OrderService {
@@ -19,4 +18,7 @@ public interface OrderService {
 
     // 修改报修工单
     Integer updateOrder(Order order);
+
+    // 查找某用户发起的所有工单
+    List<Order> selectAllOrderOfUser(String username);
 }

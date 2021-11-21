@@ -401,4 +401,27 @@
             }
         })
     }
+
+    // 查找某用户发起的所有工单
+    function submitSelectAllOrderOfUser() {
+        let username = $("#select_username").val();
+        let usernameJson = JSON.stringify(username);
+        $.ajax({
+            type: "post",
+            url: "/repairnetwork/selectAllOrderOfUser",
+            contentType: "application/json",
+            data: usernameJson,
+            success: function (res) {
+                if (res.status === 'handle_success') {
+                    alert("查找成功！");
+                }
+                else if (res.status === 'data_not_exist') {
+                    alert("此用户不存在，请输入正确的用户名！");
+                }
+                else {
+                    alert("出现异常，请重试！");
+                }
+            }
+        })
+    }
 }

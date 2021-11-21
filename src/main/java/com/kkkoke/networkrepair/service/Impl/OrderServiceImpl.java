@@ -5,7 +5,6 @@ import com.kkkoke.networkrepair.pojo.Order;
 import com.kkkoke.networkrepair.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
@@ -41,5 +40,11 @@ public class OrderServiceImpl implements OrderService {
     // 修改报修工单
     public Integer updateOrder(Order order) {
         return orderDao.updateOrder(order);
+    }
+
+    @Override
+    // 查找某用户发起的所有工单
+    public List<Order> selectAllOrderOfUser(String username) {
+        return orderDao.selectAllOrderOfUser(username);
     }
 }

@@ -28,6 +28,11 @@
         where id = #{id}
     </update>
 
+    <select id="selectAllOrderOfUser" resultMap="orderMap">
+        select * from `order`
+        where username = #{username};
+    </select>
+
     <resultMap id="orderMap" type="com.kkkoke.networkrepair.pojo.Order">
         <id property="id" column="id"/>
         <result property="sender" column="sender"/>

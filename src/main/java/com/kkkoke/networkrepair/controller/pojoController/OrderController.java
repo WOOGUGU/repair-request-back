@@ -6,6 +6,7 @@ import com.kkkoke.networkrepair.service.OrderService;
 import com.kkkoke.networkrepair.statusAndDataResult.StatusAndDataFeedback;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -136,6 +137,27 @@ public class OrderController {
             // 如果此工单存在就更新数据
             orderService.updateOrder(order);
             return new StatusAndDataFeedback(order, "handle_success");
+        }
+    }
+
+    // 查找某用户发布的所有工单
+    @PostMapping("/selectAllOrderOfUser")
+    public StatusAndDataFeedback selectAllOrderOfUser(@RequestBody JSONObject usernameJson) {
+        // 判断前端传过来的参数是否为空
+        if (Objects.equals(usernameJson.toJSONString(), null)) {
+            return new StatusAndDataFeedback(null, "Incomplete_data");
+        }
+
+        // 获取usernameJson中的数据
+        String username = (String) usernameJson.get("username");
+        // 使用username查询该用户所发布的所有工单
+        List<Order> orders = orderService.selectAllOrderOfUser(username);
+        // 判断查询结果是否为空
+        if (orders.isEmpty()) {
+            return new StatusAndDataFeedback(null, "data_not_exist");
+        }
+        else {
+            return new StatusAndDataFeedback(orders, "handle_success");
         }
     }
 }
