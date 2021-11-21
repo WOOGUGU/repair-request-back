@@ -47,4 +47,15 @@ public class Order {
         this.timeEnd = timeEnd;
         this.feedback = feedback;
     }
+
+    // 添加工单时的构造函数
+    public Order(String sender, String tel, String type, String position, String des, String timeSubscribe, String timeStart) {
+        this.sender = sender;
+        this.tel = tel;
+        this.type = type;
+        this.des = des;
+        this.position = position;
+        this.timeSubscribe = timeSubscribe;
+        this.timeStart = timeStart;
+    }
 }
