@@ -16,6 +16,7 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id; // 工单id
+    private String username; // 用户名
     private String sender; // 工单发起者（用户）
     private String tel; // 工单发起者联系方式
     private String type; // 工单类型
@@ -31,9 +32,10 @@ public class Order {
 
 
     // 不带id的报修工单构造函数
-    public Order(String sender, String tel, String type, String des, String position,
+    public Order(String username, String sender, String tel, String type, String des, String position,
                  String timeSubscribe, Integer progress, String solver, String timeStart,
                  String timeDistribution, String timeEnd, String feedback) {
+        this.username = username;
         this.sender = sender;
         this.tel = tel;
         this.type = type;
@@ -49,7 +51,8 @@ public class Order {
     }
 
     // 添加工单时的构造函数
-    public Order(String sender, String tel, String type, String position, String des, String timeSubscribe, String timeStart) {
+    public Order(String username, String sender, String tel, String type, String position, String des, String timeSubscribe, String timeStart) {
+        this.username = username;
         this.sender = sender;
         this.tel = tel;
         this.type = type;

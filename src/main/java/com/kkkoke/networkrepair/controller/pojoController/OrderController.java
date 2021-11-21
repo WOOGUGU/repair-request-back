@@ -7,7 +7,6 @@ import com.kkkoke.networkrepair.statusAndDataResult.StatusAndDataFeedback;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -29,6 +28,7 @@ public class OrderController {
         }
 
         // 获取工单中的数据
+        String username = (String) orderJson.get("username"); // 用户名
         String sender = (String) orderJson.get("sender"); // 工单发起者（用户）
         String tel = (String) orderJson.get("tel"); // 工单发起者联系方式
         String type = (String) orderJson.get("type"); // 工单类型
@@ -42,7 +42,7 @@ public class OrderController {
 //        String timeEnd = (String) orderJson.get("timeEnd"); // 工单解决时间
 //        String feedback = (String) orderJson.get("feedBack"); // 用户反馈
 
-        Order order = new Order(sender, tel, type, des, position, timeSubscribe, timeStart);
+        Order order = new Order(username, sender, tel, type, des, position, timeSubscribe, timeStart);
         // 增加工单
         orderService.addOrder(order);
 
@@ -113,6 +113,7 @@ public class OrderController {
 
         // 获取工单中的数据
         Long id = (Long) orderJson.get("id"); // 工单id
+        String username = (String) orderJson.get("username"); // 用户名
         String sender = (String) orderJson.get("sender"); // 工单发起者（用户）
         String tel = (String) orderJson.get("tel"); // 工单发起者联系方式
         String type = (String) orderJson.get("type"); // 工单类型
@@ -125,7 +126,7 @@ public class OrderController {
         String timeDistribution = (String) orderJson.get("timeDistribution"); // 工单分配时间
         String timeEnd = (String) orderJson.get("timeEnd"); // 工单解决时间
         String feedback = (String) orderJson.get("feedBack"); // 用户反馈
-        Order order = new Order(id, sender, tel, type, des, position, timeSubscribe, progress, solver, timeStart, timeDistribution, timeEnd, feedback);
+        Order order = new Order(id, username, sender, tel, type, des, position, timeSubscribe, progress, solver, timeStart, timeDistribution, timeEnd, feedback);
 
         // 查找数据库中是否存在此工单
         if (Objects.equals(orderService.selectOrderById(id), null)) {
