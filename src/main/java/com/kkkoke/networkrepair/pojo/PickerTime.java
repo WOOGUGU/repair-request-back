@@ -17,4 +17,9 @@ public class PickerTime {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     private String time;
+
+    // 不带id构造函数
+    public PickerTime(String time) {
+        this.time = time;
+    }
 }

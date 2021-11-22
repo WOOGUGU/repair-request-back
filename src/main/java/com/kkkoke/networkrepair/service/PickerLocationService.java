@@ -1,12 +1,10 @@
-package com.kkkoke.networkrepair.dao;
+package com.kkkoke.networkrepair.service;
 
 import com.kkkoke.networkrepair.pojo.PickerLocation;
-import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
-@Mapper
-public interface PickerLocationDao {
+public interface PickerLocationService {
     // 增加报修地点
     int addPickerLocation(PickerLocation pickerLocation);
 

@@ -1,13 +1,10 @@
-package com.kkkoke.networkrepair.dao;
+package com.kkkoke.networkrepair.service;
 
-import com.kkkoke.networkrepair.pojo.PickerLocation;
 import com.kkkoke.networkrepair.pojo.PickerTime;
-import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
-@Mapper
-public interface PickerTimeDao {
+public interface PickerTimeService {
     // 增加报修时间段
     int addPickerTime(PickerTime pickerTime);
 
