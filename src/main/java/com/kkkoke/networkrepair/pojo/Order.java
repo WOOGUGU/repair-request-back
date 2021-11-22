@@ -51,7 +51,7 @@ public class Order {
     }
 
     // 添加工单时的构造函数
-    public Order(String username, String sender, String tel, String type, String position, String des, String timeSubscribe, String timeStart) {
+    public Order(String username, String sender, String tel, String type, String des, String position, String timeSubscribe, String timeStart) {
         this.username = username;
         this.sender = sender;
         this.tel = tel;
