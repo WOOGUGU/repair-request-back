@@ -26,6 +26,12 @@ public class PickerTimeServiceImpl implements PickerTimeService {
     }
 
     @Override
+    // 根据id超找某个时间段
+    public PickerTime selectPickerTime(Integer id) {
+        return pickerTimeDao.selectPickerTime(id);
+    }
+
+    @Override
     // 查找所有时间段
     public List<PickerTime> selectAllPickerTime() {
         return pickerTimeDao.selectAllPickerTime();

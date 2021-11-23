@@ -25,6 +25,11 @@ public class PickerLocationServiceImpl implements PickerLocationService {
         return pickerLocationDao.deletePickerLocation(id);
     }
 
+    // 根据id查找某个报修地点
+    public PickerLocation selectPickerLocation(Integer id) {
+        return pickerLocationDao.selectPickerLocation(id);
+    }
+
     @Override
     // 查找所有报修地点
     public List<PickerLocation> selectAllPickerLocation() {

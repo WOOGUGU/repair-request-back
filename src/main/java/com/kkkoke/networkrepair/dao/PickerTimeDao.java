@@ -14,6 +14,9 @@ public interface PickerTimeDao {
     // 删除报修时间段
     int deletePickerTime(Integer id);
 
+    // 根据id超找某个时间段
+    PickerTime selectPickerTime(Integer id);
+
     // 查找所有时间段
     List<PickerTime> selectAllPickerTime();
 

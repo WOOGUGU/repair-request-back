@@ -11,6 +11,9 @@ public interface PickerLocationService {
     // 删除报修地点
     int deletePickerLocation(Integer id);
 
+    // 根据id查找某个报修地点
+    PickerLocation selectPickerLocation(Integer id);
+
     // 查找所有报修地点
     List<PickerLocation> selectAllPickerLocation();
 
