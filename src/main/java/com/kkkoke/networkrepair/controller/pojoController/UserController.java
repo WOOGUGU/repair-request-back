@@ -7,6 +7,7 @@ import com.kkkoke.networkrepair.service.UserService;
 import com.kkkoke.networkrepair.statusAndDataResult.StatusAndDataFeedback;
 import com.kkkoke.networkrepair.util.token.JwtToken;
 import com.kkkoke.networkrepair.util.token.TokenVerify;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,7 +20,7 @@ public class UserController {
     private final UserService userService;
     private final TokenVerify tokenVerify;
 
-    public UserController(UserService userService, TokenVerify tokenVerify) {
+    public UserController(UserService userService, @Qualifier("adminTokenVerifyImpl") TokenVerify tokenVerify) {
         this.userService = userService;
         this.tokenVerify = tokenVerify;
     }
