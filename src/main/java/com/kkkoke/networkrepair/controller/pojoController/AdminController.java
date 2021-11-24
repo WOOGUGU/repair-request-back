@@ -145,14 +145,35 @@ public class AdminController {
 
     // 查找所有管理员
     @PostMapping("/selectAllAdmin")
-    public StatusAndDataFeedback selectAllAdmin() {
-        List<Admin> admins = adminService.selectAllAdmin();
-        // 判断查询结果是否为空
-        if (admins.isEmpty()) {
-            return new StatusAndDataFeedback(null, "data_not_exist");
+    public StatusAndDataFeedback selectAllAdmin(@RequestBody JSONObject tokenJson) {
+        // 判断前端传过来的参数是否为空
+        if (Objects.equals(tokenJson.toJSONString(), null)) {
+            return new StatusAndDataFeedback(null, "Incomplete_data");
+        }
+        // 获取tokenJson中的数据
+        String token = (String) tokenJson.get("token"); // 待验证的token
+        // 验证token的正确性
+        if (tokenVerify.verify(token)) {
+            // token验证成功，使用username查询该用户所发布的所有工单
+            try {
+                Map<String, Claim> jwt = JwtToken.verifyToken(token);
+                String username = jwt.get("username").asString();
+                List<Admin> admins = adminService.selectAllAdmin();
+                // 判断查询结果是否为空
+                if (admins.isEmpty()) {
+                    return new StatusAndDataFeedback(null, "data_not_exist");
+                }
+                else {
+                    return new StatusAndDataFeedback(admins, "handle_success");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                return new StatusAndDataFeedback(null, "exception_happen");
+            }
         }
         else {
-            return new StatusAndDataFeedback(admins, "handle_success");
+            // token验证失败，返回错误码
+            return new StatusAndDataFeedback(null, "wrong_token");
         }
     }
 
@@ -169,11 +190,12 @@ public class AdminController {
         String password = (String) adminJson.get("password");
         String name = (String) adminJson.get("name");
         String status = (String) adminJson.get("status");
-        Admin admin = new Admin(username, password, name, status);
         String token = (String) adminJson.get("token");
         // 验证token的正确性
         if (tokenVerify.verify(token)) {
-            // token验证成功，查找数据库中是否存在此管理员
+            // token验证成功，创建要修改的admin对象
+            Admin admin = new Admin(username, password, name, status);
+            // 查找数据库中是否存在此管理员
             if (Objects.equals(adminService.selectAdminById(admin.getId()), null)) {
                 return new StatusAndDataFeedback(admin, "data_not_exist");
             }
