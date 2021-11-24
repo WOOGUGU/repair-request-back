@@ -4,6 +4,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.kkkoke.networkrepair.pojo.Order;
 import com.kkkoke.networkrepair.service.OrderService;
 import com.kkkoke.networkrepair.statusAndDataResult.StatusAndDataFeedback;
+import com.kkkoke.networkrepair.util.token.TokenVerify;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,19 +16,20 @@ import java.util.Objects;
 @RestController
 public class OrderController {
     private final OrderService orderService;
+    private final TokenVerify tokenVerify;
 
-    public OrderController(OrderService orderService) {
+    public OrderController(OrderService orderService, @Qualifier("adminTokenVerifyImpl") TokenVerify tokenVerify) {
         this.orderService = orderService;
+        this.tokenVerify = tokenVerify;
     }
 
     // 增加报修工单
     @PostMapping("/addOrder")
-    public StatusAndDataFeedback addOrder(@RequestBody JSONObject orderJson) {
+    public StatusAndDataFeedback addOrder(@RequestBody JSONObject orderJson, String token) {
         // 判断前端传过来的参数是否为空
-        if (Objects.equals(orderJson.toJSONString(), null)) {
+        if (Objects.equals(orderJson.toJSONString(), null) || Objects.equals(token, null)) {
             return new StatusAndDataFeedback(null, "Incomplete_data");
         }
-
         // 获取工单中的数据
         String username = (String) orderJson.get("username"); // 用户名
         String sender = (String) orderJson.get("sender"); // 工单发起者（用户）
@@ -36,12 +39,20 @@ public class OrderController {
         String position = (String) orderJson.get("position"); // 故障位置
         String timeSubscribe = (String) orderJson.get("timeSubscribe"); // 工单预约上门时间
         String timeStart = LocalDateTime.now().toString(); // 工单发起时间
-
-        Order order = new Order(username, sender, tel, type, des, position, timeSubscribe, timeStart);
-        // 增加工单
-        orderService.addOrder(order);
-
-        return new StatusAndDataFeedback(order, "handle_success");
+//        Order order = new Order(username, sender, tel, type, des, position, timeSubscribe, timeStart);
+        // 验证token的正确性
+        if (tokenVerify.verify(orderJson, token)) {
+            // token验证成功，创建添加的admin对象
+            Order order = new Order(username, sender, tel, type, des, position, timeSubscribe, timeStart);
+            // 调用service层添加工单
+            orderService.addOrder(order);
+            // 返回给前端添加的管理员数据及处理的状态值
+            return new StatusAndDataFeedback(order, "handle_success");
+        }
+        else {
+            // token验证失败，返回错误码
+            return new StatusAndDataFeedback(null, "wrong_token");
+        }
     }
 
     // 通过id删除报修工单

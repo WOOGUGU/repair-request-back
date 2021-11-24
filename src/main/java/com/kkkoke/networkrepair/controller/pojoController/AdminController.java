@@ -1,28 +1,35 @@
 package com.kkkoke.networkrepair.controller.pojoController;
 
 import com.alibaba.fastjson.JSONObject;
+import com.auth0.jwt.interfaces.Claim;
 import com.kkkoke.networkrepair.pojo.Admin;
 import com.kkkoke.networkrepair.service.AdminService;
 import com.kkkoke.networkrepair.statusAndDataResult.StatusAndDataFeedback;
+import com.kkkoke.networkrepair.util.token.JwtToken;
+import com.kkkoke.networkrepair.util.token.TokenVerify;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 @RestController
 public class AdminController {
     private final AdminService adminService;
+    private final TokenVerify tokenVerify;
 
-    public AdminController(AdminService adminService) {
+    public AdminController(AdminService adminService, @Qualifier("adminTokenVerifyImpl") TokenVerify tokenVerify) {
         this.adminService = adminService;
+        this.tokenVerify = tokenVerify;
     }
 
     // 添加管理员
     @PostMapping("/addAdmin")
-    public StatusAndDataFeedback addAdmin(@RequestBody JSONObject adminJson) {
+    public StatusAndDataFeedback addAdmin(@RequestBody JSONObject adminJson, String token) {
         // 判断前端传过来的参数是否为空
-        if (Objects.equals(adminJson.toJSONString(), null)) {
+        if (Objects.equals(adminJson.toJSONString(), null) || Objects.equals(token, null)) {
             return new StatusAndDataFeedback(null, "Incomplete_data");
         }
         // 从json字符串中获取要添加的数据
@@ -30,38 +37,58 @@ public class AdminController {
         String password = (String) adminJson.get("password");
         String name = (String) adminJson.get("name");
         String status = (String) adminJson.get("status");
-        Admin admin = new Admin(username, password, name, status);
-        // 查看数据库中是否已经存在此管理员
-        if (Objects.equals(adminService.selectAdminByUsername(username), null)) {
-            // 调用service层添加管理员
-            adminService.addAdmin(admin);
-            // 返回给前端添加的管理员数据及处理的状态值
-            return new StatusAndDataFeedback(admin, "handle_success");
+        // 验证token的正确性
+        if (tokenVerify.verify(adminJson, token)) {
+            // token验证成功，创建添加的admin对象
+            Admin admin = new Admin(username, password, name, status);
+            // 查看数据库中是否已经存在此管理员
+            if (Objects.equals(adminService.selectAdminByUsername(username), null)) {
+                // 调用service层添加管理员
+                adminService.addAdmin(admin);
+                // 返回给前端添加的管理员数据及处理的状态值
+                return new StatusAndDataFeedback(admin, "handle_success");
+            }
+            else {
+                // 数据库中已经存在此数据
+                return new StatusAndDataFeedback(admin, "data_exist");
+            }
         }
         else {
-            // 数据库中已经存在此数据
-            return new StatusAndDataFeedback(admin, "data_exist");
+            // token验证失败，返回错误码
+            return new StatusAndDataFeedback(null, "wrong_token");
         }
     }
 
     // 通过用户名删除管理员
     @PostMapping("/deleteAdmin")
-    public StatusAndDataFeedback deleteAdmin(@RequestBody JSONObject idJson) {
+    public StatusAndDataFeedback deleteAdmin(@RequestBody JSONObject idJson, String token) {
         // 判断前端传过来的参数是否为空
-        if (Objects.equals(idJson.toJSONString(), null)) {
+        if (Objects.equals(idJson.toJSONString(), null) || Objects.equals(token, null)) {
             return new StatusAndDataFeedback(null, "Incomplete_data");
         }
         // 从json字符串中获取要添加的数据
         Long id = Long.parseLong((String) idJson.get("id"));
-        // 查询数据库，查看要删除的管理员是否存在
-        if (Objects.equals(adminService.selectAdminById(id), null)) {
-            return new StatusAndDataFeedback(null, "data_not_exist");
+        // 解析token
+        try {
+            Map<String, Claim> jwt = JwtToken.verifyToken(token);
+            // 验证token的正确性
+            if (Objects.equals(adminService.selectAdminById(id).getUsername(), jwt.get("username").asString()) && Objects.equals(adminService.selectAdminById(id).getPassword(), jwt.get("password").asString())) {
+                // 查询数据库，查看要删除的管理员是否存在
+                if (Objects.equals(adminService.selectAdminById(id), null)) {
+                    return new StatusAndDataFeedback(null, "data_not_exist");
+                }
+                else {
+                    adminService.deleteAdmin(id);
+                    return new StatusAndDataFeedback(null, "handle_success");
+                }
+            }
+            else {
+                return new StatusAndDataFeedback(null, "wrong_token");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new StatusAndDataFeedback(null, "exception_happen");
         }
-        else {
-            adminService.deleteAdmin(id);
-        }
-
-        return new StatusAndDataFeedback(null, "handle_success");
     }
 
     // 通过用户名查找管理员

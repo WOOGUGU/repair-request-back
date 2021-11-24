@@ -6,11 +6,13 @@ import com.kkkoke.networkrepair.pojo.User;
 import com.kkkoke.networkrepair.service.AdminService;
 import com.kkkoke.networkrepair.service.UserService;
 import com.kkkoke.networkrepair.statusAndDataResult.StatusAndDataFeedback;
-import com.kkkoke.networkrepair.util.JwtToken;
+import com.kkkoke.networkrepair.util.token.JwtToken;
 import com.kkkoke.networkrepair.util.MD5Util;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 @RestController
@@ -40,13 +42,12 @@ public class loginController {
             // 与MD5加密后的字符串进行比较
             if (MD5Util.md5(user.getPassword()).equals(password)) {
                 try {
+                    // 生成token
                     String user_token = JwtToken.creatToken(username, password);
-//                    System.out.println(user_token);
-//                    Map<String, Claim> jwt = JwtToken.verifyToken(user_token);
-//                    System.out.println(jwt);
-//                    System.out.println(jwt.get("password").asString());
-//                    System.out.println(jwt.get("username").asString());
-                    return new StatusAndDataFeedback(user, "user " + user_token);
+                    Map<String, String> tokenMap = new HashMap<>();
+                    tokenMap.put("id", "user");
+                    tokenMap.put("token", user_token);
+                    return new StatusAndDataFeedback(user, tokenMap);
                 } catch (Exception e) {
                     e.printStackTrace();
                     return new StatusAndDataFeedback(user, "exception_happen");
@@ -60,8 +61,12 @@ public class loginController {
             // 与MD5加密后的字符串进行比较
             if (MD5Util.md5(admin.getPassword()).equals(password)) {
                 try {
+                    // 生成token
                     String admin_token = JwtToken.creatToken(username, password);
-                    return new StatusAndDataFeedback(user, "admin " + admin_token);
+                    Map<String, String> tokenMap = new HashMap<>();
+                    tokenMap.put("id", "admin");
+                    tokenMap.put("token", admin_token);
+                    return new StatusAndDataFeedback(admin, tokenMap);
                 } catch (Exception e) {
                     e.printStackTrace();
                     return new StatusAndDataFeedback(user, "exception_happen");
