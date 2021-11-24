@@ -19,6 +19,7 @@ public class StatusAndDataFeedback {
     public final static String LOGIN_SUCCESS = "login_success"; // 登录成功
     public final static String USER = "user"; // 用户身份
     public final static String ADMIN = "admin"; // 管理员身份
+    public final static String EXCEPTION_HAPPEN = "exception_happen"; // 出现异常
 
     public StatusAndDataFeedback(Object data, String status) {
         this.data = data;

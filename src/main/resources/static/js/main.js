@@ -425,3 +425,23 @@
         })
     }
 }
+
+// token功能测试
+{
+    function submitTokenTest() {
+        let user = {
+            username: $("#token_username").val(),
+            password: 'c20ad4d76fe97759aa27a0c99bff6710'
+        }
+        let userJson = JSON.stringify(user);
+        $.ajax({
+            type: "post",
+            url: "/repairnetwork//handleLogin",
+            contentType: "application/json",
+            data: userJson,
+            success: function (res) {
+                console.log(res);
+            }
+        })
+    }
+}

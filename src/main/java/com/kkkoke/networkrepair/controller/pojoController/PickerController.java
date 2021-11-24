@@ -20,16 +20,16 @@ public class PickerController {
     }
 
     // 增加报修地点
-    @PostMapping("/addPickerLocation")
-    public StatusAndDataFeedback addPickerLocation(PickerLocation pickerLocation) {
-        // 判断前端传过来的参数是否为空
-        if (Objects.equals(pickerLocation, null)) {
-            return new StatusAndDataFeedback(null, "Incomplete_data");
-        }
-
-        // 查看数据库中是否已经存在此报修地点
-        if (Objects.equals(pickerLocationService.selectPickerLocation(pickerLocation.getId())), null) {
-
-        }
-    }
+//    @PostMapping("/addPickerLocation")
+//    public StatusAndDataFeedback addPickerLocation(PickerLocation pickerLocation) {
+//        // 判断前端传过来的参数是否为空
+//        if (Objects.equals(pickerLocation, null)) {
+//            return new StatusAndDataFeedback(null, "Incomplete_data");
+//        }
+//
+//        // 查看数据库中是否已经存在此报修地点
+//        if (Objects.equals(pickerLocationService.selectPickerLocation(pickerLocation.getId())), null) {
+//
+//        }
+//    }
 }
