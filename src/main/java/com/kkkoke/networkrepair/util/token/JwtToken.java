@@ -19,7 +19,7 @@ public class JwtToken {
     public static String SECRET = "HBUTitc2021";
 
     // String username, String password
-    public static String creatToken(String username, String password) throws Exception {
+    public static String creatToken(String username, String password, Long id) throws Exception {
         // 签发时间
         Date iatDate = new Date();
 
@@ -38,6 +38,7 @@ public class JwtToken {
                 .withHeader(map) // header
                 .withClaim("username", username) // payload
                 .withClaim("password", password)
+                .withClaim("id", id)
                 .withExpiresAt(expiresDate) // 设置过期时间。过期时间要大于签发时间
                 .withIssuedAt(iatDate) // 设置签发时间
                 .sign(Algorithm.HMAC256(SECRET)); // 加密

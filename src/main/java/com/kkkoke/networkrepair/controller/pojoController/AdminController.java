@@ -39,8 +39,6 @@ public class AdminController {
         String status = (String) adminJson.get("status");
         String token = (String) adminJson.get("token");
         // 验证token的正确性
-        System.out.println(adminJson);
-        System.out.println(token);
         if (tokenVerify.verify(token)) {
             // token验证成功，创建添加的admin对象
             Admin admin = new Admin(username, password, name, status);
@@ -64,33 +62,28 @@ public class AdminController {
 
     // 通过用户名删除管理员
     @PostMapping("/deleteAdmin")
-    public StatusAndDataFeedback deleteAdmin(@RequestBody JSONObject idJson, String token) {
+    public StatusAndDataFeedback deleteAdmin(@RequestBody JSONObject usernameJson) {
         // 判断前端传过来的参数是否为空
-        if (Objects.equals(idJson.toJSONString(), null) || Objects.equals(token, null)) {
+        if (Objects.equals(usernameJson.toJSONString(), null)) {
             return new StatusAndDataFeedback(null, "Incomplete_data");
         }
         // 从json字符串中获取要添加的数据
-        Long id = Long.parseLong((String) idJson.get("id"));
-        // 解析token
-        try {
-            Map<String, Claim> jwt = JwtToken.verifyToken(token);
-            // 验证token的正确性
-            if (Objects.equals(adminService.selectAdminById(id).getUsername(), jwt.get("username").asString()) && Objects.equals(adminService.selectAdminById(id).getPassword(), jwt.get("password").asString())) {
-                // 查询数据库，查看要删除的管理员是否存在
-                if (Objects.equals(adminService.selectAdminById(id), null)) {
-                    return new StatusAndDataFeedback(null, "data_not_exist");
-                }
-                else {
-                    adminService.deleteAdmin(id);
-                    return new StatusAndDataFeedback(null, "handle_success");
-                }
+        Long id = Long.parseLong((String) usernameJson.get("id"));
+        String token = (String) usernameJson.get("token");
+        // 验证token的正确性
+        if (tokenVerify.verify(token)) {
+            // token验证成功，查询数据库，查看要删除的管理员是否存在
+            if (Objects.equals(adminService.selectAdminById(id), null)) {
+                return new StatusAndDataFeedback(null, "data_not_exist");
             }
             else {
-                return new StatusAndDataFeedback(null, "wrong_token");
+                adminService.deleteAdmin(id);
+                return new StatusAndDataFeedback(null, "handle_success");
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new StatusAndDataFeedback(null, "exception_happen");
+        }
+        else {
+            // token验证失败，返回错误码
+            return new StatusAndDataFeedback(null, "wrong_token");
         }
     }
 
@@ -103,14 +96,22 @@ public class AdminController {
         }
         // 从json字符串中获取要添加的数据
         String username = (String) usernameJson.get("username");
-        // 根据用户名查找管理员
-        Admin admin = adminService.selectAdminByUsername(username);
-        // 判断查询结果是否为空
-        if (Objects.equals(adminService.selectAdminByUsername(username), null)) {
-            return new StatusAndDataFeedback(null, "data_not_exist");
+        String token = (String) usernameJson.get("token");
+        // 验证token的正确性
+        if (tokenVerify.verify(token)) {
+            // token验证成功，根据用户名查找管理员
+            Admin admin = adminService.selectAdminByUsername(username);
+            // 判断查询结果是否为空
+            if (Objects.equals(adminService.selectAdminByUsername(username), null)) {
+                return new StatusAndDataFeedback(null, "data_not_exist");
+            }
+            else {
+                return new StatusAndDataFeedback(admin, "handle_success");
+            }
         }
         else {
-            return new StatusAndDataFeedback(admin, "handle_success");
+            // token验证失败，返回错误码
+            return new StatusAndDataFeedback(null, "wrong_token");
         }
     }
 
@@ -123,14 +124,22 @@ public class AdminController {
         }
         // 从json字符串中获取要添加的数据
         Long id = Long.parseLong((String) idJson.get("id"));
-        // 根据管理员传入的id查询对应的管理员
-        Admin admin = adminService.selectAdminById(id);
-        // 判断查询结果是否为空
-        if (Objects.equals(adminService.selectAdminById(id).getId(), id)) {
-            return new StatusAndDataFeedback(admin, "handle_success");
+        String token = (String) idJson.get("token");
+        // 验证token的正确性
+        if (tokenVerify.verify(token)) {
+            // token验证成功，根据管理员传入的id查询对应的管理员
+            Admin admin = adminService.selectAdminById(id);
+            // 判断查询结果是否为空
+            if (Objects.equals(adminService.selectAdminById(id).getId(), id)) {
+                return new StatusAndDataFeedback(admin, "handle_success");
+            }
+            else {
+                return new StatusAndDataFeedback(null, "data_not_exist");
+            }
         }
         else {
-            return new StatusAndDataFeedback(null, "data_not_exist");
+            // token验证失败，返回错误码
+            return new StatusAndDataFeedback(null, "wrong_token");
         }
     }
 
@@ -161,15 +170,22 @@ public class AdminController {
         String name = (String) adminJson.get("name");
         String status = (String) adminJson.get("status");
         Admin admin = new Admin(username, password, name, status);
-
-        // 查找数据库中是否存在此管理员
-        if (Objects.equals(adminService.selectAdminById(admin.getId()), null)) {
-            return new StatusAndDataFeedback(admin, "data_not_exist");
+        String token = (String) adminJson.get("token");
+        // 验证token的正确性
+        if (tokenVerify.verify(token)) {
+            // token验证成功，查找数据库中是否存在此管理员
+            if (Objects.equals(adminService.selectAdminById(admin.getId()), null)) {
+                return new StatusAndDataFeedback(admin, "data_not_exist");
+            }
+            else {
+                // 如果管理员存在就更新数据
+                adminService.updateAdmin(admin);
+                return new StatusAndDataFeedback(admin, "handle_success");
+            }
         }
         else {
-            // 如果管理员存在就更新数据
-            adminService.updateAdmin(admin);
-            return new StatusAndDataFeedback(admin, "handle_success");
+            // token验证失败，返回错误码
+            return new StatusAndDataFeedback(null, "wrong_token");
         }
     }
 }

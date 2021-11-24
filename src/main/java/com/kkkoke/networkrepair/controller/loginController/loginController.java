@@ -43,7 +43,7 @@ public class loginController {
             if (MD5Util.md5(user.getPassword()).equals(password)) {
                 try {
                     // 生成token
-                    String user_token = JwtToken.creatToken(username, password);
+                    String user_token = JwtToken.creatToken(username, password, user.getId());
                     Map<String, String> tokenMap = new HashMap<>();
                     tokenMap.put("id", "user");
                     tokenMap.put("token", user_token);
@@ -62,7 +62,7 @@ public class loginController {
             if (MD5Util.md5(admin.getPassword()).equals(password)) {
                 try {
                     // 生成token
-                    String admin_token = JwtToken.creatToken(username, password);
+                    String admin_token = JwtToken.creatToken(username, password, user.getId());
                     Map<String, String> tokenMap = new HashMap<>();
                     tokenMap.put("id", "admin");
                     tokenMap.put("token", admin_token);

@@ -1,9 +1,11 @@
 package com.kkkoke.networkrepair.controller.pojoController;
 
 import com.alibaba.fastjson.JSONObject;
+import com.auth0.jwt.interfaces.Claim;
 import com.kkkoke.networkrepair.pojo.Order;
 import com.kkkoke.networkrepair.service.OrderService;
 import com.kkkoke.networkrepair.statusAndDataResult.StatusAndDataFeedback;
+import com.kkkoke.networkrepair.util.token.JwtToken;
 import com.kkkoke.networkrepair.util.token.TokenVerify;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 @RestController
@@ -112,13 +115,13 @@ public class OrderController {
 
     // 查找所有报修工单
     @PostMapping("/selectAllOrder")
-    public StatusAndDataFeedback selectAllOrder(@RequestBody JSONObject Json) {
+    public StatusAndDataFeedback selectAllOrder(@RequestBody JSONObject tokenJson) {
         // 判断前端传过来的参数是否为空
-        if (Objects.equals(Json.toJSONString(), null)) {
+        if (Objects.equals(tokenJson.toJSONString(), null)) {
             return new StatusAndDataFeedback(null, "Incomplete_data");
         }
         // 从json字符串中获取要添加的数据
-        String token = (String) Json.get("token"); // 待验证的token
+        String token = (String) tokenJson.get("token"); // 待验证的token
         // 验证token的正确性
         if (tokenVerify.verify(token)) {
             // token验证成功，去数据库中查询orders
@@ -188,18 +191,24 @@ public class OrderController {
         }
 
         // 获取usernameJson中的数据
-        String username = (String) usernameJson.get("username");
         String token = (String) usernameJson.get("token"); // 待验证的token
         // 验证token的正确性
         if (tokenVerify.verify(token)) {
             // token验证成功，使用username查询该用户所发布的所有工单
-            List<Order> orders = orderService.selectAllOrderOfUser(username);
-            // 判断查询结果是否为空
-            if (orders.isEmpty()) {
-                return new StatusAndDataFeedback(null, "data_not_exist");
-            }
-            else {
-                return new StatusAndDataFeedback(orders, "handle_success");
+            try {
+                Map<String, Claim> jwt = JwtToken.verifyToken(token);
+                String username = jwt.get("username").asString();
+                List<Order> orders = orderService.selectAllOrderOfUser(username);
+                // 判断查询结果是否为空
+                if (orders.isEmpty()) {
+                    return new StatusAndDataFeedback(null, "data_not_exist");
+                }
+                else {
+                    return new StatusAndDataFeedback(orders, "handle_success");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                return new StatusAndDataFeedback(null, "exception_happen");
             }
         }
         else {
