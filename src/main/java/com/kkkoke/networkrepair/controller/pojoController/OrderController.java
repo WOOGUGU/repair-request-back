@@ -40,7 +40,6 @@ public class OrderController {
         String timeSubscribe = (String) orderJson.get("timeSubscribe"); // 工单预约上门时间
         String timeStart = LocalDateTime.now().toString(); // 工单发起时间
         String token = (String) orderJson.get("token"); // 待验证的token
-//        Order order = new Order(username, sender, tel, type, des, position, timeSubscribe, timeStart);
         // 验证token的正确性
         if (tokenVerify.verify(token)) {
             // token验证成功，创建添加的admin对象
@@ -65,15 +64,22 @@ public class OrderController {
         }
         // 从json字符串中获取要添加的数据
         Long id = Long.parseLong((String) idJson.get("id"));
-        // 查询数据库，查看要删除的工单是否存在
-        if (Objects.equals(orderService.selectOrderById(id), null)) {
-            return new StatusAndDataFeedback(null, "data_not_exist");
+        String token = (String) idJson.get("token"); // 待验证的token
+        // 验证token的正确性
+        if (tokenVerify.verify(token)) {
+            // token验证成功，查询数据库，查看要删除的工单是否存在
+            if (Objects.equals(orderService.selectOrderById(id), null)) {
+                return new StatusAndDataFeedback(null, "data_not_exist");
+            }
+            else {
+                orderService.deleteOrder(id);
+                return new StatusAndDataFeedback(null, "handle_success");
+            }
         }
         else {
-            orderService.deleteOrder(id);
+            // token验证失败，返回错误码
+            return new StatusAndDataFeedback(null, "wrong_token");
         }
-
-        return new StatusAndDataFeedback(null, "handle_success");
     }
 
     // 通过工单id查找报修工单
@@ -85,28 +91,49 @@ public class OrderController {
         }
         // 从json字符串中获取要添加的数据
         Long id = Long.parseLong((String) idJson.get("id"));
-
-        // 根据id查找工单
-        Order order = orderService.selectOrderById(id);
-        // 判断查询结果是否为空
-        if (Objects.equals(order, null)) {
-            return new StatusAndDataFeedback(null, "data_not_exist");
+        String token = (String) idJson.get("token"); // 待验证的token
+        // 验证token的正确性
+        if (tokenVerify.verify(token)) {
+            // token验证成功，根据id查找工单
+            Order order = orderService.selectOrderById(id);
+            // 判断查询结果是否为空
+            if (Objects.equals(order, null)) {
+                return new StatusAndDataFeedback(null, "data_not_exist");
+            }
+            else {
+                return new StatusAndDataFeedback(order, "handle_success");
+            }
         }
         else {
-            return new StatusAndDataFeedback(order, "handle_success");
+            // token验证失败，返回错误码
+            return new StatusAndDataFeedback(null, "wrong_token");
         }
     }
 
     // 查找所有报修工单
     @PostMapping("/selectAllOrder")
-    public StatusAndDataFeedback selectAllOrder() {
-        List<Order> orders = orderService.selectAllOrder();
-        // 判断查询结果是否为空
-        if (orders.isEmpty()) {
-            return new StatusAndDataFeedback(null, "data_not_exist");
+    public StatusAndDataFeedback selectAllOrder(@RequestBody JSONObject Json) {
+        // 判断前端传过来的参数是否为空
+        if (Objects.equals(Json.toJSONString(), null)) {
+            return new StatusAndDataFeedback(null, "Incomplete_data");
+        }
+        // 从json字符串中获取要添加的数据
+        String token = (String) Json.get("token"); // 待验证的token
+        // 验证token的正确性
+        if (tokenVerify.verify(token)) {
+            // token验证成功，去数据库中查询orders
+            List<Order> orders = orderService.selectAllOrder();
+            // 判断查询结果是否为空
+            if (orders.isEmpty()) {
+                return new StatusAndDataFeedback(null, "data_not_exist");
+            }
+            else {
+                return new StatusAndDataFeedback(orders, "handle_success");
+            }
         }
         else {
-            return new StatusAndDataFeedback(orders, "handle_success");
+            // token验证失败，返回错误码
+            return new StatusAndDataFeedback(null, "wrong_token");
         }
     }
 
@@ -117,7 +144,6 @@ public class OrderController {
         if (Objects.equals(orderJson.toJSONString(), null)) {
             return new StatusAndDataFeedback(null, "Incomplete_data");
         }
-
         // 获取工单中的数据
         Long id = (Long) orderJson.get("id"); // 工单id
         String username = (String) orderJson.get("username"); // 用户名
@@ -134,15 +160,22 @@ public class OrderController {
         String timeEnd = (String) orderJson.get("timeEnd"); // 工单解决时间
         String feedback = (String) orderJson.get("feedBack"); // 用户反馈
         Order order = new Order(id, username, sender, tel, type, des, position, timeSubscribe, progress, solver, timeStart, timeDistribution, timeEnd, feedback);
-
-        // 查找数据库中是否存在此工单
-        if (Objects.equals(orderService.selectOrderById(id), null)) {
-            return new StatusAndDataFeedback(order, "data_not_exist");
+        String token = (String) orderJson.get("token"); // 待验证的token
+        // 验证token的正确性
+        if (tokenVerify.verify(token)) {
+            // token验证成功，查找数据库中是否存在此工单
+            if (Objects.equals(orderService.selectOrderById(id), null)) {
+                return new StatusAndDataFeedback(order, "data_not_exist");
+            }
+            else {
+                // 如果此工单存在就更新数据
+                orderService.updateOrder(order);
+                return new StatusAndDataFeedback(order, "handle_success");
+            }
         }
         else {
-            // 如果此工单存在就更新数据
-            orderService.updateOrder(order);
-            return new StatusAndDataFeedback(order, "handle_success");
+            // token验证失败，返回错误码
+            return new StatusAndDataFeedback(null, "wrong_token");
         }
     }
 
@@ -156,14 +189,22 @@ public class OrderController {
 
         // 获取usernameJson中的数据
         String username = (String) usernameJson.get("username");
-        // 使用username查询该用户所发布的所有工单
-        List<Order> orders = orderService.selectAllOrderOfUser(username);
-        // 判断查询结果是否为空
-        if (orders.isEmpty()) {
-            return new StatusAndDataFeedback(null, "data_not_exist");
+        String token = (String) usernameJson.get("token"); // 待验证的token
+        // 验证token的正确性
+        if (tokenVerify.verify(token)) {
+            // token验证成功，使用username查询该用户所发布的所有工单
+            List<Order> orders = orderService.selectAllOrderOfUser(username);
+            // 判断查询结果是否为空
+            if (orders.isEmpty()) {
+                return new StatusAndDataFeedback(null, "data_not_exist");
+            }
+            else {
+                return new StatusAndDataFeedback(orders, "handle_success");
+            }
         }
         else {
-            return new StatusAndDataFeedback(orders, "handle_success");
+            // token验证失败，返回错误码
+            return new StatusAndDataFeedback(null, "wrong_token");
         }
     }
 }
