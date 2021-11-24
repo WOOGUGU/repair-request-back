@@ -27,9 +27,9 @@ public class AdminController {
 
     // 添加管理员
     @PostMapping("/addAdmin")
-    public StatusAndDataFeedback addAdmin(@RequestBody JSONObject adminJson, String token) {
+    public StatusAndDataFeedback addAdmin(@RequestBody JSONObject adminJson) {
         // 判断前端传过来的参数是否为空
-        if (Objects.equals(adminJson.toJSONString(), null) || Objects.equals(token, null)) {
+        if (Objects.equals(adminJson.toJSONString(), null)) {
             return new StatusAndDataFeedback(null, "Incomplete_data");
         }
         // 从json字符串中获取要添加的数据
@@ -37,8 +37,11 @@ public class AdminController {
         String password = (String) adminJson.get("password");
         String name = (String) adminJson.get("name");
         String status = (String) adminJson.get("status");
+        String token = (String) adminJson.get("token");
         // 验证token的正确性
-        if (tokenVerify.verify(adminJson, token)) {
+        System.out.println(adminJson);
+        System.out.println(token);
+        if (tokenVerify.verify(token)) {
             // token验证成功，创建添加的admin对象
             Admin admin = new Admin(username, password, name, status);
             // 查看数据库中是否已经存在此管理员

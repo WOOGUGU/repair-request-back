@@ -5,6 +5,8 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.kkkoke.networkrepair.util.MD5Util;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -25,6 +27,9 @@ public class JwtToken {
         Calendar nowTime = Calendar.getInstance();
         nowTime.add(Calendar.DAY_OF_WEEK, 7);
         Date expiresDate = nowTime.getTime();
+
+        // password MD5加密
+        String password_md5 = MD5Util.md5(password);
 
         Map<String, Object> map = new HashMap<>();
         map.put("alg", "HMAC256");
