@@ -62,14 +62,14 @@ public class loginController {
             if (MD5Util.md5(admin.getPassword()).equals(password)) {
                 try {
                     // 生成token
-                    String admin_token = JwtToken.creatToken(username, password, user.getId());
+                    String admin_token = JwtToken.creatToken(username, password, admin.getId());
                     Map<String, String> tokenMap = new HashMap<>();
                     tokenMap.put("id", "admin");
                     tokenMap.put("token", admin_token);
                     return new StatusAndDataFeedback(admin, tokenMap);
                 } catch (Exception e) {
                     e.printStackTrace();
-                    return new StatusAndDataFeedback(user, "exception_happen");
+                    return new StatusAndDataFeedback(admin, "exception_happen");
                 }
             }
             else {
