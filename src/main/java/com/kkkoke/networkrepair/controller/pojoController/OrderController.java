@@ -148,7 +148,7 @@ public class OrderController {
             return new StatusAndDataFeedback(null, "Incomplete_data");
         }
         // 获取工单中的数据
-        Long id = (Long) orderJson.get("id"); // 工单id
+        Long id = Long.parseLong(orderJson.get("id").toString()); // 工单id
         String username = (String) orderJson.get("username"); // 用户名
         String sender = (String) orderJson.get("sender"); // 工单发起者（用户）
         String tel = (String) orderJson.get("tel"); // 工单发起者联系方式
@@ -156,7 +156,7 @@ public class OrderController {
         String des = (String) orderJson.get("des"); // 故障描述
         String position = (String) orderJson.get("position"); // 故障位置
         String timeSubscribe = (String) orderJson.get("timeSubscribe"); // 工单预约上门时间
-        Integer progress = Integer.parseInt((String) orderJson.get("progress")); // -2：审核不通过，-1：用户取消，0：待审核，1：待处理，2：已处理
+        Integer progress = (Integer) orderJson.get("progress"); // -2：审核不通过，-1：用户取消，0：待审核，1：待处理，2：已处理
         String solver = (String) orderJson.get("solver"); // 解决工单的技术人员
         String timeStart = (String) orderJson.get("timeStart"); // 工单发起时间
         String timeDistribution = (String) orderJson.get("timeDistribution"); // 工单分配时间

@@ -23,8 +23,8 @@
     <update id="updateOrder">
         update `order`
         set sender = #{sender}, tel = #{tel}, type = #{type}, des = #{des}, position = #{position},
-            timeSubscribe = #{timeSubscribe}, solver = #{solver}, timeStart = #{timeStart},
-            timeDistribution = #{timeDistribution}, progress = #{progress}, feedback = #{feedback}, timeEnd = #{timeEnd}
+            time_subscribe = #{timeSubscribe}, solver = #{solver}, time_start = #{timeStart},
+            time_distribution = #{timeDistribution}, progress = #{progress}, feedback = #{feedback}, time_end = #{timeEnd}
         where id = #{id}
     </update>
 
