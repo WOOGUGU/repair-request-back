@@ -26,9 +26,15 @@ public class PickerTimeServiceImpl implements PickerTimeService {
     }
 
     @Override
-    // 根据id超找某个时间段
+    // 根据id查找某个时间段
     public PickerTime selectPickerTime(Integer id) {
         return pickerTimeDao.selectPickerTime(id);
+    }
+
+    @Override
+    // 根据time查找某个报修时间段
+    public PickerTime selectPickerTimeByTime(String time) {
+        return pickerTimeDao.selectPickerTimeByTime(time);
     }
 
     @Override
