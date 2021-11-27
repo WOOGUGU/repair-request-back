@@ -30,7 +30,6 @@ public class OrderController {
     @PostMapping("/addOrder")
     public StatusAndDataFeedback addOrder(@RequestBody JSONObject orderJson) {
         // 判断前端传过来的参数是否为空
-        System.out.println(orderJson.toJSONString());
         if (Objects.equals(orderJson.toJSONString(), "{}")) {
             return new StatusAndDataFeedback(null, "Incomplete_data");
         }
