@@ -30,7 +30,8 @@ public class OrderController {
     @PostMapping("/addOrder")
     public StatusAndDataFeedback addOrder(@RequestBody JSONObject orderJson) {
         // 判断前端传过来的参数是否为空
-        if (Objects.equals(orderJson.toJSONString(), null)) {
+        System.out.println(orderJson.toJSONString());
+        if (Objects.equals(orderJson.toJSONString(), "{}")) {
             return new StatusAndDataFeedback(null, "Incomplete_data");
         }
         // 获取工单中的数据
@@ -62,7 +63,7 @@ public class OrderController {
     @PostMapping("/deleteOrder")
     public StatusAndDataFeedback deleteOrder(@RequestBody JSONObject idJson) {
         // 判断前端传过来的参数是否为空
-        if (Objects.equals(idJson.toJSONString(), null)) {
+        if (Objects.equals(idJson.toJSONString(), "{}")) {
             return new StatusAndDataFeedback(null, "Incomplete_data");
         }
         // 从json字符串中获取要添加的数据
@@ -89,7 +90,7 @@ public class OrderController {
     @PostMapping("/selectOrderById")
     public StatusAndDataFeedback selectOrderById(@RequestBody JSONObject idJson) {
         // 判断前端传过来的参数是否为空
-        if (Objects.equals(idJson.toJSONString(), null)) {
+        if (Objects.equals(idJson.toJSONString(), "{}")) {
             return new StatusAndDataFeedback(null, "Incomplete_data");
         }
         // 从json字符串中获取要添加的数据
@@ -117,7 +118,7 @@ public class OrderController {
     @PostMapping("/selectAllOrder")
     public StatusAndDataFeedback selectAllOrder(@RequestBody JSONObject tokenJson) {
         // 判断前端传过来的参数是否为空
-        if (Objects.equals(tokenJson.toJSONString(), null)) {
+        if (Objects.equals(tokenJson.toJSONString(), "{}")) {
             return new StatusAndDataFeedback(null, "Incomplete_data");
         }
         // 从json字符串中获取要添加的数据
@@ -144,7 +145,7 @@ public class OrderController {
     @PostMapping("/updateOrder")
     public StatusAndDataFeedback updateOrder(@RequestBody JSONObject orderJson) {
         // 判断前端传过来的参数是否为空
-        if (Objects.equals(orderJson.toJSONString(), null)) {
+        if (Objects.equals(orderJson.toJSONString(), "{}")) {
             return new StatusAndDataFeedback(null, "Incomplete_data");
         }
         // 获取工单中的数据
@@ -186,7 +187,7 @@ public class OrderController {
     @PostMapping("/selectAllOrderOfUser")
     public StatusAndDataFeedback selectAllOrderOfUser(@RequestBody JSONObject usernameJson) {
         // 判断前端传过来的参数是否为空
-        if (Objects.equals(usernameJson.toJSONString(), null)) {
+        if (Objects.equals(usernameJson.toJSONString(), "{}")) {
             return new StatusAndDataFeedback(null, "Incomplete_data");
         }
 

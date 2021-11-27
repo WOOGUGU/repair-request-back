@@ -29,7 +29,7 @@ public class UserController {
     @PostMapping("/addUser")
     public StatusAndDataFeedback addUser(@RequestBody JSONObject userJson) {
         // 判断前端传过来的参数是否为空
-        if (Objects.equals(userJson.toJSONString(), null)) {
+        if (Objects.equals(userJson.toJSONString(), "{}")) {
             return new StatusAndDataFeedback(null, "Incomplete_data");
         }
         // 从json字符串中获取要添加的数据
@@ -63,7 +63,7 @@ public class UserController {
     @PostMapping("/deleteUser")
     public StatusAndDataFeedback deleteUser(@RequestBody JSONObject idJson) {
         // 判断前端传过来的参数是否为空
-        if (Objects.equals(idJson.toJSONString(), null)) {
+        if (Objects.equals(idJson.toJSONString(), "{}")) {
             return new StatusAndDataFeedback(null, "Incomplete_data");
         }
         // 从json字符串中获取要添加的数据
@@ -92,7 +92,7 @@ public class UserController {
     @PostMapping("/selectUserByUsername")
     public StatusAndDataFeedback selectUserByUsername(@RequestBody JSONObject usernameJson) {
         // 判断前端传过来的参数是否为空
-        if (Objects.equals(usernameJson.toJSONString(), null)) {
+        if (Objects.equals(usernameJson.toJSONString(), "{}")) {
             return new StatusAndDataFeedback(null, "Incomplete_data");
         }
         // 从json字符串中获取要添加的数据
@@ -120,7 +120,7 @@ public class UserController {
     @PostMapping("/selectUserById")
     public StatusAndDataFeedback selectUserById(@RequestBody JSONObject idJson) {
         // 判断前端传过来的参数是否为空
-        if (Objects.equals(idJson.toJSONString(), null)) {
+        if (Objects.equals(idJson.toJSONString(), "{}")) {
             return new StatusAndDataFeedback(null, "Incomplete_data");
         }
         // 从json字符串中获取要添加的数据
@@ -148,7 +148,7 @@ public class UserController {
     @PostMapping("/selectAllUser")
     public StatusAndDataFeedback selectAllUser(@RequestBody JSONObject tokenJson) {
         // 判断前端传过来的参数是否为空
-        if (Objects.equals(tokenJson.toJSONString(), null)) {
+        if (Objects.equals(tokenJson.toJSONString(), "{}")) {
             return new StatusAndDataFeedback(null, "Incomplete_data");
         }
         // 获取tokenJson中的数据
@@ -182,7 +182,7 @@ public class UserController {
     @PostMapping("/updateUser")
     public StatusAndDataFeedback updateUser(@RequestBody JSONObject userJson) {
         // 判断前端传过来的参数是否为空
-        if (Objects.equals(userJson.toJSONString(), null)) {
+        if (Objects.equals(userJson.toJSONString(), "{}")) {
             return new StatusAndDataFeedback(null, "Incomplete_data");
         }
         // 从json字符串中获取要添加的数据

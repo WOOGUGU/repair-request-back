@@ -29,7 +29,7 @@ public class AdminController {
     @PostMapping("/addAdmin")
     public StatusAndDataFeedback addAdmin(@RequestBody JSONObject adminJson) {
         // 判断前端传过来的参数是否为空
-        if (Objects.equals(adminJson.toJSONString(), null)) {
+        if (Objects.equals(adminJson.toJSONString(), "{}")) {
             return new StatusAndDataFeedback(null, "Incomplete_data");
         }
         // 从json字符串中获取要添加的数据
@@ -64,7 +64,7 @@ public class AdminController {
     @PostMapping("/deleteAdmin")
     public StatusAndDataFeedback deleteAdmin(@RequestBody JSONObject usernameJson) {
         // 判断前端传过来的参数是否为空
-        if (Objects.equals(usernameJson.toJSONString(), null)) {
+        if (Objects.equals(usernameJson.toJSONString(), "{}")) {
             return new StatusAndDataFeedback(null, "Incomplete_data");
         }
         // 从json字符串中获取要添加的数据
@@ -91,7 +91,7 @@ public class AdminController {
     @PostMapping("/selectAdminByUsername")
     public StatusAndDataFeedback selectAdminByUsername(@RequestBody JSONObject usernameJson) {
         // 判断前端传过来的参数是否为空
-        if (Objects.equals(usernameJson.toJSONString(), null)) {
+        if (Objects.equals(usernameJson.toJSONString(), "{}")) {
             return new StatusAndDataFeedback(null, "Incomplete_data");
         }
         // 从json字符串中获取要添加的数据
@@ -119,7 +119,7 @@ public class AdminController {
     @PostMapping("/selectAdminById")
     public StatusAndDataFeedback selectAdminById(@RequestBody JSONObject idJson) {
         // 判断前端传过来的参数是否为空
-        if (Objects.equals(idJson.toJSONString(), null)) {
+        if (Objects.equals(idJson.toJSONString(), "{}")) {
             return new StatusAndDataFeedback(null, "Incomplete_data");
         }
         // 从json字符串中获取要添加的数据
@@ -147,7 +147,7 @@ public class AdminController {
     @PostMapping("/selectAllAdmin")
     public StatusAndDataFeedback selectAllAdmin(@RequestBody JSONObject tokenJson) {
         // 判断前端传过来的参数是否为空
-        if (Objects.equals(tokenJson.toJSONString(), null)) {
+        if (Objects.equals(tokenJson.toJSONString(), "{}")) {
             return new StatusAndDataFeedback(null, "Incomplete_data");
         }
         // 获取tokenJson中的数据
@@ -181,7 +181,7 @@ public class AdminController {
     @PostMapping("/updateAdmin")
     public StatusAndDataFeedback updateAdmin(@RequestBody JSONObject adminJson) {
         // 判断前端传过来的参数是否为空
-        if (Objects.equals(adminJson.toJSONString(), null)) {
+        if (Objects.equals(adminJson.toJSONString(), "{}")) {
             return new StatusAndDataFeedback(null, "Incomplete_data");
         }
         // 从json字符串中获取要添加的数据

@@ -28,7 +28,7 @@ public class PickerController {
     @PostMapping("/addPickerLocation")
     public StatusAndDataFeedback addPickerLocation(@RequestBody JSONObject Json) {
         // 判断前端传过来的参数是否为空
-        if (Objects.equals(Json.toJSONString(), null)) {
+        if (Objects.equals(Json.toJSONString(), "{}")) {
             return new StatusAndDataFeedback(null, "Incomplete_data");
         }
         // 获取Json中的数据
@@ -59,7 +59,7 @@ public class PickerController {
     @PostMapping("/deletePickerLocation")
     public StatusAndDataFeedback deletePickerLocation(@RequestBody JSONObject Json) {
         // 判断前端传过来的参数是否为空
-        if (Objects.equals(Json.toJSONString(), null)) {
+        if (Objects.equals(Json.toJSONString(), "{}")) {
             return new StatusAndDataFeedback(null, "Incomplete_data");
         }
         // 获取Json中的数据
