@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -54,12 +55,10 @@ public class PickerController {
                 // 调用service层添加PickerLocation对象
                 pickerLocationService.addPickerLocation(pickerLocation);
                 return new StatusAndDataFeedback(pickerLocation, "handle_success");
-            }
-            else {
+            } else {
                 return new StatusAndDataFeedback(null, "data_exist");
             }
-        }
-        else {
+        } else {
             // token验证失败，返回错误码
             return new StatusAndDataFeedback(null, "wrong_token");
         }
@@ -80,14 +79,12 @@ public class PickerController {
             // token验证成功，查询数据库，查看要删除的用户是否存在
             if (Objects.equals(pickerLocationService.selectPickerLocation(id), null)) {
                 return new StatusAndDataFeedback(null, "data_not_exist");
-            }
-            else {
+            } else {
                 // 调用service层删除PickerLocation
                 pickerLocationService.deletePickerLocation(id);
             }
             return new StatusAndDataFeedback(null, "handle_success");
-        }
-        else {
+        } else {
             // token验证失败，返回错误码
             return new StatusAndDataFeedback(null, "wrong_token");
         }
@@ -110,12 +107,10 @@ public class PickerController {
             // 判断查询结果是否为空
             if (Objects.equals(pickerLocation, null)) {
                 return new StatusAndDataFeedback(null, "data_not_exist");
-            }
-            else {
+            } else {
                 return new StatusAndDataFeedback(pickerLocation, "handle_success");
             }
-        }
-        else {
+        } else {
             // token验证失败，返回错误码
             return new StatusAndDataFeedback(null, "wrong_token");
         }
@@ -138,12 +133,10 @@ public class PickerController {
             // 判断查询结果是否为空
             if (Objects.equals(pickerLocations, null)) {
                 return new StatusAndDataFeedback(null, "data_not_exist");
-            }
-            else {
+            } else {
                 return new StatusAndDataFeedback(pickerLocations, "handle_success");
             }
-        }
-        else {
+        } else {
             // token验证失败，返回错误码
             return new StatusAndDataFeedback(null, "wrong_token");
         }
@@ -166,12 +159,10 @@ public class PickerController {
             // 判断查询结果是否为空
             if (Objects.equals(pickerLocation, null)) {
                 return new StatusAndDataFeedback(null, "data_not_exist");
-            }
-            else {
+            } else {
                 return new StatusAndDataFeedback(pickerLocation, "handle_success");
             }
-        }
-        else {
+        } else {
             // token验证失败，返回错误码
             return new StatusAndDataFeedback(null, "wrong_token");
         }
@@ -200,16 +191,14 @@ public class PickerController {
             // 判断查询结果是否为空
             if (Objects.equals(pickerLocations, null)) {
                 return new StatusAndDataFeedback(null, "data_not_exist");
-            }
-            else {
+            } else {
                 List<NameAndPosition> res = new ArrayList<>();
                 for (String s : map.keySet()) {
                     res.add(new NameAndPosition(s, map.get(s)));
                 }
                 return new StatusAndDataFeedback(JSON.toJSON(res), "handle_success");
             }
-        }
-        else {
+        } else {
             // token验证失败，返回错误码
             return new StatusAndDataFeedback(null, "wrong_token");
         }
@@ -231,12 +220,10 @@ public class PickerController {
             // 判断查询结果是否为空
             if (Objects.equals(pickerLocations, null)) {
                 return new StatusAndDataFeedback(null, "data_not_exist");
-            }
-            else {
+            } else {
                 return new StatusAndDataFeedback(pickerLocations, "handle_success");
             }
-        }
-        else {
+        } else {
             // token验证失败，返回错误码
             return new StatusAndDataFeedback(null, "wrong_token");
         }
@@ -261,14 +248,12 @@ public class PickerController {
             // token验证成功，查找数据库中是否存在此工单
             if (Objects.equals(pickerLocationService.selectPickerLocation(id), null)) {
                 return new StatusAndDataFeedback(pickerLocation, "data_not_exist");
-            }
-            else {
+            } else {
                 // 如果此工单存在就更新数据
                 pickerLocationService.updatePickerLocation(pickerLocation);
                 return new StatusAndDataFeedback(pickerLocation, "handle_success");
             }
-        }
-        else {
+        } else {
             // token验证失败，返回错误码
             return new StatusAndDataFeedback(null, "wrong_token");
         }

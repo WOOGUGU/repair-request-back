@@ -2,7 +2,7 @@ package com.kkkoke.networkrepair.pojo;
 
 import java.util.List;
 
-public class NameAndPosition{
+public class NameAndPosition {
     String name;
     List<String> position;
 
@@ -22,7 +22,7 @@ public class NameAndPosition{
         this.position = position;
     }
 
-    public NameAndPosition(String k, List<String> v){
+    public NameAndPosition(String k, List<String> v) {
         this.name = k;
         this.position = v;
     }
