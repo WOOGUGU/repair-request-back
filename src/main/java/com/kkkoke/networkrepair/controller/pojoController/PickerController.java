@@ -1,5 +1,6 @@
 package com.kkkoke.networkrepair.controller.pojoController;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.kkkoke.networkrepair.pojo.PickerLocation;
 import com.kkkoke.networkrepair.service.PickerLocationService;
@@ -10,6 +11,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
@@ -17,12 +20,14 @@ import java.util.Objects;
 public class PickerController {
     private final PickerLocationService pickerLocationService;
     private final PickerTimeService pickerTimeService;
-    private final TokenVerify tokenVerify;
+    private final TokenVerify tokenVerifyForUser;
+    private final TokenVerify tokenVerifyForAdmin;
 
-    public PickerController(PickerLocationService pickerLocationService, PickerTimeService pickerTimeService, @Qualifier("adminTokenVerifyImpl") TokenVerify tokenVerify) {
+    public PickerController(PickerLocationService pickerLocationService, PickerTimeService pickerTimeService, @Qualifier("userTokenVerifyImpl") TokenVerify tokenVerifyForUser, @Qualifier("adminTokenVerifyImpl") TokenVerify tokenVerifyForAdmin) {
         this.pickerLocationService = pickerLocationService;
         this.pickerTimeService = pickerTimeService;
-        this.tokenVerify = tokenVerify;
+        this.tokenVerifyForUser = tokenVerifyForUser;
+        this.tokenVerifyForAdmin = tokenVerifyForAdmin;
     }
 
     // 增加报修地点
@@ -37,7 +42,7 @@ public class PickerController {
         String position = (String) Json.get("position"); // 获取网络报修位置
         String token = (String) Json.get("token"); // 获取待解析的token
         // 验证token的正确性
-        if (tokenVerify.verify(token)) {
+        if (tokenVerifyForAdmin.verify(token)) {
             // token验证成功，查看数据库中是否已经存在此报修地点
             if (Objects.equals(pickerLocationService.selectPickerLocationByArea(area), null)) {
                 // 创建添加的PickerLocation对象
@@ -67,7 +72,7 @@ public class PickerController {
         Integer id = Integer.parseInt((String) Json.get("id"));
         String token = (String) Json.get("token"); // 获取待解析的token
         // 验证token的正确性
-        if (tokenVerify.verify(token)) {
+        if (tokenVerifyForAdmin.verify(token)) {
             // token验证成功，查询数据库，查看要删除的用户是否存在
             if (Objects.equals(pickerLocationService.selectPickerLocation(id), null)) {
                 return new StatusAndDataFeedback(null, "data_not_exist");
@@ -95,7 +100,7 @@ public class PickerController {
         Integer id = Integer.parseInt((String) Json.get("id"));
         String token = (String) Json.get("token"); // 获取待解析的token
         // 验证token的正确性
-        if (tokenVerify.verify(token)) {
+        if (tokenVerifyForAdmin.verify(token)) {
             // token验证成功，根据id查找PickerLocation
             PickerLocation pickerLocation = pickerLocationService.selectPickerLocation(id);
             // 判断查询结果是否为空
@@ -123,7 +128,7 @@ public class PickerController {
         String area = (String) Json.get("area");
         String token = (String) Json.get("token"); // 获取待解析的token
         // 验证token的正确性
-        if (tokenVerify.verify(token)) {
+        if (tokenVerifyForAdmin.verify(token)) {
             // token验证成功，根据area查找PickerLocations
             List<PickerLocation> pickerLocations = pickerLocationService.selectPickerLocationByArea(area);
             // 判断查询结果是否为空
@@ -151,7 +156,7 @@ public class PickerController {
         String position = (String) Json.get("position");
         String token = (String) Json.get("token"); // 获取待解析的token
         // 验证token的正确性
-        if (tokenVerify.verify(token)) {
+        if (tokenVerifyForAdmin.verify(token)) {
             // token验证成功，根据position查找PickerLocation
             PickerLocation pickerLocation = pickerLocationService.selectPickerLocationByPosition(position);
             // 判断查询结果是否为空
@@ -168,9 +173,9 @@ public class PickerController {
         }
     }
 
-    // 查找所有报修地点
-    @PostMapping("/selectAllPickerLocation")
-    public StatusAndDataFeedback selectAllPickerLocation(@RequestBody JSONObject Json) {
+    // 为用户查找所有报修地点
+    @PostMapping("/selectAllPickerLocationForUser")
+    public StatusAndDataFeedback selectAllPickerLocationForUser(@RequestBody JSONObject Json) {
         // 判断前端传过来的参数是否为空
         if (Objects.equals(Json.toJSONString(), "{}")) {
             return new StatusAndDataFeedback(null, "Incomplete_data");
@@ -178,7 +183,42 @@ public class PickerController {
         // 获取Json中的数据
         String token = (String) Json.get("token"); // 获取待解析的token
         // 验证token的正确性
-        if (tokenVerify.verify(token)) {
+        if (tokenVerifyForUser.verify(token)) {
+            // token验证成功，查找所有PickerLocation
+            List<PickerLocation> pickerLocations = pickerLocationService.selectAllPickerLocation();
+            HashMap<String, List<String>> map = new HashMap<>();
+            for (PickerLocation pickerLocation : pickerLocations) {
+                if (!map.containsKey(pickerLocation.getArea())) {
+                    map.put(pickerLocation.getArea(), new ArrayList<>());
+                }
+                map.get(pickerLocation.getArea()).add(pickerLocation.getPosition());
+            }
+            // 判断查询结果是否为空
+            if (Objects.equals(pickerLocations, null)) {
+                return new StatusAndDataFeedback(null, "data_not_exist");
+            }
+            else {
+                System.out.println(JSON.toJSON(map));
+                return new StatusAndDataFeedback(JSON.toJSON(map), "handle_success");
+            }
+        }
+        else {
+            // token验证失败，返回错误码
+            return new StatusAndDataFeedback(null, "wrong_token");
+        }
+    }
+
+    // 为管理员查找所有报修地点
+    @PostMapping("/selectAllPickerLocationForAdmin")
+    public StatusAndDataFeedback selectAllPickerLocationForAdmin(@RequestBody JSONObject Json) {
+        // 判断前端传过来的参数是否为空
+        if (Objects.equals(Json.toJSONString(), "{}")) {
+            return new StatusAndDataFeedback(null, "Incomplete_data");
+        }
+        // 获取Json中的数据
+        String token = (String) Json.get("token"); // 获取待解析的token
+        // 验证token的正确性
+        if (tokenVerifyForAdmin.verify(token)) {
             // token验证成功，查找所有PickerLocation
             List<PickerLocation> pickerLocations = pickerLocationService.selectAllPickerLocation();
             // 判断查询结果是否为空
@@ -210,7 +250,7 @@ public class PickerController {
         // 创建修改的PickerLocation对象
         PickerLocation pickerLocation = new PickerLocation(id, area, position);
         // 验证token的正确性
-        if (tokenVerify.verify(token)) {
+        if (tokenVerifyForAdmin.verify(token)) {
             // token验证成功，查找数据库中是否存在此工单
             if (Objects.equals(pickerLocationService.selectPickerLocation(id), null)) {
                 return new StatusAndDataFeedback(pickerLocation, "data_not_exist");
