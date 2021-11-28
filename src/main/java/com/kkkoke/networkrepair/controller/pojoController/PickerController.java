@@ -2,7 +2,7 @@ package com.kkkoke.networkrepair.controller.pojoController;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.kkkoke.networkrepair.pojo.NameAndPositation;
+import com.kkkoke.networkrepair.pojo.NameAndPosition;
 import com.kkkoke.networkrepair.pojo.PickerLocation;
 import com.kkkoke.networkrepair.service.PickerLocationService;
 import com.kkkoke.networkrepair.service.PickerTimeService;
@@ -202,9 +202,9 @@ public class PickerController {
                 return new StatusAndDataFeedback(null, "data_not_exist");
             }
             else {
-                List<NameAndPositation> res = new ArrayList<>();
+                List<NameAndPosition> res = new ArrayList<>();
                 for (String s : map.keySet()) {
-                    res.add(new NameAndPositation(s, map.get(s)));
+                    res.add(new NameAndPosition(s, map.get(s)));
                 }
                 return new StatusAndDataFeedback(JSON.toJSON(res), "handle_success");
             }

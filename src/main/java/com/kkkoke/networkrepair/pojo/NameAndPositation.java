@@ -2,9 +2,9 @@ package com.kkkoke.networkrepair.pojo;
 
 import java.util.List;
 
-public class NameAndPositation{
+public class NameAndPosition{
     String name;
-    List<String> positation;
+    List<String> position;
 
     public String getName() {
         return name;
@@ -14,16 +14,16 @@ public class NameAndPositation{
         this.name = name;
     }
 
-    public List<String> getPositation() {
-        return positation;
+    public List<String> getPosition() {
+        return position;
     }
 
-    public void setPositation(List<String> positation) {
-        this.positation = positation;
+    public void setPosition(List<String> position) {
+        this.position = position;
     }
 
-    public NameAndPositation(String k, List<String> v){
+    public NameAndPosition(String k, List<String> v){
         this.name = k;
-        this.positation = v;
+        this.position = v;
     }
 }
