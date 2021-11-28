@@ -2,6 +2,7 @@ package com.kkkoke.networkrepair.controller.pojoController;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.kkkoke.networkrepair.pojo.NameAndPositation;
 import com.kkkoke.networkrepair.pojo.PickerLocation;
 import com.kkkoke.networkrepair.service.PickerLocationService;
 import com.kkkoke.networkrepair.service.PickerTimeService;
@@ -23,7 +24,10 @@ public class PickerController {
     private final TokenVerify tokenVerifyForUser;
     private final TokenVerify tokenVerifyForAdmin;
 
-    public PickerController(PickerLocationService pickerLocationService, PickerTimeService pickerTimeService, @Qualifier("userTokenVerifyImpl") TokenVerify tokenVerifyForUser, @Qualifier("adminTokenVerifyImpl") TokenVerify tokenVerifyForAdmin) {
+    public PickerController(PickerLocationService pickerLocationService,
+                            PickerTimeService pickerTimeService,
+                            @Qualifier("userTokenVerifyImpl") TokenVerify tokenVerifyForUser,
+                            @Qualifier("adminTokenVerifyImpl") TokenVerify tokenVerifyForAdmin) {
         this.pickerLocationService = pickerLocationService;
         this.pickerTimeService = pickerTimeService;
         this.tokenVerifyForUser = tokenVerifyForUser;
@@ -198,8 +202,11 @@ public class PickerController {
                 return new StatusAndDataFeedback(null, "data_not_exist");
             }
             else {
-                System.out.println(JSON.toJSON(map));
-                return new StatusAndDataFeedback(JSON.toJSON(map), "handle_success");
+                List<NameAndPositation> res = new ArrayList<>();
+                for (String s : map.keySet()) {
+                    res.add(new NameAndPositation(s, map.get(s)));
+                }
+                return new StatusAndDataFeedback(JSON.toJSON(res), "handle_success");
             }
         }
         else {
