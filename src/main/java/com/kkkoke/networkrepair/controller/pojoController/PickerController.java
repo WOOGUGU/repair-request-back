@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import java.util.List;
 import java.util.Objects;
 
 @RestController
@@ -76,6 +77,149 @@ public class PickerController {
                 pickerLocationService.deletePickerLocation(id);
             }
             return new StatusAndDataFeedback(null, "handle_success");
+        }
+        else {
+            // token验证失败，返回错误码
+            return new StatusAndDataFeedback(null, "wrong_token");
+        }
+    }
+
+    // 根据id查找某个报修地点
+    @PostMapping("/selectPickerLocation")
+    public StatusAndDataFeedback selectPickerLocation(@RequestBody JSONObject Json) {
+        // 判断前端传过来的参数是否为空
+        if (Objects.equals(Json.toJSONString(), "{}")) {
+            return new StatusAndDataFeedback(null, "Incomplete_data");
+        }
+        // 获取Json中的数据
+        Integer id = Integer.parseInt((String) Json.get("id"));
+        String token = (String) Json.get("token"); // 获取待解析的token
+        // 验证token的正确性
+        if (tokenVerify.verify(token)) {
+            // token验证成功，根据id查找PickerLocation
+            PickerLocation pickerLocation = pickerLocationService.selectPickerLocation(id);
+            // 判断查询结果是否为空
+            if (Objects.equals(pickerLocation, null)) {
+                return new StatusAndDataFeedback(null, "data_not_exist");
+            }
+            else {
+                return new StatusAndDataFeedback(pickerLocation, "handle_success");
+            }
+        }
+        else {
+            // token验证失败，返回错误码
+            return new StatusAndDataFeedback(null, "wrong_token");
+        }
+    }
+
+    // 根据area查找报修地点
+    @PostMapping("/selectPickerLocationByArea")
+    public StatusAndDataFeedback selectPickerLocationByArea(@RequestBody JSONObject Json) {
+        // 判断前端传过来的参数是否为空
+        if (Objects.equals(Json.toJSONString(), "{}")) {
+            return new StatusAndDataFeedback(null, "Incomplete_data");
+        }
+        // 获取Json中的数据
+        String area = (String) Json.get("area");
+        String token = (String) Json.get("token"); // 获取待解析的token
+        // 验证token的正确性
+        if (tokenVerify.verify(token)) {
+            // token验证成功，根据area查找PickerLocations
+            List<PickerLocation> pickerLocations = pickerLocationService.selectPickerLocationByArea(area);
+            // 判断查询结果是否为空
+            if (Objects.equals(pickerLocations, null)) {
+                return new StatusAndDataFeedback(null, "data_not_exist");
+            }
+            else {
+                return new StatusAndDataFeedback(pickerLocations, "handle_success");
+            }
+        }
+        else {
+            // token验证失败，返回错误码
+            return new StatusAndDataFeedback(null, "wrong_token");
+        }
+    }
+
+    // 根据position查找报修地点
+    @PostMapping("/selectPickerLocationByPosition")
+    public StatusAndDataFeedback selectPickerLocationByPosition(@RequestBody JSONObject Json) {
+        // 判断前端传过来的参数是否为空
+        if (Objects.equals(Json.toJSONString(), "{}")) {
+            return new StatusAndDataFeedback(null, "Incomplete_data");
+        }
+        // 获取Json中的数据
+        String position = (String) Json.get("position");
+        String token = (String) Json.get("token"); // 获取待解析的token
+        // 验证token的正确性
+        if (tokenVerify.verify(token)) {
+            // token验证成功，根据position查找PickerLocation
+            PickerLocation pickerLocation = pickerLocationService.selectPickerLocationByPosition(position);
+            // 判断查询结果是否为空
+            if (Objects.equals(pickerLocation, null)) {
+                return new StatusAndDataFeedback(null, "data_not_exist");
+            }
+            else {
+                return new StatusAndDataFeedback(pickerLocation, "handle_success");
+            }
+        }
+        else {
+            // token验证失败，返回错误码
+            return new StatusAndDataFeedback(null, "wrong_token");
+        }
+    }
+
+    // 查找所有报修地点
+    @PostMapping("/selectAllPickerLocation")
+    public StatusAndDataFeedback selectAllPickerLocation(@RequestBody JSONObject Json) {
+        // 判断前端传过来的参数是否为空
+        if (Objects.equals(Json.toJSONString(), "{}")) {
+            return new StatusAndDataFeedback(null, "Incomplete_data");
+        }
+        // 获取Json中的数据
+        String token = (String) Json.get("token"); // 获取待解析的token
+        // 验证token的正确性
+        if (tokenVerify.verify(token)) {
+            // token验证成功，查找所有PickerLocation
+            List<PickerLocation> pickerLocations = pickerLocationService.selectAllPickerLocation();
+            // 判断查询结果是否为空
+            if (Objects.equals(pickerLocations, null)) {
+                return new StatusAndDataFeedback(null, "data_not_exist");
+            }
+            else {
+                return new StatusAndDataFeedback(pickerLocations, "handle_success");
+            }
+        }
+        else {
+            // token验证失败，返回错误码
+            return new StatusAndDataFeedback(null, "wrong_token");
+        }
+    }
+
+    // 修改报修地点
+    @PostMapping("/updatePickerLocation")
+    public StatusAndDataFeedback updatePickerLocation(@RequestBody JSONObject Json) {
+        // 判断前端传过来的参数是否为空
+        if (Objects.equals(Json.toJSONString(), "{}")) {
+            return new StatusAndDataFeedback(null, "Incomplete_data");
+        }
+        // 获取Json中的数据
+        Integer id = Integer.parseInt(Json.get("id").toString()); // PickerLocation的id
+        String area = (String) Json.get("area");
+        String position = (String) Json.get("position");
+        String token = (String) Json.get("token"); // 获取待解析的token
+        // 创建修改的PickerLocation对象
+        PickerLocation pickerLocation = new PickerLocation(id, area, position);
+        // 验证token的正确性
+        if (tokenVerify.verify(token)) {
+            // token验证成功，查找数据库中是否存在此工单
+            if (Objects.equals(pickerLocationService.selectPickerLocation(id), null)) {
+                return new StatusAndDataFeedback(pickerLocation, "data_not_exist");
+            }
+            else {
+                // 如果此工单存在就更新数据
+                pickerLocationService.updatePickerLocation(pickerLocation);
+                return new StatusAndDataFeedback(pickerLocation, "handle_success");
+            }
         }
         else {
             // token验证失败，返回错误码

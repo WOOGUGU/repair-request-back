@@ -32,7 +32,7 @@ public class PickerLocationServiceImpl implements PickerLocationService {
 
     @Override
     // 根据area查找报修地点
-    public PickerLocation selectPickerLocationByArea(String area) {
+    public List<PickerLocation> selectPickerLocationByArea(String area) {
         return pickerLocationDao.selectPickerLocationByArea(area);
     }
 

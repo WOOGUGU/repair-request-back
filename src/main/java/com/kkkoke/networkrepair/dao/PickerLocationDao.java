@@ -17,7 +17,7 @@ public interface PickerLocationDao {
     PickerLocation selectPickerLocation(Integer id);
 
     // 根据area查找报修地点
-    PickerLocation selectPickerLocationByArea(String area);
+    List<PickerLocation> selectPickerLocationByArea(String area);
 
     // 根据position查找报修地点
     PickerLocation selectPickerLocationByPosition(String position);
