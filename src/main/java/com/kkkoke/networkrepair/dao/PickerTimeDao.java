@@ -1,6 +1,5 @@
 package com.kkkoke.networkrepair.dao;
 
-import com.kkkoke.networkrepair.pojo.PickerLocation;
 import com.kkkoke.networkrepair.pojo.PickerTime;
 import org.apache.ibatis.annotations.Mapper;
 
