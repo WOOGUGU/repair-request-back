@@ -391,7 +391,7 @@ public class PickerController {
     }
 
     // 为管理员查找所有时间段
-    @PostMapping("//selectAllPickerTimeForAdmin")
+    @PostMapping("/selectAllPickerTimeForAdmin")
     public StatusAndDataFeedback selectAllPickerTimeForAdmin(@RequestBody JSONObject Json) {
         // 判断前端传过来的参数是否为空
         if (Objects.equals(Json.toJSONString(), "{}")) {
