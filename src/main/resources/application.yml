@@ -44,4 +44,3 @@ logging:
     org.hibernate: error
   file:
     path: /Users/kkkoke/IdeaProjects/network-repair/log
-

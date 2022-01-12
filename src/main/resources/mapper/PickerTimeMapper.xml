@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kkkoke.networkrepair.dao.PickerTimeDao">
     <insert id="addPickerTime" parameterType="com.kkkoke.networkrepair.pojo.PickerTime">
-        insert into `time`(time)
+        insert into `time`(time_subscribe)
         values(#{time})
     </insert>
 
