@@ -29,8 +29,4 @@ public class Article {
         this.author = author;
         this.displayStatus = displayStatus;
     }
-
-
-    // 不带id的构造函数
-
 }

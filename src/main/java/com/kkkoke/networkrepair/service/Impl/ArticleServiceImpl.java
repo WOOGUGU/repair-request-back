@@ -3,9 +3,11 @@ import com.kkkoke.networkrepair.dao.ArticleDao;
 import com.kkkoke.networkrepair.pojo.Article;
 import com.kkkoke.networkrepair.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class ArticleServiceImpl implements ArticleService {
     @Autowired
     private ArticleDao articleDao;

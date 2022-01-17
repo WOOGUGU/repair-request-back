@@ -2,8 +2,11 @@ package com.kkkoke.networkrepair.dao;
 
 import com.kkkoke.networkrepair.pojo.Admin;
 import com.kkkoke.networkrepair.pojo.Article;
+import org.apache.ibatis.annotations.Mapper;
+
 import java.util.List;
 
+@Mapper
 public interface ArticleDao {
     // 添加文章
     int addArticle(Article article);

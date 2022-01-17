@@ -7,13 +7,20 @@ import com.kkkoke.networkrepair.util.token.TokenVerify;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
 import java.util.Objects;
+
+@RestController
 public class ArticleController {
     private final ArticleService articleService;
-    private final TokenVerify tokenVerify;
-    public ArticleController(ArticleService articleService, @Qualifier("articleTokenVerifyImpl") TokenVerify tokenVerify) {
+    private final TokenVerify tokenVerifyForUser;
+    private final TokenVerify tokenVerifyForAdmin;
+    public ArticleController(ArticleService articleService, @Qualifier("userTokenVerifyImpl") TokenVerify tokenVerifyForUser,
+                             @Qualifier("adminTokenVerifyImpl") TokenVerify tokenVerifyForAdmin) {
         this.articleService = articleService;
-        this.tokenVerify = tokenVerify;
+        this.tokenVerifyForUser = tokenVerifyForUser;
+        this.tokenVerifyForAdmin = tokenVerifyForAdmin;
     }
     // 添加文章
     @PostMapping("/addArticle")
@@ -27,10 +34,10 @@ public class ArticleController {
         String updateTime = (String) articleJson.get("updateTime");
         String contentPath = (String) articleJson.get("contentPath");
         String author = (String) articleJson.get("author");
-        Integer displayStatus = (Integer) articleJson.get("displayStatus");
+        Integer displayStatus = Integer.parseInt((String) articleJson.get("displayStatus"));
         String token = (String) articleJson.get("token");
         // 验证token的正确性
-        if (tokenVerify.verify(token)) {
+        if (tokenVerifyForAdmin.verify(token)) {
             // token验证成功，创建添加的article对象
             Article article = new Article(createTime,updateTime,contentPath,author,displayStatus);
             // 查看数据库中是否已经存在此文章
@@ -61,7 +68,7 @@ public class ArticleController {
         Long id = Long.parseLong((String) idJson.get("id"));
         String token = (String) idJson.get("token");
         // 验证token的正确性
-        if (tokenVerify.verify(token)) {
+        if (tokenVerifyForAdmin.verify(token)) {
             // token验证成功，查询数据库，查看要删除的文章是否存在
             if (Objects.equals(articleService.selectArticleById(id), null)) {
                 return new StatusAndDataFeedback(null, "data_not_exist");
