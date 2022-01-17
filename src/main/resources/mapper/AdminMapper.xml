@@ -2,31 +2,31 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kkkoke.networkrepair.dao.AdminDao">
     <insert id="addAdmin" parameterType="com.kkkoke.networkrepair.pojo.Admin">
-        insert into `admin`(username, password, name, status)
+        insert into test.admin(username, password, name, status)
         values(#{username}, #{password}, #{name}, #{status})
     </insert>
 
     <delete id="deleteAdmin" parameterType="long">
-        delete from `admin`
+        delete from test.admin
         where id = #{id}
     </delete>
 
     <select id="selectAdminByUsername" parameterType="string" resultType="com.kkkoke.networkrepair.pojo.Admin">
-        select * from `admin`
+        select * from test.admin
         where username = #{username}
     </select>
 
     <select id="selectAdminById" parameterType="long" resultType="com.kkkoke.networkrepair.pojo.Admin">
-        select * from `admin`
+        select * from test.admin
         where id = #{id}
     </select>
 
     <select id="selectAllAdmin" resultMap="adminMap">
-        select * from `admin`
+        select * from test.admin
     </select>
 
     <update id="updateAdmin">
-        update `admin`
+        update test.admin
         set `username` = #{username}, `password` = #{password}, `name` = #{name}, `status` = #{status}
         where id = #{id}
     </update>

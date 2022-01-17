@@ -19,12 +19,10 @@ import java.util.Objects;
 public class loginController {
     private final UserService userService;
     private final AdminService adminService;
-
     public loginController(UserService userService, AdminService adminService) {
         this.userService = userService;
         this.adminService = adminService;
     }
-
     // 处理登录请求
     @PostMapping("/handleLogin")
     public StatusAndDataFeedback handleLogin(@RequestBody JSONObject userJson) {
@@ -34,7 +32,6 @@ public class loginController {
         if (Objects.equals(userService.selectUserByUsername(username), null) && Objects.equals(adminService.selectAdminByUsername(username), null)) {
             return new StatusAndDataFeedback(null, "wrong_user");
         }
-
         User user = userService.selectUserByUsername(username);
         Admin admin = adminService.selectAdminByUsername(username);
         // 判断登录密码是否正确
