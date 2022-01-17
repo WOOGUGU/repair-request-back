@@ -2,31 +2,31 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kkkoke.networkrepair.dao.PickerTimeDao">
     <insert id="addPickerTime" parameterType="com.kkkoke.networkrepair.pojo.PickerTime">
-        insert into `time`(time)
+        insert into test.time(time_subscribe)
         values(#{time})
     </insert>
 
     <delete id="deletePickerTime" parameterType="int">
-        delete from `time`
+        delete from test.time
         where id = #{id}
     </delete>
 
     <select id="selectPickerTime" parameterType="int" resultMap="pickerTimeMap">
-        select * from `time`
+        select * from test.time
         where id = #{id}
     </select>
 
     <select id="selectPickerTimeByTime" resultMap="pickerTimeMap">
-        select * from `time`
+        select * from test.time
         where time_subscribe = #{time}
     </select>
 
     <select id="selectAllPickerTime" resultMap="pickerTimeMap">
-        select * from `time`
+        select * from test.time
     </select>
 
     <update id="updatePickerTime">
-        update `time`
+        update test.time
         set time_subscribe = #{time}
         where id = #{id}
     </update>

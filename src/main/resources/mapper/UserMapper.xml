@@ -2,31 +2,31 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kkkoke.networkrepair.dao.UserDao">
     <insert id="addUser" parameterType="com.kkkoke.networkrepair.pojo.User">
-        insert into `user`(username, password, name)
+        insert into test.user(username, password, name)
         values(#{username}, #{password}, #{name})
     </insert>
     
     <delete id="deleteUser" parameterType="long">
-        delete from `user`
+        delete from test.user
         where id = #{id}
     </delete>
 
     <select id="selectUserByUsername" parameterType="string" resultType="com.kkkoke.networkrepair.pojo.User">
-        select * from `user`
+        select * from test.user
         where username = #{username}
     </select>
 
     <select id="selectUserById" parameterType="long" resultType="com.kkkoke.networkrepair.pojo.User">
-        select * from `user`
+        select * from test.user
         where id = #{id}
     </select>
 
     <select id="selectAllUser" resultMap="userMap">
-        select * from `user`
+        select * from test.user
     </select>
 
     <update id="updateUser">
-        update `user`
+        update test.user
         set `username` = #{username}, `password` = #{password}, `name` = #{name}
         where id = #{id}
     </update>
