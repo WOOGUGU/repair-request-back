@@ -5,7 +5,8 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.kkkoke.networkrepair.util.MD5Util;
+import com.auth0.jwt.exceptions.TokenExpiredException;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -22,13 +23,11 @@ public class JwtToken {
         // 签发时间
         Date iatDate = new Date();
 
-        // 过期时间
+        // 过期时间  过期时间为7天
         Calendar nowTime = Calendar.getInstance();
-        nowTime.add(Calendar.DAY_OF_WEEK, 7);
+//        nowTime.add(Calendar.DAY_OF_WEEK, 7);  // 七天过期
+        nowTime.add(Calendar.SECOND, 7);  // 七秒过期
         Date expiresDate = nowTime.getTime();
-
-        // password MD5加密
-        String password_md5 = MD5Util.md5(password);
 
         Map<String, Object> map = new HashMap<>();
         map.put("alg", "HMAC256");
@@ -48,15 +47,26 @@ public class JwtToken {
     /*
     * 解密Token
     * */
-    public static Map<String, Claim> verifyToken(String token) throws Exception {
+    public static Map<String, Claim> verifyToken(String token) throws TokenExpiredException {
         JWTVerifier verifier = JWT.require(Algorithm.HMAC256(SECRET)).build();
-        DecodedJWT jwt = null;
-        try {
-            jwt = verifier.verify(token);
-        } catch (Exception e) {
-            throw new RuntimeException("登录凭证已过去，请重新登录");
+        DecodedJWT jwt = verifier.verify(token);
+        Date expiresDate = jwt.getExpiresAt();
+        Date now = new Date();
+        if (now.getTime() - expiresDate.getTime() < 0) {
+            throw new TokenExpiredException("token has expired");
         }
 
         return jwt.getClaims();
+    }
+
+    /*
+     * 查看Token是否过期
+     * */
+    public static boolean isExpired(String token) {
+        JWTVerifier verifier = JWT.require(Algorithm.HMAC256(SECRET)).build();
+        DecodedJWT jwt = verifier.verify(token);
+        Date expiresDate = jwt.getExpiresAt();
+        Date now = new Date();
+        return now.getTime() - expiresDate.getTime() > 0;
     }
 }

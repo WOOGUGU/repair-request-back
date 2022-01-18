@@ -21,6 +21,7 @@ public class StatusAndDataFeedback {
     public final static String ADMIN = "admin"; // 管理员身份
     public final static String EXCEPTION_HAPPEN = "exception_happen"; // 出现异常
     public final static String WRONG_TOKEN = "wrong_token"; // token错误
+    public final static String EXPIRED_TOKEN = "expired_token"; // token过期
 
     public StatusAndDataFeedback(Object data, Object status) {
         this.data = data;
