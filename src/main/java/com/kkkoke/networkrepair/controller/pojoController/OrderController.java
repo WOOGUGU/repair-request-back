@@ -161,7 +161,7 @@ public class OrderController {
         String timeStart = (String) orderJson.get("timeStart"); // 工单发起时间
         String timeDistribution = (String) orderJson.get("timeDistribution"); // 工单分配时间
         String timeEnd = (String) orderJson.get("timeEnd"); // 工单解决时间
-        String feedback = (String) orderJson.get("feedBack"); // 用户反馈
+        String feedback = (String) orderJson.get("feedback"); // 用户反馈
         Order order = new Order(id, username, sender, tel, type, des, position, timeSubscribe, progress, solver, timeStart, timeDistribution, timeEnd, feedback);
         String token = (String) orderJson.get("token"); // 待验证的token
         // 验证token的正确性
