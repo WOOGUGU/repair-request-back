@@ -3,7 +3,7 @@
 <mapper namespace="com.kkkoke.networkrepair.dao.ArticleDao">
     <insert id="addArticle" parameterType="com.kkkoke.networkrepair.pojo.Article">
         insert into test.article(create_time,update_time,content_path,author,display_status)
-        values(#{createTime}, #{updateTime}, #{contentPath}, #{author},#{displayStatus})
+        values(#{createTime},#{updateTime},#{contentPath},#{author},#{displayStatus})
     </insert>
 
     <delete id="deleteArticle" parameterType="long">

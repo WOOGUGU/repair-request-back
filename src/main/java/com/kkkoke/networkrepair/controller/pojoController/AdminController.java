@@ -185,7 +185,6 @@ public class AdminController {
             return new StatusAndDataFeedback(null, "Incomplete_data");
         }
         // 从json字符串中获取要添加的数据
-        Long id = Long.parseLong((String) adminJson.get("id"));
         String username = (String) adminJson.get("username");
         String password = (String) adminJson.get("password");
         String name = (String) adminJson.get("name");

@@ -25,8 +25,8 @@ public class JwtToken {
 
         // 过期时间  过期时间为7天
         Calendar nowTime = Calendar.getInstance();
-//        nowTime.add(Calendar.DAY_OF_WEEK, 7);  // 七天过期
-        nowTime.add(Calendar.SECOND, 7);  // 七秒过期
+        nowTime.add(Calendar.DAY_OF_WEEK, 7);  // 七天过期
+        //nowTime.add(Calendar.SECOND, 7);  // 七秒过期
         Date expiresDate = nowTime.getTime();
 
         Map<String, Object> map = new HashMap<>();
@@ -52,7 +52,7 @@ public class JwtToken {
         DecodedJWT jwt = verifier.verify(token);
         Date expiresDate = jwt.getExpiresAt();
         Date now = new Date();
-        if (now.getTime() - expiresDate.getTime() < 0) {
+        if (now.getTime() - expiresDate.getTime() > 0) {
             throw new TokenExpiredException("token has expired");
         }
 
