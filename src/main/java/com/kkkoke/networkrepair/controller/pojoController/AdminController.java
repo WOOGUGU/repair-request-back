@@ -123,7 +123,7 @@ public class AdminController {
             return new StatusAndDataFeedback(null, "Incomplete_data");
         }
         // 从json字符串中获取要添加的数据
-        Long id = Long.parseLong((String) idJson.get("id"));
+        Long id = Long.parseLong(idJson.get("id").toString()); // 工单id
         String token = (String) idJson.get("token");
         // 验证token的正确性
         if (tokenVerify.verify(token)) {
@@ -193,7 +193,7 @@ public class AdminController {
         // 验证token的正确性
         if (tokenVerify.verify(token)) {
             // token验证成功，创建要修改的admin对象
-            Admin admin = new Admin(username, password, name, status);
+            Admin admin = new Admin(id, username, password, name, status);
             // 查找数据库中是否存在此管理员
             if (Objects.equals(adminService.selectAdminById(admin.getId()), null)) {
                 return new StatusAndDataFeedback(admin, "data_not_exist");

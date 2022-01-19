@@ -2,34 +2,47 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kkkoke.networkrepair.dao.OrderDao">
     <insert id="addOrder" parameterType="com.kkkoke.networkrepair.pojo.Order">
-        insert into test.order(username, sender, tel, type, des, position, time_subscribe, time_start)
-        values(#{username}, #{sender}, #{tel}, #{type}, #{des}, #{position}, #{timeSubscribe}, #{timeStart})
+        insert into `order`(username, sender, tel, type, des, position, time_subscribe, time_start)
+        values (#{username}, #{sender}, #{tel}, #{type}, #{des}, #{position}, #{timeSubscribe}, #{timeStart})
     </insert>
 
     <delete id="deleteOrder" parameterType="long">
-        delete from test.order
+        delete
+        from `order`
         where id = #{id}
     </delete>
 
     <select id="selectOrderById" parameterType="long" resultMap="orderMap">
-        select * from test.order
+        select *
+        from `order`
         where id = #{id}
     </select>
 
     <select id="selectAllOrder" resultMap="orderMap">
-        select * from test.order
+        select *
+        from `order`
     </select>
 
     <update id="updateOrder">
-        update test.order
-        set sender = #{sender}, tel = #{tel}, type = #{type}, des = #{des}, position = #{position},
-            time_subscribe = #{timeSubscribe}, solver = #{solver}, time_start = #{timeStart},
-            time_distribution = #{timeDistribution}, progress = #{progress}, feedback = #{feedback}, time_end = #{timeEnd}
+        update `order`
+        set sender            = #{sender},
+            tel               = #{tel},
+            type              = #{type},
+            des               = #{des},
+            position          = #{position},
+            time_subscribe    = #{timeSubscribe},
+            solver            = #{solver},
+            time_start        = #{timeStart},
+            time_distribution = #{timeDistribution},
+            progress          = #{progress},
+            feedback          = #{feedback},
+            time_end          = #{timeEnd}
         where id = #{id}
     </update>
 
     <select id="selectAllOrderOfUser" resultMap="orderMap">
-        select * from test.order
+        select *
+        from `order`
         where username = #{username};
     </select>
 
