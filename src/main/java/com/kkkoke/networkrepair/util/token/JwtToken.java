@@ -52,7 +52,7 @@ public class JwtToken {
         DecodedJWT jwt = verifier.verify(token);
         Date expiresDate = jwt.getExpiresAt();
         Date now = new Date();
-        if (now.getTime() - expiresDate.getTime() < 0) {
+        if (now.getTime() - expiresDate.getTime() > 0) {
             throw new TokenExpiredException("token has expired");
         }
 
