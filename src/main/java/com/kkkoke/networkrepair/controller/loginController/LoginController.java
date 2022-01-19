@@ -16,10 +16,10 @@ import java.util.Map;
 import java.util.Objects;
 
 @RestController
-public class loginController {
+public class LoginController {
     private final UserService userService;
     private final AdminService adminService;
-    public loginController(UserService userService, AdminService adminService) {
+    public LoginController(UserService userService, AdminService adminService) {
         this.userService = userService;
         this.adminService = adminService;
     }
