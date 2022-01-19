@@ -182,6 +182,33 @@ public class ArticleController {
             return new StatusAndDataFeedback(null, "wrong_token");
         }
     }
+    // 通过创建时间查找文章
+    @PostMapping("/selectArticleByCreateTime")
+    public StatusAndDataFeedback selectArticleByCreateTime(@RequestBody JSONObject createTimeJson) {
+        // 判断前端传过来的参数是否为空
+        if (Objects.equals(createTimeJson.toJSONString(), "{}")) {
+            return new StatusAndDataFeedback(null, "Incomplete_data");
+        }
+        // 从json字符串中获取要添加的数据
+        String createTime = (String) createTimeJson.get("createTime"); //文章创建时间
+        String token = (String) createTimeJson.get("token");
+        // 验证token的正确性
+        if (tokenVerifyForAdmin.verify(token)) {
+            // token验证成功，根据传入的id查询对应的文章
+            Article article=articleService.selectArticleByCreateTime(createTime);
+            // 判断查询结果是否为空
+            if (Objects.equals(article, null)) {
 
+                return new StatusAndDataFeedback(null, "data_not_exist");
+            }
+            else {
+                return new StatusAndDataFeedback(article, "handle_success");
+            }
+        }
+        else {
+            // token验证失败，返回错误码
+            return new StatusAndDataFeedback(null, "wrong_token");
+        }
+    }
 }
 
