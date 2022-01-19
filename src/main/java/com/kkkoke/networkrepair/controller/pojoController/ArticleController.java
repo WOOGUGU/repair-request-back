@@ -65,7 +65,7 @@ public class ArticleController {
             return new StatusAndDataFeedback(null, "Incomplete_data");
         }
         // 从json字符串中获取要添加的数据
-        Long id = Long.parseLong((String) idJson.get("id"));
+        Long id = Long.parseLong(idJson.get("id").toString()); // 工单id
         String token = (String) idJson.get("token");
         // 验证token的正确性
         if (tokenVerifyForAdmin.verify(token)) {
