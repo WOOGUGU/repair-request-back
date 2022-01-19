@@ -11,9 +11,13 @@ spring:
       enabled: true
   datasource:
     username: root
-    password: 123456
+    #    password: 'Zk123456.'
+    password: 'MySQL8.0'
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/test?serverTimezone=UTC&characterEncoding=UTF-8
+    url: jdbc:mysql://localhost:3306/networkrepair?serverTimezone=UTC&characterEncoding=UTF-8
+    #    url: jdbc:mysql://lty:3306/networkrepair?serverTimezone=UTC&characterEncoding=UTF-8
+    #    url: jdbc:mysql://139.196.183.218:3306/networkrepair?serverTimezone=UTC&characterEncoding=UTF-8
+    #    url: jdbc:mysql://kkkoke:3306/networkrepair?serverTimezone=UTC&characterEncoding=UTF-8
     hikari:
       minimum-idle: 8
       maximum-pool-size: 20
