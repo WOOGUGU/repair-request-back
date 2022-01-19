@@ -2,39 +2,49 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kkkoke.networkrepair.dao.ArticleDao">
     <insert id="addArticle" parameterType="com.kkkoke.networkrepair.pojo.Article">
-        insert into test.article(create_time,update_time,content_path,author,display_status)
-        values(#{createTime}, #{updateTime}, #{contentPath}, #{author},#{displayStatus})
+        insert into article(create_time, update_time, content_path, author, display_status)
+        values (#{createTime}, #{updateTime}, #{contentPath}, #{author}, #{displayStatus})
     </insert>
 
     <delete id="deleteArticle" parameterType="long">
-        delete from test.article
+        delete
+        from article
         where id = #{id}
     </delete>
     <update id="updateArticle">
-        update test.article
-        set `create_time` = #{createTime}, `update_time` = #{updateTime}, `content_path` = #{contentPath}, `author` = #{author},display_status=#{displayStatus}
+        update article
+        set `create_time`  = #{createTime},
+            `update_time`  = #{updateTime},
+            `content_path` = #{contentPath},
+            `author`       = #{author},
+            display_status=#{displayStatus}
         where id = #{id}
     </update>
     <select id="selectAllArticle" resultMap="articleMap">
-        select * from test.article
+        select *
+        from article
     </select>
     <select id="selectArticleById" parameterType="long" resultType="com.kkkoke.networkrepair.pojo.Article">
-        select * from test.article
+        select *
+        from article
         where id = #{id}
     </select>
 
     <select id="selectArticleByCreateTime" parameterType="String" resultType="com.kkkoke.networkrepair.pojo.Article">
-        select * from test.article
+        select *
+        from article
         where create_time = #{createTime}
     </select>
 
     <select id="selectArticleByUpdateTime" parameterType="String" resultType="com.kkkoke.networkrepair.pojo.Article">
-        select * from test.article
+        select *
+        from article
         where update_time = #{updateTime}
     </select>
 
     <select id="selectArticleByAuthor" parameterType="String" resultType="com.kkkoke.networkrepair.pojo.Article">
-        select * from test.article
+        select *
+        from article
         where author = #{author}
     </select>
 

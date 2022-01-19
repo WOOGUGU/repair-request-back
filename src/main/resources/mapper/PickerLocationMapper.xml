@@ -2,37 +2,43 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kkkoke.networkrepair.dao.PickerLocationDao">
     <insert id="addPickerLocation" parameterType="com.kkkoke.networkrepair.pojo.PickerLocation">
-        insert into test.location(area, position)
-        values(#{area}, #{position})
+        insert into location(area, position)
+        values (#{area}, #{position})
     </insert>
 
     <delete id="deletePickerLocation" parameterType="int">
-        delete from test.location
+        delete
+        from location
         where id = #{id}
     </delete>
 
     <select id="selectPickerLocation" parameterType="int" resultMap="pickerLocationMap">
-        select * from test.location
+        select *
+        from location
         where id = #{id}
     </select>
 
     <select id="selectPickerLocationByArea" resultMap="pickerLocationMap">
-        select * from test.location
+        select *
+        from location
         where area = #{area}
     </select>
 
     <select id="selectPickerLocationByPosition" resultMap="pickerLocationMap">
-        select * from test.location
+        select *
+        from location
         where position = #{position}
     </select>
 
     <select id="selectAllPickerLocation" resultMap="pickerLocationMap">
-        select * from test.location
+        select *
+        from location
     </select>
 
     <update id="updatePickerLocation">
-        update test.location
-        set area = #{area}, position = #{position}
+        update location
+        set area     = #{area},
+            position = #{position}
         where id = #{id}
     </update>
 
