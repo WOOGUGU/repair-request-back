@@ -1,11 +1,8 @@
 package com.kkkoke.networkrepair.controller.pojoController;
 import com.alibaba.fastjson.JSONObject;
-import com.auth0.jwt.interfaces.Claim;
-import com.kkkoke.networkrepair.pojo.Admin;
 import com.kkkoke.networkrepair.pojo.Article;
 import com.kkkoke.networkrepair.service.ArticleService;
 import com.kkkoke.networkrepair.statusAndDataResult.StatusAndDataFeedback;
-import com.kkkoke.networkrepair.util.token.JwtToken;
 import com.kkkoke.networkrepair.util.token.TokenVerify;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 @RestController
