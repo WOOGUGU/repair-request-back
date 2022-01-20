@@ -22,7 +22,9 @@
     </select>
 
     <select id="selectAllPickerTime" resultMap="pickerTimeMap">
-        select * from `time`
+        select *
+        from `time`
+        order by `time_subscribe`
     </select>
 
     <update id="updatePickerTime">

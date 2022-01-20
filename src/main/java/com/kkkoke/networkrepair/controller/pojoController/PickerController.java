@@ -382,7 +382,7 @@ public class PickerController {
             if (Objects.equals(pickerTimes, null)) {
                 return new StatusAndDataFeedback(null, "data_not_exist");
             } else {
-                return new StatusAndDataFeedback(pickerTimes.stream().sorted(), "handle_success");
+                return new StatusAndDataFeedback(pickerTimes, "handle_success");
             }
         } else {
             // token验证失败，返回错误码
@@ -407,7 +407,7 @@ public class PickerController {
             if (Objects.equals(pickerTimes, null)) {
                 return new StatusAndDataFeedback(null, "data_not_exist");
             } else {
-                return new StatusAndDataFeedback(pickerTimes.stream().sorted(), "handle_success");
+                return new StatusAndDataFeedback(pickerTimes, "handle_success");
             }
         } else {
             // token验证失败，返回错误码
