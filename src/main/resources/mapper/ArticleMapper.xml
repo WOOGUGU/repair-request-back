@@ -24,7 +24,7 @@
         select *
         from article
     </select>
-    <select id="selectArticleById" parameterType="long" resultType="com.kkkoke.networkrepair.pojo.Article">
+    <select id="selectArticleById" parameterType="long" resultMap="articleMap">
         select *
         from article
         where id = #{id}
