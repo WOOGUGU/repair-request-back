@@ -194,7 +194,7 @@ public class AdminController {
         // 验证token的正确性
         if (tokenVerify.verify(token)) {
             // token验证成功，创建要修改的admin对象
-            Admin admin = new Admin(username, password, name, status);
+            Admin admin = new Admin(id, username, password, name, status);
             // 查找数据库中是否存在此管理员
             if (Objects.equals(adminService.selectAdminById(admin.getId()), null)) {
                 return new StatusAndDataFeedback(admin, "data_not_exist");
