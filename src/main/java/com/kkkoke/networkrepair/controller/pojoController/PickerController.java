@@ -7,7 +7,7 @@ import com.kkkoke.networkrepair.pojo.PickerLocation;
 import com.kkkoke.networkrepair.pojo.PickerTime;
 import com.kkkoke.networkrepair.service.PickerLocationService;
 import com.kkkoke.networkrepair.service.PickerTimeService;
-import com.kkkoke.networkrepair.statusAndDataResult.StatusAndDataFeedback;
+import com.kkkoke.networkrepair.result.ApiResult;
 import com.kkkoke.networkrepair.util.token.TokenVerify;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,10 +37,10 @@ public class PickerController {
 
     // 增加报修地点
     @PostMapping("/addPickerLocation")
-    public StatusAndDataFeedback addPickerLocation(@RequestBody JSONObject Json) {
+    public ApiResult addPickerLocation(@RequestBody JSONObject Json) {
         // 判断前端传过来的参数是否为空
         if (Objects.equals(Json.toJSONString(), "{}")) {
-            return new StatusAndDataFeedback(null, "Incomplete_data");
+            return new ApiResult(null, "Incomplete_data");
         }
         // 获取Json中的数据
         String area = (String) Json.get("area"); // 获取网络报修区域
@@ -54,22 +54,22 @@ public class PickerController {
                 PickerLocation pickerLocation = new PickerLocation(area, position);
                 // 调用service层添加PickerLocation对象
                 pickerLocationService.addPickerLocation(pickerLocation);
-                return new StatusAndDataFeedback(pickerLocation, "handle_success");
+                return new ApiResult(pickerLocation, "handle_success");
             } else {
-                return new StatusAndDataFeedback(null, "data_exist");
+                return new ApiResult(null, "data_exist");
             }
         } else {
             // token验证失败，返回错误码
-            return new StatusAndDataFeedback(null, "wrong_token");
+            return new ApiResult(null, "wrong_token");
         }
     }
 
     // 删除报修地点
     @PostMapping("/deletePickerLocation")
-    public StatusAndDataFeedback deletePickerLocation(@RequestBody JSONObject Json) {
+    public ApiResult deletePickerLocation(@RequestBody JSONObject Json) {
         // 判断前端传过来的参数是否为空
         if (Objects.equals(Json.toJSONString(), "{}")) {
-            return new StatusAndDataFeedback(null, "Incomplete_data");
+            return new ApiResult(null, "Incomplete_data");
         }
         // 获取Json中的数据
         Integer id = Integer.parseInt((String) Json.get("id"));
@@ -78,24 +78,24 @@ public class PickerController {
         if (tokenVerifyForAdmin.verify(token)) {
             // token验证成功，查询数据库，查看要删除的PickerLocation是否存在
             if (Objects.equals(pickerLocationService.selectPickerLocation(id), null)) {
-                return new StatusAndDataFeedback(null, "data_not_exist");
+                return new ApiResult(null, "data_not_exist");
             } else {
                 // 调用service层删除PickerLocation
                 pickerLocationService.deletePickerLocation(id);
             }
-            return new StatusAndDataFeedback(null, "handle_success");
+            return new ApiResult(null, "handle_success");
         } else {
             // token验证失败，返回错误码
-            return new StatusAndDataFeedback(null, "wrong_token");
+            return new ApiResult(null, "wrong_token");
         }
     }
 
     // 根据id查找某个报修地点
     @PostMapping("/selectPickerLocation")
-    public StatusAndDataFeedback selectPickerLocation(@RequestBody JSONObject Json) {
+    public ApiResult selectPickerLocation(@RequestBody JSONObject Json) {
         // 判断前端传过来的参数是否为空
         if (Objects.equals(Json.toJSONString(), "{}")) {
-            return new StatusAndDataFeedback(null, "Incomplete_data");
+            return new ApiResult(null, "Incomplete_data");
         }
         // 获取Json中的数据
         Integer id = Integer.parseInt((String) Json.get("id"));
@@ -106,22 +106,22 @@ public class PickerController {
             PickerLocation pickerLocation = pickerLocationService.selectPickerLocation(id);
             // 判断查询结果是否为空
             if (Objects.equals(pickerLocation, null)) {
-                return new StatusAndDataFeedback(null, "data_not_exist");
+                return new ApiResult(null, "data_not_exist");
             } else {
-                return new StatusAndDataFeedback(pickerLocation, "handle_success");
+                return new ApiResult(pickerLocation, "handle_success");
             }
         } else {
             // token验证失败，返回错误码
-            return new StatusAndDataFeedback(null, "wrong_token");
+            return new ApiResult(null, "wrong_token");
         }
     }
 
     // 根据area查找报修地点
     @PostMapping("/selectPickerLocationByArea")
-    public StatusAndDataFeedback selectPickerLocationByArea(@RequestBody JSONObject Json) {
+    public ApiResult selectPickerLocationByArea(@RequestBody JSONObject Json) {
         // 判断前端传过来的参数是否为空
         if (Objects.equals(Json.toJSONString(), "{}")) {
-            return new StatusAndDataFeedback(null, "Incomplete_data");
+            return new ApiResult(null, "Incomplete_data");
         }
         // 获取Json中的数据
         String area = (String) Json.get("area");
@@ -132,22 +132,22 @@ public class PickerController {
             List<PickerLocation> pickerLocations = pickerLocationService.selectPickerLocationByArea(area);
             // 判断查询结果是否为空
             if (Objects.equals(pickerLocations, null)) {
-                return new StatusAndDataFeedback(null, "data_not_exist");
+                return new ApiResult(null, "data_not_exist");
             } else {
-                return new StatusAndDataFeedback(pickerLocations, "handle_success");
+                return new ApiResult(pickerLocations, "handle_success");
             }
         } else {
             // token验证失败，返回错误码
-            return new StatusAndDataFeedback(null, "wrong_token");
+            return new ApiResult(null, "wrong_token");
         }
     }
 
     // 根据position查找报修地点
     @PostMapping("/selectPickerLocationByPosition")
-    public StatusAndDataFeedback selectPickerLocationByPosition(@RequestBody JSONObject Json) {
+    public ApiResult selectPickerLocationByPosition(@RequestBody JSONObject Json) {
         // 判断前端传过来的参数是否为空
         if (Objects.equals(Json.toJSONString(), "{}")) {
-            return new StatusAndDataFeedback(null, "Incomplete_data");
+            return new ApiResult(null, "Incomplete_data");
         }
         // 获取Json中的数据
         String position = (String) Json.get("position");
@@ -158,22 +158,22 @@ public class PickerController {
             PickerLocation pickerLocation = pickerLocationService.selectPickerLocationByPosition(position);
             // 判断查询结果是否为空
             if (Objects.equals(pickerLocation, null)) {
-                return new StatusAndDataFeedback(null, "data_not_exist");
+                return new ApiResult(null, "data_not_exist");
             } else {
-                return new StatusAndDataFeedback(pickerLocation, "handle_success");
+                return new ApiResult(pickerLocation, "handle_success");
             }
         } else {
             // token验证失败，返回错误码
-            return new StatusAndDataFeedback(null, "wrong_token");
+            return new ApiResult(null, "wrong_token");
         }
     }
 
     // 为用户查找所有报修地点
     @PostMapping("/selectAllPickerLocationForUser")
-    public StatusAndDataFeedback selectAllPickerLocationForUser(@RequestBody JSONObject Json) {
+    public ApiResult selectAllPickerLocationForUser(@RequestBody JSONObject Json) {
         // 判断前端传过来的参数是否为空
         if (Objects.equals(Json.toJSONString(), "{}")) {
-            return new StatusAndDataFeedback(null, "Incomplete_data");
+            return new ApiResult(null, "Incomplete_data");
         }
         // 获取Json中的数据
         String token = (String) Json.get("token"); // 获取待解析的token
@@ -190,26 +190,26 @@ public class PickerController {
             }
             // 判断查询结果是否为空
             if (Objects.equals(pickerLocations, null)) {
-                return new StatusAndDataFeedback(null, "data_not_exist");
+                return new ApiResult(null, "data_not_exist");
             } else {
                 List<NameAndPosition> res = new ArrayList<>();
                 for (String s : map.keySet()) {
                     res.add(new NameAndPosition(s, map.get(s)));
                 }
-                return new StatusAndDataFeedback(JSON.toJSON(res), "handle_success");
+                return new ApiResult(JSON.toJSON(res), "handle_success");
             }
         } else {
             // token验证失败，返回错误码
-            return new StatusAndDataFeedback(null, "wrong_token");
+            return new ApiResult(null, "wrong_token");
         }
     }
 
     // 为管理员查找所有报修地点
     @PostMapping("/selectAllPickerLocationForAdmin")
-    public StatusAndDataFeedback selectAllPickerLocationForAdmin(@RequestBody JSONObject Json) {
+    public ApiResult selectAllPickerLocationForAdmin(@RequestBody JSONObject Json) {
         // 判断前端传过来的参数是否为空
         if (Objects.equals(Json.toJSONString(), "{}")) {
-            return new StatusAndDataFeedback(null, "Incomplete_data");
+            return new ApiResult(null, "Incomplete_data");
         }
         // 获取Json中的数据
         String token = (String) Json.get("token"); // 获取待解析的token
@@ -219,22 +219,22 @@ public class PickerController {
             List<PickerLocation> pickerLocations = pickerLocationService.selectAllPickerLocation();
             // 判断查询结果是否为空
             if (Objects.equals(pickerLocations, null)) {
-                return new StatusAndDataFeedback(null, "data_not_exist");
+                return new ApiResult(null, "data_not_exist");
             } else {
-                return new StatusAndDataFeedback(pickerLocations, "handle_success");
+                return new ApiResult(pickerLocations, "handle_success");
             }
         } else {
             // token验证失败，返回错误码
-            return new StatusAndDataFeedback(null, "wrong_token");
+            return new ApiResult(null, "wrong_token");
         }
     }
 
     // 修改报修地点
     @PostMapping("/updatePickerLocation")
-    public StatusAndDataFeedback updatePickerLocation(@RequestBody JSONObject Json) {
+    public ApiResult updatePickerLocation(@RequestBody JSONObject Json) {
         // 判断前端传过来的参数是否为空
         if (Objects.equals(Json.toJSONString(), "{}")) {
-            return new StatusAndDataFeedback(null, "Incomplete_data");
+            return new ApiResult(null, "Incomplete_data");
         }
         // 获取Json中的数据
         Integer id = Integer.parseInt(Json.get("id").toString()); // PickerLocation的id
@@ -247,24 +247,24 @@ public class PickerController {
         if (tokenVerifyForAdmin.verify(token)) {
             // token验证成功，查找数据库中是否存在此工单
             if (Objects.equals(pickerLocationService.selectPickerLocation(id), null)) {
-                return new StatusAndDataFeedback(pickerLocation, "data_not_exist");
+                return new ApiResult(pickerLocation, "data_not_exist");
             } else {
                 // 如果此工单存在就更新数据
                 pickerLocationService.updatePickerLocation(pickerLocation);
-                return new StatusAndDataFeedback(pickerLocation, "handle_success");
+                return new ApiResult(pickerLocation, "handle_success");
             }
         } else {
             // token验证失败，返回错误码
-            return new StatusAndDataFeedback(null, "wrong_token");
+            return new ApiResult(null, "wrong_token");
         }
     }
 
     // 增加报修时间段
     @PostMapping("/addPickerTime")
-    public StatusAndDataFeedback addPickerTime(@RequestBody JSONObject Json) {
+    public ApiResult addPickerTime(@RequestBody JSONObject Json) {
         // 判断前端传过来的参数是否为空
         if (Objects.equals(Json.toJSONString(), "{}")) {
-            return new StatusAndDataFeedback(null, "Incomplete_data");
+            return new ApiResult(null, "Incomplete_data");
         }
         // 获取Json中的数据
         String time = (String) Json.get("time"); // 获取网络报修空余的时间段
@@ -277,22 +277,22 @@ public class PickerController {
                 PickerTime pickerTime = new PickerTime(time);
                 // 调用service层添加PickerTime对象
                 pickerTimeService.addPickerTime(pickerTime);
-                return new StatusAndDataFeedback(pickerTime, "handle_success");
+                return new ApiResult(pickerTime, "handle_success");
             } else {
-                return new StatusAndDataFeedback(null, "data_exist");
+                return new ApiResult(null, "data_exist");
             }
         } else {
             // token验证失败，返回错误码
-            return new StatusAndDataFeedback(null, "wrong_token");
+            return new ApiResult(null, "wrong_token");
         }
     }
 
     // 删除报修时间段
     @PostMapping("/deletePickerTime")
-    public StatusAndDataFeedback deletePickerTime(@RequestBody JSONObject Json) {
+    public ApiResult deletePickerTime(@RequestBody JSONObject Json) {
         // 判断前端传过来的参数是否为空
         if (Objects.equals(Json.toJSONString(), "{}")) {
-            return new StatusAndDataFeedback(null, "Incomplete_data");
+            return new ApiResult(null, "Incomplete_data");
         }
         // 获取Json中的数据
         Integer id = Integer.parseInt((String) Json.get("id"));
@@ -301,24 +301,24 @@ public class PickerController {
         if (tokenVerifyForAdmin.verify(token)) {
             // token验证成功，查询数据库，查看要删除的PickerTime是否存在
             if (Objects.equals(pickerTimeService.selectPickerTime(id), null)) {
-                return new StatusAndDataFeedback(null, "data_not_exist");
+                return new ApiResult(null, "data_not_exist");
             } else {
                 // 调用service层删除PickerTime
                 pickerTimeService.deletePickerTime(id);
             }
-            return new StatusAndDataFeedback(null, "handle_success");
+            return new ApiResult(null, "handle_success");
         } else {
             // token验证失败，返回错误码
-            return new StatusAndDataFeedback(null, "wrong_token");
+            return new ApiResult(null, "wrong_token");
         }
     }
 
     // 根据id超找某个时间段
     @PostMapping("/selectPickerTime")
-    public StatusAndDataFeedback selectPickerTime(@RequestBody JSONObject Json) {
+    public ApiResult selectPickerTime(@RequestBody JSONObject Json) {
         // 判断前端传过来的参数是否为空
         if (Objects.equals(Json.toJSONString(), "{}")) {
-            return new StatusAndDataFeedback(null, "Incomplete_data");
+            return new ApiResult(null, "Incomplete_data");
         }
         // 获取Json中的数据
         Integer id = Integer.parseInt((String) Json.get("id"));
@@ -329,22 +329,22 @@ public class PickerController {
             PickerTime pickerTime = pickerTimeService.selectPickerTime(id);
             // 判断查询结果是否为空
             if (Objects.equals(pickerTime, null)) {
-                return new StatusAndDataFeedback(null, "data_not_exist");
+                return new ApiResult(null, "data_not_exist");
             } else {
-                return new StatusAndDataFeedback(pickerTime, "handle_success");
+                return new ApiResult(pickerTime, "handle_success");
             }
         } else {
             // token验证失败，返回错误码
-            return new StatusAndDataFeedback(null, "wrong_token");
+            return new ApiResult(null, "wrong_token");
         }
     }
 
     // 根据time查找某个报修时间段
     @PostMapping("/selectPickerTimeByTime")
-    public StatusAndDataFeedback selectPickerTimeByTime(@RequestBody JSONObject Json) {
+    public ApiResult selectPickerTimeByTime(@RequestBody JSONObject Json) {
         // 判断前端传过来的参数是否为空
         if (Objects.equals(Json.toJSONString(), "{}")) {
-            return new StatusAndDataFeedback(null, "Incomplete_data");
+            return new ApiResult(null, "Incomplete_data");
         }
         // 获取Json中的数据
         String time = (String) Json.get("time");
@@ -355,22 +355,22 @@ public class PickerController {
             PickerTime pickerTime = pickerTimeService.selectPickerTimeByTime(time);
             // 判断查询结果是否为空
             if (Objects.equals(pickerTime, null)) {
-                return new StatusAndDataFeedback(null, "data_not_exist");
+                return new ApiResult(null, "data_not_exist");
             } else {
-                return new StatusAndDataFeedback(pickerTime, "handle_success");
+                return new ApiResult(pickerTime, "handle_success");
             }
         } else {
             // token验证失败，返回错误码
-            return new StatusAndDataFeedback(null, "wrong_token");
+            return new ApiResult(null, "wrong_token");
         }
     }
 
     // 为用户查找所有时间段
     @PostMapping("/selectAllPickerTimeForUser")
-    public StatusAndDataFeedback selectAllPickerTimeForUser(@RequestBody JSONObject Json) {
+    public ApiResult selectAllPickerTimeForUser(@RequestBody JSONObject Json) {
         // 判断前端传过来的参数是否为空
         if (Objects.equals(Json.toJSONString(), "{}")) {
-            return new StatusAndDataFeedback(null, "Incomplete_data");
+            return new ApiResult(null, "Incomplete_data");
         }
         // 获取Json中的数据
         String token = (String) Json.get("token"); // 获取待解析的token
@@ -380,22 +380,22 @@ public class PickerController {
             List<PickerTime> pickerTimes = pickerTimeService.selectAllPickerTime();
             // 判断查询结果是否为空
             if (Objects.equals(pickerTimes, null)) {
-                return new StatusAndDataFeedback(null, "data_not_exist");
+                return new ApiResult(null, "data_not_exist");
             } else {
-                return new StatusAndDataFeedback(pickerTimes, "handle_success");
+                return new ApiResult(pickerTimes, "handle_success");
             }
         } else {
             // token验证失败，返回错误码
-            return new StatusAndDataFeedback(null, "wrong_token");
+            return new ApiResult(null, "wrong_token");
         }
     }
 
     // 为管理员查找所有时间段
     @PostMapping("/selectAllPickerTimeForAdmin")
-    public StatusAndDataFeedback selectAllPickerTimeForAdmin(@RequestBody JSONObject Json) {
+    public ApiResult selectAllPickerTimeForAdmin(@RequestBody JSONObject Json) {
         // 判断前端传过来的参数是否为空
         if (Objects.equals(Json.toJSONString(), "{}")) {
-            return new StatusAndDataFeedback(null, "Incomplete_data");
+            return new ApiResult(null, "Incomplete_data");
         }
         // 获取Json中的数据
         String token = (String) Json.get("token"); // 获取待解析的token
@@ -405,22 +405,22 @@ public class PickerController {
             List<PickerTime> pickerTimes = pickerTimeService.selectAllPickerTime();
             // 判断查询结果是否为空
             if (Objects.equals(pickerTimes, null)) {
-                return new StatusAndDataFeedback(null, "data_not_exist");
+                return new ApiResult(null, "data_not_exist");
             } else {
-                return new StatusAndDataFeedback(pickerTimes, "handle_success");
+                return new ApiResult(pickerTimes, "handle_success");
             }
         } else {
             // token验证失败，返回错误码
-            return new StatusAndDataFeedback(null, "wrong_token");
+            return new ApiResult(null, "wrong_token");
         }
     }
 
     // 修改报修时间段
     @PostMapping("/updatePickerTime")
-    public StatusAndDataFeedback updatePickerTime(@RequestBody JSONObject Json) {
+    public ApiResult updatePickerTime(@RequestBody JSONObject Json) {
         // 判断前端传过来的参数是否为空
         if (Objects.equals(Json.toJSONString(), "{}")) {
-            return new StatusAndDataFeedback(null, "Incomplete_data");
+            return new ApiResult(null, "Incomplete_data");
         }
         // 获取Json中的数据
         Integer id = Integer.parseInt(Json.get("id").toString()); // PickerLocation的id
@@ -432,15 +432,15 @@ public class PickerController {
         if (tokenVerifyForAdmin.verify(token)) {
             // token验证成功，查找数据库中是否存在此工单
             if (Objects.equals(pickerTimeService.selectPickerTime(id), null)) {
-                return new StatusAndDataFeedback(pickerTime, "data_not_exist");
+                return new ApiResult(pickerTime, "data_not_exist");
             } else {
                 // 如果此工单存在就更新数据
                 pickerTimeService.updatePickerTime(pickerTime);
-                return new StatusAndDataFeedback(pickerTime, "handle_success");
+                return new ApiResult(pickerTime, "handle_success");
             }
         } else {
             // token验证失败，返回错误码
-            return new StatusAndDataFeedback(null, "wrong_token");
+            return new ApiResult(null, "wrong_token");
         }
     }
 }

@@ -15,7 +15,7 @@ import javax.persistence.Id;
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id; // 工单id
+    private Integer id; // 工单id
     private String username; // 用户名
     private String sender; // 工单发起者（用户）
     private String tel; // 工单发起者联系方式

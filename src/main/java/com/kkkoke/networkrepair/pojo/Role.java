@@ -1,0 +1,16 @@
+package com.kkkoke.networkrepair.pojo;
+
+import lombok.Data;
+
+/**
+ * 用户身份
+ * 1.普通用户
+ * 2.管理员
+ * 3.维修员
+ */
+@Data
+public class Role {
+    private Integer id; // 权限Id
+    private String name; // 权限名称 内部使用
+    private String nameZh; // 权限名称（中文） 用以展示
+}

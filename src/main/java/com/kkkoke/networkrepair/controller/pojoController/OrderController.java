@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.auth0.jwt.interfaces.Claim;
 import com.kkkoke.networkrepair.pojo.Order;
 import com.kkkoke.networkrepair.service.OrderService;
-import com.kkkoke.networkrepair.statusAndDataResult.StatusAndDataFeedback;
+import com.kkkoke.networkrepair.result.ApiResult;
 import com.kkkoke.networkrepair.util.token.JwtToken;
 import com.kkkoke.networkrepair.util.token.TokenVerify;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -28,10 +28,10 @@ public class OrderController {
 
     // 增加报修工单
     @PostMapping("/addOrder")
-    public StatusAndDataFeedback addOrder(@RequestBody JSONObject orderJson) {
+    public ApiResult addOrder(@RequestBody JSONObject orderJson) {
         // 判断前端传过来的参数是否为空
         if (Objects.equals(orderJson.toJSONString(), "{}")) {
-            return new StatusAndDataFeedback(null, "Incomplete_data");
+            return new ApiResult(null, "Incomplete_data");
         }
         // 获取工单中的数据
         String username = (String) orderJson.get("username"); // 用户名
@@ -50,20 +50,20 @@ public class OrderController {
             // 调用service层添加工单
             orderService.addOrder(order);
             // 返回给前端添加的管理员数据及处理的状态值
-            return new StatusAndDataFeedback(order, "handle_success");
+            return new ApiResult(order, "handle_success");
         }
         else {
             // token验证失败，返回错误码
-            return new StatusAndDataFeedback(null, "wrong_token");
+            return new ApiResult(null, "wrong_token");
         }
     }
 
     // 通过id删除报修工单
     @PostMapping("/deleteOrder")
-    public StatusAndDataFeedback deleteOrder(@RequestBody JSONObject idJson) {
+    public ApiResult deleteOrder(@RequestBody JSONObject idJson) {
         // 判断前端传过来的参数是否为空
         if (Objects.equals(idJson.toJSONString(), "{}")) {
-            return new StatusAndDataFeedback(null, "Incomplete_data");
+            return new ApiResult(null, "Incomplete_data");
         }
         // 从json字符串中获取要添加的数据
         Long id = Long.parseLong(idJson.get("id").toString()); // 工单id
@@ -72,25 +72,25 @@ public class OrderController {
         if (tokenVerify.verify(token)) {
             // token验证成功，查询数据库，查看要删除的工单是否存在
             if (Objects.equals(orderService.selectOrderById(id), null)) {
-                return new StatusAndDataFeedback(null, "data_not_exist");
+                return new ApiResult(null, "data_not_exist");
             }
             else {
                 orderService.deleteOrder(id);
-                return new StatusAndDataFeedback(null, "handle_success");
+                return new ApiResult(null, "handle_success");
             }
         }
         else {
             // token验证失败，返回错误码
-            return new StatusAndDataFeedback(null, "wrong_token");
+            return new ApiResult(null, "wrong_token");
         }
     }
 
     // 通过工单id查找报修工单
     @PostMapping("/selectOrderById")
-    public StatusAndDataFeedback selectOrderById(@RequestBody JSONObject idJson) {
+    public ApiResult selectOrderById(@RequestBody JSONObject idJson) {
         // 判断前端传过来的参数是否为空
         if (Objects.equals(idJson.toJSONString(), "{}")) {
-            return new StatusAndDataFeedback(null, "Incomplete_data");
+            return new ApiResult(null, "Incomplete_data");
         }
         // 从json字符串中获取要添加的数据
         Long id = Long.parseLong(idJson.get("id").toString()); // 工单id
@@ -101,24 +101,24 @@ public class OrderController {
             Order order = orderService.selectOrderById(id);
             // 判断查询结果是否为空
             if (Objects.equals(order, null)) {
-                return new StatusAndDataFeedback(null, "data_not_exist");
+                return new ApiResult(null, "data_not_exist");
             }
             else {
-                return new StatusAndDataFeedback(order, "handle_success");
+                return new ApiResult(order, "handle_success");
             }
         }
         else {
             // token验证失败，返回错误码
-            return new StatusAndDataFeedback(null, "wrong_token");
+            return new ApiResult(null, "wrong_token");
         }
     }
 
     // 查找所有报修工单
     @PostMapping("/selectAllOrder")
-    public StatusAndDataFeedback selectAllOrder(@RequestBody JSONObject tokenJson) {
+    public ApiResult selectAllOrder(@RequestBody JSONObject tokenJson) {
         // 判断前端传过来的参数是否为空
         if (Objects.equals(tokenJson.toJSONString(), "{}")) {
-            return new StatusAndDataFeedback(null, "Incomplete_data");
+            return new ApiResult(null, "Incomplete_data");
         }
         // 从json字符串中获取要添加的数据
         String token = (String) tokenJson.get("token"); // 待验证的token
@@ -128,24 +128,24 @@ public class OrderController {
             List<Order> orders = orderService.selectAllOrder();
             // 判断查询结果是否为空
             if (orders.isEmpty()) {
-                return new StatusAndDataFeedback(null, "data_not_exist");
+                return new ApiResult(null, "data_not_exist");
             }
             else {
-                return new StatusAndDataFeedback(orders, "handle_success");
+                return new ApiResult(orders, "handle_success");
             }
         }
         else {
             // token验证失败，返回错误码
-            return new StatusAndDataFeedback(null, "wrong_token");
+            return new ApiResult(null, "wrong_token");
         }
     }
 
     // 修改报修工单
     @PostMapping("/updateOrder")
-    public StatusAndDataFeedback updateOrder(@RequestBody JSONObject orderJson) {
+    public ApiResult updateOrder(@RequestBody JSONObject orderJson) {
         // 判断前端传过来的参数是否为空
         if (Objects.equals(orderJson.toJSONString(), "{}")) {
-            return new StatusAndDataFeedback(null, "Incomplete_data");
+            return new ApiResult(null, "Incomplete_data");
         }
         // 获取工单中的数据
         Long id = Long.parseLong(orderJson.get("id").toString()); // 工单id
@@ -168,26 +168,26 @@ public class OrderController {
         if (tokenVerify.verify(token)) {
             // token验证成功，查找数据库中是否存在此工单
             if (Objects.equals(orderService.selectOrderById(id), null)) {
-                return new StatusAndDataFeedback(order, "data_not_exist");
+                return new ApiResult(order, "data_not_exist");
             }
             else {
                 // 如果此工单存在就更新数据
                 orderService.updateOrder(order);
-                return new StatusAndDataFeedback(order, "handle_success");
+                return new ApiResult(order, "handle_success");
             }
         }
         else {
             // token验证失败，返回错误码
-            return new StatusAndDataFeedback(null, "wrong_token");
+            return new ApiResult(null, "wrong_token");
         }
     }
 
     // 查找某用户发布的所有工单
     @PostMapping("/selectAllOrderOfUser")
-    public StatusAndDataFeedback selectAllOrderOfUser(@RequestBody JSONObject usernameJson) {
+    public ApiResult selectAllOrderOfUser(@RequestBody JSONObject usernameJson) {
         // 判断前端传过来的参数是否为空
         if (Objects.equals(usernameJson.toJSONString(), "{}")) {
-            return new StatusAndDataFeedback(null, "Incomplete_data");
+            return new ApiResult(null, "Incomplete_data");
         }
 
         // 获取usernameJson中的数据
@@ -201,19 +201,19 @@ public class OrderController {
                 List<Order> orders = orderService.selectAllOrderOfUser(username);
                 // 判断查询结果是否为空
                 if (orders.isEmpty()) {
-                    return new StatusAndDataFeedback(null, "data_not_exist");
+                    return new ApiResult(null, "data_not_exist");
                 }
                 else {
-                    return new StatusAndDataFeedback(orders, "handle_success");
+                    return new ApiResult(orders, "handle_success");
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                return new StatusAndDataFeedback(null, "exception_happen");
+                return new ApiResult(null, "exception_happen");
             }
         }
         else {
             // token验证失败，返回错误码
-            return new StatusAndDataFeedback(null, "wrong_token");
+            return new ApiResult(null, "wrong_token");
         }
     }
 }

@@ -1,6 +1,8 @@
 package com.kkkoke.networkrepair.service;
 
+import com.kkkoke.networkrepair.pojo.Role;
 import com.kkkoke.networkrepair.pojo.User;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -22,4 +24,10 @@ public interface UserService {
 
     // 修改用户信息
     Integer updateUser(User user);
+
+    //根据⽤户名查询⽤户
+    User loadUserByUsername(String username);
+
+    //根据⽤户id查询⻆⾊
+    List<Role> getRolesByUid(Integer uid);
 }

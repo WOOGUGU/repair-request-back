@@ -1,5 +1,6 @@
 package com.kkkoke.networkrepair.pojo;
 
+import io.swagger.models.auth.In;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -15,7 +16,7 @@ import javax.persistence.Id;
 public class Article {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;//文章id
+    private Integer id;//文章id
     private String createTime;//文章创建时间
     private String updateTime;//文章修改时间
     private String contentPath;//文章内容路径

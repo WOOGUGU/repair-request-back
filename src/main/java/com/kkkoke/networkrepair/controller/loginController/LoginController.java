@@ -5,7 +5,7 @@ import com.kkkoke.networkrepair.pojo.Admin;
 import com.kkkoke.networkrepair.pojo.User;
 import com.kkkoke.networkrepair.service.AdminService;
 import com.kkkoke.networkrepair.service.UserService;
-import com.kkkoke.networkrepair.statusAndDataResult.StatusAndDataFeedback;
+import com.kkkoke.networkrepair.result.ApiResult;
 import com.kkkoke.networkrepair.util.token.JwtToken;
 import com.kkkoke.networkrepair.util.MD5Util;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,12 +25,12 @@ public class LoginController {
     }
     // 处理登录请求
     @PostMapping("/handleLogin")
-    public StatusAndDataFeedback handleLogin(@RequestBody JSONObject userJson) {
+    public ApiResult handleLogin(@RequestBody JSONObject userJson) {
         String username = (String) userJson.get("username");
         String password = (String) userJson.get("password");
         // 查找数据库是否存在此用户
         if (Objects.equals(userService.selectUserByUsername(username), null) && Objects.equals(adminService.selectAdminByUsername(username), null)) {
-            return new StatusAndDataFeedback(null, "wrong_user");
+            return new ApiResult(null, "wrong_user");
         }
         User user = userService.selectUserByUsername(username);
         Admin admin = adminService.selectAdminByUsername(username);
@@ -44,14 +44,14 @@ public class LoginController {
                     Map<String, String> tokenMap = new HashMap<>();
                     tokenMap.put("id", "user");
                     tokenMap.put("token", user_token);
-                    return new StatusAndDataFeedback(user, tokenMap);
+                    return new ApiResult(user, tokenMap);
                 } catch (Exception e) {
                     e.printStackTrace();
-                    return new StatusAndDataFeedback(user, "exception_happen");
+                    return new ApiResult(user, "exception_happen");
                 }
             }
             else {
-                return new StatusAndDataFeedback(null, "wrong_password");
+                return new ApiResult(null, "wrong_password");
             }
         }
         else {
@@ -63,14 +63,14 @@ public class LoginController {
                     Map<String, String> tokenMap = new HashMap<>();
                     tokenMap.put("id", "admin");
                     tokenMap.put("token", admin_token);
-                    return new StatusAndDataFeedback(admin, tokenMap);
+                    return new ApiResult(admin, tokenMap);
                 } catch (Exception e) {
                     e.printStackTrace();
-                    return new StatusAndDataFeedback(admin, "exception_happen");
+                    return new ApiResult(admin, "exception_happen");
                 }
             }
             else {
-                return new StatusAndDataFeedback(null, "wrong_password");
+                return new ApiResult(null, "wrong_password");
             }
         }
     }

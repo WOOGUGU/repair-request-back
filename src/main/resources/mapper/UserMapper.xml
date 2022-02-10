@@ -37,6 +37,18 @@
         where id = #{id}
     </update>
 
+    <select id="loadUserByUsername">
+        select *
+        from user
+        where username = #{username}
+    </select>
+
+    <select id="getRolesByUid">
+        select r.id, r.name, r.name_zh nameZh
+        from role r, user_role ur
+        where r.id = ur.rid and ur.uid = #{uid}
+    </select>
+
     <resultMap id="userMap" type="com.kkkoke.networkrepair.pojo.User">
         <id property="id" column="id"/>
         <result property="username" column="username"/>

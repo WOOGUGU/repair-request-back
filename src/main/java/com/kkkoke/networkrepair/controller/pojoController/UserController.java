@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.auth0.jwt.interfaces.Claim;
 import com.kkkoke.networkrepair.pojo.User;
 import com.kkkoke.networkrepair.service.UserService;
-import com.kkkoke.networkrepair.statusAndDataResult.StatusAndDataFeedback;
+import com.kkkoke.networkrepair.result.ApiResult;
 import com.kkkoke.networkrepair.util.token.JwtToken;
 import com.kkkoke.networkrepair.util.token.TokenVerify;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -27,10 +27,10 @@ public class UserController {
 
     // 添加用户
     @PostMapping("/addUser")
-    public StatusAndDataFeedback addUser(@RequestBody JSONObject userJson) {
+    public ApiResult addUser(@RequestBody JSONObject userJson) {
         // 判断前端传过来的参数是否为空
         if (Objects.equals(userJson.toJSONString(), "{}")) {
-            return new StatusAndDataFeedback(null, "Incomplete_data");
+            return new ApiResult(null, "Incomplete_data");
         }
         // 从json字符串中获取要添加的数据
         String username = (String) userJson.get("username");
@@ -46,25 +46,25 @@ public class UserController {
                 // 调用service层添加用户
                 userService.addUser(user);
                 // 返回给前端添加的用户数据及处理的状态值
-                return new StatusAndDataFeedback(user, "handle_success");
+                return new ApiResult(user, "handle_success");
             }
             else {
                 // 数据库中已经存在此数据
-                return new StatusAndDataFeedback(null, "data_exist");
+                return new ApiResult(null, "data_exist");
             }
         }
         else {
             // token验证失败，返回错误码
-            return new StatusAndDataFeedback(null, "wrong_token");
+            return new ApiResult(null, "wrong_token");
         }
     }
 
     // 通过用户名删除用户
     @PostMapping("/deleteUser")
-    public StatusAndDataFeedback deleteUser(@RequestBody JSONObject idJson) {
+    public ApiResult deleteUser(@RequestBody JSONObject idJson) {
         // 判断前端传过来的参数是否为空
         if (Objects.equals(idJson.toJSONString(), "{}")) {
-            return new StatusAndDataFeedback(null, "Incomplete_data");
+            return new ApiResult(null, "Incomplete_data");
         }
         // 从json字符串中获取要添加的数据
         Long id = Long.parseLong(idJson.get("id").toString()); // 工单id
@@ -73,27 +73,27 @@ public class UserController {
         if (tokenVerify.verify(token)) {
             // token验证成功，查询数据库，查看要删除的用户是否存在
             if (Objects.equals(userService.selectUserById(id), null)) {
-                return new StatusAndDataFeedback(null, "data_not_exist");
+                return new ApiResult(null, "data_not_exist");
             }
             else {
                 // 调用service层删除用户
                 userService.deleteUser(id);
             }
 
-            return new StatusAndDataFeedback(null, "handle_success");
+            return new ApiResult(null, "handle_success");
         }
         else {
             // token验证失败，返回错误码
-            return new StatusAndDataFeedback(null, "wrong_token");
+            return new ApiResult(null, "wrong_token");
         }
     }
 
     // 通过用户名查找用户
     @PostMapping("/selectUserByUsername")
-    public StatusAndDataFeedback selectUserByUsername(@RequestBody JSONObject usernameJson) {
+    public ApiResult selectUserByUsername(@RequestBody JSONObject usernameJson) {
         // 判断前端传过来的参数是否为空
         if (Objects.equals(usernameJson.toJSONString(), "{}")) {
-            return new StatusAndDataFeedback(null, "Incomplete_data");
+            return new ApiResult(null, "Incomplete_data");
         }
         // 从json字符串中获取要添加的数据
         String username = (String) usernameJson.get("username");
@@ -104,24 +104,24 @@ public class UserController {
             User user = userService.selectUserByUsername(username);
             // 判断查询结果是否为空
             if (Objects.equals(userService.selectUserByUsername(username), null)) {
-                return new StatusAndDataFeedback(null, "data_not_exist");
+                return new ApiResult(null, "data_not_exist");
             }
             else {
-                return new StatusAndDataFeedback(user, "handle_success");
+                return new ApiResult(user, "handle_success");
             }
         }
         else {
             // token验证失败，返回错误码
-            return new StatusAndDataFeedback(null, "wrong_token");
+            return new ApiResult(null, "wrong_token");
         }
     }
 
     // 通过id查找用户
     @PostMapping("/selectUserById")
-    public StatusAndDataFeedback selectUserById(@RequestBody JSONObject idJson) {
+    public ApiResult selectUserById(@RequestBody JSONObject idJson) {
         // 判断前端传过来的参数是否为空
         if (Objects.equals(idJson.toJSONString(), "{}")) {
-            return new StatusAndDataFeedback(null, "Incomplete_data");
+            return new ApiResult(null, "Incomplete_data");
         }
         // 从json字符串中获取要添加的数据
         Long id = Long.parseLong(idJson.get("id").toString()); // 工单id
@@ -132,24 +132,24 @@ public class UserController {
             User user = userService.selectUserById(id);
             // 判断查询结果是否为空
             if (Objects.equals(userService.selectUserById(id).getId(), id)) {
-                return new StatusAndDataFeedback(user, "handle_success");
+                return new ApiResult(user, "handle_success");
             }
             else {
-                return new StatusAndDataFeedback(null, "data_not_exist");
+                return new ApiResult(null, "data_not_exist");
             }
         }
         else {
             // token验证失败，返回错误码
-            return new StatusAndDataFeedback(null, "wrong_token");
+            return new ApiResult(null, "wrong_token");
         }
     }
 
     // 查找所有用户
     @PostMapping("/selectAllUser")
-    public StatusAndDataFeedback selectAllUser(@RequestBody JSONObject tokenJson) {
+    public ApiResult selectAllUser(@RequestBody JSONObject tokenJson) {
         // 判断前端传过来的参数是否为空
         if (Objects.equals(tokenJson.toJSONString(), "{}")) {
-            return new StatusAndDataFeedback(null, "Incomplete_data");
+            return new ApiResult(null, "Incomplete_data");
         }
         // 获取tokenJson中的数据
         String token = (String) tokenJson.get("token"); // 待验证的token
@@ -162,28 +162,28 @@ public class UserController {
                 List<User> users = userService.selectAllUser();
                 // 判断查询结果是否为空
                 if (users.isEmpty()) {
-                    return new StatusAndDataFeedback(null, "data_not_exist");
+                    return new ApiResult(null, "data_not_exist");
                 }
                 else {
-                    return new StatusAndDataFeedback(users, "handle_success");
+                    return new ApiResult(users, "handle_success");
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                return new StatusAndDataFeedback(null, "exception_happen");
+                return new ApiResult(null, "exception_happen");
             }
         }
         else {
             // token验证失败，返回错误码
-            return new StatusAndDataFeedback(null, "wrong_token");
+            return new ApiResult(null, "wrong_token");
         }
     }
 
     // 修改用户信息
     @PostMapping("/updateUser")
-    public StatusAndDataFeedback updateUser(@RequestBody JSONObject userJson) {
+    public ApiResult updateUser(@RequestBody JSONObject userJson) {
         // 判断前端传过来的参数是否为空
         if (Objects.equals(userJson.toJSONString(), "{}")) {
-            return new StatusAndDataFeedback(null, "Incomplete_data");
+            return new ApiResult(null, "Incomplete_data");
         }
         // 从json字符串中获取要添加的数据
         Long id = Long.parseLong((String) userJson.get("id"));
@@ -197,17 +197,17 @@ public class UserController {
             User user = new User(id, username, password, name);
             // 查找数据库中是否存在此用户
             if (Objects.equals(userService.selectUserById(user.getId()), null)) {
-                return new StatusAndDataFeedback(user, "data_not_exist");
+                return new ApiResult(user, "data_not_exist");
             }
             else {
                 // 如果管理员存在就更新数据
                 userService.updateUser(user);
-                return new StatusAndDataFeedback(user, "handle_success");
+                return new ApiResult(user, "handle_success");
             }
         }
         else {
             // token验证失败，返回错误码
-            return new StatusAndDataFeedback(null, "wrong_token");
+            return new ApiResult(null, "wrong_token");
         }
     }
 }
