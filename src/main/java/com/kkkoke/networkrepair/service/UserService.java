@@ -24,7 +24,7 @@ public interface UserService {
     List<User> selectAllUser() throws UserHasNotExistedException;
 
     // 修改用户信息
-    User updateUser(String username, String password, String name) throws UserHasNotExistedException;
+    User updateUser(Integer userId, String username, String password, String name) throws UserHasNotExistedException;
 
     // 内部调用 根据⽤户名查询⽤户
     User loadUserByUsername(String username);

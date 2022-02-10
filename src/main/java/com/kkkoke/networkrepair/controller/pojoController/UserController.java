@@ -77,9 +77,9 @@ public class UserController {
             @ApiImplicitParam(name = "password", value = "密码（已加密）", required = true, paramType = "query"),
             @ApiImplicitParam(name = "name", value = "用户真实姓名", required = true, paramType = "query")})
     @PostMapping("/updateUser")
-    public ApiResult updateUser(@NotBlank(message = "username can not be null") String username, @NotBlank(message = "password can not be null") String password,
-                                @NotBlank(message = "name can not be null") String name) throws UserHasNotExistedException {
-        User user = userService.updateUser(username, password, name);
-        return ApiResult.success(user, "更新成功");
+    public ApiResult updateUser(@NotNull(message = "userId can not be null") Integer userId, @NotBlank(message = "username can not be null") String username,
+                                @NotBlank(message = "password can not be null") String password, @NotBlank(message = "name can not be null") String name) throws UserHasNotExistedException {
+        User user = userService.updateUser(userId, username, password, name);
+        return ApiResult.success("更新成功");
     }
 }

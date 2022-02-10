@@ -1,9 +1,7 @@
 package com.kkkoke.networkrepair.controller.exceptionController;
 
 import com.auth0.jwt.exceptions.TokenExpiredException;
-import com.kkkoke.networkrepair.exception.UserHasExistedException;
-import com.kkkoke.networkrepair.exception.TokenErrorException;
-import com.kkkoke.networkrepair.exception.UserHasNotExistedException;
+import com.kkkoke.networkrepair.exception.*;
 import com.kkkoke.networkrepair.result.ApiResult;
 import com.kkkoke.networkrepair.result.ResultCode;
 import lombok.extern.slf4j.Slf4j;
@@ -87,6 +85,34 @@ public class ExceptionController {
     public ApiResult userHasNotExistedException(UserHasNotExistedException e) {
         log.info("UserHasNotExistedException.errMsg:{}", e.getMessage());
         return ApiResult.fail(ResultCode.DATA_NOT_EXIST, "用户不存在，请重新输入", e.getMessage());
+    }
+
+    /**
+     * 选择信息已经存在
+     *
+     * @param e
+     *            异常
+     * @return ApiResult
+     */
+    @ResponseStatus(HttpStatus.OK)
+    @ExceptionHandler(PickerHasExistedException.class)
+    public ApiResult pickerHasExistedException(PickerHasExistedException e) {
+        log.info("PickerHasExistedException.errMsg:{}", e.getMessage());
+        return ApiResult.fail(ResultCode.DATA_EXISTED, "选择信息已经存在，请重试", e.getMessage());
+    }
+
+    /**
+     * 选择信息不存在
+     *
+     * @param e
+     *            异常
+     * @return ApiResult
+     */
+    @ResponseStatus(HttpStatus.OK)
+    @ExceptionHandler(PickerHasNotExistedException.class)
+    public ApiResult pickerHasNotExistedException(PickerHasNotExistedException e) {
+        log.info("PickerHasNotExistedException.errMsg:{}", e.getMessage());
+        return ApiResult.fail(ResultCode.DATA_NOT_EXIST, "选择信息不存在，请重试", e.getMessage());
     }
 
     /**

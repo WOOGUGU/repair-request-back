@@ -85,11 +85,11 @@ public class UserServiceImpl implements UserService {
 
     // 修改用户信息
     @Override
-    public User updateUser(String username, String password, String name) throws UserHasNotExistedException {
+    public User updateUser(Integer userId, String username, String password, String name) throws UserHasNotExistedException {
         // 创建要修改的user对象
-        User user = new User(username, password, name);
+        User user = new User(userId, username, password, name);
         // 查找数据库中是否存在此用户
-        if (ObjectUtils.isEmpty(userDao.selectUserByUsername(username))) {
+        if (ObjectUtils.isEmpty(userDao.selectUserById(userId))) {
             throw new UserHasNotExistedException();
         } else {
             // 如果用户存在就更新数据

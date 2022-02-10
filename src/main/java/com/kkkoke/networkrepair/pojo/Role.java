@@ -1,6 +1,8 @@
 package com.kkkoke.networkrepair.pojo;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * 用户身份
@@ -9,6 +11,8 @@ import lombok.Data;
  * 3.维修员
  */
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Role {
     private Integer id; // 权限Id
     private String name; // 权限名称 内部使用
