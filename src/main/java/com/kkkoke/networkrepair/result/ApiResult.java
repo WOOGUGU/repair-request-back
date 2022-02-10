@@ -31,11 +31,35 @@ public class ApiResult {
     @ApiModelProperty(value = "debug报错提示信息")
     private String errMsg;
 
+//    public static ApiResult fail() {
+//        return new ApiResult(code, null, userMsg, errMsg);
+//    }
+
     public static ApiResult fail(String code, String userMsg, String errMsg) {
         return new ApiResult(code, null, userMsg, errMsg);
     }
 
-    // 返回给前端的状态值
+    public static ApiResult fail(String code, Object data, String userMsg, String errMsg) {
+        return new ApiResult(code, data, userMsg, errMsg);
+    }
+
+    public static ApiResult success(String userMsg) {
+        return new ApiResult(ResultCode.SUCCESS, null, userMsg, "handle success");
+    }
+
+    public static ApiResult success(Object data, String userMsg) {
+        return new ApiResult(ResultCode.SUCCESS, data, userMsg, "handle success");
+    }
+
+    public static ApiResult success(String code, String userMsg, String errMsg) {
+        return new ApiResult(ResultCode.SUCCESS, null, userMsg, errMsg);
+    }
+
+    public static ApiResult success(String code, Object data, String userMsg, String errMsg) {
+        return new ApiResult(code, data, userMsg, errMsg);
+    }
+
+    // 返回给前端
     public final static String INCOMPLETE_DATA = "Incomplete_data"; // 前端传入的数据不完整
     public final static String HANDLE_SUCCESS = "handle_success"; // 处理成功
     public final static String DATA_NOT_EXIST = "data_not_exist"; // 数据库中不存在此数据
