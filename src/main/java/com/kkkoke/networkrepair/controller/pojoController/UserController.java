@@ -79,7 +79,7 @@ public class UserController {
     @PostMapping("/updateUser")
     public ApiResult updateUser(@NotNull(message = "userId can not be null") Integer userId, @NotBlank(message = "username can not be null") String username,
                                 @NotBlank(message = "password can not be null") String password, @NotBlank(message = "name can not be null") String name) throws UserHasNotExistedException {
-        User user = userService.updateUser(userId, username, password, name);
+        userService.updateUser(userId, username, password, name);
         return ApiResult.success("更新成功");
     }
 }

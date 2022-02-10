@@ -10,10 +10,10 @@ public interface OrderDao {
     int addOrder(Order order);
 
     // 通过id删除报修工单
-    int deleteOrder(Long id);
+    int deleteOrder(Integer id);
 
     // 通过工单id查找报修工单
-    Order selectOrderById(Long id);
+    Order selectOrderById(Integer id);
 
     // 查找所有报修工单
     List<Order> selectAllOrder();

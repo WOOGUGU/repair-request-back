@@ -88,31 +88,31 @@ public class ExceptionController {
     }
 
     /**
-     * 选择信息已经存在
+     * 数据已经存在
      *
      * @param e
      *            异常
      * @return ApiResult
      */
     @ResponseStatus(HttpStatus.OK)
-    @ExceptionHandler(PickerHasExistedException.class)
-    public ApiResult pickerHasExistedException(PickerHasExistedException e) {
-        log.info("PickerHasExistedException.errMsg:{}", e.getMessage());
-        return ApiResult.fail(ResultCode.DATA_EXISTED, "选择信息已经存在，请重试", e.getMessage());
+    @ExceptionHandler(DataHasExistedException.class)
+    public ApiResult dataHasExistedException(DataHasExistedException e) {
+        log.info("DataHasExistedException.errMsg:{}", e.getMessage());
+        return ApiResult.fail(ResultCode.DATA_EXISTED, "数据已经存在，请重试", e.getMessage());
     }
 
     /**
-     * 选择信息不存在
+     * 数据不存在
      *
      * @param e
      *            异常
      * @return ApiResult
      */
     @ResponseStatus(HttpStatus.OK)
-    @ExceptionHandler(PickerHasNotExistedException.class)
-    public ApiResult pickerHasNotExistedException(PickerHasNotExistedException e) {
-        log.info("PickerHasNotExistedException.errMsg:{}", e.getMessage());
-        return ApiResult.fail(ResultCode.DATA_NOT_EXIST, "选择信息不存在，请重试", e.getMessage());
+    @ExceptionHandler(DataHasNotExistedException.class)
+    public ApiResult dataHasNotExistedException(DataHasNotExistedException e) {
+        log.info("DataHasNotExistedException.errMsg:{}", e.getMessage());
+        return ApiResult.fail(ResultCode.DATA_NOT_EXIST, "数据不存在，请重试", e.getMessage());
     }
 
     /**

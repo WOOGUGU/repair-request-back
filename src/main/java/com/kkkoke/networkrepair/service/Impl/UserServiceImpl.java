@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService {
     public int deleteUser(Integer userId) throws UserHasNotExistedException {
         // 查询数据库，查看要删除的用户是否存在
         if (ObjectUtils.isEmpty(userDao.selectUserById(userId))) {
-            throw new UserHasNotExistedException();
+            throw new UserHasNotExistedException("User has not existed");
         } else {
             return userDao.deleteUser(userId);
         }
@@ -52,7 +52,7 @@ public class UserServiceImpl implements UserService {
         User user = userDao.selectUserByUsername(username);
         // 判断查询结果是否为空
         if (ObjectUtils.isEmpty(user)) {
-            throw new UserHasNotExistedException();
+            throw new UserHasNotExistedException("User has not existed");
         } else {
             return user;
         }
@@ -61,11 +61,11 @@ public class UserServiceImpl implements UserService {
     // 通过id查找用户
     @Override
     public User selectUserById(Integer userId) throws UserHasNotExistedException {
-        // 根据用户名查找用户
+        // 根据id查找用户
         User user = userDao.selectUserById(userId);
         // 判断查询结果是否为空
         if (ObjectUtils.isEmpty(user)) {
-            throw new UserHasNotExistedException();
+            throw new UserHasNotExistedException("User has not existed");
         } else {
             return user;
         }
@@ -77,7 +77,7 @@ public class UserServiceImpl implements UserService {
         List<User> users = userDao.selectAllUser();
         // 判断查询结果是否为空
         if (ObjectUtils.isEmpty(users)) {
-            throw new UserHasNotExistedException();
+            throw new UserHasNotExistedException("User has not existed");
         } else {
             return users;
         }
@@ -90,7 +90,7 @@ public class UserServiceImpl implements UserService {
         User user = new User(userId, username, password, name);
         // 查找数据库中是否存在此用户
         if (ObjectUtils.isEmpty(userDao.selectUserById(userId))) {
-            throw new UserHasNotExistedException();
+            throw new UserHasNotExistedException("User has not existed");
         } else {
             // 如果用户存在就更新数据
             userDao.updateUser(user);
