@@ -6,7 +6,7 @@
         values (#{createTime}, #{updateTime}, #{contentPath}, #{author}, #{displayStatus})
     </insert>
 
-    <delete id="deleteArticle" parameterType="long">
+    <delete id="deleteArticle" parameterType="int">
         delete
         from article
         where id = #{id}
@@ -24,7 +24,7 @@
         select *
         from article
     </select>
-    <select id="selectArticleById" parameterType="long" resultMap="articleMap">
+    <select id="selectArticleById" parameterType="int" resultMap="articleMap">
         select *
         from article
         where id = #{id}
