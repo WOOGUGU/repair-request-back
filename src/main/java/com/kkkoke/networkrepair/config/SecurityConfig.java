@@ -85,8 +85,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .authenticationEntryPoint(((request, response, authException) -> {
                 response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
                 response.setStatus(HttpStatus.UNAUTHORIZED.value());
+                String result = new ObjectMapper().writeValueAsString(ApiResult.fail(ResultCode.UNAUTHENTICATED,null, "请登录之后再访问该资源", ApiResult.UNAUTHENTICATED));
                 response.getWriter().println("请认证之后再去处理！");
             }))
+            .and().rememberMe().tokenValiditySeconds(7*24*60*60) // 设置token过期时间为7天
             .and()
             .logout()
 //                .logoutUrl("/logout")

@@ -41,6 +41,7 @@ public class ApiResult {
     public final static String EXCEPTION_HAPPEN = "exception happen"; // 出现异常
     public final static String WRONG_TOKEN = "wrong token"; // token错误
     public final static String EXPIRED_TOKEN = "expired token"; // token过期
+    public final static String UNAUTHENTICATED = "unauthenticated"; // token过期
     public final static String LOGIN_FAIL = "login fail"; // 登录失败
 
     public static ApiResult fail(String code, String userMsg, String errMsg) {
