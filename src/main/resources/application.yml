@@ -1,14 +1,7 @@
 server:
   port: 8090
-#  servlet:
-#    context-path: /repairnetwork
+
 spring:
-#  thymeleaf:
-#    cache: false
-#    mode: HTML5
-#  devtools:
-#    restart:
-#      enabled: true
   datasource:
     username: root
 #    password: 123456

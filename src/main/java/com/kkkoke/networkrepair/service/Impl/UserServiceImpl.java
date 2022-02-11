@@ -23,7 +23,10 @@ public class UserServiceImpl implements UserService {
     public User addUser(String username, String password, String name) throws UserHasExistedException {
         // 查看数据库中是否已经存在此用户
         if (ObjectUtils.isEmpty(userDao.selectUserByUsername(username))) {
-            User user = new User(username, password, name);
+            // 给密码加上"{noop}"前缀
+            String final_pwd = "{noop}";
+            final_pwd += password;
+            User user = new User(username, final_pwd, name);
             userDao.addUser(user);
             return user;
         } else {
