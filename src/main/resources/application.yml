@@ -12,7 +12,8 @@ spring:
   datasource:
     username: root
 #    password: 123456
-    password: Zk123456.
+#    password: Zk123456.
+    password: MySQL8.0
     driver-class-name: com.mysql.cj.jdbc.Driver
 #    url: jdbc:mysql://localhost:3306/test?serverTimezone=UTC&characterEncoding=UTF-8
     url: jdbc:mysql://localhost:3306/networkrepair?serverTimezone=UTC&characterEncoding=UTF-8
@@ -45,4 +46,5 @@ logging:
     org.springfromework.web: debug
     org.hibernate: error
   file:
-    path: /Users/kkkoke/IdeaProjects/network-repair/log
+    path: /home/projects/network-repair/log
+#    path: /Users/kkkoke/IdeaProjects/network-repair/log
