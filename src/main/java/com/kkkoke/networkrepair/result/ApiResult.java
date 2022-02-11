@@ -43,6 +43,8 @@ public class ApiResult {
     public final static String EXPIRED_TOKEN = "expired token"; // token过期
     public final static String UNAUTHENTICATED = "unauthenticated"; // token过期
     public final static String LOGIN_FAIL = "login fail"; // 登录失败
+    public final static String FORBIDDEN = "forbidden"; // 权限不够
+    public final static String MISSING_PARAM = "miss param"; // 缺少参数
 
     public static ApiResult fail(String code, String userMsg, String errMsg) {
         return new ApiResult(code, null, userMsg, errMsg);
