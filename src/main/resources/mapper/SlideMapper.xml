@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kkkoke.networkrepair.dao.SlideDao">
+    <insert id="uploadSlide" parameterType="com.kkkoke.networkrepair.pojo.Slide">
+        insert into slide(img_path, submit_time, author)
+        values (#{imgPath}, #{submitTime}, #{author})
+    </insert>
+
+    <resultMap id="sildeRole" type="com.kkkoke.networkrepair.pojo.Slide">
+        <id property="id" column="id"/>
+        <result property="imgPath" column="img_path"/>
+        <result property="submitTime" column="submit_time"/>
+        <result property="author" column="author"/>
+        <result property="displayTime" column="display_time"/>
+    </resultMap>
+</mapper>

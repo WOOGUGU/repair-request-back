@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kkkoke.networkrepair.result.ApiResult;
 import com.kkkoke.networkrepair.result.ResultCode;
 import com.kkkoke.networkrepair.service.Impl.UserDetailsServiceImpl;
+import com.kkkoke.networkrepair.util.PropertiesUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -28,9 +29,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsServiceImpl userDetailsServiceImpl;
 
+    private final PropertiesUtil propertiesUtil;
+
     @Autowired
-    public SecurityConfig(UserDetailsServiceImpl userDetailsServiceImpl) {
+    public SecurityConfig(UserDetailsServiceImpl userDetailsServiceImpl, PropertiesUtil propertiesUtil) {
         this.userDetailsServiceImpl = userDetailsServiceImpl;
+        this.propertiesUtil = propertiesUtil;
     }
 
     // 自定义 AuthenticationManager  这个会覆盖原厂中的 AuthenticationManager
@@ -78,7 +82,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .authorizeRequests()
             .antMatchers("/v2/api-docs", "/swagger-resources/configuration/ui",
                     "/swagger-resources", "/swagger-resources/configuration/security",
-                    "/swagger-ui.html", "/webjars/**").permitAll() // 开放swagger资源
+                    "/swagger-ui.html", "/webjars/**", "/fileupload.html").permitAll() // 开放swagger资源
             .anyRequest().authenticated()
             .and()
             .exceptionHandling()
@@ -86,9 +90,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
                 response.setStatus(HttpStatus.UNAUTHORIZED.value());
                 String result = new ObjectMapper().writeValueAsString(ApiResult.fail(ResultCode.UNAUTHENTICATED,null, "请登录之后再访问该资源", ApiResult.UNAUTHENTICATED));
-                response.getWriter().println("请认证之后再去处理！");
+                response.getWriter().println(result);
             }))
-            .and().rememberMe().tokenValiditySeconds(7*24*60*60) // 设置token过期时间为7天
+            .and().rememberMe().tokenValiditySeconds(Integer.parseInt(propertiesUtil.getTokenExpiredTime())) // 设置token过期时间为7天
             .and()
             .logout()
 //                .logoutUrl("/logout")
