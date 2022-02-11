@@ -6,7 +6,7 @@
         values (#{createTime}, #{updateTime}, #{contentPath}, #{author}, #{displayStatus})
     </insert>
 
-    <delete id="deleteArticle" parameterType="long">
+    <delete id="deleteArticle" parameterType="int">
         delete
         from article
         where id = #{id}
@@ -24,25 +24,25 @@
         select *
         from article
     </select>
-    <select id="selectArticleById" parameterType="long" resultMap="articleMap">
+    <select id="selectArticleById" parameterType="int" resultMap="articleMap">
         select *
         from article
         where id = #{id}
     </select>
 
-    <select id="selectArticleByCreateTime" parameterType="String" resultType="com.kkkoke.networkrepair.pojo.Article">
+    <select id="selectArticleByCreateTime" parameterType="String" resultMap="articleMap">
         select *
         from article
         where create_time = #{createTime}
     </select>
 
-    <select id="selectArticleByUpdateTime" parameterType="String" resultType="com.kkkoke.networkrepair.pojo.Article">
+    <select id="selectArticleByUpdateTime" parameterType="String" resultMap="articleMap">
         select *
         from article
         where update_time = #{updateTime}
     </select>
 
-    <select id="selectArticleByAuthor" parameterType="String" resultType="com.kkkoke.networkrepair.pojo.Article">
+    <select id="selectArticleByAuthor" parameterType="String" resultMap="articleMap">
         select *
         from article
         where author = #{author}

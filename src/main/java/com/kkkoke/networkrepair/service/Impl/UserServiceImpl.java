@@ -5,14 +5,12 @@ import com.kkkoke.networkrepair.exception.UserHasExistedException;
 import com.kkkoke.networkrepair.exception.UserHasNotExistedException;
 import com.kkkoke.networkrepair.pojo.Role;
 import com.kkkoke.networkrepair.pojo.User;
-import com.kkkoke.networkrepair.result.ApiResult;
 import com.kkkoke.networkrepair.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import java.util.List;
-import java.util.Objects;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -25,7 +23,10 @@ public class UserServiceImpl implements UserService {
     public User addUser(String username, String password, String name) throws UserHasExistedException {
         // 查看数据库中是否已经存在此用户
         if (ObjectUtils.isEmpty(userDao.selectUserByUsername(username))) {
-            User user = new User(username, password, name);
+            // 给密码加上"{noop}"前缀
+            String final_pwd = "{noop}";
+            final_pwd += password;
+            User user = new User(username, final_pwd, name);
             userDao.addUser(user);
             return user;
         } else {

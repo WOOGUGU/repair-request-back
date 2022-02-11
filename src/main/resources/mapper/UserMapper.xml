@@ -6,7 +6,7 @@
         values (#{username}, #{password}, #{name})
     </insert>
     
-    <delete id="deleteUser" parameterType="long">
+    <delete id="deleteUser" parameterType="int">
         delete
         from user
         where id = #{id}
@@ -18,7 +18,7 @@
         where username = #{username}
     </select>
 
-    <select id="selectUserById" parameterType="long" resultType="com.kkkoke.networkrepair.pojo.User">
+    <select id="selectUserById" parameterType="int" resultType="com.kkkoke.networkrepair.pojo.User">
         select *
         from user
         where id = #{id}

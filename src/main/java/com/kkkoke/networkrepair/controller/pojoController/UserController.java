@@ -45,6 +45,7 @@ public class UserController {
 
     @ApiOperation(value = "通过用户名删除用户")
     @ApiImplicitParam(name = "userId", value = "用户Id", required = true, paramType = "query")
+    @Secured({"ROLE_admin"})
     @PostMapping("/deleteUser")
     public ApiResult deleteUser(@NotNull(message = "userId can not be null") Integer userId) throws UserHasNotExistedException {
         userService.deleteUser(userId);
@@ -53,6 +54,7 @@ public class UserController {
 
     @ApiOperation(value = "通过用户名查找用户")
     @ApiImplicitParam(name = "username", value = "用户名", required = true, paramType = "query")
+    @Secured({"ROLE_admin", "ROLE_repairman"})
     @GetMapping("/selectUserByUsername")
     public ApiResult selectUserByUsername(@NotBlank(message = "username can not be null") String username) throws UserHasNotExistedException {
         User user = userService.selectUserByUsername(username);
@@ -61,6 +63,7 @@ public class UserController {
 
     @ApiOperation(value = "通过id查找用户")
     @ApiImplicitParam(name = "userId", value = "用户Id", required = true, paramType = "query")
+    @Secured({"ROLE_admin", "ROLE_repairman"})
     @GetMapping("/selectUserById")
     public ApiResult selectUserById(@NotNull(message = "userId can not be null") Integer userId) throws UserHasNotExistedException {
         User user = userService.selectUserById(userId);
@@ -68,7 +71,7 @@ public class UserController {
     }
 
     @ApiOperation(value = "查找所有用户")
-    @Secured({"ROLE_admin", "ROLE_user"})
+    @Secured({"ROLE_admin", "ROLE_repairman"})
     @GetMapping("/selectAllUser")
     public ApiResult selectAllUser() throws UserHasNotExistedException {
         List<User> users = userService.selectAllUser();
@@ -79,6 +82,7 @@ public class UserController {
     @ApiImplicitParams({@ApiImplicitParam(name = "username", value = "用户名", required = true, paramType = "query"),
             @ApiImplicitParam(name = "password", value = "密码（已加密）", required = true, paramType = "query"),
             @ApiImplicitParam(name = "name", value = "用户真实姓名", required = true, paramType = "query")})
+    @Secured({"ROLE_admin"})
     @PostMapping("/updateUser")
     public ApiResult updateUser(@NotNull(message = "userId can not be null") Integer userId, @NotBlank(message = "username can not be null") String username,
                                 @NotBlank(message = "password can not be null") String password, @NotBlank(message = "name can not be null") String name) throws UserHasNotExistedException {

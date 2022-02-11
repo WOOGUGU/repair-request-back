@@ -6,13 +6,13 @@
         values (#{username}, #{sender}, #{tel}, #{type}, #{des}, #{position}, #{timeSubscribe}, #{timeStart})
     </insert>
 
-    <delete id="deleteOrder" parameterType="long">
+    <delete id="deleteOrder" parameterType="int">
         delete
         from `order`
         where id = #{id}
     </delete>
 
-    <select id="selectOrderById" parameterType="long" resultMap="orderMap">
+    <select id="selectOrderById" parameterType="int" resultMap="orderMap">
         select *
         from `order`
         where id = #{id}

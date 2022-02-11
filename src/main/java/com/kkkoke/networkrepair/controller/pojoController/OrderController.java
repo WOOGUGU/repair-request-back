@@ -4,18 +4,30 @@ import com.kkkoke.networkrepair.exception.DataHasNotExistedException;
 import com.kkkoke.networkrepair.pojo.Order;
 import com.kkkoke.networkrepair.service.OrderService;
 import com.kkkoke.networkrepair.result.ApiResult;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
+/**
+ * @author kkkoke
+ */
+@Api(tags = "工单管理")
+@Slf4j
+@Validated
+@RequestMapping("/v2/order")
 @RestController
 public class OrderController {
     private final OrderService orderService;
@@ -34,6 +46,7 @@ public class OrderController {
             @ApiImplicitParam(name = "position", value = "故障位置", required = true, paramType = "query"),
             @ApiImplicitParam(name = "timeSubscribe", value = "工单预约上门时间", required = true, paramType = "query"),
             @ApiImplicitParam(name = "timeStart", value = "工单发起时间", required = true, paramType = "query")})
+    @Secured({"ROLE_admin", "ROLE_user", "ROLE_repairman"})
     @PostMapping("/addOrder")
     public ApiResult addOrder(@NotBlank(message = "username can not be null") String username, @NotBlank(message = "sender can not be null") String sender,
                               @NotBlank(message = "tel can not be null") String tel, @NotBlank(message = "type can not be null") String type,
@@ -45,6 +58,7 @@ public class OrderController {
 
     @ApiOperation(value = "通过id删除报修工单")
     @ApiImplicitParam(name = "orderId", value = "工单Id", required = true, paramType = "query")
+    @Secured({"ROLE_admin", "ROLE_user"})
     @PostMapping("/deleteOrder")
     public ApiResult deleteOrder(@NotNull(message = "orderId can not be null") Integer orderId) throws DataHasNotExistedException {
         orderService.deleteOrder(orderId);
@@ -53,6 +67,7 @@ public class OrderController {
 
     @ApiOperation(value = "通过工单id查找报修工单")
     @ApiImplicitParam(name = "orderId", value = "工单Id", required = true, paramType = "query")
+    @Secured({"ROLE_admin", "ROLE_user", "ROLE_repairman"})
     @GetMapping("/selectOrderById")
     public ApiResult selectOrderById(@NotNull(message = "orderId can not be null") Integer orderId) throws DataHasNotExistedException {
         Order order = orderService.selectOrderById(orderId);
@@ -60,6 +75,7 @@ public class OrderController {
     }
 
     @ApiOperation(value = "查找所有报修工单")
+    @Secured({"ROLE_admin", "ROLE_repairman"})
     @GetMapping("/selectAllOrder")
     public ApiResult selectAllOrder() throws DataHasNotExistedException {
         List<Order> orders = orderService.selectAllOrder();
@@ -81,6 +97,7 @@ public class OrderController {
             @ApiImplicitParam(name = "timeDistribution", value = "工单分配时间", required = true, paramType = "query"),
             @ApiImplicitParam(name = "timeEnd", value = "工单解决时间", required = true, paramType = "query"),
             @ApiImplicitParam(name = "feedback", value = "用户反馈", required = true, paramType = "query")})
+    @Secured({"ROLE_admin", "ROLE_user"})
     @PostMapping("/updateOrder")
     public ApiResult updateOrder(@NotNull(message = "orderId can not be null") Integer orderId, @NotBlank(message = "username can not be null") String username,
                                  @NotBlank(message = "sender can not be null") String sender, @NotBlank(message = "tel can not be null") String tel,
@@ -96,7 +113,8 @@ public class OrderController {
 
     @ApiOperation(value = "查找某用户发布的所有工单")
     @ApiImplicitParam(name = "username", value = "用户名", required = true, paramType = "query")
-    @PostMapping("/selectAllOrderOfUser")
+    @Secured({"ROLE_admin", "ROLE_user", "ROLE_repairman"})
+    @GetMapping("/selectAllOrderOfUser")
     public ApiResult selectAllOrderOfUser(@NotBlank(message = "username can not be null") String username) throws DataHasNotExistedException {
         List<Order> orders = orderService.selectAllOrderOfUser(username);
         return ApiResult.success(orders, "查找成功");
