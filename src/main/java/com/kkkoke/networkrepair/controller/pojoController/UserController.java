@@ -54,7 +54,7 @@ public class UserController {
 
     @ApiOperation(value = "通过用户名查找用户")
     @ApiImplicitParam(name = "username", value = "用户名", required = true, paramType = "query")
-    @Secured({"ROLE_admin, ROLE_repairman"})
+    @Secured({"ROLE_admin", "ROLE_repairman"})
     @GetMapping("/selectUserByUsername")
     public ApiResult selectUserByUsername(@NotBlank(message = "username can not be null") String username) throws UserHasNotExistedException {
         User user = userService.selectUserByUsername(username);
@@ -63,7 +63,7 @@ public class UserController {
 
     @ApiOperation(value = "通过id查找用户")
     @ApiImplicitParam(name = "userId", value = "用户Id", required = true, paramType = "query")
-    @Secured({"ROLE_admin, ROLE_repairman"})
+    @Secured({"ROLE_admin", "ROLE_repairman"})
     @GetMapping("/selectUserById")
     public ApiResult selectUserById(@NotNull(message = "userId can not be null") Integer userId) throws UserHasNotExistedException {
         User user = userService.selectUserById(userId);
@@ -71,7 +71,7 @@ public class UserController {
     }
 
     @ApiOperation(value = "查找所有用户")
-    @Secured({"ROLE_admin, ROLE_repairman"})
+    @Secured({"ROLE_admin", "ROLE_repairman"})
     @GetMapping("/selectAllUser")
     public ApiResult selectAllUser() throws UserHasNotExistedException {
         List<User> users = userService.selectAllUser();

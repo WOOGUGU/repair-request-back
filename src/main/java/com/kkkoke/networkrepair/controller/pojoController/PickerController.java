@@ -86,7 +86,7 @@ public class PickerController {
     }
 
     @ApiOperation(value = "查找所有报修地点")
-    @Secured({"ROLE_admin, ROLE_user"})
+    @Secured({"ROLE_admin", "ROLE_user"})
     @PostMapping("/selectAllPickerLocation")
     public ApiResult selectAllPickerLocation() throws DataHasNotExistedException {
         List<PickerLocation> pickerLocations = pickerLocationService.selectAllPickerLocation();
@@ -142,7 +142,7 @@ public class PickerController {
     }
 
     @ApiOperation(value = "查找所有时间段")
-    @Secured({"ROLE_admin, ROLE_user"})
+    @Secured({"ROLE_admin", "ROLE_user"})
     @PostMapping("/selectAllPickerTimeForUser")
     public ApiResult selectAllPickerTimeForUser() throws DataHasNotExistedException {
         List<PickerTime> pickerTimes = pickerTimeService.selectAllPickerTime();
