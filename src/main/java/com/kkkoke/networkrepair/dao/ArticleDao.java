@@ -1,6 +1,5 @@
 package com.kkkoke.networkrepair.dao;
 
-import com.kkkoke.networkrepair.pojo.Admin;
 import com.kkkoke.networkrepair.pojo.Article;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -23,9 +22,6 @@ public interface ArticleDao {
     // 通过修改时间查找文章
     Article selectArticleByUpdateTime(String updateTime);
     // 通过作者查找文章
-    Article selectArticleByAuthor(String author);
-
-
-
+    List<Article> selectArticleByAuthor(String author);
 }
 

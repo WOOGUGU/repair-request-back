@@ -82,5 +82,21 @@ public class ArticleController {
         Article article = articleService.selectArticleByCreateTime(createTime);
         return ApiResult.success(article, "查找成功");
     }
+
+    @ApiOperation(value = "通过修改时间查找文章")
+    @ApiImplicitParam(name = "updateTime", value = "文章修改时间", required = true, paramType = "query")
+    @PostMapping("/selectArticleByUpdateTime")
+    public ApiResult selectArticleByUpdateTime(@NotBlank(message = "createTime can not be null") String updateTime) throws DataHasNotExistedException {
+        Article article = articleService.selectArticleByUpdateTime(updateTime);
+        return ApiResult.success(article, "查找成功");
+    }
+
+    @ApiOperation(value = "通过作者查找文章")
+    @ApiImplicitParam(name = "createTime", value = "文章创建时间", required = true, paramType = "query")
+    @PostMapping("/selectArticleByAuthor")
+    public ApiResult selectArticleByAuthor(@NotBlank(message = "author can not be null") String author) throws DataHasNotExistedException {
+        List<Article> articles = articleService.selectArticleByAuthor(author);
+        return ApiResult.success(articles, "查找成功");
+    }
 }
 

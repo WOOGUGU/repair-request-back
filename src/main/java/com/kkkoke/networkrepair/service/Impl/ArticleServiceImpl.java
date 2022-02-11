@@ -89,12 +89,26 @@ public class ArticleServiceImpl implements ArticleService {
     //通过更新时间查看文章
     @Override
     public Article selectArticleByUpdateTime(String updateTime) throws DataHasNotExistedException {
-        return articleDao.selectArticleByUpdateTime(updateTime);
+        // 根据updateTime查找文章
+        Article article = articleDao.selectArticleByCreateTime(updateTime);
+        // 判断查询结果是否为空
+        if (ObjectUtils.isEmpty(article)) {
+            throw new DataHasNotExistedException("Article has not existed");
+        } else {
+            return article;
+        }
     }
 
     //通过作者来查看文章
     @Override
-    public Article selectArticleByAuthor(String author) {
-        return articleDao.selectArticleByAuthor(author);
+    public List<Article> selectArticleByAuthor(String author) throws DataHasNotExistedException {
+        // 根据author查找文章
+        List<Article> articles = articleDao.selectArticleByAuthor(author);
+        // 判断查询结果是否为空
+        if (ObjectUtils.isEmpty(articles)) {
+            throw new DataHasNotExistedException("Article has not existed");
+        } else {
+            return articles;
+        }
     }
 }

@@ -22,5 +22,5 @@ public interface ArticleService {
     // 通过修改时间查找文章
     Article selectArticleByUpdateTime(String updateTime) throws DataHasNotExistedException;
     // 通过作者查找文章
-    Article selectArticleByAuthor(String author) throws DataHasNotExistedException;
+    List<Article> selectArticleByAuthor(String author) throws DataHasNotExistedException;
 }
