@@ -1,210 +1,86 @@
 package com.kkkoke.networkrepair.controller.pojoController;
-import com.alibaba.fastjson.JSONObject;
+import com.kkkoke.networkrepair.exception.DataHasNotExistedException;
 import com.kkkoke.networkrepair.pojo.Article;
 import com.kkkoke.networkrepair.service.ArticleService;
 import com.kkkoke.networkrepair.result.ApiResult;
-import com.kkkoke.networkrepair.util.token.TokenVerify;
-import org.springframework.beans.factory.annotation.Qualifier;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.List;
-import java.util.Objects;
 
 @RestController
 public class ArticleController {
+
     private final ArticleService articleService;
-    private final TokenVerify tokenVerifyForUser;
-    private final TokenVerify tokenVerifyForAdmin;
-    public ArticleController(ArticleService articleService, @Qualifier("userTokenVerifyImpl") TokenVerify tokenVerifyForUser,
-                             @Qualifier("adminTokenVerifyImpl") TokenVerify tokenVerifyForAdmin) {
+
+    public ArticleController(ArticleService articleService) {
         this.articleService = articleService;
-        this.tokenVerifyForUser = tokenVerifyForUser;
-        this.tokenVerifyForAdmin = tokenVerifyForAdmin;
     }
-    // 添加文章
+
+    @ApiOperation(value = "添加文章")
+    @ApiImplicitParams({@ApiImplicitParam(name = "createTime", value = "文章创建时间", required = true, paramType = "query"),
+            @ApiImplicitParam(name = "updateTime", value = "文章修改时间", required = true, paramType = "query"),
+            @ApiImplicitParam(name = "contentPath", value = "文章内容路径", required = true, paramType = "query"),
+            @ApiImplicitParam(name = "author", value = "文章作者", required = true, paramType = "query"),
+            @ApiImplicitParam(name = "displayStatus", value = "文章状态", required = true, paramType = "query")})
     @PostMapping("/addArticle")
-    public ApiResult addArticle(@RequestBody JSONObject articleJson) {
-        // 判断前端传过来的参数是否为空
-        if (Objects.equals(articleJson.toJSONString(), "{}")) {
-            return new ApiResult(null, "Incomplete_data");
-        }
-        // 从json字符串中获取要添加的数据
-        String createTime = (String) articleJson.get("createTime");
-        String updateTime = (String) articleJson.get("updateTime");
-        String contentPath = (String) articleJson.get("contentPath");
-        String author = (String) articleJson.get("author");
-        Integer displayStatus = Integer.parseInt((String) articleJson.get("displayStatus"));
-        String token = (String) articleJson.get("token");
-        // 验证token的正确性
-        if (tokenVerifyForAdmin.verify(token)) {
-            // token验证成功，创建添加的article对象
-            Article article = new Article(createTime,updateTime,contentPath,author,displayStatus);
-            /*文章可以重复添加，不用判断是否存在
-            if (Objects.equals(articleService.selectArticleById(id), null)) {
-                // 调用service层添加文章
-                articleService.addArticle(article);
-                // 返回给前端添加的文章数据及处理的状态值*/
-            articleService.addArticle(article);
-            return new ApiResult(article, "handle_success");
-           /* else {
-                // 数据库中已经存在此数据
-                return new StatusAndDataFeedback(article, "data_exist");
-            }*/
-        }
-        else {
-            // token验证失败，返回错误码
-            return new ApiResult(null, "wrong_token");
-        }
+    public ApiResult addArticle(@NotBlank(message = "createTime can not be null") String createTime, @NotBlank(message = "updateTime can not be null") String updateTime,
+                                @NotBlank(message = "contentPath can not be null") String contentPath, @NotBlank(message = "author can not be null") String author,
+                                @NotNull(message = "displayStatus can not be null") Integer displayStatus) {
+        articleService.addArticle(createTime, updateTime, contentPath, author, displayStatus);
+        return ApiResult.success("文章添加成功");
     }
-    // 通过id删除文章
+
+    @ApiOperation(value = "通过id删除文章")
+    @ApiImplicitParam(name = "articleId", value = "文章Id", required = true, paramType = "query")
     @PostMapping("/deleteArticle")
-    public ApiResult deleteArticle(@RequestBody JSONObject idJson) {
-        // 判断前端传过来的参数是否为空
-        if (Objects.equals(idJson.toJSONString(), "{}")) {
-            return new ApiResult(null, "Incomplete_data");
-        }
-        // 从json字符串中获取要添加的数据
-        Long id = Long.parseLong(idJson.get("id").toString()); // 工单id
-        String token = (String) idJson.get("token");
-        // 验证token的正确性
-        if (tokenVerifyForAdmin.verify(token)) {
-            // token验证成功，查询数据库，查看要删除的文章是否存在
-            if (Objects.equals(articleService.selectArticleById(id), null)) {
-                return new ApiResult(null, "data_not_exist");
-            }
-            else {
-                articleService.deleteArticle(id);
-                return new ApiResult(null, "handle_success");
-            }
-        }
-        else {
-            // token验证失败，返回错误码
-            return new ApiResult(null, "wrong_token");
-        }
+    public ApiResult deleteArticle(@NotNull(message = "articleId can not be null") Integer articleId) throws DataHasNotExistedException {
+        articleService.deleteArticle(articleId);
+        return ApiResult.success("文章删除成功");
     }
-    //修改文章信息
+
+    @ApiOperation(value = "修改文章信息")
+    @ApiImplicitParams({@ApiImplicitParam(name = "articleId", value = "文章Id", required = true, paramType = "query"),
+            @ApiImplicitParam(name = "createTime", value = "文章创建时间", required = true, paramType = "query"),
+            @ApiImplicitParam(name = "updateTime", value = "文章修改时间", required = true, paramType = "query"),
+            @ApiImplicitParam(name = "contentPath", value = "文章内容路径", required = true, paramType = "query"),
+            @ApiImplicitParam(name = "author", value = "文章作者", required = true, paramType = "query"),
+            @ApiImplicitParam(name = "displayStatus", value = "文章状态", required = true, paramType = "query")})
     @PostMapping("/updateArticle")
-    public ApiResult updateArticle(@RequestBody JSONObject articleJson) {
-        // 判断前端传过来的参数是否为空
-        if (Objects.equals(articleJson.toJSONString(), "{}")) {
-            return new ApiResult(null, "Incomplete_data");
-        }
-        // 从json字符串中获取要添加的数据
-        Long id = Long.parseLong((String) articleJson.get("id"));
-        String createTime = (String) articleJson.get("createTime");
-        String updateTime = (String) articleJson.get("updateTime");
-        String contentPath = (String) articleJson.get("contentPath");
-        String author = (String) articleJson.get("author");
-        Integer displayStatus = Integer.parseInt((String) articleJson.get("displayStatus"));
-        String token = (String) articleJson.get("token");
-        // 验证token的正确性
-        if (tokenVerifyForAdmin.verify(token)) {
-            // token验证成功，创建要修改的article对象
-            Article article = new Article(id,createTime,updateTime,contentPath,author,displayStatus);
-            // 查找数据库中是否存在此文章
-            if (Objects.equals(articleService.selectArticleById(id), null)){
-                return new ApiResult(article, "data_not_exist");
-            }
-            else {
-                // 如果管理员存在就更新数据
-                articleService.updateArticle(article);
-                return new ApiResult(article, "handle_success");
-            }
-        }
-        else {
-            // token验证失败，返回错误码
-            return new ApiResult(null, "wrong_token");
-        }
+    public ApiResult updateArticle(@NotNull(message = "articleId can not be null") Integer articleId, @NotBlank(message = "createTime can not be null") String createTime,
+                                   @NotBlank(message = "updateTime can not be null") String updateTime, @NotBlank(message = "contentPath can not be null") String contentPath,
+                                   @NotBlank(message = "author can not be null") String author, @NotNull(message = "displayStatus can not be null") Integer displayStatus) throws DataHasNotExistedException {
+        articleService.updateArticle(articleId, createTime, updateTime, contentPath, author, displayStatus);
+        return ApiResult.success("更新成功");
     }
-    //查看所有文章
-    @PostMapping("/selectAllArticle")
-    public ApiResult selectAllArticle(@RequestBody JSONObject tokenJson) {
-        // 判断前端传过来的参数是否为空
-        if (Objects.equals(tokenJson.toJSONString(), "{}")) {
-            return new ApiResult(null, "Incomplete_data");
-        }
-        // 获取tokenJson中的数据
-        String token = (String) tokenJson.get("token"); // 待验证的token
-        // 验证token的正确性
-        //是否为管理员
-        if (tokenVerifyForAdmin.verify(token)) {
-            // token验证成功，使用查询该所有文章
-            try {
-                List<Article> articles = articleService.selectAllArticle();
-                // 判断查询结果是否为空
-                if (articles.isEmpty()) {
-                    return new ApiResult(null, "data_not_exist");
-                }
-                else {
-                    return new ApiResult(articles, "handle_success");
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                return new ApiResult(null, "exception_happen");
-            }
-        }
-        else {
-            // token验证失败，返回错误码
-            return new ApiResult(null, "wrong_token");
-        }
+
+    @ApiOperation(value = "查看所有文章")
+    @GetMapping("/selectAllArticle")
+    public ApiResult selectAllArticle() throws DataHasNotExistedException {
+        List<Article> articles = articleService.selectAllArticle();
+        return ApiResult.success(articles, "查询成功");
     }
-    // 通过id查找文章
+
+    @ApiOperation(value = "通过id查找文章")
+    @ApiImplicitParam(name = "articleId", value = "文章Id", required = true, paramType = "query")
     @PostMapping("/selectArticleById")
-    public ApiResult selectArticleById(@RequestBody JSONObject idJson) {
-        // 判断前端传过来的参数是否为空
-        if (Objects.equals(idJson.toJSONString(), "{}")) {
-            return new ApiResult(null, "Incomplete_data");
-        }
-        // 从json字符串中获取要添加的数据
-        Long id = Long.parseLong(idJson.get("id").toString()); //文章id
-        String token = (String) idJson.get("token");
-        // 验证token的正确性
-        if (tokenVerifyForAdmin.verify(token)) {
-            // token验证成功，根据传入的id查询对应的文章
-            Article article=articleService.selectArticleById(id);
-            // 判断查询结果是否为空
-            if (Objects.equals(article, null)) {
-
-                return new ApiResult(null, "data_not_exist");
-            }
-            else {
-                return new ApiResult(article, "handle_success");
-            }
-        }
-        else {
-            // token验证失败，返回错误码
-            return new ApiResult(null, "wrong_token");
-        }
+    public ApiResult selectArticleById(@NotNull(message = "articleId can not be null") Integer articleId) throws DataHasNotExistedException {
+        Article article = articleService.selectArticleById(articleId);
+        return ApiResult.success(article, "查找成功");
     }
-    // 通过创建时间查找文章
-    @PostMapping("/selectArticleByCreateTime")
-    public ApiResult selectArticleByCreateTime(@RequestBody JSONObject createTimeJson) {
-        // 判断前端传过来的参数是否为空
-        if (Objects.equals(createTimeJson.toJSONString(), "{}")) {
-            return new ApiResult(null, "Incomplete_data");
-        }
-        // 从json字符串中获取要添加的数据
-        String createTime = (String) createTimeJson.get("createTime"); //文章创建时间
-        String token = (String) createTimeJson.get("token");
-        // 验证token的正确性
-        if (tokenVerifyForAdmin.verify(token)) {
-            // token验证成功，根据传入的id查询对应的文章
-            Article article=articleService.selectArticleByCreateTime(createTime);
-            // 判断查询结果是否为空
-            if (Objects.equals(article, null)) {
 
-                return new ApiResult(null, "data_not_exist");
-            }
-            else {
-                return new ApiResult(article, "handle_success");
-            }
-        }
-        else {
-            // token验证失败，返回错误码
-            return new ApiResult(null, "wrong_token");
-        }
+    @ApiOperation(value = "通过创建时间查找文章")
+    @ApiImplicitParam(name = "createTime", value = "文章创建时间", required = true, paramType = "query")
+    @PostMapping("/selectArticleByCreateTime")
+    public ApiResult selectArticleByCreateTime(@NotBlank(message = "createTime can not be null") String createTime) throws DataHasNotExistedException {
+        Article article = articleService.selectArticleByCreateTime(createTime);
+        return ApiResult.success(article, "查找成功");
     }
 }
 

@@ -1,6 +1,5 @@
 package com.kkkoke.networkrepair.service;
 
-import com.kkkoke.networkrepair.exception.DataHasExistedException;
 import com.kkkoke.networkrepair.exception.DataHasNotExistedException;
 import com.kkkoke.networkrepair.pojo.Order;
 import java.util.List;
