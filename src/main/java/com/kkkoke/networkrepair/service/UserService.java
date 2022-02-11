@@ -1,25 +1,34 @@
 package com.kkkoke.networkrepair.service;
 
+import com.kkkoke.networkrepair.exception.UserHasExistedException;
+import com.kkkoke.networkrepair.exception.UserHasNotExistedException;
+import com.kkkoke.networkrepair.pojo.Role;
 import com.kkkoke.networkrepair.pojo.User;
 
 import java.util.List;
 
 public interface UserService {
     // 添加用户
-    int addUser(User user);
+    User addUser(String username, String password, String name) throws UserHasExistedException;
 
     // 删除用户
-    int deleteUser(Long id);
+    int deleteUser(Integer userId) throws UserHasNotExistedException;
 
     // 通过用户名查找用户
-    User selectUserByUsername(String username);
+    User selectUserByUsername(String username) throws UserHasNotExistedException;
 
     // 通过id查找用户
-    User selectUserById(Long id);
+    User selectUserById(Integer userId) throws UserHasNotExistedException;
 
     // 查找所有用户
-    List<User> selectAllUser();
+    List<User> selectAllUser() throws UserHasNotExistedException;
 
     // 修改用户信息
-    Integer updateUser(User user);
+    User updateUser(Integer userId, String username, String password, String name) throws UserHasNotExistedException;
+
+    // 内部调用 根据⽤户名查询⽤户
+    User loadUserByUsername(String username);
+
+    // 根据⽤户id查询⻆⾊
+    List<Role> getRolesByUid(Integer userId);
 }

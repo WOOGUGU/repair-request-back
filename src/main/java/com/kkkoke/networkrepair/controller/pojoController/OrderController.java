@@ -1,219 +1,104 @@
 package com.kkkoke.networkrepair.controller.pojoController;
 
-import com.alibaba.fastjson.JSONObject;
-import com.auth0.jwt.interfaces.Claim;
+import com.kkkoke.networkrepair.exception.DataHasNotExistedException;
 import com.kkkoke.networkrepair.pojo.Order;
 import com.kkkoke.networkrepair.service.OrderService;
-import com.kkkoke.networkrepair.statusAndDataResult.StatusAndDataFeedback;
-import com.kkkoke.networkrepair.util.token.JwtToken;
-import com.kkkoke.networkrepair.util.token.TokenVerify;
-import org.springframework.beans.factory.annotation.Qualifier;
+import com.kkkoke.networkrepair.result.ApiResult;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import java.time.LocalDateTime;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 
 @RestController
 public class OrderController {
     private final OrderService orderService;
-    private final TokenVerify tokenVerify;
 
-    public OrderController(OrderService orderService, @Qualifier("userTokenVerifyImpl") TokenVerify tokenVerify) {
+    @Autowired
+    public OrderController(OrderService orderService) {
         this.orderService = orderService;
-        this.tokenVerify = tokenVerify;
     }
 
-    // 增加报修工单
+    @ApiOperation(value = "增加报修工单")
+    @ApiImplicitParams({@ApiImplicitParam(name = "username", value = "用户名", required = true, paramType = "query"),
+            @ApiImplicitParam(name = "sender", value = "工单发起者（用户）", required = true, paramType = "query"),
+            @ApiImplicitParam(name = "tel", value = "工单发起者联系方式", required = true, paramType = "query"),
+            @ApiImplicitParam(name = "type", value = "工单类型", required = true, paramType = "query"),
+            @ApiImplicitParam(name = "des", value = "故障描述", required = true, paramType = "query"),
+            @ApiImplicitParam(name = "position", value = "故障位置", required = true, paramType = "query"),
+            @ApiImplicitParam(name = "timeSubscribe", value = "工单预约上门时间", required = true, paramType = "query"),
+            @ApiImplicitParam(name = "timeStart", value = "工单发起时间", required = true, paramType = "query")})
     @PostMapping("/addOrder")
-    public StatusAndDataFeedback addOrder(@RequestBody JSONObject orderJson) {
-        // 判断前端传过来的参数是否为空
-        if (Objects.equals(orderJson.toJSONString(), "{}")) {
-            return new StatusAndDataFeedback(null, "Incomplete_data");
-        }
-        // 获取工单中的数据
-        String username = (String) orderJson.get("username"); // 用户名
-        String sender = (String) orderJson.get("sender"); // 工单发起者（用户）
-        String tel = (String) orderJson.get("tel"); // 工单发起者联系方式
-        String type = (String) orderJson.get("type"); // 工单类型
-        String des = (String) orderJson.get("des"); // 故障描述
-        String position = (String) orderJson.get("position"); // 故障位置
-        String timeSubscribe = (String) orderJson.get("timeSubscribe"); // 工单预约上门时间
-        String timeStart = LocalDateTime.now().toString(); // 工单发起时间
-        String token = (String) orderJson.get("token"); // 待验证的token
-        // 验证token的正确性
-        if (tokenVerify.verify(token)) {
-            // token验证成功，创建添加的admin对象
-            Order order = new Order(username, sender, tel, type, des, position, timeSubscribe, timeStart);
-            // 调用service层添加工单
-            orderService.addOrder(order);
-            // 返回给前端添加的管理员数据及处理的状态值
-            return new StatusAndDataFeedback(order, "handle_success");
-        }
-        else {
-            // token验证失败，返回错误码
-            return new StatusAndDataFeedback(null, "wrong_token");
-        }
+    public ApiResult addOrder(@NotBlank(message = "username can not be null") String username, @NotBlank(message = "sender can not be null") String sender,
+                              @NotBlank(message = "tel can not be null") String tel, @NotBlank(message = "type can not be null") String type,
+                              @NotBlank(message = "des can not be null") String des, @NotBlank(message = "position can not be null") String position,
+                              @NotBlank(message = "timeSubscribe can not be null") String timeSubscribe, @NotBlank(message = "timeStart can not be null") String timeStart) {
+        orderService.addOrder(username, sender, tel, type, des, position, timeSubscribe, timeStart);
+        return ApiResult.success("工单添加成功");
     }
 
-    // 通过id删除报修工单
+    @ApiOperation(value = "通过id删除报修工单")
+    @ApiImplicitParam(name = "orderId", value = "工单Id", required = true, paramType = "query")
     @PostMapping("/deleteOrder")
-    public StatusAndDataFeedback deleteOrder(@RequestBody JSONObject idJson) {
-        // 判断前端传过来的参数是否为空
-        if (Objects.equals(idJson.toJSONString(), "{}")) {
-            return new StatusAndDataFeedback(null, "Incomplete_data");
-        }
-        // 从json字符串中获取要添加的数据
-        Long id = Long.parseLong(idJson.get("id").toString()); // 工单id
-        String token = (String) idJson.get("token"); // 待验证的token
-        // 验证token的正确性
-        if (tokenVerify.verify(token)) {
-            // token验证成功，查询数据库，查看要删除的工单是否存在
-            if (Objects.equals(orderService.selectOrderById(id), null)) {
-                return new StatusAndDataFeedback(null, "data_not_exist");
-            }
-            else {
-                orderService.deleteOrder(id);
-                return new StatusAndDataFeedback(null, "handle_success");
-            }
-        }
-        else {
-            // token验证失败，返回错误码
-            return new StatusAndDataFeedback(null, "wrong_token");
-        }
+    public ApiResult deleteOrder(@NotNull(message = "orderId can not be null") Integer orderId) throws DataHasNotExistedException {
+        orderService.deleteOrder(orderId);
+        return ApiResult.success("工单删除成功");
     }
 
-    // 通过工单id查找报修工单
-    @PostMapping("/selectOrderById")
-    public StatusAndDataFeedback selectOrderById(@RequestBody JSONObject idJson) {
-        // 判断前端传过来的参数是否为空
-        if (Objects.equals(idJson.toJSONString(), "{}")) {
-            return new StatusAndDataFeedback(null, "Incomplete_data");
-        }
-        // 从json字符串中获取要添加的数据
-        Long id = Long.parseLong(idJson.get("id").toString()); // 工单id
-        String token = (String) idJson.get("token"); // 待验证的token
-        // 验证token的正确性
-        if (tokenVerify.verify(token)) {
-            // token验证成功，根据id查找工单
-            Order order = orderService.selectOrderById(id);
-            // 判断查询结果是否为空
-            if (Objects.equals(order, null)) {
-                return new StatusAndDataFeedback(null, "data_not_exist");
-            }
-            else {
-                return new StatusAndDataFeedback(order, "handle_success");
-            }
-        }
-        else {
-            // token验证失败，返回错误码
-            return new StatusAndDataFeedback(null, "wrong_token");
-        }
+    @ApiOperation(value = "通过工单id查找报修工单")
+    @ApiImplicitParam(name = "orderId", value = "工单Id", required = true, paramType = "query")
+    @GetMapping("/selectOrderById")
+    public ApiResult selectOrderById(@NotNull(message = "orderId can not be null") Integer orderId) throws DataHasNotExistedException {
+        Order order = orderService.selectOrderById(orderId);
+        return ApiResult.success(order, "查找成功");
     }
 
-    // 查找所有报修工单
-    @PostMapping("/selectAllOrder")
-    public StatusAndDataFeedback selectAllOrder(@RequestBody JSONObject tokenJson) {
-        // 判断前端传过来的参数是否为空
-        if (Objects.equals(tokenJson.toJSONString(), "{}")) {
-            return new StatusAndDataFeedback(null, "Incomplete_data");
-        }
-        // 从json字符串中获取要添加的数据
-        String token = (String) tokenJson.get("token"); // 待验证的token
-        // 验证token的正确性
-        if (tokenVerify.verify(token)) {
-            // token验证成功，去数据库中查询orders
-            List<Order> orders = orderService.selectAllOrder();
-            // 判断查询结果是否为空
-            if (orders.isEmpty()) {
-                return new StatusAndDataFeedback(null, "data_not_exist");
-            }
-            else {
-                return new StatusAndDataFeedback(orders, "handle_success");
-            }
-        }
-        else {
-            // token验证失败，返回错误码
-            return new StatusAndDataFeedback(null, "wrong_token");
-        }
+    @ApiOperation(value = "查找所有报修工单")
+    @GetMapping("/selectAllOrder")
+    public ApiResult selectAllOrder() throws DataHasNotExistedException {
+        List<Order> orders = orderService.selectAllOrder();
+        return ApiResult.success(orders, "查找成功");
     }
 
-    // 修改报修工单
+    @ApiOperation(value = "修改报修工单")
+    @ApiImplicitParams({@ApiImplicitParam(name = "orderId", value = "工单id", required = true, paramType = "query"),
+            @ApiImplicitParam(name = "username", value = "用户名", required = true, paramType = "query"),
+            @ApiImplicitParam(name = "sender", value = "工单发起者（用户）", required = true, paramType = "query"),
+            @ApiImplicitParam(name = "tel", value = "工单发起者联系方式", required = true, paramType = "query"),
+            @ApiImplicitParam(name = "type", value = "工单类型", required = true, paramType = "query"),
+            @ApiImplicitParam(name = "des", value = "故障描述", required = true, paramType = "query"),
+            @ApiImplicitParam(name = "position", value = "故障位置", required = true, paramType = "query"),
+            @ApiImplicitParam(name = "timeSubscribe", value = "工单预约上门时间", required = true, paramType = "query"),
+            @ApiImplicitParam(name = "progress", value = "-2：审核不通过，-1：用户取消，0：待审核，1：待处理，2：已处理", required = true, paramType = "query"),
+            @ApiImplicitParam(name = "solver", value = "解决工单的技术人员", required = true, paramType = "query"),
+            @ApiImplicitParam(name = "timeStart", value = "工单发起时间", required = true, paramType = "query"),
+            @ApiImplicitParam(name = "timeDistribution", value = "工单分配时间", required = true, paramType = "query"),
+            @ApiImplicitParam(name = "timeEnd", value = "工单解决时间", required = true, paramType = "query"),
+            @ApiImplicitParam(name = "feedback", value = "用户反馈", required = true, paramType = "query")})
     @PostMapping("/updateOrder")
-    public StatusAndDataFeedback updateOrder(@RequestBody JSONObject orderJson) {
-        // 判断前端传过来的参数是否为空
-        if (Objects.equals(orderJson.toJSONString(), "{}")) {
-            return new StatusAndDataFeedback(null, "Incomplete_data");
-        }
-        // 获取工单中的数据
-        Long id = Long.parseLong(orderJson.get("id").toString()); // 工单id
-        String username = (String) orderJson.get("username"); // 用户名
-        String sender = (String) orderJson.get("sender"); // 工单发起者（用户）
-        String tel = (String) orderJson.get("tel"); // 工单发起者联系方式
-        String type = (String) orderJson.get("type"); // 工单类型
-        String des = (String) orderJson.get("des"); // 故障描述
-        String position = (String) orderJson.get("position"); // 故障位置
-        String timeSubscribe = (String) orderJson.get("timeSubscribe"); // 工单预约上门时间
-        Integer progress = (Integer) orderJson.get("progress"); // -2：审核不通过，-1：用户取消，0：待审核，1：待处理，2：已处理
-        String solver = (String) orderJson.get("solver"); // 解决工单的技术人员
-        String timeStart = (String) orderJson.get("timeStart"); // 工单发起时间
-        String timeDistribution = (String) orderJson.get("timeDistribution"); // 工单分配时间
-        String timeEnd = (String) orderJson.get("timeEnd"); // 工单解决时间
-        String feedback = (String) orderJson.get("feedback"); // 用户反馈
-        Order order = new Order(id, username, sender, tel, type, des, position, timeSubscribe, progress, solver, timeStart, timeDistribution, timeEnd, feedback);
-        String token = (String) orderJson.get("token"); // 待验证的token
-        // 验证token的正确性
-        if (tokenVerify.verify(token)) {
-            // token验证成功，查找数据库中是否存在此工单
-            if (Objects.equals(orderService.selectOrderById(id), null)) {
-                return new StatusAndDataFeedback(order, "data_not_exist");
-            }
-            else {
-                // 如果此工单存在就更新数据
-                orderService.updateOrder(order);
-                return new StatusAndDataFeedback(order, "handle_success");
-            }
-        }
-        else {
-            // token验证失败，返回错误码
-            return new StatusAndDataFeedback(null, "wrong_token");
-        }
+    public ApiResult updateOrder(@NotNull(message = "orderId can not be null") Integer orderId, @NotBlank(message = "username can not be null") String username,
+                                 @NotBlank(message = "sender can not be null") String sender, @NotBlank(message = "tel can not be null") String tel,
+                                 @NotBlank(message = "type can not be null") String type, @NotBlank(message = "des can not be null") String des,
+                                 @NotBlank(message = "position can not be null") String position, @NotBlank(message = "timeSubscribe can not be null") String timeSubscribe,
+                                 @NotNull(message = "progress can not be null") Integer progress, @NotBlank(message = "solver can not be null") String solver,
+                                 @NotBlank(message = "timeStart can not be null") String timeStart, @NotBlank(message = "timeDistribution can not be null") String timeDistribution,
+                                 @NotBlank(message = "timeEnd can not be null") String timeEnd, @NotBlank(message = "feedback can not be null") String feedback) throws DataHasNotExistedException {
+        orderService.updateOrder(orderId, username, sender, tel, type, des, position, timeSubscribe, progress,
+                solver, timeStart, timeDistribution, timeEnd, feedback);
+        return ApiResult.success("更新成功");
     }
 
-    // 查找某用户发布的所有工单
+    @ApiOperation(value = "查找某用户发布的所有工单")
+    @ApiImplicitParam(name = "username", value = "用户名", required = true, paramType = "query")
     @PostMapping("/selectAllOrderOfUser")
-    public StatusAndDataFeedback selectAllOrderOfUser(@RequestBody JSONObject usernameJson) {
-        // 判断前端传过来的参数是否为空
-        if (Objects.equals(usernameJson.toJSONString(), "{}")) {
-            return new StatusAndDataFeedback(null, "Incomplete_data");
-        }
-
-        // 获取usernameJson中的数据
-        String token = (String) usernameJson.get("token"); // 待验证的token
-        // 验证token的正确性
-        if (tokenVerify.verify(token)) {
-            // token验证成功，使用username查询该用户所发布的所有工单
-            try {
-                Map<String, Claim> jwt = JwtToken.verifyToken(token);
-                String username = jwt.get("username").asString();
-                List<Order> orders = orderService.selectAllOrderOfUser(username);
-                // 判断查询结果是否为空
-                if (orders.isEmpty()) {
-                    return new StatusAndDataFeedback(null, "data_not_exist");
-                }
-                else {
-                    return new StatusAndDataFeedback(orders, "handle_success");
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                return new StatusAndDataFeedback(null, "exception_happen");
-            }
-        }
-        else {
-            // token验证失败，返回错误码
-            return new StatusAndDataFeedback(null, "wrong_token");
-        }
+    public ApiResult selectAllOrderOfUser(@NotBlank(message = "username can not be null") String username) throws DataHasNotExistedException {
+        List<Order> orders = orderService.selectAllOrderOfUser(username);
+        return ApiResult.success(orders, "查找成功");
     }
 }

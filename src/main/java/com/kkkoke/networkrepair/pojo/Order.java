@@ -2,20 +2,13 @@ package com.kkkoke.networkrepair.pojo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
-@EqualsAndHashCode(callSuper = false)
 public class Order {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id; // 工单id
+    private Integer id; // 工单id
     private String username; // 用户名
     private String sender; // 工单发起者（用户）
     private String tel; // 工单发起者联系方式
