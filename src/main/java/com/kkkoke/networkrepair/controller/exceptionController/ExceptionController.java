@@ -7,6 +7,7 @@ import com.kkkoke.networkrepair.result.ResultCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -142,5 +143,19 @@ public class ExceptionController {
     public ApiResult accessDeniedException(AccessDeniedException e) {
         log.info("AccessDeniedException.errMsg:{}", e.getMessage());
         return ApiResult.fail(ResultCode.FORBIDDEN, "权限不够，无法访问", ApiResult.FORBIDDEN);
+    }
+
+    /**
+     * 请求方式不符合
+     *
+     * @param e
+     *            异常
+     * @return ApiResult
+     */
+    @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public ApiResult httpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
+        log.info("HttpRequestMethodNotSupportedException.errMsg:{}", e.getMessage());
+        return ApiResult.fail(ResultCode.UNSUPPORTED_HTTP_METHOD, "请求方式不符合，无法访问", ApiResult.UNSUPPORTED_HTTP_METHOD);
     }
 }

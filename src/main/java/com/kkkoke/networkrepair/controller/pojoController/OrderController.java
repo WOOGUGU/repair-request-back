@@ -114,7 +114,7 @@ public class OrderController {
     @ApiOperation(value = "查找某用户发布的所有工单")
     @ApiImplicitParam(name = "username", value = "用户名", required = true, paramType = "query")
     @Secured({"ROLE_admin", "ROLE_user", "ROLE_repairman"})
-    @PostMapping("/selectAllOrderOfUser")
+    @GetMapping("/selectAllOrderOfUser")
     public ApiResult selectAllOrderOfUser(@NotBlank(message = "username can not be null") String username) throws DataHasNotExistedException {
         List<Order> orders = orderService.selectAllOrderOfUser(username);
         return ApiResult.success(orders, "查找成功");

@@ -86,7 +86,7 @@ public class ArticleController {
     @ApiOperation(value = "通过id查找文章")
     @ApiImplicitParam(name = "articleId", value = "文章Id", required = true, paramType = "query")
     @Secured({"ROLE_admin", "ROLE_user", "ROLE_repairman"})
-    @PostMapping("/selectArticleById")
+    @GetMapping("/selectArticleById")
     public ApiResult selectArticleById(@NotNull(message = "articleId can not be null") Integer articleId) throws DataHasNotExistedException {
         Article article = articleService.selectArticleById(articleId);
         return ApiResult.success(article, "查找成功");
@@ -95,7 +95,7 @@ public class ArticleController {
     @ApiOperation(value = "通过创建时间查找文章")
     @ApiImplicitParam(name = "createTime", value = "文章创建时间", required = true, paramType = "query")
     @Secured({"ROLE_admin", "ROLE_user", "ROLE_repairman"})
-    @PostMapping("/selectArticleByCreateTime")
+    @GetMapping("/selectArticleByCreateTime")
     public ApiResult selectArticleByCreateTime(@NotBlank(message = "createTime can not be null") String createTime) throws DataHasNotExistedException {
         Article article = articleService.selectArticleByCreateTime(createTime);
         return ApiResult.success(article, "查找成功");
@@ -104,7 +104,7 @@ public class ArticleController {
     @ApiOperation(value = "通过修改时间查找文章")
     @ApiImplicitParam(name = "updateTime", value = "文章修改时间", required = true, paramType = "query")
     @Secured({"ROLE_admin", "ROLE_user", "ROLE_repairman"})
-    @PostMapping("/selectArticleByUpdateTime")
+    @GetMapping("/selectArticleByUpdateTime")
     public ApiResult selectArticleByUpdateTime(@NotBlank(message = "createTime can not be null") String updateTime) throws DataHasNotExistedException {
         Article article = articleService.selectArticleByUpdateTime(updateTime);
         return ApiResult.success(article, "查找成功");
@@ -113,7 +113,7 @@ public class ArticleController {
     @ApiOperation(value = "通过作者查找文章")
     @ApiImplicitParam(name = "createTime", value = "文章创建时间", required = true, paramType = "query")
     @Secured({"ROLE_admin", "ROLE_user", "ROLE_repairman"})
-    @PostMapping("/selectArticleByAuthor")
+    @GetMapping("/selectArticleByAuthor")
     public ApiResult selectArticleByAuthor(@NotBlank(message = "author can not be null") String author) throws DataHasNotExistedException {
         List<Article> articles = articleService.selectArticleByAuthor(author);
         return ApiResult.success(articles, "查找成功");
