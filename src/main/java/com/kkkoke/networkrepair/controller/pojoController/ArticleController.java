@@ -105,13 +105,13 @@ public class ArticleController {
     @ApiImplicitParam(name = "updateTime", value = "文章修改时间", required = true, paramType = "query")
     @Secured({"ROLE_admin", "ROLE_user", "ROLE_repairman"})
     @GetMapping("/selectArticleByUpdateTime")
-    public ApiResult selectArticleByUpdateTime(@NotBlank(message = "createTime can not be null") String updateTime) throws DataHasNotExistedException {
+    public ApiResult selectArticleByUpdateTime(@NotBlank(message = "updateTime can not be null") String updateTime) throws DataHasNotExistedException {
         Article article = articleService.selectArticleByUpdateTime(updateTime);
         return ApiResult.success(article, "查找成功");
     }
 
     @ApiOperation(value = "通过作者查找文章")
-    @ApiImplicitParam(name = "createTime", value = "文章创建时间", required = true, paramType = "query")
+    @ApiImplicitParam(name = "author", value = "作者", required = true, paramType = "query")
     @Secured({"ROLE_admin", "ROLE_user", "ROLE_repairman"})
     @GetMapping("/selectArticleByAuthor")
     public ApiResult selectArticleByAuthor(@NotBlank(message = "author can not be null") String author) throws DataHasNotExistedException {

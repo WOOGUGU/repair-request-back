@@ -87,7 +87,7 @@ public class PickerController {
 
     @ApiOperation(value = "查找所有报修地点")
     @Secured({"ROLE_admin", "ROLE_user"})
-    @PostMapping("/selectAllPickerLocation")
+    @GetMapping("/selectAllPickerLocation")
     public ApiResult selectAllPickerLocation() throws DataHasNotExistedException {
         List<PickerLocation> pickerLocations = pickerLocationService.selectAllPickerLocation();
         return ApiResult.success(pickerLocations, "查找成功");
@@ -136,15 +136,15 @@ public class PickerController {
     @ApiImplicitParam(name = "time", value = "时间段", required = true, paramType = "query")
     @Secured({"ROLE_admin"})
     @GetMapping("/selectPickerTimeByTime")
-    public ApiResult selectPickerTimeByTime(@NotBlank(message = "position can not be null") String time) throws DataHasNotExistedException {
+    public ApiResult selectPickerTimeByTime(@NotBlank(message = "time can not be null") String time) throws DataHasNotExistedException {
         PickerTime pickerTime = pickerTimeService.selectPickerTimeByTime(time);
         return ApiResult.success(pickerTime, "查找成功");
     }
 
     @ApiOperation(value = "查找所有时间段")
     @Secured({"ROLE_admin", "ROLE_user"})
-    @PostMapping("/selectAllPickerTimeForUser")
-    public ApiResult selectAllPickerTimeForUser() throws DataHasNotExistedException {
+    @GetMapping("/selectAllPickerTime")
+    public ApiResult selectAllPickerTime() throws DataHasNotExistedException {
         List<PickerTime> pickerTimes = pickerTimeService.selectAllPickerTime();
         return ApiResult.success(pickerTimes, "查找成功");
     }
