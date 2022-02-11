@@ -92,4 +92,6 @@ public class ResultCode {
     public static final String DATA_EXISTED = "E0001";
 
     public static final String DATA_NOT_EXIST = "E0100";
+
+    public static final String LOGIN_FAIL = "F0001";
 }

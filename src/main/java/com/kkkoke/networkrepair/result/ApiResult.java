@@ -30,9 +30,18 @@ public class ApiResult {
     @ApiModelProperty(value = "debug报错提示信息")
     private String errMsg;
 
-//    public static ApiResult fail() {
-//        return new ApiResult(code, null, userMsg, errMsg);
-//    }
+    // errMsg
+    public final static String INCOMPLETE_DATA = "incomplete data"; // 前端传入的数据不完整
+    public final static String HANDLE_SUCCESS = "handle success"; // 处理成功
+    public final static String DATA_NOT_EXIST = "data not exist"; // 数据库中不存在此数据
+    public final static String DATA_EXIST = "data exist"; // 数据库中已经存在此数据
+    public final static String WRONG_USER = "wrong user"; // 此用户不存在
+    public final static String WRONG_PASSWORD = "wrong password"; // 密码错误
+    public final static String LOGIN_SUCCESS = "login success"; // 登录成功
+    public final static String EXCEPTION_HAPPEN = "exception happen"; // 出现异常
+    public final static String WRONG_TOKEN = "wrong token"; // token错误
+    public final static String EXPIRED_TOKEN = "expired token"; // token过期
+    public final static String LOGIN_FAIL = "login fail"; // 登录失败
 
     public static ApiResult fail(String code, String userMsg, String errMsg) {
         return new ApiResult(code, null, userMsg, errMsg);
@@ -43,11 +52,11 @@ public class ApiResult {
     }
 
     public static ApiResult success(String userMsg) {
-        return new ApiResult(ResultCode.SUCCESS, null, userMsg, "handle success");
+        return new ApiResult(ResultCode.SUCCESS, null, userMsg, ApiResult.HANDLE_SUCCESS);
     }
 
     public static ApiResult success(Object data, String userMsg) {
-        return new ApiResult(ResultCode.SUCCESS, data, userMsg, "handle success");
+        return new ApiResult(ResultCode.SUCCESS, data, userMsg, ApiResult.HANDLE_SUCCESS);
     }
 
     public static ApiResult success(String code, String userMsg, String errMsg) {
@@ -57,18 +66,4 @@ public class ApiResult {
     public static ApiResult success(String code, Object data, String userMsg, String errMsg) {
         return new ApiResult(code, data, userMsg, errMsg);
     }
-
-    // 返回给前端
-    public final static String INCOMPLETE_DATA = "Incomplete_data"; // 前端传入的数据不完整
-    public final static String HANDLE_SUCCESS = "handle_success"; // 处理成功
-    public final static String DATA_NOT_EXIST = "data_not_exist"; // 数据库中不存在此数据
-    public final static String DATA_EXIST = "data_exist"; // 数据库中已经存在此数据
-    public final static String WRONG_USER = "wrong_user"; // 此用户不存在
-    public final static String WRONG_PASSWORD = "wrong_password"; // 密码错误
-    public final static String LOGIN_SUCCESS = "login_success"; // 登录成功
-    public final static String USER = "user"; // 用户身份
-    public final static String ADMIN = "admin"; // 管理员身份
-    public final static String EXCEPTION_HAPPEN = "exception_happen"; // 出现异常
-    public final static String WRONG_TOKEN = "wrong_token"; // token错误
-    public final static String EXPIRED_TOKEN = "expired_token"; // token过期
 }

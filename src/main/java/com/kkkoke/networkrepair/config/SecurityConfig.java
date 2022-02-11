@@ -1,7 +1,10 @@
 package com.kkkoke.networkrepair.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kkkoke.networkrepair.result.ApiResult;
+import com.kkkoke.networkrepair.result.ResultCode;
 import com.kkkoke.networkrepair.service.Impl.UserDetailsServiceImpl;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,6 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
+@Slf4j
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsServiceImpl userDetailsServiceImpl;
@@ -52,21 +56,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         loginFilter.setPasswordParameter("passwd"); // 指定接收 json 密码 key
         loginFilter.setAuthenticationManager(authenticationManagerBean());
         loginFilter.setAuthenticationSuccessHandler(((request, response, authentication) -> {
-            Map<String, Object> result = new HashMap<>();
-            result.put("msg", "登录成功");
-            result.put("用户信息", authentication.getPrincipal());
             response.setContentType("application/json;charset=UTF-8");
             response.setStatus(HttpStatus.OK.value());
-            String s = new ObjectMapper().writeValueAsString(result);
-            response.getWriter().println(s);
+            String result = new ObjectMapper().writeValueAsString(ApiResult.success(authentication.getPrincipal(), ApiResult.LOGIN_SUCCESS));
+            response.getWriter().println(result);
         })); // 认证成功处理
         loginFilter.setAuthenticationFailureHandler(((request, response, exception) -> {
-            Map<String, Object> result = new HashMap<>();
-            result.put("msg", "登录失败: " + exception.getMessage());
+            log.info("{}.errMsg:{}", exception, exception.getMessage());
             response.setContentType("application/json;charset=UTF-8");
             response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
-            String s = new ObjectMapper().writeValueAsString(result);
-            response.getWriter().println(s);
+            String result = new ObjectMapper().writeValueAsString(ApiResult.fail(ResultCode.LOGIN_FAIL,null, "账号或密码错误，请重试", ApiResult.LOGIN_FAIL));
+            response.getWriter().println(result);
         })); // 认证失败处理
         return loginFilter;
     }
@@ -105,7 +105,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             }))
             .and()
             .csrf().disable();
-
 
         // at: 用某个 filter 来替换过滤器链中哪个 filter
         // before: 放在过滤器链中哪个 filter 之前
