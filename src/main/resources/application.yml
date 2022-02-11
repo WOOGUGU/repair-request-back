@@ -39,5 +39,5 @@ logging:
     org.springfromework.web: debug
     org.hibernate: error
   file:
-    path: /home/projects/network-repair/log
+    path: /home/projects/baoxiu/log
 #    path: /Users/kkkoke/IdeaProjects/network-repair/log
