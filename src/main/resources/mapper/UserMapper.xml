@@ -37,13 +37,13 @@
         where id = #{id}
     </update>
 
-    <select id="loadUserByUsername">
+    <select id="loadUserByUsername" resultMap="userMap">
         select *
         from user
         where username = #{username}
     </select>
 
-    <select id="getRolesByUid">
+    <select id="getRolesByUid" resultMap="userRole">
         select r.id, r.name, r.name_zh nameZh
         from role r, user_role ur
         where r.id = ur.rid and ur.uid = #{uid}
@@ -54,5 +54,11 @@
         <result property="username" column="username"/>
         <result property="password" column="password"/>
         <result property="name" column="name"/>
+    </resultMap>
+
+    <resultMap id="userRole" type="com.kkkoke.networkrepair.pojo.Role">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="nameZh" column="nameZh"/>
     </resultMap>
 </mapper>

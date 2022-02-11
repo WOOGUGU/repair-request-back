@@ -11,6 +11,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,6 +35,7 @@ public class UserController {
     @ApiImplicitParams({@ApiImplicitParam(name = "username", value = "用户名", required = true, paramType = "query"),
             @ApiImplicitParam(name = "password", value = "密码（已加密）", required = true, paramType = "query"),
             @ApiImplicitParam(name = "name", value = "用户真实姓名", required = true, paramType = "query")})
+    @Secured({"ROLE_admin"})
     @PostMapping("/addUser")
     public ApiResult addUser(@NotBlank(message = "username can not be null") String username, @NotBlank(message = "password can not be null") String password,
                              @NotBlank(message = "name can not be null") String name) throws UserHasExistedException {
@@ -66,6 +68,7 @@ public class UserController {
     }
 
     @ApiOperation(value = "查找所有用户")
+    @Secured({"ROLE_admin", "ROLE_user"})
     @GetMapping("/selectAllUser")
     public ApiResult selectAllUser() throws UserHasNotExistedException {
         List<User> users = userService.selectAllUser();

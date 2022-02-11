@@ -20,6 +20,6 @@ public class TimeController {
         res.put("now", now);
         res.put("after", threeDaysAfter);
 
-        return new ApiResult(res, ApiResult.HANDLE_SUCCESS);
+        return ApiResult.success(res, "获取成功");
     }
 }

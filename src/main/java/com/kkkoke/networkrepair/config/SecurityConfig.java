@@ -73,35 +73,38 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests()
-                .anyRequest().authenticated() // 所有请求必须认证
-                .and()
-                .formLogin()
-                .and()
-                .exceptionHandling()
-                .authenticationEntryPoint(((request, response, authException) -> {
-                    response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
-                    response.setStatus(HttpStatus.UNAUTHORIZED.value());
-                    response.getWriter().println("请认证之后再去处理！");
-                }))
-                .and()
-                .logout()
+        http.formLogin()
+            .and()
+            .authorizeRequests()
+            .antMatchers("/v2/api-docs", "/swagger-resources/configuration/ui",
+                    "/swagger-resources", "/swagger-resources/configuration/security",
+                    "/swagger-ui.html", "/webjars/**").permitAll() // 开放swagger资源
+            .anyRequest().authenticated()
+            .and()
+            .exceptionHandling()
+            .authenticationEntryPoint(((request, response, authException) -> {
+                response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
+                response.setStatus(HttpStatus.UNAUTHORIZED.value());
+                response.getWriter().println("请认证之后再去处理！");
+            }))
+            .and()
+            .logout()
 //                .logoutUrl("/logout")
-                .logoutRequestMatcher(new OrRequestMatcher(
-                        new AntPathRequestMatcher("/logout", HttpMethod.DELETE.name()),
-                        new AntPathRequestMatcher("/logout", HttpMethod.GET.name())
-                ))
-                .logoutSuccessHandler(((request, response, authentication) -> {
-                    Map<String, Object> result = new HashMap<>();
-                    result.put("msg", "注销成功");
-                    result.put("用户信息", authentication.getPrincipal());
-                    response.setContentType("application/json;charset=UTF-8");
-                    response.setStatus(HttpStatus.OK.value());
-                    String s = new ObjectMapper().writeValueAsString(result);
-                    response.getWriter().println(s);
-                }))
-                .and()
-                .csrf().disable();
+            .logoutRequestMatcher(new OrRequestMatcher(
+                    new AntPathRequestMatcher("/logout", HttpMethod.DELETE.name()),
+                    new AntPathRequestMatcher("/logout", HttpMethod.GET.name())
+            ))
+            .logoutSuccessHandler(((request, response, authentication) -> {
+                Map<String, Object> result = new HashMap<>();
+                result.put("msg", "注销成功");
+                result.put("用户信息", authentication.getPrincipal());
+                response.setContentType("application/json;charset=UTF-8");
+                response.setStatus(HttpStatus.OK.value());
+                String s = new ObjectMapper().writeValueAsString(result);
+                response.getWriter().println(s);
+            }))
+            .and()
+            .csrf().disable();
 
 
         // at: 用某个 filter 来替换过滤器链中哪个 filter

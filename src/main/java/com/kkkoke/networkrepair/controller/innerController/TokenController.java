@@ -13,6 +13,6 @@ public class TokenController {
     public ApiResult isExpired(@RequestBody JSONObject tokenJson) {
         String token = (String) tokenJson.get("token");
 
-        return new ApiResult(JwtToken.isExpired(token), ApiResult.HANDLE_SUCCESS);
+        return ApiResult.success(JwtToken.isExpired(token), "请求成功");
     }
 }
