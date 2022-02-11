@@ -1,14 +1,12 @@
-package com.kkkoke.networkrepair.dao;
+package com.kkkoke.networkrepair.service;
 
 import com.kkkoke.networkrepair.pojo.Slide;
-import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
-@Mapper
-public interface SlideDao {
+public interface SlideService {
     // 上传轮播图
-    int uploadSlide(Slide slide);
+    Slide uploadSlide(String imgPath, String submitTime, String author);
 
     // 通过id删除轮播图
     int deleteSlide(Integer id);

@@ -12,6 +12,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +33,7 @@ public class PickerController {
     private final PickerLocationService pickerLocationService;
     private final PickerTimeService pickerTimeService;
 
+    @Autowired
     public PickerController(PickerLocationService pickerLocationService,
                             PickerTimeService pickerTimeService) {
         this.pickerLocationService = pickerLocationService;

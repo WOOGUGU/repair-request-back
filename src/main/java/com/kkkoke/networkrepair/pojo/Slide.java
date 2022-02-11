@@ -18,4 +18,10 @@ public class Slide {
     private String submitTime;
     private String author;
     private String displayTime;
+
+    public Slide(String imgPath, String submitTime, String author) {
+        this.imgPath = imgPath;
+        this.submitTime = submitTime;
+        this.author = author;
+    }
 }
