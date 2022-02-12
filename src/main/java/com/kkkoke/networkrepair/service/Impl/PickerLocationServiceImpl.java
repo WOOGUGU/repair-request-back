@@ -1,14 +1,18 @@
 package com.kkkoke.networkrepair.service.Impl;
 
+import com.alibaba.fastjson.JSON;
 import com.kkkoke.networkrepair.dao.PickerLocationDao;
 import com.kkkoke.networkrepair.exception.DataHasExistedException;
 import com.kkkoke.networkrepair.exception.DataHasNotExistedException;
 import com.kkkoke.networkrepair.pojo.PickerLocation;
+import com.kkkoke.networkrepair.pojo.helper.NameAndPosition;
 import com.kkkoke.networkrepair.service.PickerLocationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -82,13 +86,24 @@ public class PickerLocationServiceImpl implements PickerLocationService {
 
     // 查找所有报修地点
     @Override
-    public List<PickerLocation> selectAllPickerLocation() throws DataHasNotExistedException {
+    public Object selectAllPickerLocation() throws DataHasNotExistedException {
         List<PickerLocation> pickerLocations = pickerLocationDao.selectAllPickerLocation();
         // 判断查询结果是否为空
         if (ObjectUtils.isEmpty(pickerLocations)) {
             throw new DataHasNotExistedException("PickerLocation has not existed");
         } else {
-            return pickerLocations;
+            HashMap<String, List<String>> map = new HashMap<>();
+            for (PickerLocation pickerLocation : pickerLocations) {
+                if (!map.containsKey(pickerLocation.getArea())) {
+                    map.put(pickerLocation.getArea(), new ArrayList<>());
+                }
+                map.get(pickerLocation.getArea()).add(pickerLocation.getPosition());
+            }
+            List<NameAndPosition> res = new ArrayList<>();
+            for (String s : map.keySet()) {
+                res.add(new NameAndPosition(s, map.get(s)));
+            }
+            return JSON.toJSON(res);
         }
     }
 
