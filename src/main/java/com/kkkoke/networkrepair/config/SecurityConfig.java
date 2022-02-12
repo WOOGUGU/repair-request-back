@@ -78,7 +78,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         loginFilter.setAuthenticationFailureHandler(((request, response, exception) -> {
             log.info("{}.errMsg:{}", exception, exception.getMessage());
             response.setContentType("application/json;charset=UTF-8");
-            response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            response.setStatus(HttpStatus.OK.value());
             if (exception.getMessage().equals("username has not existed")) {
                 String result = new ObjectMapper().writeValueAsString(ApiResult.fail(ResultCode.USERNAME_INVALID,null, "用户名不存在，请重试", ApiResult.USER_WRONG));
                 response.getWriter().println(result);
