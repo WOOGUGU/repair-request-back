@@ -68,7 +68,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         loginFilter.setAuthenticationFailureHandler(((request, response, exception) -> {
             log.info("{}.errMsg:{}", exception, exception.getMessage());
             response.setContentType("application/json;charset=UTF-8");
-            response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            response.setStatus(HttpStatus.OK.value());
             String result = new ObjectMapper().writeValueAsString(ApiResult.fail(ResultCode.LOGIN_FAIL,null, "账号或密码错误，请重试", ApiResult.LOGIN_FAIL));
             response.getWriter().println(result);
         })); // 认证失败处理
