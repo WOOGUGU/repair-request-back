@@ -91,7 +91,7 @@ public class PickerController {
     @Secured({"ROLE_admin", "ROLE_user"})
     @GetMapping("/selectAllPickerLocation")
     public ApiResult selectAllPickerLocation() throws DataHasNotExistedException {
-        List<PickerLocation> pickerLocations = pickerLocationService.selectAllPickerLocation();
+        Object pickerLocations = pickerLocationService.selectAllPickerLocation();
         return ApiResult.success(pickerLocations, "查找成功");
     }
 

@@ -1,4 +1,4 @@
-package com.kkkoke.networkrepair.pojo;
+package com.kkkoke.networkrepair.pojo.helper;
 
 import java.util.List;
 

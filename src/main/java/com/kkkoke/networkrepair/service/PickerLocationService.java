@@ -23,7 +23,7 @@ public interface PickerLocationService {
     PickerLocation selectPickerLocationByPosition(String position) throws DataHasNotExistedException;
 
     // 查找所有报修地点
-    List<PickerLocation> selectAllPickerLocation() throws DataHasNotExistedException;
+    Object selectAllPickerLocation() throws DataHasNotExistedException;
 
     // 修改报修地点
     PickerLocation updatePickerLocation(Integer pickerId, String area, String position) throws DataHasNotExistedException;
