@@ -17,14 +17,9 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.UserDetailsPasswordService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.OrRequestMatcher;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Configuration
 @Slf4j
@@ -46,7 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
         daoAuthenticationProvider.setHideUserNotFoundExceptions(false);
         daoAuthenticationProvider.setUserDetailsService(userDetailsServiceImpl);
-        daoAuthenticationProvider.setPasswordEncoder(new BCryptPasswordEncoder());
+//        daoAuthenticationProvider.setPasswordEncoder(new BCryptPasswordEncoder());
 
         return daoAuthenticationProvider;
     }
