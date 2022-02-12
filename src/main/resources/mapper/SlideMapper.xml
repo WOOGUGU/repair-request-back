@@ -6,7 +6,33 @@
         values (#{imgPath}, #{submitTime}, #{author})
     </insert>
 
-    <resultMap id="sildeRole" type="com.kkkoke.networkrepair.pojo.Slide">
+    <delete id="deleteSlide" parameterType="int">
+        delete
+        from slide
+        where id = #{id}
+    </delete>
+
+    <select id="selectSlideById" parameterType="int" resultMap="slideMap">
+        select *
+        from slide
+        where id = #{id}
+    </select>
+
+    <select id="selectAllSlide" resultMap="slideMap">
+        select *
+        from slide
+    </select>
+
+    <update id="updateSlide">
+        update slide
+        set `img_path`     =  #{imgPath},
+            `submit_time`  =  #{submitTime},
+            `author`       =  #{author},
+            `display_time` =  #{displayTime}
+        where id = #{id}
+    </update>
+
+    <resultMap id="slideMap" type="com.kkkoke.networkrepair.pojo.Slide">
         <id property="id" column="id"/>
         <result property="imgPath" column="img_path"/>
         <result property="submitTime" column="submit_time"/>

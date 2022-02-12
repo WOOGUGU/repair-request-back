@@ -13,15 +13,13 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.OrRequestMatcher;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Configuration
 @Slf4j
@@ -37,11 +35,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         this.propertiesUtil = propertiesUtil;
     }
 
+    // 自定义 DaoAuthenticationProvider 用以区分登录错误时的密码错误或用户名不存在
+    @Bean
+    public DaoAuthenticationProvider daoAuthenticationProvider() {
+        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+        daoAuthenticationProvider.setHideUserNotFoundExceptions(false);
+        daoAuthenticationProvider.setUserDetailsService(userDetailsServiceImpl);
+//        daoAuthenticationProvider.setPasswordEncoder(new BCryptPasswordEncoder());
+
+        return daoAuthenticationProvider;
+    }
+
     // 自定义 AuthenticationManager  这个会覆盖原厂中的 AuthenticationManager
     // 推荐使用这个
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsServiceImpl);
+//        auth.userDetailsService(userDetailsServiceImpl);
+        auth.authenticationProvider(daoAuthenticationProvider());
     }
 
     @Override
@@ -62,15 +72,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         loginFilter.setAuthenticationSuccessHandler(((request, response, authentication) -> {
             response.setContentType("application/json;charset=UTF-8");
             response.setStatus(HttpStatus.OK.value());
-            String result = new ObjectMapper().writeValueAsString(ApiResult.success(authentication.getPrincipal(), ApiResult.LOGIN_SUCCESS));
+            String result = new ObjectMapper().writeValueAsString(ApiResult.success(authentication.getPrincipal(), "登录成功", ApiResult.LOGIN_SUCCESS));
             response.getWriter().println(result);
         })); // 认证成功处理
         loginFilter.setAuthenticationFailureHandler(((request, response, exception) -> {
             log.info("{}.errMsg:{}", exception, exception.getMessage());
             response.setContentType("application/json;charset=UTF-8");
             response.setStatus(HttpStatus.OK.value());
-            String result = new ObjectMapper().writeValueAsString(ApiResult.fail(ResultCode.LOGIN_FAIL,null, "账号或密码错误，请重试", ApiResult.LOGIN_FAIL));
-            response.getWriter().println(result);
+            if (exception.getMessage().equals("username has not existed")) {
+                String result = new ObjectMapper().writeValueAsString(ApiResult.fail(ResultCode.USERNAME_INVALID,null, "用户名不存在，请重试", ApiResult.USER_WRONG));
+                response.getWriter().println(result);
+            } else {
+                String result = new ObjectMapper().writeValueAsString(ApiResult.fail(ResultCode.PASSWORD_WRONG,null, "密码错误，请重试", ApiResult.PASSWORD_WRONG));
+                response.getWriter().println(result);
+            }
         })); // 认证失败处理
         return loginFilter;
     }
@@ -97,17 +112,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .logout()
 //                .logoutUrl("/logout")
             .logoutRequestMatcher(new OrRequestMatcher(
-                    new AntPathRequestMatcher("/logout", HttpMethod.DELETE.name()),
-                    new AntPathRequestMatcher("/logout", HttpMethod.GET.name())
+                    new AntPathRequestMatcher("/doLogout", HttpMethod.DELETE.name()),
+                    new AntPathRequestMatcher("/doLogout", HttpMethod.GET.name())
             ))
             .logoutSuccessHandler(((request, response, authentication) -> {
-                Map<String, Object> result = new HashMap<>();
-                result.put("msg", "注销成功");
-                result.put("用户信息", authentication.getPrincipal());
                 response.setContentType("application/json;charset=UTF-8");
                 response.setStatus(HttpStatus.OK.value());
-                String s = new ObjectMapper().writeValueAsString(result);
-                response.getWriter().println(s);
+                String result = new ObjectMapper().writeValueAsString(ApiResult.success(authentication.getPrincipal(), "注销成功", ApiResult.LOGOUT_SUCCESS));
+                response.getWriter().println(result);
             }))
             .and()
             .csrf().disable();

@@ -33,7 +33,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         // 1.查询用户
         User user = userService.loadUserByUsername(username);
         if (ObjectUtils.isEmpty(user)) {
-            throw new UsernameNotFoundException("用户名不存在");
+            throw new UsernameNotFoundException("username has not existed");
         }
         // 2.查询权限信息
         List<Role> roles = userService.getRolesByUid(user.getId());

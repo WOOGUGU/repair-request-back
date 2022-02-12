@@ -35,8 +35,8 @@ public class ApiResult {
     public final static String HANDLE_SUCCESS = "handle success"; // 处理成功
     public final static String DATA_NOT_EXIST = "data not exist"; // 数据库中不存在此数据
     public final static String DATA_EXIST = "data exist"; // 数据库中已经存在此数据
-    public final static String WRONG_USER = "wrong user"; // 此用户不存在
-    public final static String WRONG_PASSWORD = "wrong password"; // 密码错误
+    public final static String USER_WRONG = "user wrong"; // 此用户不存在
+    public final static String PASSWORD_WRONG = "password wrong"; // 密码错误
     public final static String LOGIN_SUCCESS = "login success"; // 登录成功
     public final static String EXCEPTION_HAPPEN = "exception happen"; // 出现异常
     public final static String WRONG_TOKEN = "wrong token"; // token错误
@@ -46,6 +46,7 @@ public class ApiResult {
     public final static String FORBIDDEN = "forbidden"; // 权限不够
     public final static String MISSING_PARAM = "miss param"; // 缺少参数
     public final static String UNSUPPORTED_HTTP_METHOD = "unsupported http method"; // 不正确的请求方式
+    public final static String LOGOUT_SUCCESS = "Logout success"; // 注销成功
 
     public static ApiResult fail(String code, String userMsg, String errMsg) {
         return new ApiResult(code, null, userMsg, errMsg);
@@ -63,8 +64,12 @@ public class ApiResult {
         return new ApiResult(ResultCode.SUCCESS, data, userMsg, ApiResult.HANDLE_SUCCESS);
     }
 
+    public static ApiResult success(Object data, String userMsg, String errMsg) {
+        return new ApiResult(ResultCode.SUCCESS, data, userMsg, errMsg);
+    }
+
     public static ApiResult success(String code, String userMsg, String errMsg) {
-        return new ApiResult(ResultCode.SUCCESS, null, userMsg, errMsg);
+        return new ApiResult(code, null, userMsg, errMsg);
     }
 
     public static ApiResult success(String code, Object data, String userMsg, String errMsg) {

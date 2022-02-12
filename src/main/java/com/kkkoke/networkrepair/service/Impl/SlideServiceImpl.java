@@ -1,10 +1,12 @@
 package com.kkkoke.networkrepair.service.Impl;
 
 import com.kkkoke.networkrepair.dao.SlideDao;
+import com.kkkoke.networkrepair.exception.DataHasNotExistedException;
 import com.kkkoke.networkrepair.pojo.Slide;
 import com.kkkoke.networkrepair.service.SlideService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import java.util.List;
 
@@ -22,22 +24,45 @@ public class SlideServiceImpl implements SlideService {
     }
 
     @Override
-    public int deleteSlide(Integer id) {
-        return 0;
+    public int deleteSlide(Integer slideId) throws DataHasNotExistedException {
+        // 查询数据库，查看要删除的轮播图是否存在
+        if (ObjectUtils.isEmpty(slideDao.selectSlideById(slideId))) {
+            throw new DataHasNotExistedException("Slide has not existed");
+        } else {
+            return slideDao.deleteSlide(slideId);
+        }
     }
 
     @Override
-    public Slide selectSlideById(Integer id) {
-        return null;
+    public Slide selectSlideById(Integer slideId)  throws DataHasNotExistedException {
+        Slide slide = slideDao.selectSlideById(slideId);
+        // 判断查找的轮播图是否为空
+        if (ObjectUtils.isEmpty(slide)) {
+            throw new DataHasNotExistedException("Slide has not existed");
+        } else {
+            return slide;
+        }
     }
 
     @Override
-    public List<Slide> selectAllSlide() {
-        return null;
+    public List<Slide> selectAllSlide() throws DataHasNotExistedException {
+        List<Slide> slides = slideDao.selectAllSlide();
+        // 判断查找的轮播图是否为空
+        if (ObjectUtils.isEmpty(slides)) {
+            throw new DataHasNotExistedException("Slide has not existed");
+        } else {
+            return slides;
+        }
     }
 
     @Override
-    public Integer updateSlide(Slide slide) {
-        return null;
+    public Slide updateSlide(Integer slideId, String imgPath, String submitTime, String author, String displayTime) throws DataHasNotExistedException {
+        Slide slide = new Slide(slideId, imgPath, submitTime, author, displayTime);
+        if (ObjectUtils.isEmpty(slideDao.selectSlideById(slideId))) {
+            throw new DataHasNotExistedException("Slide has not existed");
+        } else {
+            slideDao.updateSlide(slide);
+            return slide;
+        }
     }
 }
