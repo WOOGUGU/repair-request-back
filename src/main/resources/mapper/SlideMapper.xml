@@ -23,11 +23,11 @@
         from slide
     </select>
 
-    <update id="updateUser">
-        update user
+    <update id="updateSlide">
+        update slide
         set `img_path`     =  #{imgPath},
             `submit_time`  =  #{submitTime},
-            `author`       =  #{author}
+            `author`       =  #{author},
             `display_time` =  #{displayTime}
         where id = #{id}
     </update>
