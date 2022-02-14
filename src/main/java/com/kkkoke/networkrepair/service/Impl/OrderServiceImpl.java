@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import javax.validation.constraints.NotBlank;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -23,7 +24,8 @@ public class OrderServiceImpl implements OrderService {
     // 增加报修工单
     @Override
     public Order addOrder(String username, String sender, String tel, String type,
-                          String des, String position, String timeSubscribe, String timeStart) {
+                          String des, String position, String timeSubscribe) {
+        String timeStart = LocalDateTime.now().toString();
         Order order = new Order(username, sender, tel, type, des, position, timeSubscribe, timeStart);
         orderDao.addOrder(order);
         return order;

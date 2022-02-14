@@ -7,7 +7,7 @@ import java.util.List;
 public interface OrderService {
     // 增加报修工单
     Order addOrder(String username, String sender, String tel, String type,
-                   String des, String position, String timeSubscribe, String timeStart);
+                   String des, String position, String timeSubscribe);
 
     // 通过id删除报修工单
     int deleteOrder(Integer orderId) throws DataHasNotExistedException;
