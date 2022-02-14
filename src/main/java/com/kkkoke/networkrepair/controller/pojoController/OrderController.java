@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -51,8 +52,8 @@ public class OrderController {
     public ApiResult addOrder(@NotBlank(message = "username can not be null") String username, @NotBlank(message = "sender can not be null") String sender,
                               @NotBlank(message = "tel can not be null") String tel, @NotBlank(message = "type can not be null") String type,
                               @NotBlank(message = "des can not be null") String des, @NotBlank(message = "position can not be null") String position,
-                              @NotBlank(message = "timeSubscribe can not be null") String timeSubscribe, @NotBlank(message = "timeStart can not be null") String timeStart) {
-        orderService.addOrder(username, sender, tel, type, des, position, timeSubscribe, timeStart);
+                              @NotBlank(message = "timeSubscribe can not be null") String timeSubscribe) {
+        orderService.addOrder(username, sender, tel, type, des, position, timeSubscribe);
         return ApiResult.success("工单添加成功");
     }
 
