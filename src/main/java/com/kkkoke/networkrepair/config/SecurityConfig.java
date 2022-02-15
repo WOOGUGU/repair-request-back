@@ -17,6 +17,8 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.OrRequestMatcher;
@@ -35,13 +37,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         this.propertiesUtil = propertiesUtil;
     }
 
+    //配置密码加密算法
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
     // 自定义 DaoAuthenticationProvider 用以区分登录错误时的密码错误或用户名不存在
     @Bean
     public DaoAuthenticationProvider daoAuthenticationProvider() {
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
         daoAuthenticationProvider.setHideUserNotFoundExceptions(false);
         daoAuthenticationProvider.setUserDetailsService(userDetailsServiceImpl);
-//        daoAuthenticationProvider.setPasswordEncoder(new BCryptPasswordEncoder());
+        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
 
         return daoAuthenticationProvider;
     }
@@ -97,7 +105,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .authorizeRequests()
             .antMatchers("/v2/api-docs", "/swagger-resources/configuration/ui",
                     "/swagger-resources", "/swagger-resources/configuration/security",
-                    "/swagger-ui.html", "/webjars/**", "/fileupload.html").permitAll() // 开放swagger资源
+                    "/swagger-ui.html", "/webjars/**", "/fileupload.html", "/login.html",
+                    "/css/**", "/font/**", "/fonts/**", "/images/**", "/js/**", "/lib/**", "/error/**").permitAll() // 开放swagger资源
             .anyRequest().authenticated()
             .and()
             .exceptionHandling()

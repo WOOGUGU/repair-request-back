@@ -7,6 +7,7 @@ import com.kkkoke.networkrepair.pojo.Role;
 import com.kkkoke.networkrepair.pojo.User;
 import com.kkkoke.networkrepair.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
@@ -23,10 +24,9 @@ public class UserServiceImpl implements UserService {
     public User addUser(String username, String password, String name) throws UserHasExistedException {
         // 查看数据库中是否已经存在此用户
         if (ObjectUtils.isEmpty(userDao.selectUserByUsername(username))) {
-            // 给密码加上"{noop}"前缀
-            String final_pwd = "{noop}";
-            final_pwd += password;
-            User user = new User(username, final_pwd, name);
+            // 对密码进行BCrypt加密
+            String hashPasswd = BCrypt.hashpw(password, BCrypt.gensalt());
+            User user = new User(username, hashPasswd, name);
             userDao.addUser(user);
             return user;
         } else {
@@ -87,8 +87,10 @@ public class UserServiceImpl implements UserService {
     // 修改用户信息
     @Override
     public User updateUser(Integer userId, String username, String password, String name) throws UserHasNotExistedException {
+        // 对密码进行BCrypt加密
+        String hashPasswd = BCrypt.hashpw(password, BCrypt.gensalt());
         // 创建要修改的user对象
-        User user = new User(userId, username, password, name);
+        User user = new User(userId, username, hashPasswd, name);
         // 查找数据库中是否存在此用户
         if (ObjectUtils.isEmpty(userDao.selectUserById(userId))) {
             throw new UserHasNotExistedException("User has not existed");

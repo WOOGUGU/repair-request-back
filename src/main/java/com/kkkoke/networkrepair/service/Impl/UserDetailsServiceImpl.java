@@ -2,6 +2,7 @@ package com.kkkoke.networkrepair.service.Impl;
 
 import com.kkkoke.networkrepair.pojo.Role;
 import com.kkkoke.networkrepair.pojo.User;
+import com.kkkoke.networkrepair.pojo.helper.UserResult;
 import com.kkkoke.networkrepair.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -40,6 +41,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         user.setRoles(roles);
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
         roles.forEach(role -> grantedAuthorities.add(new SimpleGrantedAuthority(role.getName())));
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), grantedAuthorities);
+//        UserDetails userDetails = org.springframework.security.core.userdetails.User.withUsername(user.getUsername()).password(user.getPassword()).authorities(grantedAuthorities).build();
+//        return new UserResult(user.getId(),  user.getName(), (org.springframework.security.core.userdetails.User) userDetails, grantedAuthorities);
+        System.out.println(new  UserResult(user.getId(), user.getUsername(), user.getPassword(), user.getName(), grantedAuthorities));
+        return new UserResult(user.getId(), user.getUsername(), user.getPassword(), user.getName(), grantedAuthorities);
     }
 }
