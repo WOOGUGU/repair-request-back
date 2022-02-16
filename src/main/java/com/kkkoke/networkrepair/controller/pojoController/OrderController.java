@@ -85,28 +85,24 @@ public class OrderController {
 
     @ApiOperation(value = "修改报修工单")
     @ApiImplicitParams({@ApiImplicitParam(name = "orderId", value = "工单id", required = true, paramType = "query"),
-            @ApiImplicitParam(name = "username", value = "用户名", required = true, paramType = "query"),
-            @ApiImplicitParam(name = "sender", value = "工单发起者（用户）", required = true, paramType = "query"),
-            @ApiImplicitParam(name = "tel", value = "工单发起者联系方式", required = true, paramType = "query"),
-            @ApiImplicitParam(name = "type", value = "工单类型", required = true, paramType = "query"),
-            @ApiImplicitParam(name = "des", value = "故障描述", required = true, paramType = "query"),
-            @ApiImplicitParam(name = "position", value = "故障位置", required = true, paramType = "query"),
-            @ApiImplicitParam(name = "timeSubscribe", value = "工单预约上门时间", required = true, paramType = "query"),
-            @ApiImplicitParam(name = "progress", value = "-2：审核不通过，-1：用户取消，0：待审核，1：待处理，2：已处理", required = true, paramType = "query"),
-            @ApiImplicitParam(name = "solver", value = "解决工单的技术人员", required = true, paramType = "query"),
-            @ApiImplicitParam(name = "timeStart", value = "工单发起时间", required = true, paramType = "query"),
-            @ApiImplicitParam(name = "timeDistribution", value = "工单分配时间", required = true, paramType = "query"),
-            @ApiImplicitParam(name = "timeEnd", value = "工单解决时间", required = true, paramType = "query"),
-            @ApiImplicitParam(name = "feedback", value = "用户反馈", required = true, paramType = "query")})
-    @Secured({"ROLE_admin", "ROLE_user"})
+            @ApiImplicitParam(name = "username", value = "用户名", required = false, paramType = "query"),
+            @ApiImplicitParam(name = "sender", value = "工单发起者（用户）", required = false, paramType = "query"),
+            @ApiImplicitParam(name = "tel", value = "工单发起者联系方式", required = false, paramType = "query"),
+            @ApiImplicitParam(name = "type", value = "工单类型", required = false, paramType = "query"),
+            @ApiImplicitParam(name = "des", value = "故障描述", required = false, paramType = "query"),
+            @ApiImplicitParam(name = "position", value = "故障位置", required = false, paramType = "query"),
+            @ApiImplicitParam(name = "timeSubscribe", value = "工单预约上门时间", required = false, paramType = "query"),
+            @ApiImplicitParam(name = "progress", value = "-2：审核不通过，-1：用户取消，0：待审核，1：待处理，2：已处理", required = false, paramType = "query"),
+            @ApiImplicitParam(name = "solver", value = "解决工单的技术人员", required = false, paramType = "query"),
+            @ApiImplicitParam(name = "timeStart", value = "工单发起时间", required = false, paramType = "query"),
+            @ApiImplicitParam(name = "timeDistribution", value = "工单分配时间", required = false, paramType = "query"),
+            @ApiImplicitParam(name = "timeEnd", value = "工单解决时间", required = false, paramType = "query"),
+            @ApiImplicitParam(name = "feedback", value = "用户反馈", required = false, paramType = "query")})
+    @Secured("ROLE_admin")
     @PostMapping("/updateOrder")
-    public ApiResult updateOrder(@NotNull(message = "orderId can not be null") Integer orderId, @NotBlank(message = "username can not be null") String username,
-                                 @NotBlank(message = "sender can not be null") String sender, @NotBlank(message = "tel can not be null") String tel,
-                                 @NotBlank(message = "type can not be null") String type, @NotBlank(message = "des can not be null") String des,
-                                 @NotBlank(message = "position can not be null") String position, @NotBlank(message = "timeSubscribe can not be null") String timeSubscribe,
-                                 @NotNull(message = "progress can not be null") Integer progress, @NotBlank(message = "solver can not be null") String solver,
-                                 @NotBlank(message = "timeStart can not be null") String timeStart, @NotBlank(message = "timeDistribution can not be null") String timeDistribution,
-                                 @NotBlank(message = "timeEnd can not be null") String timeEnd, @NotBlank(message = "feedback can not be null") String feedback) throws DataHasNotExistedException {
+    public ApiResult updateOrder(@NotNull(message = "orderId can not be null") Integer orderId, String username, String sender, String tel, String type,
+                                 String des, String position, String timeSubscribe, Integer progress, String solver, String timeStart, String timeDistribution,
+                                 String timeEnd, String feedback) throws DataHasNotExistedException {
         orderService.updateOrder(orderId, username, sender, tel, type, des, position, timeSubscribe, progress,
                 solver, timeStart, timeDistribution, timeEnd, feedback);
         return ApiResult.success("更新成功");
