@@ -3,6 +3,7 @@ package com.kkkoke.networkrepair.service.Impl;
 import com.kkkoke.networkrepair.dao.OrderDao;
 import com.kkkoke.networkrepair.exception.DataHasExistedException;
 import com.kkkoke.networkrepair.exception.DataHasNotExistedException;
+import com.kkkoke.networkrepair.exception.IllegalOperationException;
 import com.kkkoke.networkrepair.exception.UserHasNotExistedException;
 import com.kkkoke.networkrepair.pojo.Order;
 import com.kkkoke.networkrepair.pojo.PickerLocation;
@@ -93,6 +94,23 @@ public class OrderServiceImpl implements OrderService {
             throw new DataHasNotExistedException("Order has not existed");
         } else {
             return orders;
+        }
+    }
+
+    // 取消工单 用户接口
+    @Override
+    public Order cancelOrder(Integer orderId, String username) throws DataHasNotExistedException, IllegalOperationException {
+        if (ObjectUtils.isEmpty(orderDao.selectOrderById(orderId))) {
+            throw new DataHasNotExistedException("Order has not existed");
+        } else {
+            // 确认是否是自己的工单
+            if (orderDao.selectOrderById(orderId).getUsername().equals(username)) {
+                Order order = new Order(orderId, 0);
+                orderDao.cancelOrder(order);
+                return order;
+            } else {
+                throw new IllegalOperationException("Illegal Operation");
+            }
         }
     }
 }

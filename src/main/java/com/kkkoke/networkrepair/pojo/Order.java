@@ -54,4 +54,9 @@ public class Order {
         this.timeSubscribe = timeSubscribe;
         this.timeStart = timeStart;
     }
+
+    public Order(Integer orderId, Integer progress) {
+        this.id = orderId;
+        this.progress = progress;
+    }
 }

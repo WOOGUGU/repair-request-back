@@ -173,4 +173,18 @@ public class ExceptionController {
         log.info("UsernameNotFoundException.errMsg:{}", e.getMessage());
         return ApiResult.fail(ResultCode.USERNAME_INVALID, "用户名不存在，请重试", ApiResult.USER_WRONG);
     }
+
+    /**
+     * 非法操作
+     *
+     * @param e
+     *            异常
+     * @return ApiResult
+     */
+    @ResponseStatus(HttpStatus.OK)
+    @ExceptionHandler(IllegalOperationException.class)
+    public ApiResult illegalOperationException(IllegalOperationException e) {
+        log.info("IllegalOperationException.errMsg:{}", e.getMessage());
+        return ApiResult.fail(ResultCode.INVALID_OPERATION, "非法操作", ApiResult.INVALID_OPERATION);
+    }
 }

@@ -46,6 +46,12 @@
         where username = #{username};
     </select>
 
+    <update id="cancelOrder">
+        update `order`
+        set progress = #{progress}
+        where id = #{id}
+    </update>
+
     <resultMap id="orderMap" type="com.kkkoke.networkrepair.pojo.Order">
         <id property="id" column="id"/>
         <result property="sender" column="sender"/>
