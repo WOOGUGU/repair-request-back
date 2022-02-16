@@ -1,6 +1,7 @@
 package com.kkkoke.networkrepair.controller.pojoController;
 
 import com.kkkoke.networkrepair.exception.DataHasNotExistedException;
+import com.kkkoke.networkrepair.exception.IllegalOperationException;
 import com.kkkoke.networkrepair.pojo.Order;
 import com.kkkoke.networkrepair.service.OrderService;
 import com.kkkoke.networkrepair.result.ApiResult;
@@ -45,8 +46,7 @@ public class OrderController {
             @ApiImplicitParam(name = "type", value = "工单类型", required = true, paramType = "query"),
             @ApiImplicitParam(name = "des", value = "故障描述", required = true, paramType = "query"),
             @ApiImplicitParam(name = "position", value = "故障位置", required = true, paramType = "query"),
-            @ApiImplicitParam(name = "timeSubscribe", value = "工单预约上门时间", required = true, paramType = "query"),
-            @ApiImplicitParam(name = "timeStart", value = "工单发起时间", required = true, paramType = "query")})
+            @ApiImplicitParam(name = "timeSubscribe", value = "工单预约上门时间", required = true, paramType = "query")})
     @Secured({"ROLE_admin", "ROLE_user", "ROLE_repairman"})
     @PostMapping("/addOrder")
     public ApiResult addOrder(@NotBlank(message = "username can not be null") String username, @NotBlank(message = "sender can not be null") String sender,
@@ -119,5 +119,16 @@ public class OrderController {
     public ApiResult selectAllOrderOfUser(@NotBlank(message = "username can not be null") String username) throws DataHasNotExistedException {
         List<Order> orders = orderService.selectAllOrderOfUser(username);
         return ApiResult.success(orders, "查找成功");
+    }
+
+    @ApiOperation(value = "取消报修工单 用户接口")
+    @ApiImplicitParams({@ApiImplicitParam(name = "orderId", value = "工单id", required = true, paramType = "query"),
+            @ApiImplicitParam(name = "username", value = "用户名", required = true, paramType = "query")})
+    @Secured({"ROLE_admin", "ROLE_user"})
+    @PostMapping("/cancelOrder")
+    public ApiResult cancelOrder(@NotNull(message = "orderId can not be null") Integer orderId,
+                                 @NotBlank(message = "username can not be null") String username) throws DataHasNotExistedException, IllegalOperationException {
+        orderService.cancelOrder(orderId, username);
+        return ApiResult.success("取消成功");
     }
 }
