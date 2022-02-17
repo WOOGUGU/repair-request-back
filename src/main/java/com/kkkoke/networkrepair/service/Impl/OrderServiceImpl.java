@@ -105,7 +105,7 @@ public class OrderServiceImpl implements OrderService {
         } else {
             // 确认是否是自己的工单
             if (orderDao.selectOrderById(orderId).getUsername().equals(username)) {
-                Order order = new Order(orderId, 0);
+                Order order = new Order(orderId, -1);
                 orderDao.cancelOrder(order);
                 return order;
             } else {
