@@ -49,6 +49,24 @@
         where r.id = ur.rid and ur.uid = #{uid}
     </select>
 
+    <select id="selectAllAdmin" resultMap="userMap">
+        select u.id, u.name, u.username
+        from `user` u, user_role ur
+        where ur.rid = 2 and u.id = ur.uid
+    </select>
+
+    <select id="selectAllRepairman" resultMap="userMap">
+        select u.id, u.name, u.username
+        from `user` u, user_role ur
+        where ur.rid = 3 and u.id = ur.uid
+    </select>
+
+    <select id="selectAllNorUser" resultMap="userMap">
+        select u.id, u.name, u.username
+        from `user` u, user_role ur
+        where ur.rid = 1 and u.id = ur.uid
+    </select>
+
     <resultMap id="userMap" type="com.kkkoke.networkrepair.pojo.User">
         <id property="id" column="id"/>
         <result property="username" column="username"/>

@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>管理员增加</title>
+  <title>增加用户</title>
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
@@ -11,12 +11,8 @@
   <link rel="stylesheet" href="./css/index.css">
   <script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
   <script type="text/javascript" src="./js/index.js"></script>
-  <script type="text/javascript" src="js/member.js"></script>
+  <script type="text/javascript" src="js/list.js"></script>
   <script type="text/javascript" src="js/jquery.js"></script>
-  <script src="js/token.js"></script>
-  <script>
-    TOKEN_VERIFY();
-  </script>
 </head>
 <body>
 <div class="layui-fluid">
@@ -24,11 +20,9 @@
     <form class="layui-form">
       <div class="layui-form-item">
         <label for="mname" class="layui-form-label">
-          <span class="x-red">*</span>管理员姓名</label>
+          <span class="x-red">*</span>用户姓名</label>
         <div class="layui-input-inline">
           <input type="text" id="mname" required="" autocomplete="off" class="layui-input"></div>
-        <div class="layui-form-mid layui-word-aux">
-          <span class="x-red">*</span>将会成为您唯一的登入名</div></div>
       <div class="layui-form-item">
         <label for="mpwd" class="layui-form-label">
           <span class="x-red">*</span>管理员密码</label>
@@ -54,6 +48,4 @@
   s.parentNode.insertBefore(hm, s);
 })();</script>
 </body>
-<script type="text/javascript" src="js/jquery.js"></script>
-<script type="text/javascript" src="js/member.js"></script>
 </html>

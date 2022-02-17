@@ -83,6 +83,30 @@ public class UserController {
         return ApiResult.success(users, "查找成功");
     }
 
+    @ApiOperation(value = "查找所有管理员")
+    @Secured("ROLE_admin")
+    @GetMapping("/selectAllAdmin")
+    public ApiResult selectAllAdmin() throws UserHasNotExistedException {
+        List<User> admins = userService.selectAllAdmin();
+        return ApiResult.success(admins, "查找成功");
+    }
+
+    @ApiOperation(value = "查找所有维修员")
+    @Secured("ROLE_admin")
+    @GetMapping("/selectAllRepairman")
+    public ApiResult selectAllRepairman() throws UserHasNotExistedException {
+        List<User> admins = userService.selectAllRepairman();
+        return ApiResult.success(admins, "查找成功");
+    }
+
+    @ApiOperation(value = "查找所有普通用户")
+    @Secured("ROLE_admin")
+    @GetMapping("/selectAllNorUser")
+    public ApiResult selectAllNorUser() throws UserHasNotExistedException {
+        List<User> admins = userService.selectAllNorUser();
+        return ApiResult.success(admins, "查找成功");
+    }
+
     @ApiOperation(value = "修改用户信息")
     @ApiImplicitParams({@ApiImplicitParam(name = "username", value = "用户名", required = true, paramType = "query"),
             @ApiImplicitParam(name = "password", value = "密码（已加密）", required = true, paramType = "query"),

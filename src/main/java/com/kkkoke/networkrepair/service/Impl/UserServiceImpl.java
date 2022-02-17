@@ -84,6 +84,42 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    // 查找所有管理员
+    @Override
+    public List<User> selectAllAdmin() throws UserHasNotExistedException {
+        List<User> admins = userDao.selectAllAdmin();
+        // 判断查询结果是否为空
+        if (ObjectUtils.isEmpty(admins)) {
+            throw new UserHasNotExistedException("User has not existed");
+        } else {
+            return admins;
+        }
+    }
+
+    // 查找所有维修员
+    @Override
+    public List<User> selectAllRepairman() throws UserHasNotExistedException {
+        List<User> repairmans = userDao.selectAllRepairman();
+        // 判断查询结果是否为空
+        if (ObjectUtils.isEmpty(repairmans)) {
+            throw new UserHasNotExistedException("User has not existed");
+        } else {
+            return repairmans;
+        }
+    }
+
+    // 查找所有普通用户
+    @Override
+    public List<User> selectAllNorUser() throws UserHasNotExistedException {
+        List<User> users = userDao.selectAllNorUser();
+        // 判断查询结果是否为空
+        if (ObjectUtils.isEmpty(users)) {
+            throw new UserHasNotExistedException("User has not existed");
+        } else {
+            return users;
+        }
+    }
+
     // 修改用户信息
     @Override
     public User updateUser(Integer userId, String username, String password, String name) throws UserHasNotExistedException {
