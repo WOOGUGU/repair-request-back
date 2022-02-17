@@ -5,6 +5,11 @@
         insert into user(username, password, name)
         values (#{username}, #{password}, #{name})
     </insert>
+
+    <insert id="setRole" parameterType="int">
+        insert into user_role(uid, rid)
+        values (#{userId}, #{roleType})
+    </insert>
     
     <delete id="deleteUser" parameterType="int">
         delete

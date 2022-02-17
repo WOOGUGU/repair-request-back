@@ -6,9 +6,9 @@ import lombok.NoArgsConstructor;
 
 /**
  * 用户身份
- * 1.普通用户
+ * 1.维修员
  * 2.管理员
- * 3.维修员
+ * 3.普通用户
  */
 @Data
 @AllArgsConstructor

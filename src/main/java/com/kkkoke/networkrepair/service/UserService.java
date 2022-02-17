@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface UserService {
     // 添加用户
-    User addUser(String username, String password, String name) throws UserHasExistedException;
+    User addUser(String username, String password, String name, Integer roleType) throws UserHasExistedException;
 
     // 删除用户
     int deleteUser(Integer userId) throws UserHasNotExistedException;

@@ -43,8 +43,8 @@ public class UserController {
     @Secured({"ROLE_admin"})
     @PostMapping("/addUser")
     public ApiResult addUser(@NotBlank(message = "username can not be null") String username, @NotBlank(message = "password can not be null") String password,
-                             @NotBlank(message = "name can not be null") String name) throws UserHasExistedException {
-        userService.addUser(username, password, name);
+                             @NotBlank(message = "name can not be null") String name, @NotNull(message = "roleType can not be null") Integer roleType) throws UserHasExistedException {
+        userService.addUser(username, password, name, roleType);
         return ApiResult.success("用户添加成功");
     }
 

@@ -242,47 +242,37 @@ layui.use(['table','form','layer'], function() {
 });
 
 function addMember() {
-    var mname = $("#mname").val();
-    var mpwd = $("#mpwd").val();
-    if (mname === "" || mpwd === "") {
-        alert("管理员姓名或密码不能为空");
+    var uname = $("#uname").val();
+    var passwd = $("#passwd").val();
+    var name = $("#name").val();
+    if (uname === "" || passwd === "") {
+        alert("用户名或密码不能为空");
         return;
-    }
-    else {
+    } else if (name === "") {
+        alert("真实姓名不能为空");
+        return;
+    } else {
         $.ajax({
-            url: '/addOne',
+            url: '/v2/user/addUser',
             type: 'post',
             headers: {
-                'wrnm':localStorage.wrnm
+                "Cookie": document.cookie
             },
             data: {
-                "mname": mname,
-                "mpwd": mpwd,
-                "type": $('#which input[name="status"]:checked ').val()
+                "username": uname,
+                "password": passwd,
+                "name": name,
+                "roleType": $('#roleType input[name="status"]:checked ').val()
             },
-            success:function (res)
-            {
-                if (res.code == 200) {
-                    alert("添加成功");
+            success:function (res) {
+                if (res.userMsg !== "") {
+                    alert(res.userMsg);
                 } else {
-                    alert("fuck");
-                    alert(res.message);
-                    alert(res.message != "");
-                    alert(res.message !== "")
-                    if (res.message != "") {
-                        alert(res.message);
-                    }
-                    else {
-                        alert("出现异常，请重试");
-                    }
+                    alert("发生未知错误，请重试");
                 }
             },
-            error:function (res) {
-                if (res.responseJSON === "") {
-                    alert("出现异常，请重试");
-                } else {
-                    alert(res.responseJSON.message);
-                }
+            error:function () {
+                alert("发生未知错误，请重试");
             }
         });
     }

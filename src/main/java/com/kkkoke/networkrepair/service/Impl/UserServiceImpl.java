@@ -21,13 +21,14 @@ public class UserServiceImpl implements UserService {
 
     // 添加用户
     @Override
-    public User addUser(String username, String password, String name) throws UserHasExistedException {
+    public User addUser(String username, String password, String name, Integer roleType) throws UserHasExistedException {
         // 查看数据库中是否已经存在此用户
         if (ObjectUtils.isEmpty(userDao.selectUserByUsername(username))) {
             // 对密码进行BCrypt加密
             String hashPasswd = BCrypt.hashpw(password, BCrypt.gensalt());
             User user = new User(username, hashPasswd, name);
             userDao.addUser(user);
+            userDao.setRole(userDao.selectUserByUsername(username).getId(), roleType);
             return user;
         } else {
             // 用户已存在
