@@ -24,6 +24,9 @@ public interface OrderService {
                         String des, String position, String timeSubscribe, Integer progress,
                         String solver, String timeStart, String timeDistribution, String timeEnd, String feedback) throws DataHasNotExistedException;
 
+    // 提交报修工单反馈
+    Integer updateOrderFeedback(Integer orderId,String feedback) throws DataHasNotExistedException;
+
     // 查找某用户发起的所有工单
     List<Order> selectAllOrderOfUser(String username) throws DataHasNotExistedException;
 
