@@ -27,51 +27,51 @@
         update `order`
         <set>
             <if test="sender != null and sender != ''">
-                sender = #{sender},
+                sender = #{sender}
             </if>
 
             <if test="tel != null and tel != ''">
-                tel = #{tel},
+                ,tel = #{tel}
             </if>
 
             <if test="type != null and type != ''">
-                `type` = #{type},
+                ,`type` = #{type}
             </if>
 
             <if test="des != null and des != ''">
-                des = #{des},
+                ,des = #{des}
             </if>
 
             <if test="position != null and position != ''">
-                `position` = #{position},
+                ,`position` = #{position}
             </if>
 
             <if test="timeSubscribe != null and timeSubscribe != ''">
-                time_subscribe = #{timeSubscribe},
+                ,time_subscribe = #{timeSubscribe}
             </if>
 
             <if test="solver != null and solver != ''">
-                solver = #{solver},
+                ,solver = #{solver}
             </if>
 
             <if test="timeStart != null and timeStart != ''">
-                time_start = #{timeStart},
+                ,time_start = #{timeStart}
             </if>
 
             <if test="timeDistribution != null and timeDistribution != ''">
-                time_distribution = #{timeDistribution},
+                ,time_distribution = #{timeDistribution}
             </if>
 
             <if test="progress != null and progress != ''">
-                progress = #{progress},
+                ,progress = #{progress}
             </if>
 
             <if test="feedback != null and feedback != ''">
-                feedback = #{feedback},
+                ,feedback = #{feedback}
             </if>
 
             <if test="timeEnd != null and timeEnd != ''">
-                time_end = #{timeEnd},
+                ,time_end = #{timeEnd}
             </if>
         </set>
         where id = #{id}

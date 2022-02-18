@@ -75,6 +75,17 @@ public class UserController {
         return ApiResult.success(user, "查找成功");
     }
 
+    @ApiOperation(value = "搜索用户 后台搜索接口")
+    @ApiImplicitParams({@ApiImplicitParam(name = "username", value = "用户名", required = false, paramType = "query"),
+            @ApiImplicitParam(name = "userId", value = "用户Id", required = false, paramType = "query"),
+            @ApiImplicitParam(name = "name", value = "用户真实姓名", required = false, paramType = "query")})
+    @Secured({"ROLE_admin", "ROLE_repairman"})
+    @GetMapping("/selectUser")
+    public ApiResult selectUser(Integer userId, String username, String name) throws UserHasNotExistedException {
+        List<User> users = userService.selectUser(userId, username, name);
+        return ApiResult.success(users, "查找成功");
+    }
+
     @ApiOperation(value = "查找所有用户")
     @Secured({"ROLE_admin", "ROLE_repairman"})
     @GetMapping("/selectAllUser")

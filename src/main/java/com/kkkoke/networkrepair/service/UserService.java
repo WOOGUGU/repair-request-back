@@ -20,6 +20,9 @@ public interface UserService {
     // 通过id查找用户
     User selectUserById(Integer userId) throws UserHasNotExistedException;
 
+    // 搜索用户 后台搜索接口
+    List<User> selectUser(Integer id, String username, String name) throws UserHasNotExistedException;
+
     // 查找所有用户
     List<User> selectAllUser() throws UserHasNotExistedException;
 
