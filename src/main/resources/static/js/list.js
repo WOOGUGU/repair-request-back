@@ -338,6 +338,10 @@ function addMember() {
 }
 
 function delMember() {
+    if ($("#userId").val() === "" && $("#username").val() === "") {
+        alert("用户Id和用户名不能同时为空");
+        return;
+    }
     $.ajax({
         url: '/v2/user/deleteUser',
         type: 'post',
