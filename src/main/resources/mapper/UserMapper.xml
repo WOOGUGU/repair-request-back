@@ -34,6 +34,24 @@
         from user
     </select>
 
+    <select id="selectUser" resultMap="userMap">
+        select *
+        from user
+        <where>
+            <if test="id != null and id != ''">
+                id = #{id}
+            </if>
+
+            <if test="username != null and username != ''">
+                and username = #{username}
+            </if>
+
+            <if test="name != null and name != ''">
+                and name = #{name}
+            </if>
+        </where>
+    </select>
+
     <update id="updateUser">
         update user
         set `username` = #{username},
@@ -63,13 +81,13 @@
     <select id="selectAllRepairman" resultMap="userMap">
         select u.id, u.name, u.username
         from `user` u, user_role ur
-        where ur.rid = 3 and u.id = ur.uid
+        where ur.rid = 1 and u.id = ur.uid
     </select>
 
     <select id="selectAllNorUser" resultMap="userMap">
         select u.id, u.name, u.username
         from `user` u, user_role ur
-        where ur.rid = 1 and u.id = ur.uid
+        where ur.rid = 3 and u.id = ur.uid
     </select>
 
     <resultMap id="userMap" type="com.kkkoke.networkrepair.pojo.User">
