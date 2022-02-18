@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>管理员增加</title>
+  <title>增加用户</title>
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
@@ -11,36 +11,41 @@
   <link rel="stylesheet" href="./css/index.css">
   <script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
   <script type="text/javascript" src="./js/index.js"></script>
-  <script type="text/javascript" src="js/member.js"></script>
+  <script type="text/javascript" src="js/list.js"></script>
   <script type="text/javascript" src="js/jquery.js"></script>
-  <script src="js/token.js"></script>
-  <script>
-    TOKEN_VERIFY();
-  </script>
 </head>
 <body>
 <div class="layui-fluid">
   <div class="layui-row">
     <form class="layui-form">
       <div class="layui-form-item">
-        <label for="mname" class="layui-form-label">
-          <span class="x-red">*</span>管理员姓名</label>
+        <label for="uname" class="layui-form-label">
+          <span class="x-red">*</span>用户名/账号</label>
         <div class="layui-input-inline">
-          <input type="text" id="mname" required="" autocomplete="off" class="layui-input"></div>
-        <div class="layui-form-mid layui-word-aux">
-          <span class="x-red">*</span>将会成为您唯一的登入名</div></div>
-      <div class="layui-form-item">
-        <label for="mpwd" class="layui-form-label">
-          <span class="x-red">*</span>管理员密码</label>
-        <div class="layui-input-inline">
-          <input type="password" id="mpwd" required="" lay-verify="pass" autocomplete="off" class="layui-input"></div>
+          <input type="text" id="uname" required="" autocomplete="off" class="layui-input">
+        </div>
       </div>
       <div class="layui-form-item">
-        <div class="layui-input-block" id="which">
-          <input type="radio" name="status" value="0" title="普通管理员" checked="checked"><div class="layui-unselect layui-form-radio layui-form-radioed"><i class="layui-anim layui-icon"></i><div>普通管理员</div></div>
-          <input type="radio" name="status" value="1" title="超级管理员"><div class="layui-unselect layui-form-radio"><i class="layui-anim layui-icon"></i><div>超级管理员</div></div>
+        <label for="passwd" class="layui-form-label">
+          <span class="x-red">*</span>密码</label>
+        <div class="layui-input-inline">
+          <input type="password" id="passwd" required="" lay-verify="pass" autocomplete="off" class="layui-input">
         </div>
-        <label for="which" class="layui-form-label"></label>
+      </div>
+      <div class="layui-form-item">
+        <label for="name" class="layui-form-label">
+          <span class="x-red">*</span>真实姓名</label>
+        <div class="layui-input-inline">
+          <input type="text" id="name" required="" lay-verify="pass" autocomplete="off" class="layui-input">
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <div class="layui-input-block" id="roleType">
+          <input type="radio" name="status" value="3" title="普通用户" checked="checked"><div class="layui-unselect layui-form-radio layui-form-radioed"><i class="layui-anim layui-icon"></i><div>普通用户</div></div>
+          <input type="radio" name="status" value="2" title="管理员"><div class="layui-unselect layui-form-radio"><i class="layui-anim layui-icon"></i><div>管理员</div></div>
+          <input type="radio" name="status" value="1" title="维修员"><div class="layui-unselect layui-form-radio"><i class="layui-anim layui-icon"></i><div>维修员</div></div>
+        </div>
+        <label for="roleType" class="layui-form-label"></label>
 <!--        <button class="layui-btn" lay-submit lay-filter="formDemo"><i class="layui-icon"></i>添加</button>-->
       </div>
     </form>
@@ -54,6 +59,4 @@
   s.parentNode.insertBefore(hm, s);
 })();</script>
 </body>
-<script type="text/javascript" src="js/jquery.js"></script>
-<script type="text/javascript" src="js/member.js"></script>
 </html>

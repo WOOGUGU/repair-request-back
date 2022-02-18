@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface UserService {
     // 添加用户
-    User addUser(String username, String password, String name) throws UserHasExistedException;
+    User addUser(String username, String password, String name, Integer roleType) throws UserHasExistedException;
 
     // 删除用户
     int deleteUser(Integer userId) throws UserHasNotExistedException;
@@ -22,6 +22,15 @@ public interface UserService {
 
     // 查找所有用户
     List<User> selectAllUser() throws UserHasNotExistedException;
+
+    // 查找所有管理员
+    List<User> selectAllAdmin() throws UserHasNotExistedException;
+
+    // 查找所有维修员
+    List<User> selectAllRepairman() throws UserHasNotExistedException;;
+
+    // 查找所有普通用户
+    List<User> selectAllNorUser() throws UserHasNotExistedException;;
 
     // 修改用户信息
     User updateUser(Integer userId, String username, String password, String name) throws UserHasNotExistedException;

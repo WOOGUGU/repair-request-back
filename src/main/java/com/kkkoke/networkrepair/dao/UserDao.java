@@ -11,6 +11,9 @@ public interface UserDao {
     // 添加用户
     int addUser(User user);
 
+    // 设置权限
+    int setRole(Integer userId, Integer roleType);
+
     // 删除用户
     int deleteUser(Integer id);
 
@@ -22,6 +25,15 @@ public interface UserDao {
 
     // 查找所有用户
     List<User> selectAllUser();
+
+    // 查找所有管理员
+    List<User> selectAllAdmin();
+
+    // 查找所有维修员
+    List<User> selectAllRepairman();
+
+    // 查找所有普通用户
+    List<User> selectAllNorUser();
 
     // 修改用户信息
     Integer updateUser(User user);

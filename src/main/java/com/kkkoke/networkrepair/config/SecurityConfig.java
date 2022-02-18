@@ -133,6 +133,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .and()
             .csrf().disable();
 
+        // 设置访问同源头
+        http.headers().frameOptions().sameOrigin();
+
         // at: 用某个 filter 来替换过滤器链中哪个 filter
         // before: 放在过滤器链中哪个 filter 之前
         // after: 放在过滤器链中哪个 filter 之后

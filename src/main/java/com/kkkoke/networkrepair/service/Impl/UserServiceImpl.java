@@ -21,13 +21,14 @@ public class UserServiceImpl implements UserService {
 
     // 添加用户
     @Override
-    public User addUser(String username, String password, String name) throws UserHasExistedException {
+    public User addUser(String username, String password, String name, Integer roleType) throws UserHasExistedException {
         // 查看数据库中是否已经存在此用户
         if (ObjectUtils.isEmpty(userDao.selectUserByUsername(username))) {
             // 对密码进行BCrypt加密
             String hashPasswd = BCrypt.hashpw(password, BCrypt.gensalt());
             User user = new User(username, hashPasswd, name);
             userDao.addUser(user);
+            userDao.setRole(userDao.selectUserByUsername(username).getId(), roleType);
             return user;
         } else {
             // 用户已存在
@@ -76,6 +77,42 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> selectAllUser() throws UserHasNotExistedException {
         List<User> users = userDao.selectAllUser();
+        // 判断查询结果是否为空
+        if (ObjectUtils.isEmpty(users)) {
+            throw new UserHasNotExistedException("User has not existed");
+        } else {
+            return users;
+        }
+    }
+
+    // 查找所有管理员
+    @Override
+    public List<User> selectAllAdmin() throws UserHasNotExistedException {
+        List<User> admins = userDao.selectAllAdmin();
+        // 判断查询结果是否为空
+        if (ObjectUtils.isEmpty(admins)) {
+            throw new UserHasNotExistedException("User has not existed");
+        } else {
+            return admins;
+        }
+    }
+
+    // 查找所有维修员
+    @Override
+    public List<User> selectAllRepairman() throws UserHasNotExistedException {
+        List<User> repairmans = userDao.selectAllRepairman();
+        // 判断查询结果是否为空
+        if (ObjectUtils.isEmpty(repairmans)) {
+            throw new UserHasNotExistedException("User has not existed");
+        } else {
+            return repairmans;
+        }
+    }
+
+    // 查找所有普通用户
+    @Override
+    public List<User> selectAllNorUser() throws UserHasNotExistedException {
+        List<User> users = userDao.selectAllNorUser();
         // 判断查询结果是否为空
         if (ObjectUtils.isEmpty(users)) {
             throw new UserHasNotExistedException("User has not existed");

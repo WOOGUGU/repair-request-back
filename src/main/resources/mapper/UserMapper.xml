@@ -5,6 +5,11 @@
         insert into user(username, password, name)
         values (#{username}, #{password}, #{name})
     </insert>
+
+    <insert id="setRole" parameterType="int">
+        insert into user_role(uid, rid)
+        values (#{userId}, #{roleType})
+    </insert>
     
     <delete id="deleteUser" parameterType="int">
         delete
@@ -47,6 +52,24 @@
         select r.id, r.name, r.name_zh nameZh
         from role r, user_role ur
         where r.id = ur.rid and ur.uid = #{uid}
+    </select>
+
+    <select id="selectAllAdmin" resultMap="userMap">
+        select u.id, u.name, u.username
+        from `user` u, user_role ur
+        where ur.rid = 2 and u.id = ur.uid
+    </select>
+
+    <select id="selectAllRepairman" resultMap="userMap">
+        select u.id, u.name, u.username
+        from `user` u, user_role ur
+        where ur.rid = 3 and u.id = ur.uid
+    </select>
+
+    <select id="selectAllNorUser" resultMap="userMap">
+        select u.id, u.name, u.username
+        from `user` u, user_role ur
+        where ur.rid = 1 and u.id = ur.uid
     </select>
 
     <resultMap id="userMap" type="com.kkkoke.networkrepair.pojo.User">

@@ -43,8 +43,8 @@ public class UserController {
     @Secured({"ROLE_admin"})
     @PostMapping("/addUser")
     public ApiResult addUser(@NotBlank(message = "username can not be null") String username, @NotBlank(message = "password can not be null") String password,
-                             @NotBlank(message = "name can not be null") String name) throws UserHasExistedException {
-        userService.addUser(username, password, name);
+                             @NotBlank(message = "name can not be null") String name, @NotNull(message = "roleType can not be null") Integer roleType) throws UserHasExistedException {
+        userService.addUser(username, password, name, roleType);
         return ApiResult.success("用户添加成功");
     }
 
@@ -81,6 +81,30 @@ public class UserController {
     public ApiResult selectAllUser() throws UserHasNotExistedException {
         List<User> users = userService.selectAllUser();
         return ApiResult.success(users, "查找成功");
+    }
+
+    @ApiOperation(value = "查找所有管理员")
+    @Secured("ROLE_admin")
+    @GetMapping("/selectAllAdmin")
+    public ApiResult selectAllAdmin() throws UserHasNotExistedException {
+        List<User> admins = userService.selectAllAdmin();
+        return ApiResult.success(admins, "查找成功");
+    }
+
+    @ApiOperation(value = "查找所有维修员")
+    @Secured("ROLE_admin")
+    @GetMapping("/selectAllRepairman")
+    public ApiResult selectAllRepairman() throws UserHasNotExistedException {
+        List<User> admins = userService.selectAllRepairman();
+        return ApiResult.success(admins, "查找成功");
+    }
+
+    @ApiOperation(value = "查找所有普通用户")
+    @Secured("ROLE_admin")
+    @GetMapping("/selectAllNorUser")
+    public ApiResult selectAllNorUser() throws UserHasNotExistedException {
+        List<User> admins = userService.selectAllNorUser();
+        return ApiResult.success(admins, "查找成功");
     }
 
     @ApiOperation(value = "修改用户信息")
