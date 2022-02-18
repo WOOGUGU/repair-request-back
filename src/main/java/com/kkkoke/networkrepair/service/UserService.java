@@ -12,7 +12,7 @@ public interface UserService {
     User addUser(String username, String password, String name, Integer roleType) throws UserHasExistedException;
 
     // 删除用户
-    int deleteUser(Integer userId) throws UserHasNotExistedException;
+    int deleteUser(Integer userId, String username) throws UserHasNotExistedException;
 
     // 通过用户名查找用户
     User selectUserByUsername(String username) throws UserHasNotExistedException;

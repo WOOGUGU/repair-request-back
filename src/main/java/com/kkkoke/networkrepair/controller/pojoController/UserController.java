@@ -3,6 +3,7 @@ package com.kkkoke.networkrepair.controller.pojoController;
 import com.kkkoke.networkrepair.exception.UserHasExistedException;
 import com.kkkoke.networkrepair.exception.UserHasNotExistedException;
 import com.kkkoke.networkrepair.pojo.User;
+import com.kkkoke.networkrepair.result.ResultCode;
 import com.kkkoke.networkrepair.service.UserService;
 import com.kkkoke.networkrepair.result.ApiResult;
 import io.swagger.annotations.Api;
@@ -12,6 +13,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.util.ObjectUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -52,8 +54,11 @@ public class UserController {
     @ApiImplicitParam(name = "userId", value = "用户Id", required = true, paramType = "query")
     @Secured({"ROLE_admin"})
     @PostMapping("/deleteUser")
-    public ApiResult deleteUser(@NotNull(message = "userId can not be null") Integer userId) throws UserHasNotExistedException {
-        userService.deleteUser(userId);
+    public ApiResult deleteUser(Integer userId, String username) throws UserHasNotExistedException {
+        if (ObjectUtils.isEmpty(userId) && ObjectUtils.isEmpty(username)) {
+            return ApiResult.fail(ResultCode.MISSING_PARAM, "用户Id和用户名不能同时为空", ApiResult.MISSING_PARAM);
+        }
+        userService.deleteUser(userId, username);
         return ApiResult.success("用户删除成功");
     }
 

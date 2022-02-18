@@ -15,7 +15,7 @@ public interface UserDao {
     int setRole(Integer userId, Integer roleType);
 
     // 删除用户
-    int deleteUser(Integer id);
+    int deleteUser(Integer id, String username);
 
     // 通过用户名查找用户
     User selectUserByUsername(String username);
