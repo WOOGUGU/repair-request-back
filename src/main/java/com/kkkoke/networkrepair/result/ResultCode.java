@@ -96,4 +96,6 @@ public class ResultCode {
     public static final String LOGIN_FAIL = "F0001";
 
     public static final String FORBIDDEN = "F100";
+
+    public static final String PARAM_ERROR = "F200";
 }

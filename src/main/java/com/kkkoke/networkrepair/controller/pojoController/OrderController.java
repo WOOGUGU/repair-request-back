@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -112,7 +113,8 @@ public class OrderController {
     @ApiImplicitParam(name = "feedback", value = "用户反馈", required = false, paramType = "query")
     @Secured({"ROLE_admin", "ROLE_user"})
     @PostMapping("/updateOrderFeedback")
-    public ApiResult updateOrderFeedback(@NotNull(message = "orderId can not be null") Integer orderId,  @NotBlank(message = "feedback can not be null") String feedback) throws DataHasNotExistedException {
+    public ApiResult updateOrderFeedback(@NotNull(message = "orderId can not be null") Integer orderId,
+                                         @NotBlank(message = "feedback can not be null") @Size(min = 1, max = 100) String feedback) throws DataHasNotExistedException {
         orderService.updateOrderFeedback(orderId, feedback);
         return ApiResult.success("更新成功");
     }
