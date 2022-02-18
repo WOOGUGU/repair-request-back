@@ -108,6 +108,15 @@ public class OrderController {
         return ApiResult.success("更新成功");
     }
 
+    @ApiOperation(value = "提交报修工单反馈")
+    @ApiImplicitParam(name = "feedback", value = "用户反馈", required = false, paramType = "query")
+    @Secured({"ROLE_admin", "ROLE_user"})
+    @PostMapping("/updateOrderFeedback")
+    public ApiResult updateOrderFeedback(@NotNull(message = "orderId can not be null") Integer orderId,  @NotBlank(message = "feedback can not be null") String feedback) throws DataHasNotExistedException {
+        orderService.updateOrderFeedback(orderId, feedback);
+        return ApiResult.success("更新成功");
+    }
+
     @ApiOperation(value = "查找某用户发布的所有工单")
     @ApiImplicitParam(name = "username", value = "用户名", required = true, paramType = "query")
     @Secured({"ROLE_admin", "ROLE_user", "ROLE_repairman"})

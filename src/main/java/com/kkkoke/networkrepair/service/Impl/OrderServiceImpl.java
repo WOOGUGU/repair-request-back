@@ -85,6 +85,19 @@ public class OrderServiceImpl implements OrderService {
         }
     }
 
+    // 修改报修工单
+    @Override
+    public Integer updateOrderFeedback(Integer orderId, String feedback) throws DataHasNotExistedException {
+        // 查找数据库中是否存在此用户
+        if (ObjectUtils.isEmpty(orderDao.selectOrderById(orderId))) {
+            throw new DataHasNotExistedException("Order has not existed");
+        } else {
+            // 如果用户存在就更新数据
+            orderDao.updateOrderFeedback(orderId, feedback);
+            return 0;
+        }
+    }
+
     // 查找某用户发起的所有工单
     @Override
     public List<Order> selectAllOrderOfUser(String username) throws DataHasNotExistedException {

@@ -21,6 +21,9 @@ public interface OrderDao {
     // 修改报修工单
     Integer updateOrder(Order order);
 
+    // 提交报修工单反馈
+    Integer updateOrderFeedback(Integer id, String feedback);
+
     // 查找某用户发起的所有工单
     List<Order> selectAllOrderOfUser(String username);
 
