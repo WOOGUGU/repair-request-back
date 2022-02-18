@@ -98,4 +98,10 @@ public class ResultCode {
     public static final String FORBIDDEN = "F100";
 
     public static final String PARAM_ERROR = "F200";
+
+    public static final String PARAM_LENGTH_ERROR = "F200";
+
+    public static final String EXPIRED_SESSION = "F300";
+
+    public static final String EFFECTIVE_SESSION = "F400";
 }

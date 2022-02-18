@@ -43,7 +43,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         roles.forEach(role -> grantedAuthorities.add(new SimpleGrantedAuthority(role.getName())));
 //        UserDetails userDetails = org.springframework.security.core.userdetails.User.withUsername(user.getUsername()).password(user.getPassword()).authorities(grantedAuthorities).build();
 //        return new UserResult(user.getId(),  user.getName(), (org.springframework.security.core.userdetails.User) userDetails, grantedAuthorities);
-        System.out.println(new  UserResult(user.getId(), user.getUsername(), user.getPassword(), user.getName(), grantedAuthorities));
         return new UserResult(user.getId(), user.getUsername(), user.getPassword(), user.getName(), grantedAuthorities);
     }
 }
