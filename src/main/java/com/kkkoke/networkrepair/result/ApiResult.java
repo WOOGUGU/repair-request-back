@@ -48,6 +48,10 @@ public class ApiResult {
     public final static String UNSUPPORTED_HTTP_METHOD = "unsupported http method"; // 不正确的请求方式
     public final static String LOGOUT_SUCCESS = "Logout success"; // 注销成功
     public final static String INVALID_OPERATION = "invalid operation"; // 非法操作
+    public final static String PARAM_ERROR = "param error"; // 参数错误
+    public final static String PARAM_LENGTH_ERROR = "param length error"; // 参数长度错误
+    public final static String EXPIRED_SESSION = "expired session"; // session过期
+    public final static String EFFECTIVE_SESSION = "effective session"; // session有效
 
     public static ApiResult fail(String code, String userMsg, String errMsg) {
         return new ApiResult(code, null, userMsg, errMsg);

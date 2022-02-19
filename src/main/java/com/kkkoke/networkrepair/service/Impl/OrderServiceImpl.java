@@ -56,6 +56,20 @@ public class OrderServiceImpl implements OrderService {
         }
     }
 
+    // 查找报修工单 后台接口
+    @Override
+    public List<Order> selectOrder(Integer orderId, String username, String sender, String tel, String type,
+                                   String des, String position, String timeSubscribe, Integer progress, String solver,
+                                   String timeStart, String timeDistribution, String timeEnd, String feedback) throws DataHasNotExistedException {
+        List<Order> orders = orderDao.selectOrder(orderId, username, sender, tel, type, des, position, timeSubscribe, progress, solver, timeStart, timeDistribution, timeEnd, feedback);
+        // 判断查询结果是否为空
+        if (ObjectUtils.isEmpty(orders)) {
+            throw new DataHasNotExistedException("Order has not existed");
+        } else {
+            return orders;
+        }
+    }
+
     // 查找所有报修工单
     @Override
     public List<Order> selectAllOrder() throws DataHasNotExistedException {

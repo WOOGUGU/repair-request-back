@@ -38,12 +38,12 @@ public class UserServiceImpl implements UserService {
 
     // 删除用户
     @Override
-    public int deleteUser(Integer userId) throws UserHasNotExistedException {
+    public int deleteUser(Integer userId, String username) throws UserHasNotExistedException {
         // 查询数据库，查看要删除的用户是否存在
-        if (ObjectUtils.isEmpty(userDao.selectUserById(userId))) {
+        if (ObjectUtils.isEmpty(userDao.selectUserById(userId)) && ObjectUtils.isEmpty(userDao.selectUserByUsername(username))) {
             throw new UserHasNotExistedException("User has not existed");
         } else {
-            return userDao.deleteUser(userId);
+            return userDao.deleteUser(userId, username);
         }
     }
 

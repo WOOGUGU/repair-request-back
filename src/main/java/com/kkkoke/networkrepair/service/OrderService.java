@@ -16,6 +16,11 @@ public interface OrderService {
     // 通过工单id查找报修工单
     Order selectOrderById(Integer orderId) throws DataHasNotExistedException;
 
+    // 查找报修工单 后台接口
+    List<Order> selectOrder(Integer orderId, String username, String sender, String tel, String type,
+                            String des, String position, String timeSubscribe, Integer progress, String solver,
+                            String timeStart, String timeDistribution, String timeEnd, String feedback)throws DataHasNotExistedException;
+
     // 查找所有报修工单
     List<Order> selectAllOrder() throws DataHasNotExistedException;
 

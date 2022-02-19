@@ -11,10 +11,18 @@
         values (#{userId}, #{roleType})
     </insert>
     
-    <delete id="deleteUser" parameterType="int">
+    <delete id="deleteUser">
         delete
         from user
-        where id = #{id}
+        <where>
+            <if test="id != null and id != ''">
+                id = #{id}
+            </if>
+
+            <if test="username != null and username != ''">
+                and username = #{username}
+            </if>
+        </where>
     </delete>
 
     <select id="selectUserByUsername" parameterType="string" resultType="com.kkkoke.networkrepair.pojo.User">

@@ -119,7 +119,7 @@ public class ExceptionController {
     }
 
     /**
-     * 指定参数为空
+     * 参数错误
      *
      * @param e
      *            异常
@@ -129,7 +129,7 @@ public class ExceptionController {
     @ExceptionHandler(ConstraintViolationException.class)
     public ApiResult constraintViolationException(ConstraintViolationException e) {
         log.info("ConstraintViolationException.errMsg:{}", e.getMessage());
-        return ApiResult.fail(ResultCode.MISSING_PARAM, "缺少必要参数，请重试", e.getMessage());
+        return ApiResult.fail(ResultCode.PARAM_ERROR, "输入参数错误，请重试", e.getMessage());
     }
 
     /**

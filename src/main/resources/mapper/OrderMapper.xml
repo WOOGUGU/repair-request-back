@@ -77,6 +77,68 @@
         where id = #{id}
     </update>
 
+    <select id="selectOrder" resultMap="orderMap">
+        select *
+        from `order`
+        <where>
+            <if test="id != null and id != ''">
+                id = #{id}
+            </if>
+
+            <if test="username != null and username != ''">
+                and username = #{username}
+            </if>
+
+            <if test="sender != null and sender != ''">
+                and sender = #{sender}
+            </if>
+
+            <if test="tel != null and tel != ''">
+                and tel = #{tel}
+            </if>
+
+            <if test="sender != null and sender != ''">
+                and sender = #{sender}
+            </if>
+
+            <if test="type != null and type != ''">
+                and type = #{type}
+            </if>
+
+            <if test="des != null and des != ''">
+                and des = #{des}
+            </if>
+
+            <if test="position != null and position != ''">
+                and position = #{position}
+            </if>
+
+            <if test="timeSubscribe != null and timeSubscribe != ''">
+                and time_subscribe = #{timeSubscribe}
+            </if>
+
+            <if test="progress != null and progress != ''">
+                and progress = #{progress}
+            </if>
+
+            <if test="timeStart != null and timeStart != ''">
+                and time_start = #{timeStart}
+            </if>
+
+            <if test="timeDistribution != null and timeDistribution != ''">
+                and time_distribution = #{timeDistribution}
+            </if>
+
+            <if test="feedback != null and feedback != ''">
+                and feedback = #{feedback}
+            </if>
+
+            <if test="timeDistribution != null and timeDistribution != ''">
+                and time_distribution = #{timeDistribution}
+            </if>
+        </where>
+    </select>
+
     <select id="selectAllOrderOfUser" resultMap="orderMap">
         select *
         from `order`

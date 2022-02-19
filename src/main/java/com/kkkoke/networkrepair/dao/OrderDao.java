@@ -2,6 +2,7 @@ package com.kkkoke.networkrepair.dao;
 
 import com.kkkoke.networkrepair.pojo.Order;
 import org.apache.ibatis.annotations.Mapper;
+
 import java.util.List;
 
 @Mapper
@@ -14,6 +15,11 @@ public interface OrderDao {
 
     // 通过工单id查找报修工单
     Order selectOrderById(Integer id);
+
+    // 查找报修工单 后台接口
+    List<Order> selectOrder(Integer id, String username, String sender, String tel, String type,
+                            String des, String position, String timeSubscribe, Integer progress, String solver,
+                            String timeStart, String timeDistribution, String timeEnd, String feedback);
 
     // 查找所有报修工单
     List<Order> selectAllOrder();
