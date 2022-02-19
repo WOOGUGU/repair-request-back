@@ -448,14 +448,25 @@ layui.use(['table','form','layer'], function() {
     $('#searchOrder').on('click', function () {
         table.reload('tableFour', {
             method: 'get'
-            , url: '/v2/user/selectUser'
+            , url: '/v2/order/selectOrder'
             , headers: {
                 "Cookie": document.cookie
             }
             , where: {
-                'userId': $('#userId').val(),
+                'orderId': $('#orderId').val(),
                 'username': $('#username').val(),
-                'name': $('#name').val()
+                'sender': $('#sender').val(),
+                'tel': $('#tel').val(),
+                'type': $('#type').val(),
+                'des': $('#des').val(),
+                'position': $('#position').val(),
+                'timeSubscribe': $('#timeSubscribe').val(),
+                'progress': $('#progress').val(),
+                'solver': $('#solver').val(),
+                'timeStart': $('#timeStart').val(),
+                'timeDistribution': $('#timeDistribution').val(),
+                'timeEnd': $('#timeEnd').val(),
+                'feedback': $('#feedback').val()
             }
             , page: {
                 curr: 1
