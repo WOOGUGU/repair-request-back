@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -16,7 +17,8 @@ public class ArticleServiceImpl implements ArticleService {
 
     //添加文章
     @Override
-    public Article addArticle(String createTime, String updateTime, String contentPath, String author, Integer displayStatus) {
+    public Article addArticle(String updateTime, String contentPath, String author, Integer displayStatus) {
+        String createTime = LocalDateTime.now().toString();
         Article article = new Article(createTime, updateTime, contentPath, author, displayStatus);
         articleDao.addArticle(article);
         return article;
