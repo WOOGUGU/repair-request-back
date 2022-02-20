@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface ArticleService {
     // 添加文章
-    Article addArticle(String createTime, String updateTime, String contentPath, String author, Integer displayStatus);
+    Article addArticle(String updateTime, String contentPath, String author, Integer displayStatus);
     // 删除文章
     int deleteArticle(Integer articleId) throws DataHasNotExistedException;
     // 修改文章
