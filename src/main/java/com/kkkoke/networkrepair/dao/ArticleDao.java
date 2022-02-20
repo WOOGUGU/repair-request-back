@@ -23,5 +23,7 @@ public interface ArticleDao {
     Article selectArticleByUpdateTime(String updateTime);
     // 通过作者查找文章
     List<Article> selectArticleByAuthor(String author);
+    //查找文章 后台接口
+    List<Article> selectArticle(Integer id, String author, Integer displayStatus);
 }
 

@@ -31,17 +31,20 @@
                 <div class="layui-card-body ">
                     <form class="layui-form layui-col-space5">
                         <div class="layui-inline layui-show-xs-block">
-                            <input type="text" id="userId" name="userId"  placeholder="用户编号" autocomplete="off" class="layui-input">
+                            <input type="text" id="articleId" name="articleId"  placeholder="文章编号" autocomplete="off" class="layui-input">
                         </div>
                         <div class="layui-inline layui-show-xs-block">
-                            <input type="text" id="username" name="username"  placeholder="用户名" autocomplete="off" class="layui-input">
+                            <input type="text" id="author" name="author"  placeholder="作者" autocomplete="off" class="layui-input">
+                        </div>
+                        <div class="layui-input-inline layui-show-xs-block">
+                            <select name="displayStatus" id="displayStatus">
+                                <option value="">状态</option>
+                                <option value="1">展示</option>
+                                <option value="2">隐藏</option>
+                            </select>
                         </div>
                         <div class="layui-inline layui-show-xs-block">
-                            <input type="text" id="name" name="name"  placeholder="真实姓名" autocomplete="off" class="layui-input">
-                        </div>
-                        <div class="layui-inline layui-show-xs-block">
-                            <!--                            <div class="layui-btn" lay-filter="search" onclick="searchMember()"><i class="layui-icon">&#xe615;</i></div>-->
-                            <div class="layui-btn" lay-filter="search" id="searchNorUser"><i class="layui-icon">&#xe615;</i></div>
+                            <div class="layui-btn" lay-filter="search" id="searchArticle"><i class="layui-icon">&#xe615;</i></div>
                         </div>
                     </form>
                 </div>
