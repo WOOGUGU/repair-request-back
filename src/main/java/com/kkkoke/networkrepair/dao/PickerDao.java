@@ -4,43 +4,32 @@ import com.kkkoke.networkrepair.pojo.Picker;
 import com.kkkoke.networkrepair.pojo.helper.PickerResult;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Mapper
 public interface PickerDao {
-    // 增加报修时间段
-    int addPickerTime(Picker picker);
+    // 增加picker
+    int addPicker(Picker picker);
 
-    // 增加故障类型
-    int addPickerType(Picker picker);
-
-    // 删除报修时间段
-    int deletePickerTime(String time);
-
-    // 删除故障类型
-    int deletePickerType(String type);
-
-    // 根据Id删除picker
+    // 通过id删除故障类型
     int deletePickerById(Integer id);
 
-    // 根据id超找某个Picker
+    // 通过value删除故障类型
+    int deletePickerByValue(String value);
+
+    // 根据id查找某个Picker
     Picker selectPickerById(Integer id);
 
-    // 根据time查找某个报修时间段
-    PickerResult selectPickerByTime(String time);
+    // 根据value查找某个报修时间段
+    Picker selectPickerByValue(String Value);
 
-    // 根据type查找某个报修时间段
-    PickerResult selectPickerByType(String type);
-
-    // 查找所有时间段
+    // 查找所有报修时间段
     List<PickerResult> selectAllPickerTime();
 
-    // 查找所有故障类型
-    List<PickerResult> selectAllPickerType();
+    // 查找所有故障描述
+    List<PickerResult> selectAllPickerDes();
 
-    // 修改报修时间段
-    Integer updatePickerTime(Picker picker);
-
-    // 修改故障类型
-    Integer updatePickerType(Picker picker);
+    // 修改picker
+    Integer updatePicker(Picker picker);
 }
