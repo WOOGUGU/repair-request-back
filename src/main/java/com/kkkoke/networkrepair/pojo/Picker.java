@@ -9,12 +9,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Picker {
     private Integer id;
-    private String time; // 可预约时间段
-    private String type; // 故障类型
+    private String type; // picker类型
+    private String value; // picker值
 
     // 不带id构造函数
-    public Picker(String time, String type) {
-        this.time = time;
+    public Picker(String type, String value) {
         this.type = type;
+        this.value = value;
     }
 }
