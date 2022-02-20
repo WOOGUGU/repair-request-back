@@ -38,15 +38,13 @@ public class ArticleController {
     }
 
     @ApiOperation(value = "添加文章")
-    @ApiImplicitParams({@ApiImplicitParam(name = "updateTime", value = "文章修改时间", required = true, paramType = "query"),
-            @ApiImplicitParam(name = "contentPath", value = "文章内容路径", required = true, paramType = "query"),
+    @ApiImplicitParams({@ApiImplicitParam(name = "contentPath", value = "文章内容路径", required = true, paramType = "query"),
             @ApiImplicitParam(name = "author", value = "文章作者", required = true, paramType = "query"),
             @ApiImplicitParam(name = "displayStatus", value = "文章状态", required = true, paramType = "query")})
     @Secured({"ROLE_admin"})
     @PostMapping("/addArticle")
-    public ApiResult addArticle(@NotBlank(message = "updateTime can not be null") String updateTime, @NotBlank(message = "contentPath can not be null") String contentPath,
-                                @NotBlank(message = "author can not be null") String author, @NotNull(message = "displayStatus can not be null") Integer displayStatus) {
-        articleService.addArticle(updateTime, contentPath, author, displayStatus);
+    public ApiResult addArticle(@NotBlank(message = "contentPath can not be null") String contentPath, @NotBlank(message = "author can not be null") String author, @NotNull(message = "displayStatus can not be null") Integer displayStatus) {
+        articleService.addArticle(contentPath, author, displayStatus);
         return ApiResult.success("文章添加成功");
     }
 
@@ -61,17 +59,14 @@ public class ArticleController {
 
     @ApiOperation(value = "修改文章信息")
     @ApiImplicitParams({@ApiImplicitParam(name = "articleId", value = "文章Id", required = true, paramType = "query"),
-            @ApiImplicitParam(name = "createTime", value = "文章创建时间", required = true, paramType = "query"),
-            @ApiImplicitParam(name = "updateTime", value = "文章修改时间", required = true, paramType = "query"),
             @ApiImplicitParam(name = "contentPath", value = "文章内容路径", required = true, paramType = "query"),
             @ApiImplicitParam(name = "author", value = "文章作者", required = true, paramType = "query"),
             @ApiImplicitParam(name = "displayStatus", value = "文章状态", required = true, paramType = "query")})
     @Secured({"ROLE_admin"})
     @PostMapping("/updateArticle")
-    public ApiResult updateArticle(@NotNull(message = "articleId can not be null") Integer articleId, @NotBlank(message = "createTime can not be null") String createTime,
-                                   @NotBlank(message = "updateTime can not be null") String updateTime, @NotBlank(message = "contentPath can not be null") String contentPath,
+    public ApiResult updateArticle(@NotNull(message = "articleId can not be null") Integer articleId, @NotBlank(message = "contentPath can not be null") String contentPath,
                                    @NotBlank(message = "author can not be null") String author, @NotNull(message = "displayStatus can not be null") Integer displayStatus) throws DataHasNotExistedException {
-        articleService.updateArticle(articleId, createTime, updateTime, contentPath, author, displayStatus);
+        articleService.updateArticle(articleId, contentPath, author, displayStatus);
         return ApiResult.success("更新成功");
     }
 
