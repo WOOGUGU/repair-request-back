@@ -15,18 +15,18 @@
         <div class="login_padding">
             <h2>用户名</h2>
             <label>
-                <input type="text" id="name" class="txt_input txt_input2" onfocus="if (value ==&#39;Your name&#39;){value =&#39;&#39;}" onblur="if (value ==&#39;&#39;){value=&#39;Your name&#39;}" value="用户名">
+                <input type="text" id="name" class="txt_input txt_input2" placeholder="用户名">
             </label>
             <h2>密码</h2>
             <label>
-                <input type="password" name="textfield2" id="pwd" class="txt_input" onfocus="if (value ==&#39;******&#39;){value =&#39;&#39;}" onblur="if (value ==&#39;&#39;){value=&#39;******&#39;}" value="请输入密码">
+                <input type="password" name="textfield2" id="pwd" class="txt_input" placeholder="请输入密码">
             </label>
-<!--            <p class="forgot"><a href="javascript:void(0);">忘记密码?</a></p>-->
+            <!--            <p class="forgot"><a href="javascript:void(0);">忘记密码?</a></p>-->
             <div class="rem_sub">
-<!--                <div class="rem_sub_l">-->
-<!--                    <input type="checkbox" name="checkbox" id="save_me">-->
-<!--                    <label for="checkbox">记住</label>-->
-<!--                </div>-->
+                <!--                <div class="rem_sub_l">-->
+                <!--                    <input type="checkbox" name="checkbox" id="save_me">-->
+                <!--                    <label for="checkbox">记住</label>-->
+                <!--                </div>-->
                 <label>
                     <input type="submit" class="sub_button" name="button" id="button" value="登录" style="opacity: 0.7;">
                 </label>
@@ -35,40 +35,39 @@
     </div><!--login_boder end-->
 </div><!--login_m end-->
 
-<br />
-<br />
+<br/>
+<br/>
 
 </body>
 <script type="text/javascript" src="/js/jquery.js"></script>
 <script type="text/javascript" src="/js/index.js"></script>
 <script>
     $("#button").click(
-        function (){
-        $.ajax({
-            url: '/doLogin',
-            type: 'post',
-            data: {
-                "uname": $("#name").val(),
-                "passwd": hexMD5($("#pwd").val()).toUpperCase()
-            },
-            success: function (res)
-            {
-                if (res.code === "00000") {
-                    alert(res.userMsg);
-                    location.assign("index.html");
-                } else if (res.code === "A0202") {
-                    alert(res.userMsg);
-                } else if (res.code === "A0201") {
-                    alert(res.userMsg);
-                } else {
-                    alert("发生未知错误，请重试");
+        function () {
+            $.ajax({
+                url: '/doLogin',
+                type: 'post',
+                data: {
+                    "uname": $("#name").val(),
+                    "passwd": hexMD5($("#pwd").val()).toUpperCase()
+                },
+                success: function (res) {
+                    if (res.code === "00000") {
+                        alert(res.userMsg);
+                        location.assign("index.html");
+                    } else if (res.code === "A0202") {
+                        alert(res.userMsg);
+                    } else if (res.code === "A0201") {
+                        alert(res.userMsg);
+                    } else {
+                        alert("发生未知错误，请重试");
+                    }
+                },
+                error: function () {
+                    alert("出现异常，请重试");
                 }
-            },
-            error: function () {
-                alert("出现异常，请重试");
-            }
+            })
         })
-    })
 
     //请求令牌
     // function queryToken(name,pwd)
