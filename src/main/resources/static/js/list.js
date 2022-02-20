@@ -498,3 +498,69 @@ layui.use(['table','form','layer'], function() {
         });
     });
 });
+
+// 增加工单
+function addOrder() {
+    var uname = $("#uname").val();
+    var passwd = $("#passwd").val();
+    var name = $("#name").val();
+    if (uname === "" || passwd === "") {
+        alert("用户名或密码不能为空");
+        return;
+    } else if (name === "") {
+        alert("真实姓名不能为空");
+        return;
+    } else {
+        $.ajax({
+            url: '/v2/user/addUser',
+            type: 'post',
+            headers: {
+                "Cookie": document.cookie
+            },
+            data: {
+                "username": uname,
+                "password": passwd,
+                "name": name,
+                "roleType": $('#roleType input[name="status"]:checked ').val()
+            },
+            success:function (res) {
+                if (res.userMsg !== "") {
+                    alert(res.userMsg);
+                } else {
+                    alert("发生未知错误，请重试");
+                }
+            },
+            error:function () {
+                alert("发生未知错误，请重试");
+            }
+        });
+    }
+}
+
+// 删除工单
+function delOrder() {
+    if ($("#orderId").val() === "") {
+        alert("orderId不能为空");
+        return;
+    }
+    $.ajax({
+        url: '/v2/order/deleteOrder',
+        type: 'post',
+        headers: {
+            "Cookie": document.cookie
+        },
+        data: {
+            "orderId": $("#orderId").val()
+        },
+        success: function (res) {
+            if (res.userMsg !== "") {
+                alert(res.userMsg);
+            } else {
+                alert("发生未知错误，请重试");
+            }
+        },
+        error: function () {
+            alert("发生未知错误，请重试");
+        }
+    });
+}

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html class="x-admin-sm">
+
+<head>
+    <meta charset="UTF-8">
+    <title>工单增加</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+    <link rel="stylesheet" href="./css/font.css">
+    <link rel="stylesheet" href="./css/index.css">
+    <script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="./js/index.js"></script>
+    <script type="text/javascript" src="js/list.js"></script>
+    <script type="text/javascript" src="js/jquery.js"></script>
+</head>
+<body>
+<div class="layui-fluid">
+    <div class="layui-row">
+        <form class="layui-form">
+            <div class="layui-form-item">
+                <label for="username" class="layui-form-label">
+                    <span class="x-red">*</span>用户名/账号</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="username" required="" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label for="sender" class="layui-form-label">
+                    <span class="x-red">*</span>发起者</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="sender" required="" lay-verify="pass" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label for="tel" class="layui-form-label">
+                    <span class="x-red">*</span>联系方式</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="tel" required="" lay-verify="pass" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+<!--            <div class="layui-form-item">-->
+<!--                <label for="type" class="layui-form-label">-->
+<!--                    <span class="x-red">*</span>类型</label>-->
+<!--                <div class="layui-input-inline">-->
+<!--                    <input type="text" id="type" required="" autocomplete="off" class="layui-input">-->
+<!--                </div>-->
+<!--            </div>-->
+            <div class="layui-form-item">
+                <label for="type" class="layui-form-label">
+                    <span class="x-red">*</span>类型</label>
+                <div class="layui-input-block" id="type">
+                    <input type="radio" name="status" value="校园网" title="校园网" checked="checked"><div class="layui-unselect layui-form-radio layui-form-radioed"><i class="layui-anim layui-icon"></i><div>校园网</div></div>
+                    <input type="radio" name="status" value="移动网络" title="移动网络"><div class="layui-unselect layui-form-radio"><i class="layui-anim layui-icon"></i><div>移动网络</div></div>
+                </div>
+                <label for="type" class="layui-form-label"></label>
+                <!--        <button class="layui-btn" lay-submit lay-filter="formDemo"><i class="layui-icon"></i>添加</button>-->
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">故障描述</label>
+                    <div class="layui-input-inline">
+                        <select id="des"></select>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">报修位置</label>
+                    <div class="layui-input-inline">
+                        <select id="position"></select>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">预约上门时间</label>
+                    <div class="layui-input-inline">
+                        <select id="timeSubscribe"></select>
+                    </div>
+                </div>
+            </div>
+<!--            <div class="layui-form-item">-->
+<!--                <div class="layui-input-block" id="roleType">-->
+<!--                    <input type="radio" name="status" value="3" title="普通用户" checked="checked"><div class="layui-unselect layui-form-radio layui-form-radioed"><i class="layui-anim layui-icon"></i><div>普通用户</div></div>-->
+<!--                    <input type="radio" name="status" value="2" title="管理员"><div class="layui-unselect layui-form-radio"><i class="layui-anim layui-icon"></i><div>管理员</div></div>-->
+<!--                    <input type="radio" name="status" value="1" title="维修员"><div class="layui-unselect layui-form-radio"><i class="layui-anim layui-icon"></i><div>维修员</div></div>-->
+<!--                </div>-->
+<!--                <label for="roleType" class="layui-form-label"></label>-->
+<!--                &lt;!&ndash;        <button class="layui-btn" lay-submit lay-filter="formDemo"><i class="layui-icon"></i>添加</button>&ndash;&gt;-->
+<!--            </div>-->
+        </form>
+        <button class="layui-btn" onclick="addOrder()" style="margin-left:30px"><i class="layui-icon"></i>添加</button>
+    </div>
+</div>
+<script>var _hmt = _hmt || []; (function() {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?b393d153aeb26b46e9431fabaf0f6190";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+})();</script>
+</body>
+<script>
+    layui.use(['form'], function() {
+        var $ = layui.$,
+            form = layui.form;
+        $.ajax({
+            url: '/v2/picker/selectAllPicker',
+            type: 'get',
+            headers: {
+                'Cookie':document.cookie
+            },
+            data: {},
+            success:function (res) {
+                if (res.userMsg !== "") {
+                    alert(res.userMsg);
+                } else {
+                    alert("发生未知错误，请重试");
+                }
+                //动态渲染下拉框
+                selectUtil.render({
+                    id: 'timeSubscribe',
+                    data: res.data
+                });
+            },
+            error:function () {
+                alert("发生未知错误，请重试");
+            }
+        });
+    });
+</script>
+<script>
+    // 动态实现Layui下拉框工具方法
+    var selectUtil = {
+        render: function(param) {
+            var $ = layui.$,
+                form = layui.form;
+            var id = param.id,
+                prop = param.prop || {
+                    id: 'id',
+                    bankName: 'bankName',
+                    num: 'num'
+                },
+                datas = param.data || [];
+            var $select = $('#' + id);
+            //重置下拉框
+            $select.empty();
+            $.each(datas, function(index, item) {
+                if (item[prop.bankName] === "现金") {
+                    var $option = $('<option value="' + item[prop.id] + '">' + item[prop.bankName] + ''+item[prop.id]+'</option>');
+                } else {
+                    var $option = $('<option value="' + item[prop.id] + '">' + item[prop.bankName] + ' '+item[prop.num]+'</option>');
+                }
+                $select.append($option);
+            });
+            form.render('select');
+        }
+    }
+</script>
+</html>
