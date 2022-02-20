@@ -5,6 +5,7 @@ import com.kkkoke.networkrepair.exception.DataHasNotExistedException;
 import com.kkkoke.networkrepair.pojo.Picker;
 import com.kkkoke.networkrepair.pojo.PickerLocation;
 import com.kkkoke.networkrepair.pojo.helper.PickerResult;
+import com.kkkoke.networkrepair.result.ResultCode;
 import com.kkkoke.networkrepair.service.PickerLocationService;
 import com.kkkoke.networkrepair.service.PickerService;
 import com.kkkoke.networkrepair.result.ApiResult;
@@ -118,8 +119,12 @@ public class PickerController {
     @Secured({"ROLE_admin"})
     @PostMapping("/addPicker")
     public ApiResult addPicker(@NotBlank(message = "type can not be null") String type, @NotBlank(message = "value can not be null") String value) throws DataHasExistedException {
-        pickerService.addPicker(type, value);
-        return ApiResult.success("添加成功");
+        if (type.equals("time") || type.equals("des")) {
+            pickerService.addPicker(type, value);
+            return ApiResult.success("添加成功");
+        } else {
+            return ApiResult.fail(ResultCode.PARAM_ERROR, "参数内容错误，type必须为time或者des", ApiResult.PARAM_ERROR);
+        }
     }
 
     @ApiOperation(value = "通过id删除picker")
@@ -154,7 +159,7 @@ public class PickerController {
     @Secured({"ROLE_admin"})
     @GetMapping("/selectPickerByValue")
     public ApiResult selectPickerByValue(@NotBlank(message = "value can not be null") String value) throws DataHasNotExistedException {
-        PickerResult picker = pickerService.selectPickerByValue(value);
+        Picker picker = pickerService.selectPickerByValue(value);
         return ApiResult.success(picker, "查找成功");
     }
 

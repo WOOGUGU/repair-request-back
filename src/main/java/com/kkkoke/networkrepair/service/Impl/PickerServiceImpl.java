@@ -70,8 +70,8 @@ public class PickerServiceImpl implements PickerService {
 
     // 根据value查找某个报修时间段
     @Override
-    public PickerResult selectPickerByValue(String value) throws DataHasNotExistedException {
-        PickerResult picker = pickerDao.selectPickerByValue(value);
+    public Picker selectPickerByValue(String value) throws DataHasNotExistedException {
+        Picker picker = pickerDao.selectPickerByValue(value);
         // 判断查询结果是否为空
         if (ObjectUtils.isEmpty(picker)) {
             throw new DataHasNotExistedException("PickerTime has not existed");
@@ -113,8 +113,8 @@ public class PickerServiceImpl implements PickerService {
             throw new DataHasNotExistedException("PickerType has not existed");
         }
         HashMap<String, List<PickerResult>> resultHashMap = new HashMap<>();
-        resultHashMap.put("types", pickerTimes);
-        resultHashMap.put("values", pickerDess);
+        resultHashMap.put("time", pickerTimes);
+        resultHashMap.put("des", pickerDess);
         return resultHashMap;
     }
 

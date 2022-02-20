@@ -23,7 +23,7 @@ public interface PickerService {
     Picker selectPickerById(Integer id) throws DataHasNotExistedException;
 
     // 根据value查找某个报修时间段
-    PickerResult selectPickerByValue(String Value) throws DataHasNotExistedException;
+    Picker selectPickerByValue(String Value) throws DataHasNotExistedException;
 
     // 查找所有报修时间段
     List<PickerResult> selectAllPickerTime() throws DataHasNotExistedException;

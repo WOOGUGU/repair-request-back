@@ -31,7 +31,7 @@
         where type = 'time'
     </select>
 
-    <select id="selectAllPickerDes" resultMap="pickerTypeMap">
+    <select id="selectAllPickerDes" resultMap="pickerResultMap">
         select id, value from `picker`
         where type = 'des'
     </select>

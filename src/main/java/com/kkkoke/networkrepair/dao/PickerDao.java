@@ -22,7 +22,7 @@ public interface PickerDao {
     Picker selectPickerById(Integer id);
 
     // 根据value查找某个报修时间段
-    PickerResult selectPickerByValue(String Value);
+    Picker selectPickerByValue(String Value);
 
     // 查找所有报修时间段
     List<PickerResult> selectAllPickerTime();
