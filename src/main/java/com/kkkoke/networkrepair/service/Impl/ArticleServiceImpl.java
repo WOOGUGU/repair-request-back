@@ -111,4 +111,16 @@ public class ArticleServiceImpl implements ArticleService {
             return articles;
         }
     }
+
+    //查找文章 后台接口
+    @Override
+    public List<Article> selectArticle(Integer articleId, String author, Integer displayStatus) throws DataHasNotExistedException {
+        List<Article> articles = articleDao.selectArticle(articleId, author, displayStatus);
+        // 判断查询结果是否为空
+        if (ObjectUtils.isEmpty(articles)) {
+            throw new DataHasNotExistedException("Article has not existed");
+        } else {
+            return articles;
+        }
+    }
 }

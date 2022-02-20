@@ -48,6 +48,24 @@
         where author = #{author}
     </select>
 
+    <select id="selectArticle" resultMap="articleMap">
+        select *
+        from article
+        <where>
+            <if test="id != null and id != ''">
+                id = #{id}
+            </if>
+
+            <if test="author != null and author != ''">
+                and author = #{author}
+            </if>
+
+            <if test="displayStatus != null and displayStatus != ''">
+                and display_status = #{displayStatus}
+            </if>
+        </where>
+    </select>
+
     <resultMap id="articleMap" type="com.kkkoke.networkrepair.pojo.Article">
         <id property="id" column="id"/>
         <result property="createTime" column="create_time"/>

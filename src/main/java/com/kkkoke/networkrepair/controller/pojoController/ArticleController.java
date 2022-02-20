@@ -120,5 +120,16 @@ public class ArticleController {
         List<Article> articles = articleService.selectArticleByAuthor(author);
         return ApiResult.success(articles, "查找成功");
     }
+
+    @ApiOperation(value = "查找文章 后台接口")
+    @ApiImplicitParams({@ApiImplicitParam(name = "articleId", value = "文章Id", required = false, paramType = "query"),
+            @ApiImplicitParam(name = "author", value = "文章作者", required = false, paramType = "query"),
+            @ApiImplicitParam(name = "displayStatus", value = "文章状态", required = false, paramType = "query")})
+    @Secured({"ROLE_admin", "ROLE_user", "ROLE_repairman"})
+    @GetMapping("/selectArticle")
+    public ApiResult selectArticle(Integer articleId, String author, Integer displayStatus) throws DataHasNotExistedException {
+        List<Article> articles = articleService.selectArticle(articleId, author, displayStatus);
+        return ApiResult.success(articles, "查找成功");
+    }
 }
 
