@@ -1,29 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kkkoke.networkrepair.dao.PickerDao">
-    <insert id="addPickerTime" parameterType="com.kkkoke.networkrepair.pojo.Picker">
-        insert into `picker`(time_subscribe, fault_type)
-        values(#{time}, #{type})
+    <insert id="addPicker" parameterType="com.kkkoke.networkrepair.pojo.Picker">
+        insert into `picker`(type , value)
+        values(#{type}, #{value})
     </insert>
-
-    <insert id="addPickerType" parameterType="com.kkkoke.networkrepair.pojo.Picker">
-        insert into `picker`(time_subscribe, fault_type)
-        values(#{time}, #{type})
-    </insert>
-
-    <delete id="deletePickerTime" parameterType="string">
-        delete from `picker`
-        where time_subscribe = #{time}
-    </delete>
-
-    <delete id="deletePickerType" parameterType="string">
-        delete from `picker`
-        where fault_type = #{type}
-    </delete>
 
     <delete id="deletePickerById" parameterType="int">
         delete from `picker`
         where id = #{id}
+    </delete>
+
+    <delete id="deletePickerByValue" parameterType="string">
+        delete from `picker`
+        where value = #{value}
     </delete>
 
     <select id="selectPickerById" resultMap="pickerMap">
@@ -31,49 +21,35 @@
         where id = #{id}
     </select>
 
-    <select id="selectPickerByTime" resultMap="pickerTimeMap">
+    <select id="selectPickerByValue" resultMap="pickerMap">
         select * from `picker`
-        where time_subscribe = #{time}
+        where value = #{value}
     </select>
 
-    <select id="selectPickerByType" resultMap="pickerTypeMap">
-        select * from `picker`
-        where id, fault_type = #{type}
+    <select id="selectAllPickerTime" resultMap="pickerResultMap">
+        select id, value from `picker`
+        where type = 'time'
     </select>
 
-    <select id="selectAllPickerTime" resultMap="pickerTimeMap">
-        select id, time_subscribe from `picker`
+    <select id="selectAllPickerDes" resultMap="pickerTypeMap">
+        select id, value from `picker`
+        where type = 'des'
     </select>
 
-    <select id="selectAllPickerType" resultMap="pickerTypeMap">
-        select id, fault_type from `picker`
-    </select>
-
-    <update id="updatePickerTime">
+    <update id="updatePicker">
         update `picker`
-        set time_subscribe = #{time}, fault_type = #{type}
-        where id = #{id}
-    </update>
-
-    <update id="updatePickerType">
-        update `picker`
-        set time_subscribe = #{time}, fault_type = #{type}
+        set type = #{type}, value = #{value}
         where id = #{id}
     </update>
 
     <resultMap id="pickerMap" type="com.kkkoke.networkrepair.pojo.Picker">
         <id property="id" column="id"/>
-        <result property="time" column="time_subscribe"/>
-        <result property="type" column="fault_type"/>
+        <result property="time" column="time"/>
+        <result property="type" column="type"/>
     </resultMap>
 
-    <resultMap id="pickerTimeMap" type="com.kkkoke.networkrepair.pojo.helper.PickerResult">
+    <resultMap id="pickerResultMap" type="com.kkkoke.networkrepair.pojo.helper.PickerResult">
         <id property="id" column="id"/>
-        <result property="picker" column="time_subscribe"/>
-    </resultMap>
-
-    <resultMap id="pickerTypeMap" type="com.kkkoke.networkrepair.pojo.helper.PickerResult">
-        <id property="id" column="id"/>
-        <result property="picker" column="fault_type"/>
+        <result property="picker" column="value"/>
     </resultMap>
 </mapper>

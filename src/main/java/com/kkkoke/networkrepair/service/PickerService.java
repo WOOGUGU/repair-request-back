@@ -10,36 +10,30 @@ import java.util.List;
 
 public interface PickerService {
 
-    // 增加报修时间段
-    Picker addPickerTime(String time) throws DataHasExistedException;
+    // 增加picker
+    Picker addPicker(String type, String value) throws DataHasExistedException;
 
-    // 增加故障类型
-    Picker addPickerType(String type) throws DataHasExistedException;
-
-    // 删除报修时间段
-    int deletePickerTime(String time) throws DataHasNotExistedException;
-
-    // 删除故障类型
-    int deletePickerType(String type) throws DataHasNotExistedException;
-
-    // 根据Id删除picker
+    // 通过id删除picker
     int deletePickerById(Integer pickerId) throws DataHasNotExistedException;
 
-    // 根据id超找某个时间段
+    // 通过value删除故障类型
+    int deletePickerByValue(String value) throws DataHasNotExistedException;
+
+    // 根据id查找某个Picker
     Picker selectPickerById(Integer id) throws DataHasNotExistedException;
 
-    // 根据time查找某个报修时间段
-    PickerResult selectPickerByTime(String time) throws DataHasNotExistedException;
+    // 根据value查找某个报修时间段
+    PickerResult selectPickerByValue(String Value) throws DataHasNotExistedException;
 
-    // 根据type查找某个故障类型
-    PickerResult selectPickerByType(String type) throws DataHasNotExistedException;
+    // 查找所有报修时间段
+    List<PickerResult> selectAllPickerTime() throws DataHasNotExistedException;
 
-    // 查找所有时间段和故障类型
+    // 查找所有故障描述
+    List<PickerResult> selectAllPickerDes() throws DataHasNotExistedException;
+
+    // 查找所有picker
     HashMap<String, List<PickerResult>> selectAllPicker() throws DataHasNotExistedException;
 
-    // 修改时间段
-    Picker updatePickerTime(Integer pickerId, String time) throws DataHasNotExistedException;
-
-    // 修改故障类型
-    Picker updatePickerType(Integer pickerId, String type) throws DataHasNotExistedException;
+    // 修改picker
+    Picker updatePicker(Integer pickerId, String type, String value) throws DataHasNotExistedException;
 }

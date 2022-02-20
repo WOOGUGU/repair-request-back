@@ -20,57 +20,21 @@ public class PickerServiceImpl implements PickerService {
     @Autowired
     private PickerDao pickerDao;
 
-    // 增加报修时间段
+    // 增加picker
     @Override
-    public Picker addPickerTime(String time) throws DataHasExistedException {
+    public Picker addPicker(String type, String value) throws DataHasExistedException {
         // 查看数据库中是否已经存在此报修时间段
-        if (ObjectUtils.isEmpty(pickerDao.selectPickerByTime(time))) {
-            Picker pickerTime = new Picker(time, null);
-            pickerDao.addPickerTime(pickerTime);
-            return pickerTime;
+        if (ObjectUtils.isEmpty(pickerDao.selectPickerByValue(value))) {
+            Picker picker = new Picker(type, value);
+            pickerDao.addPicker(picker);
+            return picker;
         } else {
             // picker已存在
             throw new DataHasExistedException("Picker has existed");
         }
     }
 
-    // 增加故障类型
-    @Override
-    public Picker addPickerType(String type) throws DataHasExistedException {
-        // 查看数据库中是否已经存在此故障类型
-        if (ObjectUtils.isEmpty(pickerDao.selectPickerByType(type))) {
-            Picker pickerType = new Picker(null, type);
-            pickerDao.addPickerType(pickerType);
-            return pickerType;
-        } else {
-            // picker已存在
-            throw new DataHasExistedException("Picker has existed");
-        }
-    }
-
-    // 删除报修时间段
-    @Override
-    public int deletePickerTime(String time) throws DataHasNotExistedException {
-        // 查询数据库，查看要删除的报修地点是否存在
-        if (ObjectUtils.isEmpty(pickerDao.selectPickerByTime(time))) {
-            throw new DataHasNotExistedException("Picker has not existed");
-        } else {
-            return pickerDao.deletePickerTime(time);
-        }
-    }
-
-    // 删除故障类型
-    @Override
-    public int deletePickerType(String type) throws DataHasNotExistedException {
-        // 查询数据库，查看要删除的报修地点是否存在
-        if (ObjectUtils.isEmpty(pickerDao.selectPickerByType(type))) {
-            throw new DataHasNotExistedException("Picker has not existed");
-        } else {
-            return pickerDao.deletePickerType(type);
-        }
-    }
-
-    // 删除故障类型
+    // 通过Id删除picker
     @Override
     public int deletePickerById(Integer pickerId) throws DataHasNotExistedException {
         // 查询数据库，查看要删除的报修地点是否存在
@@ -81,10 +45,20 @@ public class PickerServiceImpl implements PickerService {
         }
     }
 
+    // 通过value删除故障类型
+    @Override
+    public int deletePickerByValue(String value) throws DataHasNotExistedException {
+        // 查询数据库，查看要删除的报修地点是否存在
+        if (ObjectUtils.isEmpty(pickerDao.selectPickerByValue(value))) {
+            throw new DataHasNotExistedException("Picker has not existed");
+        } else {
+            return pickerDao.deletePickerByValue(value);
+        }
+    }
+
     // 根据id查找某个picker
     @Override
     public Picker selectPickerById(Integer pickerId) throws DataHasNotExistedException {
-        // 根据用户名查找pickerTime
         Picker picker = pickerDao.selectPickerById(pickerId);
         // 判断查询结果是否为空
         if (ObjectUtils.isEmpty(picker)) {
@@ -94,29 +68,39 @@ public class PickerServiceImpl implements PickerService {
         }
     }
 
-    // 根据time查找某个报修时间段
+    // 根据value查找某个报修时间段
     @Override
-    public PickerResult selectPickerByTime(String time) throws DataHasNotExistedException {
-        // 根据area查找PickerTime
-        PickerResult pickerTime = pickerDao.selectPickerByTime(time);
+    public PickerResult selectPickerByValue(String value) throws DataHasNotExistedException {
+        PickerResult picker = pickerDao.selectPickerByValue(value);
         // 判断查询结果是否为空
-        if (ObjectUtils.isEmpty(pickerTime)) {
+        if (ObjectUtils.isEmpty(picker)) {
             throw new DataHasNotExistedException("PickerTime has not existed");
         } else {
-            return pickerTime;
+            return picker;
         }
     }
 
-    // 根据time查找某个故障类型
+    // 查找所有time
     @Override
-    public PickerResult selectPickerByType(String type) throws DataHasNotExistedException {
-        // 根据area查找PickerType
-        PickerResult pickerType = pickerDao.selectPickerByType(type);
+    public List<PickerResult> selectAllPickerTime() throws DataHasNotExistedException {
+        List<PickerResult> pickers = pickerDao.selectAllPickerTime();
         // 判断查询结果是否为空
-        if (ObjectUtils.isEmpty(pickerType)) {
+        if (ObjectUtils.isEmpty(pickers)) {
             throw new DataHasNotExistedException("PickerType has not existed");
         } else {
-            return pickerType;
+            return pickers;
+        }
+    }
+
+    // 查找所有time
+    @Override
+    public List<PickerResult> selectAllPickerDes() throws DataHasNotExistedException {
+        List<PickerResult> pickers = pickerDao.selectAllPickerDes();
+        // 判断查询结果是否为空
+        if (ObjectUtils.isEmpty(pickers)) {
+            throw new DataHasNotExistedException("PickerType has not existed");
+        } else {
+            return pickers;
         }
     }
 
@@ -124,57 +108,28 @@ public class PickerServiceImpl implements PickerService {
     @Override
     public HashMap<String, List<PickerResult>> selectAllPicker() throws DataHasNotExistedException {
         List<PickerResult> pickerTimes = pickerDao.selectAllPickerTime();
-        List<PickerResult> pickerTimesNotBlank = new ArrayList<>();
-        for (PickerResult picker : pickerTimes) {
-            if (!ObjectUtils.isEmpty(picker.getPicker())) {
-                pickerTimesNotBlank.add(picker);
-            }
+        List<PickerResult> pickerDess = pickerDao.selectAllPickerDes();
+        if (ObjectUtils.isEmpty(pickerDess) && ObjectUtils.isEmpty(pickerTimes)) {
+            throw new DataHasNotExistedException("PickerType has not existed");
         }
-        List<PickerResult> pickerTypes = pickerDao.selectAllPickerType();
-        List<PickerResult> pickerTypesNotBlank = new ArrayList<>();
-        for (PickerResult picker : pickerTypes) {
-            if (!ObjectUtils.isEmpty(picker.getPicker())) {
-                pickerTypesNotBlank.add(picker);
-            }
-        }
-        // 判断查询结果是否为空
-        if (ObjectUtils.isEmpty(pickerTimes) && ObjectUtils.isEmpty(pickerTypes)) {
+        HashMap<String, List<PickerResult>> resultHashMap = new HashMap<>();
+        resultHashMap.put("types", pickerTimes);
+        resultHashMap.put("values", pickerDess);
+        return resultHashMap;
+    }
+
+    // 修改picker
+    @Override
+    public Picker updatePicker(Integer pickerId, String type, String value) throws DataHasNotExistedException {
+        // 创建要修改的Picker对象
+        Picker picker = new Picker(pickerId, type, value);
+        // 查找数据库中是否存在此picker
+        if (ObjectUtils.isEmpty(pickerDao.selectPickerById(pickerId))) {
             throw new DataHasNotExistedException("Picker has not existed");
         } else {
-            HashMap<String, List<PickerResult>> resultHashMap = new HashMap<>();
-            resultHashMap.put("times", pickerTimesNotBlank);
-            resultHashMap.put("types", pickerTypesNotBlank);
-            return resultHashMap;
-        }
-    }
-
-    // 修改时间段
-    @Override
-    public Picker updatePickerTime(Integer pickerId, String time) throws DataHasNotExistedException {
-        // 创建要修改的Picker对象
-        Picker pickerTime = new Picker(pickerId, time, null);
-        // 查找数据库中是否存在此PickerTime
-        if (ObjectUtils.isEmpty(pickerDao.selectPickerById(pickerId))) {
-            throw new DataHasNotExistedException("PickerTime has not existed");
-        } else {
             // 如果存在就更新数据
-            pickerDao.updatePickerTime(pickerTime);
-            return pickerTime;
-        }
-    }
-
-    // 修改故障类型
-    @Override
-    public Picker updatePickerType(Integer pickerId, String type) throws DataHasNotExistedException {
-        // 创建要修改的Picker对象
-        Picker pickerType = new Picker(pickerId, null, type);
-        // 查找数据库中是否存在此PickerType
-        if (ObjectUtils.isEmpty(pickerDao.selectPickerById(pickerId))) {
-            throw new DataHasNotExistedException("PickerType has not existed");
-        } else {
-            // 如果存在就更新数据
-            pickerDao.updatePickerType(pickerType);
-            return pickerType;
+            pickerDao.updatePicker(picker);
+            return picker;
         }
     }
 }

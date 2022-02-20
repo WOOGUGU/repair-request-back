@@ -53,7 +53,7 @@ public class PickerController {
     public ApiResult addPickerLocation(@NotBlank(message = "area can not be null") String area,
                                        @NotBlank(message = "position can not be null") String position) throws DataHasExistedException {
         pickerLocationService.addPickerLocation(area, position);
-        return ApiResult.success("报修地点添加成功");
+        return ApiResult.success("添加成功");
     }
 
     @ApiOperation(value = "删除报修地点")
@@ -62,7 +62,7 @@ public class PickerController {
     @PostMapping("/deletePickerLocation")
     public ApiResult deletePickerLocation(@NotNull(message = "pickerId can not be null") Integer pickerId) throws DataHasNotExistedException {
         pickerLocationService.deletePickerLocation(pickerId);
-        return ApiResult.success("报修地点删除成功");
+        return ApiResult.success("删除成功");
     }
 
     @ApiOperation(value = "根据id查找某个报修地点")
@@ -112,52 +112,35 @@ public class PickerController {
         return ApiResult.success("更新成功");
     }
 
-    @ApiOperation(value = "增加报修时间段")
-    @ApiImplicitParam(name = "time", value = "时间段", required = true, paramType = "query")
+    @ApiOperation(value = "增加picker")
+    @ApiImplicitParams({@ApiImplicitParam(name = "type", value = "picker类型", required = true, paramType = "query"),
+            @ApiImplicitParam(name = "value", value = "picker值", required = true, paramType = "query")})
     @Secured({"ROLE_admin"})
-    @PostMapping("/addPickerTime")
-    public ApiResult addPickerTime(@NotBlank(message = "time can not be null") String time) throws DataHasExistedException {
-        pickerService.addPickerTime(time);
-        return ApiResult.success("报修时间段添加成功");
+    @PostMapping("/addPicker")
+    public ApiResult addPicker(@NotBlank(message = "type can not be null") String type, @NotBlank(message = "value can not be null") String value) throws DataHasExistedException {
+        pickerService.addPicker(type, value);
+        return ApiResult.success("添加成功");
     }
 
-    @ApiOperation(value = "增加故障类型")
-    @ApiImplicitParam(name = "type", value = "故障类型", required = true, paramType = "query")
-    @Secured({"ROLE_admin"})
-    @PostMapping("/addPickerType")
-    public ApiResult addPickerType(@NotBlank(message = "type can not be null") String type) throws DataHasExistedException {
-        pickerService.addPickerType(type);
-        return ApiResult.success("故障类型段添加成功");
-    }
-
-    @ApiOperation(value = "删除报修时间段")
-    @ApiImplicitParam(name = "pickerId", value = "报修时间段", required = true, paramType = "query")
-    @Secured({"ROLE_admin"})
-    @PostMapping("/deletePickerTime")
-    public ApiResult deletePickerTime(@NotBlank(message = "time can not be null") String time) throws DataHasNotExistedException {
-        pickerService.deletePickerTime(time);
-        return ApiResult.success("报修地点删除成功");
-    }
-
-    @ApiOperation(value = "删除故障类型")
-    @ApiImplicitParam(name = "type", value = "故障类型", required = true, paramType = "query")
-    @Secured({"ROLE_admin"})
-    @PostMapping("/deletePickerType")
-    public ApiResult deletePickerType(@NotBlank(message = "pickerId can not be null") String type) throws DataHasNotExistedException {
-        pickerService.deletePickerType(type);
-        return ApiResult.success("报修地点删除成功");
-    }
-
-    @ApiOperation(value = "根据Id删除故障类型")
+    @ApiOperation(value = "通过id删除picker")
     @ApiImplicitParam(name = "pickerId", value = "pickerId", required = true, paramType = "query")
     @Secured({"ROLE_admin"})
     @PostMapping("/deletePickerById")
     public ApiResult deletePickerById(@NotNull(message = "pickerId can not be null") Integer pickerId) throws DataHasNotExistedException {
         pickerService.deletePickerById(pickerId);
-        return ApiResult.success("报修地点删除成功");
+        return ApiResult.success("删除成功");
     }
 
-    @ApiOperation(value = "根据id超找某个picker")
+    @ApiOperation(value = "通过value删除故障类型")
+    @ApiImplicitParam(name = "value", value = "picker值", required = true, paramType = "query")
+    @Secured({"ROLE_admin"})
+    @PostMapping("/deletePickerByValue")
+    public ApiResult deletePickerByValue(@NotNull(message = "value can not be null") String value) throws DataHasNotExistedException {
+        pickerService.deletePickerByValue(value);
+        return ApiResult.success("删除成功");
+    }
+
+    @ApiOperation(value = "根据id查找picker")
     @ApiImplicitParam(name = "pickerId", value = "报修时间段Id", required = true, paramType = "query")
     @Secured({"ROLE_admin"})
     @GetMapping("/selectPickerById")
@@ -166,25 +149,16 @@ public class PickerController {
         return ApiResult.success(picker, "查找成功");
     }
 
-    @ApiOperation(value = "根据time查找某个报修时间段")
-    @ApiImplicitParam(name = "time", value = "时间段", required = true, paramType = "query")
+    @ApiOperation(value = "根据value查找某个报修时间段")
+    @ApiImplicitParam(name = "value", value = "picker值", required = true, paramType = "query")
     @Secured({"ROLE_admin"})
-    @GetMapping("/selectPickerByTime")
-    public ApiResult selectPickerByTime(@NotBlank(message = "time can not be null") String time) throws DataHasNotExistedException {
-        PickerResult pickerTime = pickerService.selectPickerByTime(time);
-        return ApiResult.success(pickerTime, "查找成功");
+    @GetMapping("/selectPickerByValue")
+    public ApiResult selectPickerByValue(@NotBlank(message = "value can not be null") String value) throws DataHasNotExistedException {
+        PickerResult picker = pickerService.selectPickerByValue(value);
+        return ApiResult.success(picker, "查找成功");
     }
 
-    @ApiOperation(value = "根据type查找某个故障类型")
-    @ApiImplicitParam(name = "type", value = "故障类型", required = true, paramType = "query")
-    @Secured({"ROLE_admin"})
-    @GetMapping("/selectPickerByType")
-    public ApiResult selectPickerByType(@NotBlank(message = "type can not be null") String type) throws DataHasNotExistedException {
-        PickerResult pickerType = pickerService.selectPickerByType(type);
-        return ApiResult.success(pickerType, "查找成功");
-    }
-
-    @ApiOperation(value = "查找所有时间段")
+    @ApiOperation(value = "查找所有picker")
     @Secured({"ROLE_admin", "ROLE_user"})
     @GetMapping("/selectAllPicker")
     public ApiResult selectAllPicker() throws DataHasNotExistedException {
@@ -198,25 +172,31 @@ public class PickerController {
         return ApiResult.success(result, "查找成功");
     }
 
-    @ApiOperation(value = "修改报修时间段")
-    @ApiImplicitParams({@ApiImplicitParam(name = "pickerId", value = "pickerId", required = true, paramType = "query"),
-            @ApiImplicitParam(name = "time", value = "时间段", required = true, paramType = "query")})
-    @Secured({"ROLE_admin"})
-    @PostMapping("/updatePickerTime")
-    public ApiResult updatePickerTime(@NotNull(message = "pickerId can not be null") Integer pickerId,
-                                      @NotBlank(message = "time can not be null") String time) throws DataHasNotExistedException {
-        pickerService.updatePickerTime(pickerId, time);
-        return ApiResult.success("更新成功");
+    @ApiOperation(value = "查找所有报修时间段")
+    @Secured({"ROLE_admin", "ROLE_user"})
+    @GetMapping("/selectAllPickerTime")
+    public ApiResult selectAllPickerTime() throws DataHasNotExistedException {
+        List<PickerResult> pickerTimes = pickerService.selectAllPickerTime();
+        return ApiResult.success(pickerTimes, "查找成功");
     }
 
-    @ApiOperation(value = "修改故障类型")
+    @ApiOperation(value = "查找所有故障描述")
+    @Secured({"ROLE_admin", "ROLE_user"})
+    @GetMapping("/selectAllPickerDes")
+    public ApiResult selectAllPickerDes() throws DataHasNotExistedException {
+        List<PickerResult> pickerDess = pickerService.selectAllPickerDes();
+        return ApiResult.success(pickerDess, "查找成功");
+    }
+
+    @ApiOperation(value = "修改picker")
     @ApiImplicitParams({@ApiImplicitParam(name = "pickerId", value = "pickerId", required = true, paramType = "query"),
-            @ApiImplicitParam(name = "type", value = "故障类型", required = true, paramType = "query")})
+            @ApiImplicitParam(name = "type", value = "picker类型", required = true, paramType = "query"),
+            @ApiImplicitParam(name = "value", value = "picker值", required = true, paramType = "query")})
     @Secured({"ROLE_admin"})
-    @PostMapping("/updatePickerType")
-    public ApiResult updatePickerType(@NotNull(message = "pickerId can not be null") Integer pickerId,
-                                      @NotBlank(message = "type can not be null") String type) throws DataHasNotExistedException {
-        pickerService.updatePickerType(pickerId, type);
+    @PostMapping("/updatePicker")
+    public ApiResult updatePicker(@NotNull(message = "pickerId can not be null") Integer pickerId, @NotBlank(message = "type can not be null") String type,
+                                      @NotBlank(message = "value can not be null") String value) throws DataHasNotExistedException {
+        pickerService.updatePicker(pickerId, type, value);
         return ApiResult.success("更新成功");
     }
 }
