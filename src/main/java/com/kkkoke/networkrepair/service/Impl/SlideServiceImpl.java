@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -17,7 +18,8 @@ public class SlideServiceImpl implements SlideService {
     private SlideDao slideDao;
 
     @Override
-    public Slide uploadSlide(String imgPath, String submitTime, String author) {
+    public Slide uploadSlide(String imgPath, String author) {
+        String submitTime = LocalDateTime.now().toString();
         Slide slide = new Slide(imgPath, submitTime, author);
         slideDao.uploadSlide(slide);
         return slide;
@@ -56,8 +58,9 @@ public class SlideServiceImpl implements SlideService {
     }
 
     @Override
-    public Slide updateSlide(Integer slideId, String imgPath, String submitTime, String author, String displayTime) throws DataHasNotExistedException {
-        Slide slide = new Slide(slideId, imgPath, submitTime, author, displayTime);
+    public Slide updateSlide(Integer slideId, String imgPath, String author) throws DataHasNotExistedException {
+        String submitTime = LocalDateTime.now().toString();
+        Slide slide = new Slide(slideId, imgPath, submitTime, author);
         if (ObjectUtils.isEmpty(slideDao.selectSlideById(slideId))) {
             throw new DataHasNotExistedException("Slide has not existed");
         } else {

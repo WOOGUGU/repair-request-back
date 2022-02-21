@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface SlideService {
     // 上传轮播图
-    Slide uploadSlide(String imgPath, String submitTime, String author);
+    Slide uploadSlide(String imgPath, String author);
 
     // 通过id删除轮播图
     int deleteSlide(Integer slideId) throws DataHasNotExistedException;
@@ -19,5 +19,5 @@ public interface SlideService {
     List<Slide> selectAllSlide() throws DataHasNotExistedException;
 
     // 修改轮播图
-    Slide updateSlide(Integer slideId, String imgPath, String submitTime, String author, String displayTime) throws DataHasNotExistedException;
+    Slide updateSlide(Integer slideId, String imgPath, String author) throws DataHasNotExistedException;
 }

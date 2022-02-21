@@ -17,7 +17,6 @@ public class Slide {
     private String imgPath;
     private String submitTime;
     private String author;
-    private String displayTime;
 
     public Slide(String imgPath, String submitTime, String author) {
         this.imgPath = imgPath;
