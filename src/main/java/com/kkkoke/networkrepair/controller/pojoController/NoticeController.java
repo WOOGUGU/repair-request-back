@@ -25,7 +25,7 @@ import javax.validation.constraints.NotNull;
 @Api(tags = "工单管理")
 @Slf4j
 @Validated
-@RequestMapping("/v2/order")
+@RequestMapping("/v2/notice")
 @RestController
 public class NoticeController {
     private final NoticeService noticeService;
@@ -100,7 +100,7 @@ public class NoticeController {
             @ApiImplicitParam(name = "author", value = "发布者", required = false, paramType = "query"),
             @ApiImplicitParam(name = "displayStatus", value = "展示状态", required = false, paramType = "query")})
     @Secured({"ROLE_admin", "ROLE_user", "ROLE_repairman"})
-    @GetMapping("/selectAllNotice")
+    @GetMapping("/selectNotice")
     public ApiResult selectNotice(Integer noticeId, String announceTime, String updateTime, String author) throws DataHasNotExistedException {
         noticeService.selectNotice(noticeId, announceTime, updateTime, author);
         return ApiResult.success("通知查找成功");
