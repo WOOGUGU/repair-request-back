@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kkkoke.networkrepair.dao.SlideDao">
+    <insert id="addNotice" parameterType="com.kkkoke.networkrepair.pojo.Notice">
+        insert into notice(creat_time, announce_time, update_time, content, author, display_status)
+        values (#{creatTime}, #{announceTime}, #{updateTime}, #{content}, #{author}, #{displayStatus})
+    </insert>
+
+    <delete id="deleteNotice" parameterType="int">
+        delete
+        from notice
+        where id = #{id}
+    </delete>
+
+    <select id="selectNoticeById" parameterType="int" resultMap="noticeMap">
+        select *
+        from notice
+        where id = #{id}
+    </select>
+
+    <select id="selectNoticeByAuthor" parameterType="string" resultMap="noticeMap">
+        select *
+        from notice
+        where author = #{author}
+    </select>
+
+    <select id="selectAllNotice" resultMap="noticeMap">
+        select *
+        from notice
+    </select>
+
+    <select id="selectNotice" resultMap="noticeMap">
+        select *
+        from notice
+        <where>
+            <if test="id != null and id != ''">
+                id = #{id}
+            </if>
+
+            <if test="announceTime != null and announceTime != ''">
+                and announce_time = #{announceTime}
+            </if>
+
+            <if test="updateTime != null and updateTime != ''">
+                and update_time = #{updateTime}
+            </if>
+
+            <if test="author != null and author != ''">
+                and author = #{author}
+            </if>
+        </where>
+    </select>
+
+    <update id="updateNotice">
+        update notice
+        set `announce_time`  = #{announceTime},
+            `update_time`    = #{updateTime},
+            `content`        = #{content},
+            `author`         = #{author},
+            `display_status` = #{displayStatus}
+        where id = #{id}
+    </update>
+
+    <resultMap id="noticeMap" type="com.kkkoke.networkrepair.pojo.Notice">
+        <id property="id" column="id"/>
+        <result property="creatTime" column="creat_time"/>
+        <result property="announceTime" column="announce_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="content" column="content"/>
+        <result property="author" column="author"/>
+        <result property="displayStatus" column="display_status"/>
+    </resultMap>
+</mapper>
