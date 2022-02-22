@@ -25,10 +25,9 @@
 
     <update id="updateSlide">
         update slide
-        set `img_path`     =  #{imgPath},
-            `submit_time`  =  #{submitTime},
-            `author`       =  #{author},
-            `display_time` =  #{displayTime}
+        set `img_path`    = #{imgPath},
+            `submit_time` = #{submitTime},
+            `author`      = #{author}
         where id = #{id}
     </update>
 
@@ -37,6 +36,5 @@
         <result property="imgPath" column="img_path"/>
         <result property="submitTime" column="submit_time"/>
         <result property="author" column="author"/>
-        <result property="displayTime" column="display_time"/>
     </resultMap>
 </mapper>

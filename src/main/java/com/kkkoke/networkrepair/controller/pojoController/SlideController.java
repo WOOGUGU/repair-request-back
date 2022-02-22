@@ -43,14 +43,12 @@ public class SlideController {
 
     @ApiOperation(value = "上传轮播图")
     @ApiImplicitParams({@ApiImplicitParam(name = "file", value = "轮播图", required = true, paramType = "query"),
-            @ApiImplicitParam(name = "author", value = "上传者", required = true, paramType = "query"),
-            @ApiImplicitParam(name = "submitTime", value = "上传时间", required = true, paramType = "query")})
+            @ApiImplicitParam(name = "author", value = "上传者", required = true, paramType = "query")})
     @Secured({"ROLE_admin"})
     @PostMapping("/uploadSlide")
-    public ApiResult uploadSlide(@RequestParam("slideImg") MultipartFile file, @NotBlank(message = "author can not be null") String author,
-                                 @NotBlank(message = "submitTime can not be null") String submitTime) {
+    public ApiResult uploadSlide(@RequestParam("slideImg") MultipartFile file, @NotBlank(message = "author can not be null") String author) {
         String imgPath = FileUploadUtil.fileUpload(file, propertiesUtil.getSlideImgPath());
-        slideService.uploadSlide(imgPath, submitTime, author);
+        slideService.uploadSlide(imgPath, author);
 
         return ApiResult.success("轮播图上传成功");
     }
@@ -84,16 +82,13 @@ public class SlideController {
     @ApiOperation(value = "修改轮播图")
     @ApiImplicitParams({@ApiImplicitParam(name = "slideId", value = "轮播图Id", required = true, paramType = "query"),
             @ApiImplicitParam(name = "file", value = "轮播图", required = true, paramType = "query"),
-            @ApiImplicitParam(name = "submitTime", value = "上传时间", required = true, paramType = "query"),
-            @ApiImplicitParam(name = "author", value = "上传者", required = true, paramType = "query"),
-            @ApiImplicitParam(name = "displayTime", value = "展示时间", required = true, paramType = "query")})
+            @ApiImplicitParam(name = "author", value = "上传者", required = true, paramType = "query")})
     @Secured({"ROLE_admin"})
     @PostMapping("/updateSlide")
     public ApiResult updateSlide(@NotNull(message = "slideId can not be null") Integer slideId, @RequestParam("slideImg") MultipartFile file,
-                                 @NotBlank(message = "submitTime can not be null") String submitTime,  @NotBlank(message = "author can not be null") String author,
-                                 @NotBlank(message = "displayTime can not be null") String displayTime) throws DataHasNotExistedException {
+                                 @NotBlank(message = "author can not be null") String author) throws DataHasNotExistedException {
         String imgPath = FileUploadUtil.fileUpload(file, propertiesUtil.getSlideImgPath());
-        slideService.updateSlide(slideId, imgPath, submitTime, author, displayTime);
+        slideService.updateSlide(slideId, imgPath, author);
         return ApiResult.success("修改完成");
     }
 }

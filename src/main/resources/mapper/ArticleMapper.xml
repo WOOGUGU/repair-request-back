@@ -13,11 +13,10 @@
     </delete>
     <update id="updateArticle">
         update article
-        set `create_time`  = #{createTime},
-            `update_time`  = #{updateTime},
+        set `update_time`  = #{updateTime},
             `content_path` = #{contentPath},
             `author`       = #{author},
-            display_status=#{displayStatus}
+            display_status = #{displayStatus}
         where id = #{id}
     </update>
     <select id="selectAllArticle" resultMap="articleMap">

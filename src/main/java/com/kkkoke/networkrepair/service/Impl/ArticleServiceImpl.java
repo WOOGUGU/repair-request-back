@@ -17,8 +17,9 @@ public class ArticleServiceImpl implements ArticleService {
 
     //添加文章
     @Override
-    public Article addArticle(String updateTime, String contentPath, String author, Integer displayStatus) {
+    public Article addArticle(String contentPath, String author, Integer displayStatus) {
         String createTime = LocalDateTime.now().toString();
+        String updateTime = LocalDateTime.now().toString();
         Article article = new Article(createTime, updateTime, contentPath, author, displayStatus);
         articleDao.addArticle(article);
         return article;
@@ -26,7 +27,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     //删除文章
     @Override
-    public int deleteArticle(Integer articleId) throws DataHasNotExistedException {
+    public Integer deleteArticle(Integer articleId) throws DataHasNotExistedException {
         // 查询数据库，查看要删除的文章是否存在
         if (ObjectUtils.isEmpty(articleDao.selectArticleById(articleId))) {
             throw new DataHasNotExistedException("Article has not existed");
@@ -37,16 +38,15 @@ public class ArticleServiceImpl implements ArticleService {
 
     //修改文章
     @Override
-    public Article updateArticle(Integer articleId, String createTime, String updateTime, String contentPath, String author, Integer displayStatus) throws DataHasNotExistedException {
-        // 创建要修改的文章对象
-        Article article = new Article(articleId, createTime, updateTime, contentPath, author, displayStatus);
+    public Integer updateArticle(Integer articleId, String contentPath, String author, Integer displayStatus) throws DataHasNotExistedException {
+        String updateTime = LocalDateTime.now().toString();
         // 查找数据库中是否存在此文章
         if (ObjectUtils.isEmpty(articleDao.selectArticleById(articleId))) {
             throw new DataHasNotExistedException("Article has not existed");
         } else {
             // 如果用户存在就更新数据
-            articleDao.updateArticle(article);
-            return article;
+            articleDao.updateArticle(articleId, updateTime, contentPath, author, displayStatus);
+            return 0;
         }
     }
 
