@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.kkkoke.networkrepair.dao.SlideDao">
+<mapper namespace="com.kkkoke.networkrepair.dao.NoticeDao">
     <insert id="addNotice" parameterType="com.kkkoke.networkrepair.pojo.Notice">
-        insert into notice(creat_time, announce_time, update_time, content, author, display_status)
-        values (#{creatTime}, #{announceTime}, #{updateTime}, #{content}, #{author}, #{displayStatus})
+        insert into notice(create_time, announce_time, update_time, content, author, display_status)
+        values (#{createTime}, #{announceTime}, #{updateTime}, #{content}, #{author}, #{displayStatus})
     </insert>
 
     <delete id="deleteNotice" parameterType="int">
@@ -53,17 +53,31 @@
 
     <update id="updateNotice">
         update notice
-        set `announce_time`  = #{announceTime},
-            `update_time`    = #{updateTime},
-            `content`        = #{content},
-            `author`         = #{author},
-            `display_status` = #{displayStatus}
+        <set>
+            announce_time = #{announceTime}
+
+            <if test="updateTime != null and updateTime != ''">
+                ,update_time = #{updateTime}
+            </if>
+
+            <if test="content != null and content != ''">
+                ,content = #{content}
+            </if>
+
+            <if test="author != null and author != ''">
+                ,author = #{author}
+            </if>
+
+            <if test="displayStatus != null and displayStatus != ''">
+                ,display_status = #{displayStatus}
+            </if>
+        </set>
         where id = #{id}
     </update>
 
     <resultMap id="noticeMap" type="com.kkkoke.networkrepair.pojo.Notice">
         <id property="id" column="id"/>
-        <result property="creatTime" column="creat_time"/>
+        <result property="createTime" column="create_time"/>
         <result property="announceTime" column="announce_time"/>
         <result property="updateTime" column="update_time"/>
         <result property="content" column="content"/>

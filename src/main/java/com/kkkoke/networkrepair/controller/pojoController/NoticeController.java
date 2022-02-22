@@ -1,6 +1,7 @@
 package com.kkkoke.networkrepair.controller.pojoController;
 
 import com.kkkoke.networkrepair.exception.DataHasNotExistedException;
+import com.kkkoke.networkrepair.pojo.Notice;
 import com.kkkoke.networkrepair.result.ApiResult;
 import com.kkkoke.networkrepair.service.NoticeService;
 import io.swagger.annotations.Api;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * @author kkkoke
@@ -57,14 +59,14 @@ public class NoticeController {
     }
 
     @ApiOperation(value = "修改通知")
-    @ApiImplicitParams({@ApiImplicitParam(name = "content", value = "公告内容", required = true, paramType = "query"),
+    @ApiImplicitParams({@ApiImplicitParam(name = "noticeId", value = "公告id", required = true, paramType = "query"),
+            @ApiImplicitParam(name = "content", value = "公告内容", required = true, paramType = "query"),
             @ApiImplicitParam(name = "author", value = "发布者", required = true, paramType = "query"),
             @ApiImplicitParam(name = "displayStatus", value = "展示状态", required = true, paramType = "query")})
     @Secured("ROLE_admin")
     @PostMapping("/updateNotice")
-    public ApiResult updateNotice(@NotBlank(message = "content can not be null") String content, @NotBlank(message = "author can not be null") String author,
-                                  @NotNull(message = "displayStatus can not be null") Integer displayStatus) throws DataHasNotExistedException {
-        noticeService.updateNotice(content, author, displayStatus);
+    public ApiResult updateNotice(Integer noticeId, String content, String author, Integer displayStatus) throws DataHasNotExistedException {
+        noticeService.updateNotice(noticeId, content, author, displayStatus);
         return ApiResult.success("通知修改成功");
     }
 
@@ -73,8 +75,8 @@ public class NoticeController {
     @Secured({"ROLE_admin", "ROLE_user", "ROLE_repairman"})
     @GetMapping("/selectNoticeById")
     public ApiResult selectNoticeById(@NotNull(message = "noticeId can not be null") Integer noticeId) throws DataHasNotExistedException {
-        noticeService.selectNoticeById(noticeId);
-        return ApiResult.success("通知查找成功");
+        Notice notice = noticeService.selectNoticeById(noticeId);
+        return ApiResult.success(notice, "通知查找成功");
     }
 
     @ApiOperation(value = "通过author查找通知")
@@ -82,16 +84,16 @@ public class NoticeController {
     @Secured({"ROLE_admin", "ROLE_user", "ROLE_repairman"})
     @GetMapping("/selectNoticeByAuthor")
     public ApiResult selectNoticeByAuthor(@NotBlank(message = "author can not be null") String author) throws DataHasNotExistedException {
-        noticeService.selectNoticeByAuthor(author);
-        return ApiResult.success("通知查找成功");
+        List<Notice> notices = noticeService.selectNoticeByAuthor(author);
+        return ApiResult.success(notices, "通知查找成功");
     }
 
     @ApiOperation(value = "查找所有通知")
     @Secured({"ROLE_admin", "ROLE_user", "ROLE_repairman"})
     @GetMapping("/selectAllNotice")
     public ApiResult selectAllNotice() throws DataHasNotExistedException {
-        noticeService.selectAllNotice();
-        return ApiResult.success("通知查找成功");
+        List<Notice> notices = noticeService.selectAllNotice();
+        return ApiResult.success(notices, "通知查找成功");
     }
 
     @ApiOperation(value = "查看通知 后台接口")
@@ -102,7 +104,7 @@ public class NoticeController {
     @Secured({"ROLE_admin", "ROLE_user", "ROLE_repairman"})
     @GetMapping("/selectNotice")
     public ApiResult selectNotice(Integer noticeId, String announceTime, String updateTime, String author) throws DataHasNotExistedException {
-        noticeService.selectNotice(noticeId, announceTime, updateTime, author);
-        return ApiResult.success("通知查找成功");
+        List<Notice> notices = noticeService.selectNotice(noticeId, announceTime, updateTime, author);
+        return ApiResult.success(notices, "通知查找成功");
     }
 }

@@ -13,7 +13,7 @@ public interface NoticeService {
     Integer deleteNotice(Integer noticeId) throws DataHasNotExistedException;
 
     // 修改通知
-    Notice updateNotice(String content, String author, Integer displayStatus) throws DataHasNotExistedException;
+    Notice updateNotice(Integer noticeId, String content, String author, Integer displayStatus) throws DataHasNotExistedException;
 
     // 通过id查找通知
     Notice selectNoticeById(Integer noticeId) throws DataHasNotExistedException;

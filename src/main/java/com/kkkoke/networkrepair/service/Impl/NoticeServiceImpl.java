@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Objects;
 
@@ -20,7 +21,13 @@ public class NoticeServiceImpl implements NoticeService {
     @Override
     public Notice addNotice(String content, String author, Integer displayStatus) {
         String creatTime = LocalDateTime.now().toString();
-        Notice notice = new Notice(creatTime, content, author, displayStatus);
+        String updateTime = LocalDateTime.now().toString();
+        String announceTime = "";
+        if (Objects.equals(displayStatus, 1)) {
+            DateTimeFormatter dtf2 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            announceTime = dtf2.format(LocalDateTime.now());
+        }
+        Notice notice = new Notice(creatTime, announceTime, updateTime, content, author, displayStatus);
         noticeDao.addNotice(notice);
         return notice;
     }
@@ -35,15 +42,20 @@ public class NoticeServiceImpl implements NoticeService {
     }
 
     @Override
-    public Notice updateNotice(String content, String author, Integer displayStatus) throws DataHasNotExistedException {
-        String updateTime = LocalDateTime.now().toString();
-        String announceTime = "";
-        if (Objects.equals(displayStatus, 1)) {
-            announceTime = LocalDateTime.now().toString();
+    public Notice updateNotice(Integer noticeId, String content, String author, Integer displayStatus) throws DataHasNotExistedException {
+        if (ObjectUtils.isEmpty(noticeDao.selectNoticeById(noticeId))) {
+            throw new DataHasNotExistedException("Notice has not existed");
+        } else {
+            String updateTime = LocalDateTime.now().toString();
+            String announceTime = "";
+            if (Objects.equals(displayStatus, 1)) {
+                DateTimeFormatter dtf2 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                announceTime = dtf2.format(LocalDateTime.now());
+            }
+            Notice notice = new Notice(noticeId, announceTime, updateTime, content, author, displayStatus);
+            noticeDao.updateNotice(notice);
+            return notice;
         }
-        Notice notice = new Notice(announceTime, updateTime, content, author, displayStatus);
-        noticeDao.updateNotice(notice);
-        return notice;
     }
 
     @Override
