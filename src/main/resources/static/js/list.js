@@ -666,7 +666,44 @@ layui.use(['table','form','layer'], function() {
     });
 });
 
-// 删除工单
+// 增加文章
+function addArticle() {
+    var contentPath = $("#contentPath").val();
+    var author = $("#author").val();
+    var displayStatus = $("#displayStatus").val();
+    if (contentPath === "" || contentPath === "") {
+        alert("文章网址不能为空");
+        return;
+    } else if (author === "") {
+        alert("文章作者不能为空");
+        return;
+    } else {
+        $.ajax({
+            url: '/v2/article/addArticle',
+            type: 'post',
+            headers: {
+                "Cookie": document.cookie
+            },
+            data: {
+                "contentPath": contentPath,
+                "author": author,
+                "displayStatus": $('#displayStatus input[name="status"]:checked ').val()
+            },
+            success: function (res) {
+                if (res.userMsg !== "") {
+                    alert(res.userMsg);
+                } else {
+                    alert("发生未知错误，请重试");
+                }
+            },
+            error: function () {
+                alert("发生未知错误，请重试");
+            }
+        });
+    }
+}
+
+// 删除文章
 function delArticle() {
     if ($("#articleId").val() === "") {
         alert("文章Id不能为空");
