@@ -624,7 +624,7 @@ layui.use(['table','form','layer'], function() {
     });
 
     $('#searchArticle').on('click', function () {
-        table.reload('tableFour', {
+        table.reload('tableFive', {
             method: 'get'
             , url: '/v2/article/selectArticle'
             , headers: {
@@ -670,7 +670,6 @@ layui.use(['table','form','layer'], function() {
 function addArticle() {
     var contentPath = $("#contentPath").val();
     var author = $("#author").val();
-    var displayStatus = $("#displayStatus").val();
     if (contentPath === "" || contentPath === "") {
         alert("文章网址不能为空");
         return;

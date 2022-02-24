@@ -75,7 +75,7 @@ public class ArticleController {
     @GetMapping("/selectAllArticle")
     public ApiResult selectAllArticle() throws DataHasNotExistedException {
         List<Article> articles = articleService.selectAllArticle();
-        return ApiResult.success(articles, "查询成功");
+        return ApiResult.success(articles, "查找成功");
     }
 
     @ApiOperation(value = "通过id查找文章")

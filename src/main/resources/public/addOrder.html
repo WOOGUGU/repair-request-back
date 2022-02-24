@@ -104,25 +104,49 @@
         var $ = layui.$,
             form = layui.form;
         $.ajax({
-            url: '/v2/picker/selectAllPicker',
+            url: '/v2/picker/selectAllPickerTime',
             type: 'get',
             headers: {
-                'Cookie':document.cookie
+                'Cookie': document.cookie
             },
             data: {},
-            success:function (res) {
-                if (res.userMsg !== "") {
-                    alert(res.userMsg);
-                } else {
-                    alert("发生未知错误，请重试");
-                }
+            success: function (res) {
+                // if (res.userMsg !== "") {
+                //     alert(res.userMsg);
+                // } else {
+                //     alert("发生未知错误，请重试");
+                // }
                 //动态渲染下拉框
                 selectUtil.render({
                     id: 'timeSubscribe',
                     data: res.data
                 });
             },
-            error:function () {
+            error: function () {
+                alert("发生未知错误，请重试");
+            }
+        });
+
+        $.ajax({
+            url: '/v2/picker/selectAllPickerDes',
+            type: 'get',
+            headers: {
+                'Cookie': document.cookie
+            },
+            data: {},
+            success: function (res) {
+                // if (res.userMsg !== "") {
+                //     alert(res.userMsg);
+                // } else {
+                //     alert("发生未知错误，请重试");
+                // }
+                //动态渲染下拉框
+                selectUtil2.render({
+                    id: 'des',
+                    data: res.data
+                });
+            },
+            error: function () {
                 alert("发生未知错误，请重试");
             }
         });
@@ -137,19 +161,35 @@
             var id = param.id,
                 prop = param.prop || {
                     id: 'id',
-                    bankName: 'bankName',
-                    num: 'num'
+                    picker: 'picker'
                 },
                 datas = param.data || [];
             var $select = $('#' + id);
             //重置下拉框
             $select.empty();
-            $.each(datas, function(index, item) {
-                if (item[prop.bankName] === "现金") {
-                    var $option = $('<option value="' + item[prop.id] + '">' + item[prop.bankName] + ''+item[prop.id]+'</option>');
-                } else {
-                    var $option = $('<option value="' + item[prop.id] + '">' + item[prop.bankName] + ' '+item[prop.num]+'</option>');
-                }
+            $.each(datas, function (index, item) {
+                var $option = $('<option value="' + item[prop.id] + '">' + item[prop.picker] + '</option>');
+                $select.append($option);
+            });
+            form.render('select');
+        }
+    }
+
+    var selectUtil2 = {
+        render: function (param) {
+            var $ = layui.$,
+                form = layui.form;
+            var id = param.id,
+                prop = param.prop || {
+                    id: 'id',
+                    picker: 'picker'
+                },
+                datas = param.data || [];
+            var $select = $('#' + id);
+            //重置下拉框
+            $select.empty();
+            $.each(datas, function (index, item) {
+                var $option = $('<option value="' + item[prop.id] + '">' + item[prop.picker] + '</option>');
                 $select.append($option);
             });
             form.render('select');
