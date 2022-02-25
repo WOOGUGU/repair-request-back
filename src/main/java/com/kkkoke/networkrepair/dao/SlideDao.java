@@ -19,6 +19,9 @@ public interface SlideDao {
     // 查找所有轮播图
     List<Slide> selectAllSlide();
 
+    // 查找轮播图 后台接口
+    List<Slide> selectSlide(Integer id, String author);
+
     // 修改轮播图
     Integer updateSlide(Slide slide);
 }
