@@ -17,6 +17,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -46,7 +47,7 @@ public class SlideController {
             @ApiImplicitParam(name = "author", value = "上传者", required = true, paramType = "query")})
     @Secured({"ROLE_admin"})
     @PostMapping("/uploadSlide")
-    public ApiResult uploadSlide(@RequestParam("slideImg") MultipartFile file, @NotBlank(message = "author can not be null") String author) {
+    public ApiResult uploadSlide(MultipartFile file, @NotBlank(message = "author can not be null") String author) {
         String imgPath = FileUploadUtil.fileUpload(file, propertiesUtil.getSlideImgPath());
         slideService.uploadSlide(imgPath, author);
 

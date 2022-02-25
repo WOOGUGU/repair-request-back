@@ -27,14 +27,11 @@
                 </div>
             </div>
             <div class="layui-form-item">
-                <label for="name" class="layui-form-label">
-                    <span class="x-red">*</span>真实姓名</label>
-                <div class="layui-input-inline">
-                    <input type="text" id="name" required="" lay-verify="pass" autocomplete="off" class="layui-input">
-                </div>
+                <button type="button" class="layui-btn" id="slide" style="margin-left:55px;">
+                    <i class="layui-icon">&#xe67c;</i>上传图片
+                </button>
             </div>
         </form>
-        <button class="layui-btn" onclick="addMember()" style="margin-left:30px"><i class="layui-icon"></i>添加</button>
     </div>
 </div>
 <script>var _hmt = _hmt || [];
@@ -44,5 +41,31 @@
     var s = document.getElementsByTagName("script")[0];
     s.parentNode.insertBefore(hm, s);
 })();</script>
+<script>
+    layui.use('upload', function () {
+        var upload = layui.upload;
+
+        //执行实例
+        var uploadInst = upload.render({
+            elem: '#slide' //绑定元素
+            , url: '/v2/slide/uploadSlide' //上传接口
+            , data: {
+                author: function () {
+                    return $('#author').val();
+                }
+            }
+            , done: function (res) {
+                if (res.userMsg !== "") {
+                    alert(res.userMsg);
+                } else {
+                    alert("发生未知错误，请重试");
+                }
+            }
+            , error: function () {
+                alert("发生未知错误，请重试");
+            }
+        });
+    });
+</script>
 </body>
 </html>
