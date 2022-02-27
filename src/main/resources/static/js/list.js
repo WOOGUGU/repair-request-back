@@ -955,3 +955,67 @@ layui.use(['table', 'form', 'layer'], function () {
         });
     });
 });
+
+// 增加通知
+function addNotice() {
+    var content = $("#content").val();
+    var author = $("#author").val();
+    if (content === "" || content === "") {
+        alert("通知网址不能为空");
+        return;
+    } else if (author === "") {
+        alert("发布者不能为空");
+        return;
+    } else {
+        $.ajax({
+            url: '/v2/notice/addNotice',
+            type: 'post',
+            headers: {
+                "Cookie": document.cookie
+            },
+            data: {
+                "content": content,
+                "author": author,
+                "displayStatus": $('#displayStatus input[name="status"]:checked ').val()
+            },
+            success: function (res) {
+                if (res.userMsg !== "") {
+                    alert(res.userMsg);
+                } else {
+                    alert("发生未知错误，请重试");
+                }
+            },
+            error: function () {
+                alert("发生未知错误，请重试");
+            }
+        });
+    }
+}
+
+// 删除通知
+function delNotice() {
+    if ($("#noticeId").val() === "") {
+        alert("通知Id不能为空");
+        return;
+    }
+    $.ajax({
+        url: '/v2/notice/deleteNotice',
+        type: 'post',
+        headers: {
+            "Cookie": document.cookie
+        },
+        data: {
+            "noticeId": $("#noticeId").val()
+        },
+        success: function (res) {
+            if (res.userMsg !== "") {
+                alert(res.userMsg);
+            } else {
+                alert("发生未知错误，请重试");
+            }
+        },
+        error: function () {
+            alert("发生未知错误，请重试");
+        }
+    });
+}
