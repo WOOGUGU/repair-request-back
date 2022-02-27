@@ -624,7 +624,7 @@ layui.use(['table','form','layer'], function() {
     });
 
     $('#searchArticle').on('click', function () {
-        table.reload('tableFour', {
+        table.reload('tableFive', {
             method: 'get'
             , url: '/v2/article/selectArticle'
             , headers: {
@@ -666,7 +666,43 @@ layui.use(['table','form','layer'], function() {
     });
 });
 
-// 删除工单
+// 增加文章
+function addArticle() {
+    var contentPath = $("#contentPath").val();
+    var author = $("#author").val();
+    if (contentPath === "" || contentPath === "") {
+        alert("文章网址不能为空");
+        return;
+    } else if (author === "") {
+        alert("文章作者不能为空");
+        return;
+    } else {
+        $.ajax({
+            url: '/v2/article/addArticle',
+            type: 'post',
+            headers: {
+                "Cookie": document.cookie
+            },
+            data: {
+                "contentPath": contentPath,
+                "author": author,
+                "displayStatus": $('#displayStatus input[name="status"]:checked ').val()
+            },
+            success: function (res) {
+                if (res.userMsg !== "") {
+                    alert(res.userMsg);
+                } else {
+                    alert("发生未知错误，请重试");
+                }
+            },
+            error: function () {
+                alert("发生未知错误，请重试");
+            }
+        });
+    }
+}
+
+// 删除文章
 function delArticle() {
     if ($("#articleId").val() === "") {
         alert("文章Id不能为空");
@@ -680,6 +716,296 @@ function delArticle() {
         },
         data: {
             "articleId": $("#articleId").val()
+        },
+        success: function (res) {
+            if (res.userMsg !== "") {
+                alert(res.userMsg);
+            } else {
+                alert("发生未知错误，请重试");
+            }
+        },
+        error: function () {
+            alert("发生未知错误，请重试");
+        }
+    });
+}
+
+// 轮播图数据表格渲染
+layui.use(['table', 'form', 'layer'], function () {
+    var table = layui.table;
+    var $ = layui.jquery;
+    var form = layui.form;
+    var layer = layui.layer;
+    //展示所有的交易信息数据
+    table.render({
+        elem: '#slideData'
+        , height: 600
+        , url: '/v2/slide/selectAllSlide'
+        , method: 'get'
+        , headers: {
+            "Cookie": document.cookie
+        }
+        , where: {}
+        , cols: [
+            [ //表头
+                {field: 'id', title: '编号', width: 250, sort: true, fixed: 'left'}
+                , {field: 'imgPath', title: '图片路径', width: 250}
+                , {field: 'author', title: '上传者', width: 250}
+                , {field: 'submitTime', title: '上传时间', width: 250}
+            ]
+        ]
+        , id: 'tableSix'
+        , toolbar: '#toolbar'
+        , page: true //开启分页
+        , limits: [3, 5, 10]  //一页选择显示3,5或10条数据
+        , limit: 10  //一页显示10条数据
+        , parseData: function (res) { //将原始数据解析成 table 组件所规定的数据，res为从url中get到的数据
+            if (res.data.length == 1) {
+                return {
+                    "code": 0, //解析接口状态
+                    "msg": "ok", //解析提示文本
+                    "count": 1, //解析数据长度
+                    "data": res.data //解析数据列表
+                };
+            } else {
+                var result;
+                if (this.page.curr) {
+                    result = res.data.slice(this.limit * (this.page.curr - 1), this.limit * this.page.curr);
+                } else {
+                    result = res.data.slice(0, this.limit);
+                }
+                return {
+                    "code": 0, //解析接口状态
+                    "msg": "ok", //解析提示文本
+                    "count": res.data.length, //解析数据长度
+                    "data": result //解析数据列表
+                };
+            }
+        }
+    });
+
+    $('#searchSlide').on('click', function () {
+        table.reload('tableSix', {
+            method: 'get'
+            , url: '/v2/slide/selectSlide'
+            , headers: {
+                "Cookie": document.cookie
+            }
+            , where: {
+                'slideId': $('#slideId').val(),
+                'author': $('#author').val(),
+            }
+            , page: {
+                curr: 1
+            }
+            , parseData: function (res) { //将原始数据解析成 table 组件所规定的数据，res为从url中get到的数据
+                if (res.data.length == 1) {
+                    return {
+                        "code": 0, //解析接口状态
+                        "msg": "ok", //解析提示文本
+                        "count": 1, //解析数据长度
+                        "data": res.data //解析数据列表
+                    };
+                } else {
+                    var result;
+                    if (this.page.curr) {
+                        result = res.data.slice(this.limit * (this.page.curr - 1), this.limit * this.page.curr);
+                    } else {
+                        result = res.data.slice(0, this.limit);
+                    }
+                    return {
+                        "code": 0, //解析接口状态
+                        "msg": "ok", //解析提示文本
+                        "count": res.data.length, //解析数据长度
+                        "data": result //解析数据列表
+                    };
+                }
+            }
+        });
+    });
+});
+
+// 删除轮播图
+function delSlide() {
+    if ($("#slideId").val() === "") {
+        alert("轮播图Id不能为空");
+        return;
+    }
+    $.ajax({
+        url: '/v2/slide/deleteSlide',
+        type: 'post',
+        headers: {
+            "Cookie": document.cookie
+        },
+        data: {
+            "slideId": $("#slideId").val()
+        },
+        success: function (res) {
+            if (res.userMsg !== "") {
+                alert(res.userMsg);
+            } else {
+                alert("发生未知错误，请重试");
+            }
+        },
+        error: function () {
+            alert("发生未知错误，请重试");
+        }
+    });
+}
+
+// 通知数据表格渲染
+layui.use(['table', 'form', 'layer'], function () {
+    var table = layui.table;
+    var $ = layui.jquery;
+    var form = layui.form;
+    var layer = layui.layer;
+    //展示所有的交易信息数据
+    table.render({
+        elem: '#noticeData'
+        , height: 600
+        , url: '/v2/notice/selectAllNotice'
+        , method: 'get'
+        , headers: {
+            "Cookie": document.cookie
+        }
+        , where: {}
+        , cols: [
+            [ //表头
+                {field: 'id', title: '编号', width: 250, sort: true, fixed: 'left'}
+                , {field: 'content', title: '公告网址', width: 250}
+                , {field: 'author', title: '发布者', width: 250}
+                , {field: 'createTime', title: '创建时间', width: 250}
+                , {field: 'announceTime', title: '发布时间', width: 250}
+                , {field: 'updateTime', title: '修改时间', width: 250}
+                , {
+                field: 'displayStatus', title: '状态', width: 250, templet: function (d) {
+                    return d.displayStatus === 1 ? '展示' : '隐藏';
+                }
+            }
+            ]
+        ]
+        , id: 'tableSeven'
+        , toolbar: '#toolbar'
+        , page: true //开启分页
+        , limits: [3, 5, 10]  //一页选择显示3,5或10条数据
+        , limit: 10  //一页显示10条数据
+        , parseData: function (res) { //将原始数据解析成 table 组件所规定的数据，res为从url中get到的数据
+            if (res.data.length == 1) {
+                return {
+                    "code": 0, //解析接口状态
+                    "msg": "ok", //解析提示文本
+                    "count": 1, //解析数据长度
+                    "data": res.data //解析数据列表
+                };
+            } else {
+                var result;
+                if (this.page.curr) {
+                    result = res.data.slice(this.limit * (this.page.curr - 1), this.limit * this.page.curr);
+                } else {
+                    result = res.data.slice(0, this.limit);
+                }
+                return {
+                    "code": 0, //解析接口状态
+                    "msg": "ok", //解析提示文本
+                    "count": res.data.length, //解析数据长度
+                    "data": result //解析数据列表
+                };
+            }
+        }
+    });
+
+    $('#searchNotice').on('click', function () {
+        table.reload('tableSeven', {
+            method: 'get'
+            , url: '/v2/notice/selectNotice'
+            , headers: {
+                "Cookie": document.cookie
+            }
+            , where: {
+                'noticeId': $('#noticeId').val(),
+                'author': $('#author').val(),
+                'displayStatus': $('#displayStatus').val()
+            }
+            , page: {
+                curr: 1
+            }
+            , parseData: function (res) { //将原始数据解析成 table 组件所规定的数据，res为从url中get到的数据
+                if (res.data.length == 1) {
+                    return {
+                        "code": 0, //解析接口状态
+                        "msg": "ok", //解析提示文本
+                        "count": 1, //解析数据长度
+                        "data": res.data //解析数据列表
+                    };
+                } else {
+                    var result;
+                    if (this.page.curr) {
+                        result = res.data.slice(this.limit * (this.page.curr - 1), this.limit * this.page.curr);
+                    } else {
+                        result = res.data.slice(0, this.limit);
+                    }
+                    return {
+                        "code": 0, //解析接口状态
+                        "msg": "ok", //解析提示文本
+                        "count": res.data.length, //解析数据长度
+                        "data": result //解析数据列表
+                    };
+                }
+            }
+        });
+    });
+});
+
+// 增加通知
+function addNotice() {
+    var content = $("#content").val();
+    var author = $("#author").val();
+    if (content === "" || content === "") {
+        alert("通知网址不能为空");
+        return;
+    } else if (author === "") {
+        alert("发布者不能为空");
+        return;
+    } else {
+        $.ajax({
+            url: '/v2/notice/addNotice',
+            type: 'post',
+            headers: {
+                "Cookie": document.cookie
+            },
+            data: {
+                "content": content,
+                "author": author,
+                "displayStatus": $('#displayStatus input[name="status"]:checked ').val()
+            },
+            success: function (res) {
+                if (res.userMsg !== "") {
+                    alert(res.userMsg);
+                } else {
+                    alert("发生未知错误，请重试");
+                }
+            },
+            error: function () {
+                alert("发生未知错误，请重试");
+            }
+        });
+    }
+}
+
+// 删除通知
+function delNotice() {
+    if ($("#noticeId").val() === "") {
+        alert("通知Id不能为空");
+        return;
+    }
+    $.ajax({
+        url: '/v2/notice/deleteNotice',
+        type: 'post',
+        headers: {
+            "Cookie": document.cookie
+        },
+        data: {
+            "noticeId": $("#noticeId").val()
         },
         success: function (res) {
             if (res.userMsg !== "") {

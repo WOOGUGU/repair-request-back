@@ -18,6 +18,20 @@
         where id = #{id}
     </select>
 
+    <select id="selectSlide" resultMap="slideMap">
+        select *
+        from slide
+        <where>
+            <if test="id != null and id != ''">
+                id = #{id}
+            </if>
+
+            <if test="author != null and author != ''">
+                and author = #{author}
+            </if>
+        </where>
+    </select>
+
     <select id="selectAllSlide" resultMap="slideMap">
         select *
         from slide

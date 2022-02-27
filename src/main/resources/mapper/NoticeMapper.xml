@@ -37,16 +37,12 @@
                 id = #{id}
             </if>
 
-            <if test="announceTime != null and announceTime != ''">
-                and announce_time = #{announceTime}
-            </if>
-
-            <if test="updateTime != null and updateTime != ''">
-                and update_time = #{updateTime}
-            </if>
-
             <if test="author != null and author != ''">
                 and author = #{author}
+            </if>
+
+            <if test="displayStatus != null and displayStatus != ''">
+                and display_status = #{displayStatus}
             </if>
         </where>
     </select>

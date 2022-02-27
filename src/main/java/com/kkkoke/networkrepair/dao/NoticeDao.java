@@ -26,5 +26,5 @@ public interface NoticeDao {
     List<Notice> selectAllNotice();
 
     // 查看通知 后台接口
-    List<Notice> selectNotice(Integer id, String announceTime, String updateTime, String author);
+    List<Notice> selectNotice(Integer id, String author, Integer displayStatus);
 }

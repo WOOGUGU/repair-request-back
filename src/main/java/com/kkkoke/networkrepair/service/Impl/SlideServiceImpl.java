@@ -58,6 +58,11 @@ public class SlideServiceImpl implements SlideService {
     }
 
     @Override
+    public List<Slide> selectSlide(Integer slideId, String author) {
+        return slideDao.selectSlide(slideId, author);
+    }
+
+    @Override
     public Slide updateSlide(Integer slideId, String imgPath, String author) throws DataHasNotExistedException {
         String submitTime = LocalDateTime.now().toString();
         Slide slide = new Slide(slideId, imgPath, submitTime, author);

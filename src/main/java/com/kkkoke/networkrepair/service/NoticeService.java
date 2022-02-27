@@ -25,5 +25,5 @@ public interface NoticeService {
     List<Notice> selectAllNotice() throws DataHasNotExistedException;
 
     // 查看通知 后台接口
-    List<Notice> selectNotice(Integer id, String announceTime, String updateTime, String author) throws DataHasNotExistedException;
+    List<Notice> selectNotice(Integer noticeId, String author, Integer displayStatus) throws DataHasNotExistedException;
 }

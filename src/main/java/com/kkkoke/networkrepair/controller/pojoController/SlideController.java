@@ -17,6 +17,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -46,7 +47,7 @@ public class SlideController {
             @ApiImplicitParam(name = "author", value = "上传者", required = true, paramType = "query")})
     @Secured({"ROLE_admin"})
     @PostMapping("/uploadSlide")
-    public ApiResult uploadSlide(@RequestParam("slideImg") MultipartFile file, @NotBlank(message = "author can not be null") String author) {
+    public ApiResult uploadSlide(MultipartFile file, @NotBlank(message = "author can not be null") String author) {
         String imgPath = FileUploadUtil.fileUpload(file, propertiesUtil.getSlideImgPath());
         slideService.uploadSlide(imgPath, author);
 
@@ -69,6 +70,16 @@ public class SlideController {
     public ApiResult selectSlideById(@NotNull(message = "slideId can not be null") Integer slideId) throws DataHasNotExistedException {
         Slide slide = slideService.selectSlideById(slideId);
         return ApiResult.success(slide, "查找成功");
+    }
+
+    @ApiOperation(value = "查找轮播图 后台接口")
+    @ApiImplicitParams({@ApiImplicitParam(name = "slideId", value = "轮播图Id", required = false, paramType = "query"),
+            @ApiImplicitParam(name = "author", value = "上传者", required = false, paramType = "query")})
+    @Secured({"ROLE_admin", "ROLE_user", "ROLE_repairman"})
+    @GetMapping("/selectSlide")
+    public ApiResult selectSlide(Integer slideId, String author) {
+        List<Slide> slides = slideService.selectSlide(slideId, author);
+        return ApiResult.success(slides, "查找成功");
     }
 
     @ApiOperation(value = "查找所有轮播图")

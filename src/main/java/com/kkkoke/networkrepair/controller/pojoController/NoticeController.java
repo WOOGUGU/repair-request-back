@@ -103,8 +103,8 @@ public class NoticeController {
             @ApiImplicitParam(name = "displayStatus", value = "展示状态", required = false, paramType = "query")})
     @Secured({"ROLE_admin", "ROLE_user", "ROLE_repairman"})
     @GetMapping("/selectNotice")
-    public ApiResult selectNotice(Integer noticeId, String announceTime, String updateTime, String author) throws DataHasNotExistedException {
-        List<Notice> notices = noticeService.selectNotice(noticeId, announceTime, updateTime, author);
+    public ApiResult selectNotice(Integer noticeId, String author, Integer displayStatus) throws DataHasNotExistedException {
+        List<Notice> notices = noticeService.selectNotice(noticeId, author, displayStatus);
         return ApiResult.success(notices, "通知查找成功");
     }
 }
