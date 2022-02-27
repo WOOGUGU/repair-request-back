@@ -85,7 +85,7 @@ public class NoticeServiceImpl implements NoticeService {
     }
 
     @Override
-    public List<Notice> selectNotice(Integer noticeId, String announceTime, String updateTime, String author) throws DataHasNotExistedException {
-        return noticeDao.selectNotice(noticeId, announceTime, updateTime, author);
+    public List<Notice> selectNotice(Integer noticeId, String author, Integer displayStatus) throws DataHasNotExistedException {
+        return noticeDao.selectNotice(noticeId, author, displayStatus);
     }
 }

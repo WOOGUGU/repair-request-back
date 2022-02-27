@@ -852,3 +852,106 @@ function delSlide() {
         }
     });
 }
+
+// 通知数据表格渲染
+layui.use(['table', 'form', 'layer'], function () {
+    var table = layui.table;
+    var $ = layui.jquery;
+    var form = layui.form;
+    var layer = layui.layer;
+    //展示所有的交易信息数据
+    table.render({
+        elem: '#noticeData'
+        , height: 600
+        , url: '/v2/notice/selectAllNotice'
+        , method: 'get'
+        , headers: {
+            "Cookie": document.cookie
+        }
+        , where: {}
+        , cols: [
+            [ //表头
+                {field: 'id', title: '编号', width: 250, sort: true, fixed: 'left'}
+                , {field: 'content', title: '公告网址', width: 250}
+                , {field: 'author', title: '发布者', width: 250}
+                , {field: 'createTime', title: '创建时间', width: 250}
+                , {field: 'announceTime', title: '发布时间', width: 250}
+                , {field: 'updateTime', title: '修改时间', width: 250}
+                , {
+                field: 'displayStatus', title: '状态', width: 250, templet: function (d) {
+                    return d.displayStatus === 1 ? '展示' : '隐藏';
+                }
+            }
+            ]
+        ]
+        , id: 'tableSeven'
+        , toolbar: '#toolbar'
+        , page: true //开启分页
+        , limits: [3, 5, 10]  //一页选择显示3,5或10条数据
+        , limit: 10  //一页显示10条数据
+        , parseData: function (res) { //将原始数据解析成 table 组件所规定的数据，res为从url中get到的数据
+            if (res.data.length == 1) {
+                return {
+                    "code": 0, //解析接口状态
+                    "msg": "ok", //解析提示文本
+                    "count": 1, //解析数据长度
+                    "data": res.data //解析数据列表
+                };
+            } else {
+                var result;
+                if (this.page.curr) {
+                    result = res.data.slice(this.limit * (this.page.curr - 1), this.limit * this.page.curr);
+                } else {
+                    result = res.data.slice(0, this.limit);
+                }
+                return {
+                    "code": 0, //解析接口状态
+                    "msg": "ok", //解析提示文本
+                    "count": res.data.length, //解析数据长度
+                    "data": result //解析数据列表
+                };
+            }
+        }
+    });
+
+    $('#searchNotice').on('click', function () {
+        table.reload('tableSeven', {
+            method: 'get'
+            , url: '/v2/notice/selectNotice'
+            , headers: {
+                "Cookie": document.cookie
+            }
+            , where: {
+                'noticeId': $('#noticeId').val(),
+                'author': $('#author').val(),
+                'displayStatus': $('#displayStatus').val()
+            }
+            , page: {
+                curr: 1
+            }
+            , parseData: function (res) { //将原始数据解析成 table 组件所规定的数据，res为从url中get到的数据
+                if (res.data.length == 1) {
+                    return {
+                        "code": 0, //解析接口状态
+                        "msg": "ok", //解析提示文本
+                        "count": 1, //解析数据长度
+                        "data": res.data //解析数据列表
+                    };
+                } else {
+                    var result;
+                    if (this.page.curr) {
+                        result = res.data.slice(this.limit * (this.page.curr - 1), this.limit * this.page.curr);
+                    } else {
+                        result = res.data.slice(0, this.limit);
+                    }
+                    return {
+                        "code": 0, //解析接口状态
+                        "msg": "ok", //解析提示文本
+                        "count": res.data.length, //解析数据长度
+                        "data": result //解析数据列表
+                    };
+                }
+            }
+        });
+    });
+});
