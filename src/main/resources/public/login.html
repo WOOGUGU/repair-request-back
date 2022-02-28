@@ -54,6 +54,9 @@
                 success: function (res) {
                     if (res.code === "00000") {
                         alert(res.userMsg);
+                        localStorage.username = res.data.username;
+                        localStorage.userId = res.data.id;
+                        localStorage.name = res.data.name;
                         location.assign("index.html");
                     } else if (res.code === "A0202") {
                         alert(res.userMsg);

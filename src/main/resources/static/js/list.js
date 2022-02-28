@@ -324,14 +324,58 @@ function addMember() {
                 "name": name,
                 "roleType": $('#roleType input[name="status"]:checked ').val()
             },
-            success:function (res) {
+            success: function (res) {
                 if (res.userMsg !== "") {
                     alert(res.userMsg);
                 } else {
                     alert("发生未知错误，请重试");
                 }
             },
-            error:function () {
+            error: function () {
+                alert("发生未知错误，请重试");
+            }
+        });
+    }
+}
+
+// 修改用户
+function updateMember() {
+    var userId = $("#userId").val();
+    var uname = $("#uname").val();
+    var oldPassword = $("#oldPassword").val();
+    var newPassword = $("#newPassword").val();
+    if (oldPassword !== "") {
+        oldPassword = hexMD5(oldPassword).toUpperCase();
+    }
+    if (newPassword !== "") {
+        newPassword = hexMD5(newPassword).toUpperCase();
+    }
+    var name = $("#name").val();
+    if (userId === "") {
+        alert("用户Id不能为空");
+    } else {
+        $.ajax({
+            url: '/v2/user/updateUser',
+            type: 'post',
+            headers: {
+                "Cookie": document.cookie
+            },
+            data: {
+                "userId": userId,
+                "username": uname,
+                "oldPassword": oldPassword,
+                "newPassword": newPassword,
+                "name": name,
+                "roleType": $('#roleType input[name="status"]:checked ').val()
+            },
+            success: function (res) {
+                if (res.userMsg !== "") {
+                    alert(res.userMsg);
+                } else {
+                    alert("发生未知错误，请重试");
+                }
+            },
+            error: function () {
                 alert("发生未知错误，请重试");
             }
         });
@@ -530,7 +574,47 @@ function addOrder() {
                     alert("发生未知错误，请重试");
                 }
             },
-            error:function () {
+            error: function () {
+                alert("发生未知错误，请重试");
+            }
+        });
+    }
+}
+
+// 修改工单
+function updateOrder() {
+    var userId = $("#userId").val();
+    var uname = $("#uname").val();
+    var passwd = $("#passwd").val();
+    var name = $("#name").val();
+    if (uname === "" || passwd === "") {
+        alert("用户名或密码不能为空");
+        return;
+    } else if (name === "") {
+        alert("真实姓名不能为空");
+        return;
+    } else {
+        $.ajax({
+            url: '/v2/user/updateUser',
+            type: 'post',
+            headers: {
+                "Cookie": document.cookie
+            },
+            data: {
+                "userId": userId,
+                "username": uname,
+                "password": passwd,
+                "name": name,
+                "roleType": $('#roleType input[name="status"]:checked ').val()
+            },
+            success: function (res) {
+                if (res.userMsg !== "") {
+                    alert(res.userMsg);
+                } else {
+                    alert("发生未知错误，请重试");
+                }
+            },
+            error: function () {
                 alert("发生未知错误，请重试");
             }
         });
@@ -728,6 +812,48 @@ function delArticle() {
             alert("发生未知错误，请重试");
         }
     });
+}
+
+// 修改文章
+function updateArticle() {
+    var articleId = $("#articleId").val();
+    var contentPath = $("#contentPath").val();
+    var author = $("#author").val();
+    if (articleId === "") {
+        alert("文章Id不能为空");
+        return;
+    }
+    if (contentPath === "") {
+        alert("文章网址不能为空");
+        return;
+    } else if (author === "") {
+        alert("文章作者不能为空");
+        return;
+    } else {
+        $.ajax({
+            url: '/v2/article/updateArticle',
+            type: 'post',
+            headers: {
+                "Cookie": document.cookie
+            },
+            data: {
+                "articleId": articleId,
+                "contentPath": contentPath,
+                "author": author,
+                "displayStatus": $('#displayStatus input[name="status"]:checked ').val()
+            },
+            success: function (res) {
+                if (res.userMsg !== "") {
+                    alert(res.userMsg);
+                } else {
+                    alert("发生未知错误，请重试");
+                }
+            },
+            error: function () {
+                alert("发生未知错误，请重试");
+            }
+        });
+    }
 }
 
 // 轮播图数据表格渲染

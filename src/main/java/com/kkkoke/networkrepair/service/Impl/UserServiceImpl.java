@@ -1,6 +1,7 @@
 package com.kkkoke.networkrepair.service.Impl;
 
 import com.kkkoke.networkrepair.dao.UserDao;
+import com.kkkoke.networkrepair.exception.PasswordWrongException;
 import com.kkkoke.networkrepair.exception.UserHasExistedException;
 import com.kkkoke.networkrepair.exception.UserHasNotExistedException;
 import com.kkkoke.networkrepair.pojo.Role;
@@ -136,17 +137,25 @@ public class UserServiceImpl implements UserService {
 
     // 修改用户信息
     @Override
-    public User updateUser(Integer userId, String username, String password, String name) throws UserHasNotExistedException {
-        // 对密码进行BCrypt加密
-        String hashPasswd = BCrypt.hashpw(password, BCrypt.gensalt());
+    public User updateUser(Integer userId, String username, String oldPassword, String newPassword, String name, Integer roleType) throws UserHasNotExistedException, PasswordWrongException {
+        // 对新旧密码进行BCrypt加密
+        String hashOldPasswd = BCrypt.hashpw(oldPassword, BCrypt.gensalt());
+        // 比对旧密码与数据库中的密码是否一致
+        if (!ObjectUtils.isEmpty(oldPassword) && !ObjectUtils.isEmpty(newPassword)) {
+            if (!hashOldPasswd.equals(userDao.selectUserById(userId).getPassword())) {
+                throw new PasswordWrongException("OldPassword is wrong");
+            }
+        }
+        String hashNewPasswd = BCrypt.hashpw(newPassword, BCrypt.gensalt());
         // 创建要修改的user对象
-        User user = new User(userId, username, hashPasswd, name);
+        User user = new User(userId, username, hashNewPasswd, name);
         // 查找数据库中是否存在此用户
         if (ObjectUtils.isEmpty(userDao.selectUserById(userId))) {
             throw new UserHasNotExistedException("User has not existed");
         } else {
             // 如果用户存在就更新数据
             userDao.updateUser(user);
+            userDao.setRole(userId, roleType);
             return user;
         }
     }
