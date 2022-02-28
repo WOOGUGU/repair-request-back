@@ -65,7 +65,7 @@ public class NoticeController {
             @ApiImplicitParam(name = "displayStatus", value = "展示状态", required = true, paramType = "query")})
     @Secured("ROLE_admin")
     @PostMapping("/updateNotice")
-    public ApiResult updateNotice(Integer noticeId, String content, String author, Integer displayStatus) throws DataHasNotExistedException {
+    public ApiResult updateNotice(@NotNull(message = "noticeId can not be null") Integer noticeId, String content, String author, Integer displayStatus) throws DataHasNotExistedException {
         noticeService.updateNotice(noticeId, content, author, displayStatus);
         return ApiResult.success("通知修改成功");
     }

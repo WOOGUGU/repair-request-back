@@ -64,10 +64,10 @@ public class ArticleController {
             @ApiImplicitParam(name = "displayStatus", value = "文章状态", required = true, paramType = "query")})
     @Secured({"ROLE_admin"})
     @PostMapping("/updateArticle")
-    public ApiResult updateArticle(@NotNull(message = "articleId can not be null") Integer articleId, @NotBlank(message = "contentPath can not be null") String contentPath,
-                                   @NotBlank(message = "author can not be null") String author, @NotNull(message = "displayStatus can not be null") Integer displayStatus) throws DataHasNotExistedException {
+    public ApiResult updateArticle(@NotNull(message = "articleId can not be null") Integer articleId, String contentPath,
+                                   String author, Integer displayStatus) throws DataHasNotExistedException {
         articleService.updateArticle(articleId, contentPath, author, displayStatus);
-        return ApiResult.success("更新成功");
+        return ApiResult.success("文章更新成功");
     }
 
     @ApiOperation(value = "查看所有文章")
