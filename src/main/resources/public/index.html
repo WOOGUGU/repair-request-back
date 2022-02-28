@@ -26,7 +26,7 @@
 
             <ul class="layui-nav right" lay-filter="">
                 <li class="layui-nav-item">
-                    <a href="javascript:;">admin</a>
+                    <a href="javascript:;" id="username">admin</a>
                     <dl class="layui-nav-child">
                         <!-- 二级菜单 -->
                         <dd>
@@ -68,6 +68,11 @@
                                     <cite>用户增加</cite></a>
                             </li>
                             <li>
+                                <a onclick="xadmin.add_tab('用户修改','/updateMember.html')">
+                                    <i class="iconfont">&#xe6a7;</i>
+                                    <cite>用户修改</cite></a>
+                            </li>
+                            <li>
                                 <a onclick="xadmin.add_tab('用户删除','/delMember.html')">
                                     <i class="iconfont">&#xe6a7;</i>
                                     <cite>用户删除</cite></a>
@@ -89,6 +94,11 @@
                                 <a onclick="xadmin.add_tab('工单增加','/addOrder.html')">
                                     <i class="iconfont">&#xe6a7;</i>
                                     <cite>工单增加</cite></a>
+                            </li>
+                            <li>
+                                <a onclick="xadmin.add_tab('工单修改','/updateOrder.html')">
+                                    <i class="iconfont">&#xe6a7;</i>
+                                    <cite>工单修改</cite></a>
                             </li>
                             <li>
                                 <a onclick="xadmin.add_tab('工单删除','/delOrder.html')">
@@ -114,6 +124,11 @@
                                     <cite>轮播图增加</cite></a>
                             </li>
                             <li>
+                                <a onclick="xadmin.add_tab('轮播图修改','/updateSlide.html')">
+                                    <i class="iconfont">&#xe6a7;</i>
+                                    <cite>轮播图修改</cite></a>
+                            </li>
+                            <li>
                                 <a onclick="xadmin.add_tab('轮播图删除','/delSlide.html')">
                                     <i class="iconfont">&#xe6a7;</i>
                                     <cite>轮播图删除</cite></a>
@@ -137,6 +152,11 @@
                                     <cite>文章增加</cite></a>
                             </li>
                             <li>
+                                <a onclick="xadmin.add_tab('文章修改','/updateArticle.html')">
+                                    <i class="iconfont">&#xe6a7;</i>
+                                    <cite>文章修改</cite></a>
+                            </li>
+                            <li>
                                 <a onclick="xadmin.add_tab('文章删除','/delArticle.html')">
                                     <i class="iconfont">&#xe6a7;</i>
                                     <cite>文章删除</cite></a>
@@ -158,6 +178,11 @@
                                 <a onclick="xadmin.add_tab('通知增加','/addNotice.html')">
                                     <i class="iconfont">&#xe6a7;</i>
                                     <cite>通知增加</cite></a>
+                            </li>
+                            <li>
+                                <a onclick="xadmin.add_tab('通知修改','/updateNotice.html')">
+                                    <i class="iconfont">&#xe6a7;</i>
+                                    <cite>通知修改</cite></a>
                             </li>
                             <li>
                                 <a onclick="xadmin.add_tab('通知删除','/delNotice.html')">
@@ -195,6 +220,9 @@
 
     </body>
     <script src="js/jquery.min.js"></script>
+    <script>
+        document.getElementById("username").innerHTML = localStorage.getItem("username");
+    </script>
 
 </html>
 

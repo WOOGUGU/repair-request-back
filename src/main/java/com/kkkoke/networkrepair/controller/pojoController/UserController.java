@@ -1,5 +1,6 @@
 package com.kkkoke.networkrepair.controller.pojoController;
 
+import com.kkkoke.networkrepair.exception.PasswordWrongException;
 import com.kkkoke.networkrepair.exception.UserHasExistedException;
 import com.kkkoke.networkrepair.exception.UserHasNotExistedException;
 import com.kkkoke.networkrepair.pojo.User;
@@ -124,14 +125,16 @@ public class UserController {
     }
 
     @ApiOperation(value = "修改用户信息")
-    @ApiImplicitParams({@ApiImplicitParam(name = "username", value = "用户名", required = true, paramType = "query"),
-            @ApiImplicitParam(name = "password", value = "密码（已加密）", required = true, paramType = "query"),
-            @ApiImplicitParam(name = "name", value = "用户真实姓名", required = true, paramType = "query")})
+    @ApiImplicitParams({@ApiImplicitParam(name = "userId", value = "用户Id", required = true, paramType = "query"),
+            @ApiImplicitParam(name = "username", value = "用户名", required = false, paramType = "query"),
+            @ApiImplicitParam(name = "oldPassword", value = "旧密码（已加密）", required = false, paramType = "query"),
+            @ApiImplicitParam(name = "newPassword", value = "新密码（已加密）", required = false, paramType = "query"),
+            @ApiImplicitParam(name = "name", value = "用户真实姓名", required = false, paramType = "query")})
     @Secured({"ROLE_admin"})
     @PostMapping("/updateUser")
-    public ApiResult updateUser(@NotNull(message = "userId can not be null") Integer userId, @NotBlank(message = "username can not be null") String username,
-                                @NotBlank(message = "password can not be null") String password, @NotBlank(message = "name can not be null") String name) throws UserHasNotExistedException {
-        userService.updateUser(userId, username, password, name);
-        return ApiResult.success("更新成功");
+    public ApiResult updateUser(@NotNull(message = "userId can not be null") Integer userId, String username, String oldPassword,
+                                String newPassword, String name, Integer roleType) throws UserHasNotExistedException, PasswordWrongException {
+        userService.updateUser(userId, username, oldPassword, newPassword, name, roleType);
+        return ApiResult.success("用户修改成功");
     }
 }
