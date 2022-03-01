@@ -822,8 +822,7 @@ function updateArticle() {
     if (articleId === "") {
         alert("文章Id不能为空");
         return;
-    }
-    if (contentPath === "") {
+    } else if (contentPath === "") {
         alert("文章网址不能为空");
         return;
     } else if (author === "") {
@@ -1144,4 +1143,45 @@ function delNotice() {
             alert("发生未知错误，请重试");
         }
     });
+}
+
+// 修改通知
+function updateNotice() {
+    var noticeId = $("#noticeId").val();
+    var content = $("#content").val();
+    var author = $("#author").val();
+    if (noticeId === "") {
+        alert("通知Id不能为空");
+        return;
+    } else if (content === "") {
+        alert("通知网址不能为空");
+        return;
+    } else if (author === "") {
+        alert("发布者不能为空");
+        return;
+    } else {
+        $.ajax({
+            url: '/v2/notice/updateNotice',
+            type: 'post',
+            headers: {
+                "Cookie": document.cookie
+            },
+            data: {
+                "noticeId": noticeId,
+                "content": content,
+                "author": author,
+                "displayStatus": $('#displayStatus input[name="status"]:checked ').val()
+            },
+            success: function (res) {
+                if (res.userMsg !== "") {
+                    alert(res.userMsg);
+                } else {
+                    alert("发生未知错误，请重试");
+                }
+            },
+            error: function () {
+                alert("发生未知错误，请重试");
+            }
+        });
+    }
 }

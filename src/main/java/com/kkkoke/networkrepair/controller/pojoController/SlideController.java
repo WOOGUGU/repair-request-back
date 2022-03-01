@@ -96,10 +96,10 @@ public class SlideController {
             @ApiImplicitParam(name = "author", value = "上传者", required = true, paramType = "query")})
     @Secured({"ROLE_admin"})
     @PostMapping("/updateSlide")
-    public ApiResult updateSlide(@NotNull(message = "slideId can not be null") Integer slideId, @RequestParam("slideImg") MultipartFile file,
+    public ApiResult updateSlide(@NotNull(message = "slideId can not be null") Integer slideId, MultipartFile file,
                                  @NotBlank(message = "author can not be null") String author) throws DataHasNotExistedException {
         String imgPath = FileUploadUtil.fileUpload(file, propertiesUtil.getSlideImgPath());
         slideService.updateSlide(slideId, imgPath, author);
-        return ApiResult.success("修改完成");
+        return ApiResult.success("轮播图修改完成");
     }
 }
