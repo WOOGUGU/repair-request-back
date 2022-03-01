@@ -55,26 +55,37 @@
                             <input type="text" id="timeSubscribe" name="timeSubscribe"  placeholder="预约上门时间" autocomplete="off" class="layui-input">
                         </div>
                         <div class="layui-inline layui-show-xs-block">
-                            <input type="text" id="progress" name="progress"  placeholder="状态" autocomplete="off" class="layui-input">
-                        </div>
-                        <div class="layui-inline layui-show-xs-block">
                             <input type="text" id="solver" name="solver"  placeholder="技术人员" autocomplete="off" class="layui-input">
                         </div>
                         <div class="layui-inline layui-show-xs-block">
                             <input type="text" id="timeStart" name="timeStart"  placeholder="发起时间" autocomplete="off" class="layui-input">
                         </div>
                         <div class="layui-inline layui-show-xs-block">
-                            <input type="text" id="timeDistribution" name="timeDistribution"  placeholder="分配时间" autocomplete="off" class="layui-input">
+                            <input type="text" id="timeDistribution" name="timeDistribution" placeholder="分配时间"
+                                   autocomplete="off" class="layui-input">
                         </div>
                         <div class="layui-inline layui-show-xs-block">
-                            <input type="text" id="timeEnd" name="timeEnd"  placeholder="解决时间" autocomplete="off" class="layui-input">
+                            <input type="text" id="timeEnd" name="timeEnd" placeholder="解决时间" autocomplete="off"
+                                   class="layui-input">
                         </div>
                         <div class="layui-inline layui-show-xs-block">
-                            <input type="text" id="feedback" name="feedback"  placeholder="用户反馈" autocomplete="off" class="layui-input">
+                            <input type="text" id="feedback" name="feedback" placeholder="用户反馈" autocomplete="off"
+                                   class="layui-input">
+                        </div>
+                        <div class="layui-input-inline layui-show-xs-block">
+                            <select name="progress" id="progress">
+                                <option value="">状态</option>
+                                <option value="0">待审核</option>
+                                <option value="1">待处理</option>
+                                <option value="2">已处理</option>
+                                <option value="3">用户取消</option>
+                                <option value="4">审核不通过</option>
+                            </select>
                         </div>
                         <div class="layui-inline layui-show-xs-block">
                             <!--                            <div class="layui-btn" lay-filter="search" onclick="searchMember()"><i class="layui-icon">&#xe615;</i></div>-->
-                            <div class="layui-btn" lay-filter="search" id="searchOrder"><i class="layui-icon">&#xe615;</i></div>
+                            <div class="layui-btn" lay-filter="search" id="searchOrder"><i
+                                    class="layui-icon">&#xe615;</i></div>
                         </div>
                     </form>
                 </div>
