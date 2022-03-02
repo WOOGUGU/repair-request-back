@@ -21,6 +21,9 @@ public interface OrderDao {
                             String des, String position, String timeSubscribe, Integer progress, String solver,
                             String timeStart, String timeDistribution, String timeEnd, String feedback);
 
+    // 审核工单
+    Integer checkOrder(Integer id, Integer progress);
+
     // 查找所有报修工单
     List<Order> selectAllOrder();
 

@@ -1,10 +1,91 @@
 <!DOCTYPE html>
-<html lang="en">
+<html class="x-admin-sm">
+
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>工单审核</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi"/>
+    <link rel="stylesheet" href="./css/font.css">
+    <link rel="stylesheet" href="./css/index.css">
+    <script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="./js/index.js"></script>
+    <script type="text/javascript" src="js/order.js"></script>
+    <script type="text/javascript" src="js/jquery.js"></script>
 </head>
 <body>
-
+<div class="layui-fluid">
+    <div class="layui-row">
+        <div class="layui-btn-container">
+            <button class="layui-btn layui-btn-primary layui-btn-sm" onclick="backToOrderList()">返回</button>
+        </div>
+        <form class="layui-form">
+            <div class="layui-form-item">
+                <label for="orderId" class="layui-form-label">
+                    当前工单编号</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="orderId" autocomplete="off" class="layui-input" readonly>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">
+                    当前工单状态</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="currentStatus" autocomplete="off" class="layui-input" readonly>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">工单状态</label>
+                    <div class="layui-input-inline">
+                        <select name="progress" id="progress">
+                            <option value="">状态</option>
+                            <option value="0">待审核</option>
+                            <option value="1">待处理</option>
+                            <option value="2">已处理</option>
+                            <option value="3">用户取消</option>
+                            <option value="4">审核不通过</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <button class="layui-btn" onclick="checkOrder()" style="margin-left:30px"><i class="layui-icon"></i>提交</button>
+    </div>
+</div>
+<script>var _hmt = _hmt || [];
+(function () {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?b393d153aeb26b46e9431fabaf0f6190";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+})();</script>
 </body>
+<script>
+    // 工单id渲染
+    document.getElementById("orderId").value = localStorage.getItem("orderId");
+
+    // 当前工单状态渲染
+    switch (localStorage.getItem("progress")) {
+        case '0':
+            document.getElementById("currentStatus").value = "待审核";
+            break;
+        case '1':
+            document.getElementById("currentStatus").value = "待处理";
+            break;
+        case '2':
+            document.getElementById("currentStatus").value = "已处理";
+            break;
+        case '3':
+            document.getElementById("currentStatus").value = "用户取消";
+            break;
+        case '4':
+            document.getElementById("currentStatus").value = "审核不通过";
+            break;
+        default:
+            break;
+    }
+</script>
 </html>

@@ -19,18 +19,21 @@ public interface OrderService {
     // 查找报修工单 后台接口
     List<Order> selectOrder(Integer orderId, String username, String sender, String tel, String type,
                             String des, String position, String timeSubscribe, Integer progress, String solver,
-                            String timeStart, String timeDistribution, String timeEnd, String feedback)throws DataHasNotExistedException;
+                            String timeStart, String timeDistribution, String timeEnd, String feedback) throws DataHasNotExistedException;
 
     // 查找所有报修工单
     List<Order> selectAllOrder() throws DataHasNotExistedException;
 
     // 修改报修工单
     Order updateOrder(Integer orderId, String username, String sender, String tel, String type,
-                        String des, String position, String timeSubscribe, Integer progress,
-                        String solver, String timeStart, String timeDistribution, String timeEnd, String feedback) throws DataHasNotExistedException;
+                      String des, String position, String timeSubscribe, Integer progress,
+                      String solver, String timeStart, String timeDistribution, String timeEnd, String feedback) throws DataHasNotExistedException;
+
+    // 审核工单
+    Integer checkOrder(Integer orderId, Integer progress) throws DataHasNotExistedException;
 
     // 提交报修工单反馈
-    Integer updateOrderFeedback(Integer orderId,String feedback) throws DataHasNotExistedException;
+    Integer updateOrderFeedback(Integer orderId, String feedback) throws DataHasNotExistedException;
 
     // 查找某用户发起的所有工单
     List<Order> selectAllOrderOfUser(String username) throws DataHasNotExistedException;

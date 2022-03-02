@@ -438,9 +438,9 @@ layui.use(['table','form','layer'], function() {
                 ,{field: 'position', title: '故障位置', width: 250}
                 ,{field: 'timeSubscribe', title: '预约上门时间', width: 250}
                 ,{field: 'progress', title: '状态', width: 250, templet:function(d){
-                    if (d.progress === -2) {
+                    if (d.progress === 4) {
                         return '审核不通过';
-                    } else if (d.progress === -1) {
+                    } else if (d.progress === 3) {
                         return '用户取消';
                     } else if (d.progress === 0) {
                         return '待审核';
@@ -449,13 +449,16 @@ layui.use(['table','form','layer'], function() {
                     } else if (d.progress === 2) {
                         return '已处理';
                     } else {
-                        return '出现异常';}
-                    }}
-                ,{field: 'solver', title: '技术人员', width: 250}
-                ,{field: 'timeStart', title: '发起时间', width: 250}
-                ,{field: 'timeDistribution', title: '分配时间', width: 250}
-                ,{field: 'timeEnd', title: '解决时间', width: 250}
-                ,{field: 'feedback', title: '用户反馈', width: 250}
+                        return '出现异常';
+                    }
+                }
+            }
+                , {field: 'solver', title: '技术人员', width: 250}
+                , {field: 'timeStart', title: '发起时间', width: 250}
+                , {field: 'timeDistribution', title: '分配时间', width: 250}
+                , {field: 'timeEnd', title: '解决时间', width: 250}
+                , {field: 'feedback', title: '用户反馈', width: 250}
+                , {title: '操作', align: 'center', toolbar: '#order'}
             ]
         ]
         , id: 'tableFour'
@@ -595,7 +598,7 @@ function updateOrder() {
         return;
     } else {
         $.ajax({
-            url: '/v2/user/updateUser',
+            url: '/v2/order/updateOrder',
             type: 'post',
             headers: {
                 "Cookie": document.cookie
@@ -619,6 +622,45 @@ function updateOrder() {
             }
         });
     }
+}
+
+// 审核工单跳转
+function toCheckOrder() {
+    layui.use(['table'], function () {
+        var table = layui.table;
+        table.on('tool(order)', function (obj) {
+            var tr = obj.data;
+            window.localStorage.setItem("orderId", tr.id);
+            window.localStorage.setItem("progress", tr.progress);
+            window.location.href = "http://localhost:8090/updateOrder.html";
+        })
+    });
+}
+
+// 审核工单
+function checkOrder() {
+    $.ajax({
+        url: '/v2/order/checkOrder',
+        type: 'post',
+        headers: {
+            "Cookie": document.cookie
+        },
+        data: {
+            "orderId": window.localStorage.getItem("orderId"),
+            "progress": $('#progress').val()
+        },
+        success: function (res) {
+            if (res.userMsg !== "") {
+                alert(res.userMsg);
+            } else {
+                alert("发生未知错误，请重试");
+            }
+            window.location.href = "http://localhost:8090/orderList.html";
+        },
+        error: function () {
+            alert("发生未知错误，请重试");
+        }
+    });
 }
 
 // 删除工单

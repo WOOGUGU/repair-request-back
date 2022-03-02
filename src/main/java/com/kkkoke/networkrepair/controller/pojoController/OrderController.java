@@ -146,6 +146,16 @@ public class OrderController {
         return ApiResult.success("更新成功");
     }
 
+    @ApiOperation(value = "审核工单")
+    @ApiImplicitParams({@ApiImplicitParam(name = "orderId", value = "工单id", required = true, paramType = "query"),
+            @ApiImplicitParam(name = "progress", value = "-2：审核不通过，-1：用户取消，0：待审核，1：待处理，2：已处理", required = false, paramType = "query")})
+    @Secured({"ROLE_admin"})
+    @PostMapping("/checkOrder")
+    public ApiResult checkOrder(@NotNull(message = "orderId can not be null") Integer orderId, Integer progress) throws DataHasNotExistedException {
+        orderService.checkOrder(orderId, progress);
+        return ApiResult.success("审核成功");
+    }
+
     @ApiOperation(value = "查找某用户发布的所有工单")
     @ApiImplicitParam(name = "username", value = "用户名", required = true, paramType = "query")
     @Secured({"ROLE_admin", "ROLE_user", "ROLE_repairman"})
