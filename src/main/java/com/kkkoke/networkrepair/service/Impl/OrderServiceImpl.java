@@ -147,4 +147,14 @@ public class OrderServiceImpl implements OrderService {
             }
         }
     }
+
+    // 分配维修员
+    @Override
+    public Integer sendRepairman(Integer orderId, String solver) throws DataHasNotExistedException {
+        if (ObjectUtils.isEmpty(orderDao.selectOrderById(orderId))) {
+            throw new DataHasNotExistedException("Order has not existed");
+        } else {
+            return orderDao.sendRepairman(orderId, solver);
+        }
+    }
 }

@@ -153,7 +153,7 @@ public class OrderController {
     @PostMapping("/checkOrder")
     public ApiResult checkOrder(@NotNull(message = "orderId can not be null") Integer orderId, Integer progress) throws DataHasNotExistedException {
         orderService.checkOrder(orderId, progress);
-        return ApiResult.success("审核成功");
+        return ApiResult.success("处理成功");
     }
 
     @ApiOperation(value = "查找某用户发布的所有工单")
@@ -174,5 +174,16 @@ public class OrderController {
                                  @NotBlank(message = "username can not be null") String username) throws DataHasNotExistedException, IllegalOperationException {
         orderService.cancelOrder(orderId, username);
         return ApiResult.success("取消成功");
+    }
+
+    @ApiOperation(value = "分配维修员")
+    @ApiImplicitParams({@ApiImplicitParam(name = "orderId", value = "工单id", required = true, paramType = "query"),
+            @ApiImplicitParam(name = "solver", value = "处理者", required = true, paramType = "query")})
+    @Secured({"ROLE_admin"})
+    @PostMapping("/sendRepairman")
+    public ApiResult sendRepairman(@NotNull(message = "orderId can not be null") Integer orderId,
+                                   @NotBlank(message = "solver can not be null") String solver) throws DataHasNotExistedException {
+        orderService.sendRepairman(orderId, solver);
+        return ApiResult.success("分配成功");
     }
 }

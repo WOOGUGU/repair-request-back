@@ -38,4 +38,7 @@ public interface OrderDao {
 
     // 取消工单 用户接口
     Integer cancelOrder(Order order);
+
+    // 分配维修员
+    Integer sendRepairman(Integer id, String solver);
 }

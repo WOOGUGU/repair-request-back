@@ -163,6 +163,12 @@
         where id = #{id}
     </update>
 
+    <update id="sendRepairman">
+        update `order`
+        set solver = #{solver}
+        where id = #{id}
+    </update>
+
     <resultMap id="orderMap" type="com.kkkoke.networkrepair.pojo.Order">
         <id property="id" column="id"/>
         <result property="sender" column="sender"/>

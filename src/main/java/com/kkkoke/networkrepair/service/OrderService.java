@@ -40,4 +40,7 @@ public interface OrderService {
 
     // 取消工单 用户接口
     Order cancelOrder(Integer orderId, String username) throws DataHasNotExistedException, IllegalOperationException;
+
+    // 分配维修员
+    Integer sendRepairman(Integer orderId, String solver) throws DataHasNotExistedException;
 }
