@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="./css/font.css">
     <link rel="stylesheet" href="./css/index.css">
     <script src="../lib/layui/layui.js" charset="utf-8"></script>
-    <script type="text/javascript" src="js/index.js"></script>
+    <script type="text/javascript" src="js/member.js"></script>
     <script type="text/javascript" src="js/list.js"></script>
     <script type="text/javascript" src="js/jquery.js"></script>
 </head>
@@ -46,7 +46,12 @@
                     </form>
                 </div>
                 <div class="layui-card-body layui-table-main layui-table-body">
-                    <table id="repairmanData" class="layui-table layui-form" lay-filter="admin">
+                    <table id="repairmanData" class="layui-table layui-form" lay-filter="repairman">
+                        <script type="text/html" id="repairman">
+                            <a class="layui-btn layui-btn-normal" lay-event="repairman"
+                               onclick="repairmanToUpdateMember()">修改</a>
+                            <a class="layui-btn layui-btn-danger" lay-event="repairman" onclick="delMember()">删除</a>
+                        </script>
                     </table>
                 </div>
             </div>

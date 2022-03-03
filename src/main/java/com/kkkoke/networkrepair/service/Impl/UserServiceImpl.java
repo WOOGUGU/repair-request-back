@@ -1,6 +1,7 @@
 package com.kkkoke.networkrepair.service.Impl;
 
 import com.kkkoke.networkrepair.dao.UserDao;
+import com.kkkoke.networkrepair.exception.DataHasNotExistedException;
 import com.kkkoke.networkrepair.exception.PasswordWrongException;
 import com.kkkoke.networkrepair.exception.UserHasExistedException;
 import com.kkkoke.networkrepair.exception.UserHasNotExistedException;
@@ -8,10 +9,12 @@ import com.kkkoke.networkrepair.pojo.Role;
 import com.kkkoke.networkrepair.pojo.User;
 import com.kkkoke.networkrepair.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -77,14 +80,7 @@ public class UserServiceImpl implements UserService {
     // 搜索用户 后台搜索接口
     @Override
     public List<User> selectUser(Integer userId, String username, String name) throws UserHasNotExistedException {
-        // 根据传入的信息查找用户
-        List<User> users = userDao.selectUser(userId, username, name);
-        // 判断查询结果是否为空
-        if (ObjectUtils.isEmpty(users)) {
-            throw new UserHasNotExistedException("User has not existed");
-        } else {
-            return users;
-        }
+        return userDao.selectUser(userId, username, name);
     }
 
     // 查找所有用户
@@ -95,6 +91,10 @@ public class UserServiceImpl implements UserService {
         if (ObjectUtils.isEmpty(users)) {
             throw new UserHasNotExistedException("User has not existed");
         } else {
+            for (User user : users) {
+                List<Role> roles = userDao.getRolesByUid(user.getId());
+                user.setRoles(roles);
+            }
             return users;
         }
     }
@@ -155,7 +155,7 @@ public class UserServiceImpl implements UserService {
         } else {
             // 如果用户存在就更新数据
             userDao.updateUser(user);
-            userDao.setRole(userId, roleType);
+            userDao.updateRole(userId, roleType);
             return user;
         }
     }

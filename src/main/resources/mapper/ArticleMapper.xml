@@ -19,16 +19,16 @@
                 update_time = #{updateTime}
             </if>
 
-            <if test="submitTime != null and submitTime != ''">
-                ,content_path = #{submitTime}
+            <if test="contentPath != null and contentPath != ''">
+                ,content_path = #{contentPath}
             </if>
 
             <if test="author != null and author != ''">
                 ,author = #{author}
             </if>
 
-            <if test="author != null and author != ''">
-                ,display_status = #{author}
+            <if test="displayStatus != null and displayStatus != ''">
+                ,display_status = #{displayStatus}
             </if>
         </set>
         where id = #{id}

@@ -41,7 +41,7 @@
         update slide
         <set>
             <if test="imgPath != null and imgPath != ''">
-                img_path = #{username}
+                img_path = #{imgPath}
             </if>
 
             <if test="submitTime != null and submitTime != ''">

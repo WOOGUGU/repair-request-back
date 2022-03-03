@@ -12,18 +12,21 @@
     <link rel="stylesheet" href="./css/index.css">
     <script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
     <script type="text/javascript" src="./js/index.js"></script>
-    <script type="text/javascript" src="js/list.js"></script>
+    <script type="text/javascript" src="js/notice.js"></script>
     <script type="text/javascript" src="js/jquery.js"></script>
 </head>
 <body>
 <div class="layui-fluid">
     <div class="layui-row">
+        <div class="layui-btn-container">
+            <button class="layui-btn layui-btn-primary layui-btn-sm" onclick="backToNoticeList()">返回</button>
+        </div>
         <form class="layui-form">
             <div class="layui-form-item">
                 <label for="noticeId" class="layui-form-label">
                     <span class="x-red">*</span>通知Id</label>
                 <div class="layui-input-inline">
-                    <input type="text" id="noticeId" required="" autocomplete="off" class="layui-input">
+                    <input type="text" id="noticeId" required="" autocomplete="off" class="layui-input" readonly>
                 </div>
             </div>
             <div class="layui-form-item">
@@ -67,5 +70,9 @@
     var s = document.getElementsByTagName("script")[0];
     s.parentNode.insertBefore(hm, s);
 })();</script>
+<script>
+    // 当前通知id渲染
+    document.getElementById("noticeId").value = localStorage.getItem("noticeId");
+</script>
 </body>
 </html>
