@@ -11,12 +11,26 @@
         from article
         where id = #{id}
     </delete>
+
     <update id="updateArticle">
         update article
-        set `update_time`  = #{updateTime},
-            `content_path` = #{contentPath},
-            `author`       = #{author},
-            display_status = #{displayStatus}
+        <set>
+            <if test="updateTime != null and updateTime != ''">
+                update_time = #{updateTime}
+            </if>
+
+            <if test="contentPath != null and contentPath != ''">
+                ,content_path = #{contentPath}
+            </if>
+
+            <if test="author != null and author != ''">
+                ,author = #{author}
+            </if>
+
+            <if test="displayStatus != null and displayStatus != ''">
+                ,display_status = #{displayStatus}
+            </if>
+        </set>
         where id = #{id}
     </update>
     <select id="selectAllArticle" resultMap="articleMap">

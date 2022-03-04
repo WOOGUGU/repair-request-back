@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="css/index.css">
     <script src="../lib/layui/layui.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/index.js"></script>
-    <script type="text/javascript" src="js/list.js"></script>
+    <script type="text/javascript" src="js/member.js"></script>
     <script type="text/javascript" src="js/jquery.js"></script>
 </head>
 <body>
@@ -41,12 +41,18 @@
                         </div>
                         <div class="layui-inline layui-show-xs-block">
                             <!--                            <div class="layui-btn" lay-filter="search" onclick="searchMember()"><i class="layui-icon">&#xe615;</i></div>-->
-                            <div class="layui-btn" lay-filter="search" id="searchNorUser"><i class="layui-icon">&#xe615;</i></div>
+                            <div class="layui-btn" lay-filter="search" id="searchUser"><i
+                                    class="layui-icon">&#xe615;</i></div>
                         </div>
                     </form>
                 </div>
                 <div class="layui-card-body layui-table-main layui-table-body">
-                    <table id="norUserData" class="layui-table layui-form" lay-filter="admin">
+                    <table id="userData" class="layui-table layui-form" lay-filter="user">
+                        <script type="text/html" id="user">
+                            <a class="layui-btn layui-btn-normal" lay-event="user"
+                               onclick="norUserToUpdateMember()">修改</a>
+                            <a class="layui-btn layui-btn-danger" lay-event="user" onclick="delMember()">删除</a>
+                        </script>
                     </table>
                 </div>
             </div>

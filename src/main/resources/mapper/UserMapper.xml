@@ -10,7 +10,13 @@
         insert into user_role(uid, rid)
         values (#{userId}, #{roleType})
     </insert>
-    
+
+    <update id="updateRole" parameterType="int">
+        update user_role
+        set rid = #{roleType}
+        where uid = #{userId}
+    </update>
+
     <delete id="deleteUser">
         delete
         from user
@@ -62,9 +68,19 @@
 
     <update id="updateUser">
         update user
-        set `username` = #{username},
-            `password` = #{password},
-            `name`     = #{name}
+        <set>
+            <if test="username != null and username != ''">
+                username = #{username}
+            </if>
+
+            <if test="password != null and password != ''">
+                ,password = #{password}
+            </if>
+
+            <if test="name != null and name != ''">
+                ,name = #{name}
+            </if>
+        </set>
         where id = #{id}
     </update>
 

@@ -1,5 +1,6 @@
 package com.kkkoke.networkrepair.service;
 
+import com.kkkoke.networkrepair.exception.PasswordWrongException;
 import com.kkkoke.networkrepair.exception.UserHasExistedException;
 import com.kkkoke.networkrepair.exception.UserHasNotExistedException;
 import com.kkkoke.networkrepair.pojo.Role;
@@ -36,7 +37,7 @@ public interface UserService {
     List<User> selectAllNorUser() throws UserHasNotExistedException;;
 
     // 修改用户信息
-    User updateUser(Integer userId, String username, String password, String name) throws UserHasNotExistedException;
+    User updateUser(Integer userId, String username, String oldPassword, String newPassword, String name, Integer roleType) throws UserHasNotExistedException, PasswordWrongException;
 
     // 内部调用 根据⽤户名查询⽤户
     User loadUserByUsername(String username);

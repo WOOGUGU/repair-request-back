@@ -39,9 +39,19 @@
 
     <update id="updateSlide">
         update slide
-        set `img_path`    = #{imgPath},
-            `submit_time` = #{submitTime},
-            `author`      = #{author}
+        <set>
+            <if test="imgPath != null and imgPath != ''">
+                img_path = #{imgPath}
+            </if>
+
+            <if test="submitTime != null and submitTime != ''">
+                ,submit_time = #{submitTime}
+            </if>
+
+            <if test="author != null and author != ''">
+                ,author = #{author}
+            </if>
+        </set>
         where id = #{id}
     </update>
 

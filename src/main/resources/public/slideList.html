@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="css/index.css">
     <script src="../lib/layui/layui.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/index.js"></script>
-    <script type="text/javascript" src="js/list.js"></script>
+    <script type="text/javascript" src="js/slide.js"></script>
     <script type="text/javascript" src="js/jquery.js"></script>
 </head>
 <body>
@@ -45,7 +45,11 @@
                     </form>
                 </div>
                 <div class="layui-card-body layui-table-main layui-table-body">
-                    <table id="slideData" class="layui-table layui-form" lay-filter="admin">
+                    <table id="slideData" class="layui-table layui-form" lay-filter="slide">
+                        <script type="text/html" id="slide">
+                            <a class="layui-btn layui-btn-normal" lay-event="slide" onclick="toUpdateSlide()">修改</a>
+                            <a class="layui-btn layui-btn-danger" lay-event="slide" onclick="delSlide()">删除</a>
+                        </script>
                     </table>
                 </div>
             </div>

@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>增加轮播图</title>
+    <title>修改轮播图</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport"
@@ -18,10 +18,20 @@
 <body>
 <div class="layui-fluid">
     <div class="layui-row">
+        <div class="layui-btn-container">
+            <button class="layui-btn layui-btn-primary layui-btn-sm" onclick="backToSlideList()">返回</button>
+        </div>
         <form class="layui-form">
             <div class="layui-form-item">
+                <label for="slideId" class="layui-form-label">
+                    <span class="x-red">*</span>当前轮播图Id</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="slideId" required="" autocomplete="off" class="layui-input" readonly>
+                </div>
+            </div>
+            <div class="layui-form-item">
                 <label for="author" class="layui-form-label">
-                    <span class="x-red">*</span>上传者</label>
+                    上传者</label>
                 <div class="layui-input-inline">
                     <input type="text" id="author" required="" autocomplete="off" class="layui-input">
                 </div>
@@ -42,14 +52,20 @@
     s.parentNode.insertBefore(hm, s);
 })();</script>
 <script>
+    // 当前轮播图id渲染
+    document.getElementById("slideId").value = localStorage.getItem("slideId");
+
     layui.use('upload', function () {
         var upload = layui.upload;
 
         //执行实例
         var uploadInst = upload.render({
             elem: '#slide' //绑定元素
-            , url: '/v2/slide/uploadSlide' //上传接口
+            , url: '/v2/slide/updateSlide' //上传接口
             , data: {
+                slideId: function () {
+                    return $('#slideId').val();
+                },
                 author: function () {
                     return $('#author').val();
                 }

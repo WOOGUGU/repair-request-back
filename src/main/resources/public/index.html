@@ -12,7 +12,6 @@
         <link rel="stylesheet" href="../css/iconfont.css">
         <script src="../lib/layui/layui.js" charset="utf-8"></script>
         <script type="text/javascript" src="js/index.js"></script>
-        <script type="text/javascript" src="js/summary.js"></script>
         <script type="text/javascript" src="js/jquery.js"></script>
 </head>
     <body class="index">
@@ -26,7 +25,7 @@
 
             <ul class="layui-nav right" lay-filter="">
                 <li class="layui-nav-item">
-                    <a href="javascript:;">admin</a>
+                    <a href="javascript:;" id="username">admin</a>
                     <dl class="layui-nav-child">
                         <!-- 二级菜单 -->
                         <dd>
@@ -60,17 +59,12 @@
                             <li>
                                 <a onclick="xadmin.add_tab('用户列表','/userList.html')">
                                     <i class="iconfont">&#xe6a7;</i>
-                                    <cite>普通用户列表</cite></a>
+                                    <cite>用户列表</cite></a>
                             </li>
                             <li>
                                 <a onclick="xadmin.add_tab('用户增加','/addMember.html')">
                                     <i class="iconfont">&#xe6a7;</i>
                                     <cite>用户增加</cite></a>
-                            </li>
-                            <li>
-                                <a onclick="xadmin.add_tab('用户删除','/delMember.html')">
-                                    <i class="iconfont">&#xe6a7;</i>
-                                    <cite>用户删除</cite></a>
                             </li>
                         </ul>
                     </li>
@@ -86,14 +80,9 @@
                                     <cite>工单列表</cite></a>
                             </li>
                             <li>
-                                <a onclick="xadmin.add_tab('工单增加','/addOrder.html')">
+                                <a onclick="xadmin.add_tab('分配工单','/delegateOrder.html')">
                                     <i class="iconfont">&#xe6a7;</i>
-                                    <cite>工单增加</cite></a>
-                            </li>
-                            <li>
-                                <a onclick="xadmin.add_tab('工单删除','/delOrder.html')">
-                                    <i class="iconfont">&#xe6a7;</i>
-                                    <cite>工单删除</cite></a>
+                                    <cite>分配工单</cite></a>
                             </li>
                         </ul>
                     </li>
@@ -113,11 +102,6 @@
                                     <i class="iconfont">&#xe6a7;</i>
                                     <cite>轮播图增加</cite></a>
                             </li>
-                            <li>
-                                <a onclick="xadmin.add_tab('轮播图删除','/delSlide.html')">
-                                    <i class="iconfont">&#xe6a7;</i>
-                                    <cite>轮播图删除</cite></a>
-                            </li>
                         </ul>
                     </li>
                     <li class="layui-nav-item">
@@ -136,11 +120,6 @@
                                     <i class="iconfont">&#xe6a7;</i>
                                     <cite>文章增加</cite></a>
                             </li>
-                            <li>
-                                <a onclick="xadmin.add_tab('文章删除','/delArticle.html')">
-                                    <i class="iconfont">&#xe6a7;</i>
-                                    <cite>文章删除</cite></a>
-                            </li>
                         </ul>
                     </li>
                     <li class="layui-nav-item">
@@ -158,11 +137,6 @@
                                 <a onclick="xadmin.add_tab('通知增加','/addNotice.html')">
                                     <i class="iconfont">&#xe6a7;</i>
                                     <cite>通知增加</cite></a>
-                            </li>
-                            <li>
-                                <a onclick="xadmin.add_tab('通知删除','/delNotice.html')">
-                                    <i class="iconfont">&#xe6a7;</i>
-                                    <cite>通知删除</cite></a>
                             </li>
                         </ul>
                     </li>
@@ -195,6 +169,9 @@
 
     </body>
     <script src="js/jquery.min.js"></script>
+    <script>
+        document.getElementById("username").innerHTML = localStorage.getItem("username");
+    </script>
 
 </html>
 
