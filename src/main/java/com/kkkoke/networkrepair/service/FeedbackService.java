@@ -2,6 +2,7 @@ package com.kkkoke.networkrepair.service;
 
 import com.kkkoke.networkrepair.exception.DataHasNotExistedException;
 import com.kkkoke.networkrepair.pojo.Feedback;
+import com.kkkoke.networkrepair.pojo.helper.FeedbackResult;
 
 import java.util.List;
 
@@ -16,8 +17,8 @@ public interface FeedbackService {
     Feedback updateFeedback(Integer feedbackId, Integer uid, String content, String tel) throws DataHasNotExistedException;
 
     // 根据id查找反馈
-    Feedback selectFeedbackById(Integer feedbackId) throws DataHasNotExistedException;
+    FeedbackResult selectFeedbackById(Integer feedbackId) throws DataHasNotExistedException;
 
     // 查找反馈
-    List<Feedback> selectFeedback(Integer feedbackId, Integer uid, String content, String tel);
+    List<FeedbackResult> selectFeedback(Integer feedbackId, Integer uid, String content, String tel);
 }

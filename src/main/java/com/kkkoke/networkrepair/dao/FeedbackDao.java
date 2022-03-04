@@ -1,6 +1,7 @@
 package com.kkkoke.networkrepair.dao;
 
 import com.kkkoke.networkrepair.pojo.Feedback;
+import com.kkkoke.networkrepair.pojo.helper.FeedbackResult;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -17,8 +18,8 @@ public interface FeedbackDao {
     int updateFeedback(Feedback feedback);
 
     // 根据id查找反馈
-    Feedback selectFeedbackById(Integer id);
+    FeedbackResult selectFeedbackById(Integer id);
 
     // 查找反馈
-    List<Feedback> selectFeedback(Feedback feedback);
+    List<FeedbackResult> selectFeedback(Feedback feedback);
 }
