@@ -23,17 +23,23 @@
 
     <select id="selectFeedbackById" resultMap="feedbackMap">
         select f.id, f.tel, f.submit_time, f.content, u.id, u.username, u.name
-        from `feedback` f,
-             `user` u
+        from `feedback` f
+                 left join `user` u on f.uid = u.id
         where f.id = #{id}
-          and u.id = #{uid};
     </select>
 
     <select id="selectFeedback" resultMap="feedbackMap">
         select f.id, f.tel, f.submit_time, f.content, u.id, u.username, u.name
-        from `feedback` f,
-             `user` u
-        where u.id = #{uid};
+        from `feedback` f left join `user` u on f.uid = u.id
+        <where>
+            <if test="id != null and id != ''">
+                f.id = #{id}
+            </if>
+
+            <if test="tel != null and tel != ''">
+                and f.tel = #{tel}
+            </if>
+        </where>
     </select>
 
     <resultMap id="feedbackMap" type="com.kkkoke.networkrepair.pojo.helper.FeedbackResult">

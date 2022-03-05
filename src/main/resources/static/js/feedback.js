@@ -1,4 +1,4 @@
-// 轮播图数据表格渲染
+// 反馈数据表格渲染
 layui.use(['table', 'form', 'layer'], function () {
     var table = layui.table;
     var $ = layui.jquery;
@@ -6,9 +6,9 @@ layui.use(['table', 'form', 'layer'], function () {
     var layer = layui.layer;
     //展示所有的交易信息数据
     table.render({
-        elem: '#slideData'
+        elem: '#feedbackData'
         , height: 600
-        , url: '/v2/slide/selectAllSlide'
+        , url: '/v2/feedback/selectFeedback'
         , method: 'get'
         , headers: {
             "Cookie": document.cookie
@@ -17,13 +17,18 @@ layui.use(['table', 'form', 'layer'], function () {
         , cols: [
             [ //表头
                 {field: 'id', title: '编号', width: 50, sort: true, fixed: 'left'}
-                , {field: 'imgPath', title: '图片路径', width: 500}
-                , {field: 'author', title: '上传者', width: 250}
-                , {field: 'submitTime', title: '上传时间', width: 250}
-                , {title: '操作', align: 'center', width: 180, toolbar: '#slide'}
+                , {
+                field: 'name', title: '提交者', width: 150, templet: function (res) {
+                    return res.user.name;
+                }
+            }
+                , {field: 'content', title: '反馈内容', width: 250}
+                , {field: 'submitTime', title: '提交时间', width: 250}
+                , {field: 'tel', title: '联系方式', width: 250}
+                , {title: '操作', align: 'center', width: 100, toolbar: '#feedback'}
             ]
         ]
-        , id: 'tableSix'
+        , id: 'tableFeedback'
         , toolbar: '#toolbar'
         , page: true //开启分页
         , limits: [3, 5, 10]  //一页选择显示3,5或10条数据
@@ -53,16 +58,16 @@ layui.use(['table', 'form', 'layer'], function () {
         }
     });
 
-    $('#searchSlide').on('click', function () {
-        table.reload('tableSix', {
+    $('#searchFeedback').on('click', function () {
+        table.reload('tableFeedback', {
             method: 'get'
-            , url: '/v2/slide/selectSlide'
+            , url: '/v2/feedback/selectFeedback'
             , headers: {
                 "Cookie": document.cookie
             }
             , where: {
-                'slideId': $('#slideId').val(),
-                'author': $('#author').val(),
+                'feedbackId': $('#feedbackId').val(),
+                'tel': $('#tel').val()
             }
             , page: {
                 curr: 1
@@ -94,25 +99,25 @@ layui.use(['table', 'form', 'layer'], function () {
     });
 });
 
-// 删除轮播图
-function delSlide() {
+// 删除反馈
+function delFeedback() {
     layui.use('layer', function () {
         var $ = layui.jquery;
         // 删除操作
         layui.use(['table'], function () {
             var table = layui.table;
-            table.on('tool(slide)', function (obj) {
+            table.on('tool(feedback)', function (obj) {
                 var tr = obj.data;
                 var msg = "您真的确定要删除吗？";
                 if (confirm(msg) === true) {
                     $.ajax({
-                        url: '/v2/slide/deleteSlide',
+                        url: '/v2/feedback/deleteFeedback',
                         type: 'post',
                         headers: {
                             "Cookie": document.cookie
                         },
                         data: {
-                            "slideId": tr.id
+                            "feedbackId": tr.id
                         },
                         success: function (res) {
                             if (res.userMsg !== "") {
@@ -134,18 +139,6 @@ function delSlide() {
     })
 }
 
-// 跳转到修改轮播图页面
-function toUpdateSlide() {
-    layui.use(['table'], function () {
-        var table = layui.table;
-        table.on('tool(slide)', function (obj) {
-            var tr = obj.data;
-            window.localStorage.setItem("slideId", tr.id);
-            window.location.href = "http://localhost:8090/updateSlide.html";
-        })
-    });
-}
-
-function backToSlideList() {
-    window.location.href = "http://localhost:8090/slideList.html";
+function backToFeedbackList() {
+    window.location.href = "http://localhost:8090/feedbackList.html";
 }
