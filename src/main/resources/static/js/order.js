@@ -400,7 +400,7 @@ function sendRepairman() {
             } else {
                 alert("发生未知错误，请重试");
             }
-            window.location.href = "http://localhost:8090/orderList.html";
+            window.location.href = "http://localhost:8090/delegateOrder.html";
         },
         error: function () {
             alert("发生未知错误，请重试");
