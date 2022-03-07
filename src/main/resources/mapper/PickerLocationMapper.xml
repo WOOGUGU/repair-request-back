@@ -30,6 +30,24 @@
         where position = #{position}
     </select>
 
+    <select id="selectLocationForBackend" resultMap="pickerLocationMap">
+        select *
+        from location
+        <where>
+            <if test="id != null and id != ''">
+                id = #{id}
+            </if>
+
+            <if test="area != null and area != ''">
+                and area = #{area}
+            </if>
+
+            <if test="position != null and position != ''">
+                and position = #{position}
+            </if>
+        </where>
+    </select>
+
     <select id="selectAllPickerLocation" resultMap="pickerLocationMap">
         select *
         from location

@@ -84,6 +84,12 @@ public class PickerLocationServiceImpl implements PickerLocationService {
         }
     }
 
+    // 查找报修地点 后台接口
+    @Override
+    public List<PickerLocation> selectLocationForBackend(Integer pickerId, String area, String position) {
+        return pickerLocationDao.selectLocationForBackend(pickerId, area, position);
+    }
+
     // 查找所有报修地点
     @Override
     public Object selectAllPickerLocation() throws DataHasNotExistedException {
