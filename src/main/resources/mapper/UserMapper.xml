@@ -10,7 +10,13 @@
         insert into user_role(uid, rid)
         values (#{userId}, #{roleType})
     </insert>
-    
+
+    <update id="updateRole" parameterType="int">
+        update user_role
+        set rid = #{roleType}
+        where uid = #{userId}
+    </update>
+
     <delete id="deleteUser">
         delete
         from user

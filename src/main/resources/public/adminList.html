@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="css/index.css">
     <script src="../lib/layui/layui.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/index.js"></script>
-    <script type="text/javascript" src="js/list.js"></script>
+    <script type="text/javascript" src="js/member.js"></script>
     <script type="text/javascript" src="js/jquery.js"></script>
 </head>
 <body>
@@ -47,6 +47,11 @@
                 </div>
                 <div class="layui-card-body layui-table-main layui-table-body">
                     <table id="adminData" class="layui-table layui-form" lay-filter="admin">
+                        <script type="text/html" id="admin">
+                            <a class="layui-btn layui-btn-normal" lay-event="admin"
+                               onclick="adminToUpdateMember()">修改</a>
+                            <a class="layui-btn layui-btn-danger" lay-event="admin" onclick="delMember()">删除</a>
+                        </script>
                     </table>
                 </div>
             </div>

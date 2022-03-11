@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>工单审核</title>
+    <title>分配维修员</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport"
@@ -19,7 +19,7 @@
 <div class="layui-fluid">
     <div class="layui-row">
         <div class="layui-btn-container">
-            <button class="layui-btn layui-btn-primary layui-btn-sm" onclick="backToOrderList()">返回</button>
+            <button class="layui-btn layui-btn-primary layui-btn-sm" onclick="backToProcessedOrderList()">返回</button>
         </div>
         <form class="layui-form">
             <div class="layui-form-item">
@@ -38,21 +38,15 @@
             </div>
             <div class="layui-form-item">
                 <div class="layui-inline">
-                    <label class="layui-form-label">工单状态</label>
+                    <label class="layui-form-label">分配维修员</label>
                     <div class="layui-input-inline">
-                        <select name="progress" id="progress">
-                            <option value="">状态</option>
-                            <option value="0">待审核</option>
-                            <option value="1">待处理</option>
-                            <option value="2">已处理</option>
-                            <option value="3">用户取消</option>
-                            <option value="4">审核不通过</option>
-                        </select>
+                        <select id="solver"></select>
                     </div>
                 </div>
             </div>
         </form>
-        <button class="layui-btn" onclick="checkOrder()" style="margin-left:30px"><i class="layui-icon"></i>提交</button>
+        <button class="layui-btn" onclick="sendRepairman()" style="margin-left:30px"><i class="layui-icon"></i>提交
+        </button>
     </div>
 </div>
 <script>var _hmt = _hmt || [];
@@ -86,6 +80,51 @@
             break;
         default:
             break;
+    }
+
+    layui.use(['form'], function () {
+        var $ = layui.$,
+            form = layui.form;
+        $.ajax({
+            url: '/v2/user/selectAllRepairman',
+            type: 'get',
+            headers: {
+                "Cookie": document.cookie
+            },
+            data: {},
+            success: function (res) {
+                //动态渲染下拉框
+                selectUtil.render({
+                    id: 'solver',
+                    data: res.data
+                });
+            },
+            error: function (res) {
+                alert("出现异常，请重试");
+            }
+        });
+    });
+    // 动态实现Layui下拉框工具方法
+    var selectUtil = {
+        render: function (param) {
+            var $ = layui.$,
+                form = layui.form;
+            var id = param.id,
+                prop = param.prop || {
+                    id: 'id',
+                    username: 'username',
+                    name: 'name'
+                },
+                datas = param.data || [];
+            var $select = $('#' + id);
+            //重置下拉框
+            $select.empty();
+            $.each(datas, function (index, item) {
+                var $option = $('<option value="' + item[prop.name] + '">' + item[prop.name] + '</option>');
+                $select.append($option);
+            });
+            form.render('select');
+        }
     }
 </script>
 </html>

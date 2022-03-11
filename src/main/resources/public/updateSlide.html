@@ -12,18 +12,21 @@
     <link rel="stylesheet" href="./css/index.css">
     <script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
     <script type="text/javascript" src="./js/index.js"></script>
-    <script type="text/javascript" src="js/list.js"></script>
+    <script type="text/javascript" src="js/slide.js"></script>
     <script type="text/javascript" src="js/jquery.js"></script>
 </head>
 <body>
 <div class="layui-fluid">
     <div class="layui-row">
+        <div class="layui-btn-container">
+            <button class="layui-btn layui-btn-primary layui-btn-sm" onclick="backToSlideList()">返回</button>
+        </div>
         <form class="layui-form">
             <div class="layui-form-item">
                 <label for="slideId" class="layui-form-label">
-                    <span class="x-red">*</span>轮播图Id</label>
+                    <span class="x-red">*</span>当前轮播图Id</label>
                 <div class="layui-input-inline">
-                    <input type="text" id="slideId" required="" autocomplete="off" class="layui-input">
+                    <input type="text" id="slideId" required="" autocomplete="off" class="layui-input" readonly>
                 </div>
             </div>
             <div class="layui-form-item">
@@ -49,6 +52,9 @@
     s.parentNode.insertBefore(hm, s);
 })();</script>
 <script>
+    // 当前轮播图id渲染
+    document.getElementById("slideId").value = localStorage.getItem("slideId");
+
     layui.use('upload', function () {
         var upload = layui.upload;
 

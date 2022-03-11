@@ -16,7 +16,7 @@ public class Order {
     private String des; // 故障描述
     private String position; // 故障位置
     private String timeSubscribe; // 工单预约上门时间
-    private Integer progress; // -2：审核不通过，-1：用户取消，0：待审核，1：待处理，2：已处理
+    private Integer progress; // 0：待审核，1：待处理，2：已处理，3：用户取消，4：审核不通过
     private String solver; // 解决工单的技术人员
     private String timeStart; // 工单发起时间
     private String timeDistribution; // 工单分配时间

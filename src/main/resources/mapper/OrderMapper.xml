@@ -77,6 +77,12 @@
         where id = #{id}
     </update>
 
+    <update id="checkOrder">
+        update `order`
+        set progress = #{progress}
+        where id = #{id}
+    </update>
+
     <select id="selectOrder" resultMap="orderMap">
         select *
         from `order`
@@ -154,6 +160,12 @@
     <update id="updateOrderFeedback">
         update `order`
         set feedback = #{feedback}
+        where id = #{id}
+    </update>
+
+    <update id="sendRepairman">
+        update `order`
+        set solver = #{solver}
         where id = #{id}
     </update>
 

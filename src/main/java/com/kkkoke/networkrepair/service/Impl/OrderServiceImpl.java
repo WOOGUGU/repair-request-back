@@ -61,13 +61,7 @@ public class OrderServiceImpl implements OrderService {
     public List<Order> selectOrder(Integer orderId, String username, String sender, String tel, String type,
                                    String des, String position, String timeSubscribe, Integer progress, String solver,
                                    String timeStart, String timeDistribution, String timeEnd, String feedback) throws DataHasNotExistedException {
-        List<Order> orders = orderDao.selectOrder(orderId, username, sender, tel, type, des, position, timeSubscribe, progress, solver, timeStart, timeDistribution, timeEnd, feedback);
-        // 判断查询结果是否为空
-        if (ObjectUtils.isEmpty(orders)) {
-            throw new DataHasNotExistedException("Order has not existed");
-        } else {
-            return orders;
-        }
+        return orderDao.selectOrder(orderId, username, sender, tel, type, des, position, timeSubscribe, progress, solver, timeStart, timeDistribution, timeEnd, feedback);
     }
 
     // 查找所有报修工单
@@ -112,6 +106,19 @@ public class OrderServiceImpl implements OrderService {
         }
     }
 
+    // 审核工单
+    @Override
+    public Integer checkOrder(Integer orderId, Integer progress) throws DataHasNotExistedException {
+        // 查找数据库中是否存在此用户
+        if (ObjectUtils.isEmpty(orderDao.selectOrderById(orderId))) {
+            throw new DataHasNotExistedException("Order has not existed");
+        } else {
+            // 如果用户存在就修改工单状态
+            orderDao.checkOrder(orderId, progress);
+            return 0;
+        }
+    }
+
     // 查找某用户发起的所有工单
     @Override
     public List<Order> selectAllOrderOfUser(String username) throws DataHasNotExistedException {
@@ -132,12 +139,22 @@ public class OrderServiceImpl implements OrderService {
         } else {
             // 确认是否是自己的工单
             if (orderDao.selectOrderById(orderId).getUsername().equals(username)) {
-                Order order = new Order(orderId, -1);
+                Order order = new Order(orderId, 3);
                 orderDao.cancelOrder(order);
                 return order;
             } else {
                 throw new IllegalOperationException("Illegal Operation");
             }
+        }
+    }
+
+    // 分配维修员
+    @Override
+    public Integer sendRepairman(Integer orderId, String solver) throws DataHasNotExistedException {
+        if (ObjectUtils.isEmpty(orderDao.selectOrderById(orderId))) {
+            throw new DataHasNotExistedException("Order has not existed");
+        } else {
+            return orderDao.sendRepairman(orderId, solver);
         }
     }
 }

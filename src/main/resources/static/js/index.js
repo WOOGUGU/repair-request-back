@@ -575,13 +575,36 @@ return rstr2hex(rawHMACMD5(k, d))
 function md5 (string, key, raw) {
 if (!key) {
   if (!raw) {
-    return hexMD5(string)
+      return hexMD5(string)
   }
-  return rawMD5(string)
+    return rawMD5(string)
 }
-if (!raw) {
-  return hexHMACMD5(key, string)
+    if (!raw) {
+        return hexHMACMD5(key, string)
+    }
+    return rawHMACMD5(key, string)
 }
-return rawHMACMD5(key, string)
+
+// 退出登录
+function logout() {
+    $.ajax({
+        url: '/doLogout',
+        type: 'get',
+        headers: {
+            "Cookie": document.cookie
+        },
+        data: {},
+        success: function (res) {
+            if (res.userMsg !== "") {
+                alert(res.userMsg);
+                window.location.href = "http://localhost:8090/login.html";
+            } else {
+                alert("发生未知错误，请重试");
+            }
+        },
+        error: function () {
+            alert("发生未知错误，请重试");
+        }
+    });
 }
 

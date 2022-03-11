@@ -93,6 +93,17 @@ public class PickerController {
         return ApiResult.success(pickerLocation, "查找成功");
     }
 
+    @ApiOperation(value = "查找报修地点 后台接口")
+    @ApiImplicitParams({@ApiImplicitParam(name = "pickerId", value = "报修位置id", required = false, paramType = "query"),
+            @ApiImplicitParam(name = "area", value = "区域", required = false, paramType = "query"),
+            @ApiImplicitParam(name = "position", value = "位置", required = false, paramType = "query")})
+    @Secured({"ROLE_admin"})
+    @GetMapping("/selectLocationForBackend")
+    public ApiResult selectLocationForBackend(Integer pickerId, String area, String position) {
+        List<PickerLocation> pickerLocations = pickerLocationService.selectLocationForBackend(pickerId, area, position);
+        return ApiResult.success(pickerLocations, "查找成功");
+    }
+
     @ApiOperation(value = "查找所有报修地点")
     @Secured({"ROLE_admin", "ROLE_user"})
     @GetMapping("/selectAllPickerLocation")

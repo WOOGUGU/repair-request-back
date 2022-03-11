@@ -12,7 +12,6 @@
         <link rel="stylesheet" href="../css/iconfont.css">
         <script src="../lib/layui/layui.js" charset="utf-8"></script>
         <script type="text/javascript" src="js/index.js"></script>
-        <script type="text/javascript" src="js/summary.js"></script>
         <script type="text/javascript" src="js/jquery.js"></script>
 </head>
     <body class="index">
@@ -60,22 +59,12 @@
                             <li>
                                 <a onclick="xadmin.add_tab('用户列表','/userList.html')">
                                     <i class="iconfont">&#xe6a7;</i>
-                                    <cite>普通用户列表</cite></a>
+                                    <cite>用户列表</cite></a>
                             </li>
                             <li>
                                 <a onclick="xadmin.add_tab('用户增加','/addMember.html')">
                                     <i class="iconfont">&#xe6a7;</i>
                                     <cite>用户增加</cite></a>
-                            </li>
-                            <li>
-                                <a onclick="xadmin.add_tab('用户修改','/updateMember.html')">
-                                    <i class="iconfont">&#xe6a7;</i>
-                                    <cite>用户修改</cite></a>
-                            </li>
-                            <li>
-                                <a onclick="xadmin.add_tab('用户删除','/delMember.html')">
-                                    <i class="iconfont">&#xe6a7;</i>
-                                    <cite>用户删除</cite></a>
                             </li>
                         </ul>
                     </li>
@@ -90,20 +79,10 @@
                                     <i class="iconfont">&#xe6a7;</i>
                                     <cite>工单列表</cite></a>
                             </li>
-                            <!--                            <li>-->
-                            <!--                                <a onclick="xadmin.add_tab('工单增加','/addOrder.html')">-->
-                            <!--                                    <i class="iconfont">&#xe6a7;</i>-->
-                            <!--                                    <cite>工单增加</cite></a>-->
-                            <!--                            </li>-->
                             <li>
-                                <a onclick="xadmin.add_tab('工单修改','/updateOrder.html')">
+                                <a onclick="xadmin.add_tab('分配工单','/delegateOrder.html')">
                                     <i class="iconfont">&#xe6a7;</i>
-                                    <cite>工单修改</cite></a>
-                            </li>
-                            <li>
-                                <a onclick="xadmin.add_tab('工单删除','/delOrder.html')">
-                                    <i class="iconfont">&#xe6a7;</i>
-                                    <cite>工单删除</cite></a>
+                                    <cite>分配工单</cite></a>
                             </li>
                         </ul>
                     </li>
@@ -123,16 +102,6 @@
                                     <i class="iconfont">&#xe6a7;</i>
                                     <cite>轮播图增加</cite></a>
                             </li>
-                            <li>
-                                <a onclick="xadmin.add_tab('轮播图修改','/updateSlide.html')">
-                                    <i class="iconfont">&#xe6a7;</i>
-                                    <cite>轮播图修改</cite></a>
-                            </li>
-                            <li>
-                                <a onclick="xadmin.add_tab('轮播图删除','/delSlide.html')">
-                                    <i class="iconfont">&#xe6a7;</i>
-                                    <cite>轮播图删除</cite></a>
-                            </li>
                         </ul>
                     </li>
                     <li class="layui-nav-item">
@@ -150,16 +119,6 @@
                                 <a onclick="xadmin.add_tab('文章增加','/addArticle.html')">
                                     <i class="iconfont">&#xe6a7;</i>
                                     <cite>文章增加</cite></a>
-                            </li>
-                            <li>
-                                <a onclick="xadmin.add_tab('文章修改','/updateArticle.html')">
-                                    <i class="iconfont">&#xe6a7;</i>
-                                    <cite>文章修改</cite></a>
-                            </li>
-                            <li>
-                                <a onclick="xadmin.add_tab('文章删除','/delArticle.html')">
-                                    <i class="iconfont">&#xe6a7;</i>
-                                    <cite>文章删除</cite></a>
                             </li>
                         </ul>
                     </li>
@@ -179,15 +138,56 @@
                                     <i class="iconfont">&#xe6a7;</i>
                                     <cite>通知增加</cite></a>
                             </li>
+                        </ul>
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="javascript:;">
+                            <i class="iconfont left-nav-li" lay-tips="反馈管理">&#xe70c;</i>
+                            <cite>反馈管理</cite>
+                            <i class="iconfont nav_right">&#xe697;</i></a>
+                        <ul class="sub-menu">
                             <li>
-                                <a onclick="xadmin.add_tab('通知修改','/updateNotice.html')">
+                                <a onclick="xadmin.add_tab('反馈列表','/feedbackList.html')">
                                     <i class="iconfont">&#xe6a7;</i>
-                                    <cite>通知修改</cite></a>
+                                    <cite>反馈列表</cite></a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="javascript:;">
+                            <i class="iconfont left-nav-li" lay-tips="选框管理">&#xe70c;</i>
+                            <cite>选框管理</cite>
+                            <i class="iconfont nav_right">&#xe697;</i></a>
+                        <ul class="sub-menu">
+                            <li>
+                                <a onclick="xadmin.add_tab('报修地点列表','/locationList.html')">
+                                    <i class="iconfont">&#xe6a7;</i>
+                                    <cite>报修地点列表</cite></a>
                             </li>
                             <li>
-                                <a onclick="xadmin.add_tab('通知删除','/delNotice.html')">
+                                <a onclick="xadmin.add_tab('增加报修地点','/addLocation.html')">
                                     <i class="iconfont">&#xe6a7;</i>
-                                    <cite>通知删除</cite></a>
+                                    <cite>增加报修地点</cite></a>
+                            </li>
+                            <li>
+                                <a onclick="xadmin.add_tab('报修时间列表','/timeList.html')">
+                                    <i class="iconfont">&#xe6a7;</i>
+                                    <cite>报修时间列表</cite></a>
+                            </li>
+                            <li>
+                                <a onclick="xadmin.add_tab('增加报修时间','/addTime.html')">
+                                    <i class="iconfont">&#xe6a7;</i>
+                                    <cite>增加报修时间</cite></a>
+                            </li>
+                            <li>
+                                <a onclick="xadmin.add_tab('故障描述列表','/desList.html')">
+                                    <i class="iconfont">&#xe6a7;</i>
+                                    <cite>故障描述列表</cite></a>
+                            </li>
+                            <li>
+                                <a onclick="xadmin.add_tab('增加故障描述','/addDes.html')">
+                                    <i class="iconfont">&#xe6a7;</i>
+                                    <cite>增加故障描述</cite></a>
                             </li>
                         </ul>
                     </li>
