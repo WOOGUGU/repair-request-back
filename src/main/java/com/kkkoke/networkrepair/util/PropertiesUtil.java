@@ -15,6 +15,7 @@ public class PropertiesUtil {
 
     @Value("${TokenExpiredTime}")
     private String tokenExpiredTime;
+
     @Value("${slideImgPath}")
     private String slideImgPath;
 
