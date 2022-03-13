@@ -10,12 +10,19 @@ import com.qcloud.cos.exception.CosServiceException;
 import com.qcloud.cos.http.HttpProtocol;
 import com.qcloud.cos.model.*;
 import com.qcloud.cos.region.Region;
+import com.qcloud.cos.transfer.TransferManager;
+import com.qcloud.cos.transfer.TransferManagerConfiguration;
+import com.qcloud.cos.transfer.Upload;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class TencentCOSUtil {
 
@@ -169,5 +176,64 @@ public class TencentCOSUtil {
         URL url = cosclient.getObjectUrl(bucketName, key);
         System.out.println(cosclient.getObjectUrl(bucketName, key));
         return url;
+    }
+
+    public static UploadResult upLoadFileStream(String bucket, String fileKey, InputStream fileStream) {
+        // 使用高级接口必须先保证本进程存在一个 TransferManager 实例，如果没有则创建
+        TransferManager transferManager = createTransferManager();
+        ObjectMetadata objectMetadata = new ObjectMetadata();
+        String bucketName = bucket + "-" + COSClientConfig.getAppid();
+        PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, fileKey, fileStream, objectMetadata);
+        try {
+            // 高级接口会返回一个异步结果Upload
+            // 可同步地调用 waitForUploadResult 方法等待上传完成，成功返回UploadResult, 失败抛出异常
+            Upload upload = transferManager.upload(putObjectRequest);
+            UploadResult uploadResult = upload.waitForUploadResult();
+            return uploadResult;
+        } catch (CosServiceException e) {
+            e.printStackTrace();
+        } catch (CosClientException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        // 确定本进程不再使用 transferManager 实例之后，关闭之
+        // 详细代码参见本页：高级接口 -> 关闭 TransferManager
+        shutdownTransferManager(transferManager);
+        return null;
+    }
+
+    public static TransferManager createTransferManager() {
+        // 创建一个 COSClient 实例，这是访问 COS 服务的基础实例。
+        // 详细代码参见本页: 简单操作 -> 创建 COSClient
+        COSClient cosClient = COSClientConfig.initCOSClient();
+
+        // 自定义线程池大小，建议在客户端与 COS 网络充足（例如使用腾讯云的 CVM，同地域上传 COS）的情况下，设置成16或32即可，可较充分的利用网络资源
+        // 对于使用公网传输且网络带宽质量不高的情况，建议减小该值，避免因网速过慢，造成请求超时。
+        ExecutorService threadPool = Executors.newFixedThreadPool(32);
+
+        // 传入一个 threadpool, 若不传入线程池，默认 TransferManager 中会生成一个单线程的线程池。
+        TransferManager transferManager = new TransferManager(cosClient, threadPool);
+
+        // 设置高级接口的配置项
+        // 分块上传阈值和分块大小分别为 5MB 和 1MB
+        TransferManagerConfiguration transferManagerConfiguration = new TransferManagerConfiguration();
+        transferManagerConfiguration.setMultipartUploadThreshold(5 * 1024 * 1024);
+        transferManagerConfiguration.setMinimumUploadPartSize(1 * 1024 * 1024);
+        transferManager.setConfiguration(transferManagerConfiguration);
+
+        return transferManager;
+    }
+
+    public static InputStream fileToInputStream(String fileName) throws IOException {
+        File initialFile = new File(fileName);
+        InputStream targetStream = new FileInputStream(initialFile);
+        return targetStream;
+    }
+
+    public static void shutdownTransferManager(TransferManager transferManager) {
+        // 指定参数为 true, 则同时会关闭 transferManager 内部的 COSClient 实例。
+        // 指定参数为 false, 则不会关闭 transferManager 内部的 COSClient 实例。
+        transferManager.shutdownNow(true);
     }
 }

@@ -9,6 +9,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotBlank;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.List;
 
@@ -83,9 +84,19 @@ public class TencentCOSController {
             @ApiImplicitParam(name = "key", value = "文件key", required = true, paramType = "query")})
     @Secured({"ROLE_admin"})
     @GetMapping("/getObjectUrl")
-    public ApiResult getObjectUrl(String bucket, String key) {
+    public ApiResult getObjectUrl(@NotBlank(message = "bucket can not be null") String bucket, @NotBlank(message = "key can not be null") String key) {
         URL url = TencentCOSUtil.getObjectUrl(bucket, key);
         return ApiResult.success(url, "获取成功");
     }
 
+    @ApiOperation(value = "上传流类型")
+    @ApiImplicitParams({@ApiImplicitParam(name = "bucket", value = "存储桶名称", required = true, paramType = "query"),
+            @ApiImplicitParam(name = "fileKey", value = "文件key", required = true, paramType = "query"),
+            @ApiImplicitParam(name = "fileStream", value = "二进制文件流", required = true, paramType = "query")})
+    @Secured({"ROLE_admin"})
+    @PostMapping("/upLoadFileStream")
+    public ApiResult upLoadFileStream(String bucket, String fileKey, InputStream fileStream) {
+        TencentCOSUtil.upLoadFileStream(bucket, fileKey, fileStream);
+        return ApiResult.success("上传成功");
+    }
 }
