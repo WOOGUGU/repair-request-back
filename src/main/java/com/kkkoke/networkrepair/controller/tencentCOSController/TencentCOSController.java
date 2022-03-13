@@ -9,6 +9,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotBlank;
+import java.net.URL;
 import java.util.List;
 
 @Api(tags = "腾讯云cos")
@@ -76,4 +77,15 @@ public class TencentCOSController {
         TencentCOSUtil.deleteFile(bucket, directoryPrefix);
         return ApiResult.success("删除成功");
     }
+
+    @ApiOperation(value = "获取对象访问 URL")
+    @ApiImplicitParams({@ApiImplicitParam(name = "bucket", value = "存储桶名称", required = true, paramType = "query"),
+            @ApiImplicitParam(name = "key", value = "文件key", required = true, paramType = "query")})
+    @Secured({"ROLE_admin"})
+    @GetMapping("/getObjectUrl")
+    public ApiResult getObjectUrl(String bucket, String key) {
+        URL url = TencentCOSUtil.getObjectUrl(bucket, key);
+        return ApiResult.success(url, "获取成功");
+    }
+
 }

@@ -35,9 +35,7 @@ public class COSClientConfig {
     public static COSClient initCOSClient() {
         // 1 初始化用户身份信息（secretId, secretKey）。
         // SECRETID和SECRETKEY请登录访问管理控制台 https://console.cloud.tencent.com/cam/capi 进行查看和管理
-        String secretId = COSClientConfig.SECRET_ID;
-        String secretKey = COSClientConfig.SECRET_KEY;
-        COSCredentials cred = new BasicCOSCredentials(secretId, secretKey);
+        COSCredentials cred = new BasicCOSCredentials(COSClientConfig.SECRET_ID, COSClientConfig.SECRET_KEY);
         // 2 设置 bucket 的地域, COS 地域的简称请参照 https://cloud.tencent.com/document/product/436/6224
         // clientConfig 中包含了设置 region, https(默认 http), 超时, 代理等 set 方法, 使用可参见源码或者常见问题 Java SDK 部分。
         Region region = new Region(COSClientConfig.REGION);

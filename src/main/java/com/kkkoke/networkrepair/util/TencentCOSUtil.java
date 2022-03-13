@@ -1,12 +1,19 @@
 package com.kkkoke.networkrepair.util;
 
 import com.kkkoke.networkrepair.config.COSClientConfig;
+import com.qcloud.cos.COSClient;
+import com.qcloud.cos.ClientConfig;
+import com.qcloud.cos.auth.AnonymousCOSCredentials;
+import com.qcloud.cos.auth.COSCredentials;
 import com.qcloud.cos.exception.CosClientException;
 import com.qcloud.cos.exception.CosServiceException;
+import com.qcloud.cos.http.HttpProtocol;
 import com.qcloud.cos.model.*;
+import com.qcloud.cos.region.Region;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -134,5 +141,33 @@ public class TencentCOSUtil {
         // 指定被删除的文件在 COS 上的路径，即对象键。例如对象键为folder/picture.jpg，则表示删除位于 folder 路径下的文件 picture.jpg
         String key = directoryPrefix;
         COSClientConfig.initCOSClient().deleteObject(bucketName, key);
+    }
+
+    public static URL getObjectUrl(String bucket, String key) {
+        // 不需要验证身份信息
+        COSCredentials cred = new AnonymousCOSCredentials();
+
+        // ClientConfig 中包含了后续请求 COS 的客户端设置：
+        ClientConfig clientConfig = new ClientConfig();
+
+        String bucketName = bucket + "-" + COSClientConfig.getAppid();
+
+        // 设置 bucket 的地域
+        // COS_REGION 请参照 https://cloud.tencent.com/document/product/436/6224
+        clientConfig.setRegion(new Region(COSClientConfig.getRegion()));
+
+        // 设置生成的 url 的请求协议, http 或者 https
+        // 5.6.53 及更低的版本，建议设置使用 https 协议
+        // 5.6.54 及更高版本，默认使用了 https
+        clientConfig.setHttpProtocol(HttpProtocol.https);
+
+        // 生成cos客户端
+        COSClient cosclient = new COSClient(cred, clientConfig);
+
+        // 存储桶的命名格式为 BucketName-APPID，此处填写的存储桶名称必须为此格式
+        // 对象键(Key)是对象在存储桶中的唯一标识。详情请参见 [对象键](https://cloud.tencent.com/document/product/436/13324)
+        URL url = cosclient.getObjectUrl(bucketName, key);
+        System.out.println(cosclient.getObjectUrl(bucketName, key));
+        return url;
     }
 }
