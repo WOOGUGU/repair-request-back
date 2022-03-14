@@ -137,25 +137,28 @@ public class UserServiceImpl implements UserService {
 
     // 修改用户信息
     @Override
-    public User updateUser(Integer userId, String username, String oldPassword, String newPassword, String name, Integer roleType) throws UserHasNotExistedException, PasswordWrongException {
-        // 对新旧密码进行BCrypt加密
-        String hashOldPasswd = BCrypt.hashpw(oldPassword, BCrypt.gensalt());
-        // 比对旧密码与数据库中的密码是否一致
-        if (!ObjectUtils.isEmpty(oldPassword) && !ObjectUtils.isEmpty(newPassword)) {
-            if (!hashOldPasswd.equals(userDao.selectUserById(userId).getPassword())) {
-                throw new PasswordWrongException("OldPassword is wrong");
-            }
-        }
-        String hashNewPasswd = BCrypt.hashpw(newPassword, BCrypt.gensalt());
-        // 创建要修改的user对象
-        User user = new User(userId, username, hashNewPasswd, name);
+    public User updateUser(Integer userId, String username, String password, String name, Integer roleType) throws UserHasNotExistedException, PasswordWrongException {
+        User user = userDao.selectUserById(userId);
         // 查找数据库中是否存在此用户
-        if (ObjectUtils.isEmpty(userDao.selectUserById(userId))) {
+        if (ObjectUtils.isEmpty(user)) {
             throw new UserHasNotExistedException("User has not existed");
         } else {
             // 如果用户存在就更新数据
+            if (!ObjectUtils.isEmpty(username)) {
+                user.setUsername(username);
+            }
+            if (!ObjectUtils.isEmpty(password)) {
+                // 对密码进行BCrypt加密
+                String passwd = BCrypt.hashpw(password, BCrypt.gensalt());
+                user.setPassword(passwd);
+            }
+            if (!ObjectUtils.isEmpty(name)) {
+                user.setName(name);
+            }
             userDao.updateUser(user);
-            userDao.updateRole(userId, roleType);
+            if (!ObjectUtils.isEmpty(roleType)) {
+                userDao.updateRole(userId, roleType);
+            }
             return user;
         }
     }

@@ -127,14 +127,13 @@ public class UserController {
     @ApiOperation(value = "修改用户信息")
     @ApiImplicitParams({@ApiImplicitParam(name = "userId", value = "用户Id", required = true, paramType = "query"),
             @ApiImplicitParam(name = "username", value = "用户名", required = false, paramType = "query"),
-            @ApiImplicitParam(name = "oldPassword", value = "旧密码（已加密）", required = false, paramType = "query"),
-            @ApiImplicitParam(name = "newPassword", value = "新密码（已加密）", required = false, paramType = "query"),
+            @ApiImplicitParam(name = "password", value = "密码（已加密）", required = false, paramType = "query"),
             @ApiImplicitParam(name = "name", value = "用户真实姓名", required = false, paramType = "query")})
     @Secured({"ROLE_admin"})
     @PostMapping("/updateUser")
-    public ApiResult updateUser(@NotNull(message = "userId can not be null") Integer userId, String username, String oldPassword,
-                                String newPassword, String name, Integer roleType) throws UserHasNotExistedException, PasswordWrongException {
-        userService.updateUser(userId, username, oldPassword, newPassword, name, roleType);
+    public ApiResult updateUser(@NotNull(message = "userId can not be null") Integer userId, String username, String password,
+                                String name, Integer roleType) throws UserHasNotExistedException, PasswordWrongException {
+        userService.updateUser(userId, username, password, name, roleType);
         return ApiResult.success("用户修改成功");
     }
 }

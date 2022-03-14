@@ -68,19 +68,9 @@
 
     <update id="updateUser">
         update user
-        <set>
-            <if test="username != null and username != ''">
-                username = #{username}
-            </if>
-
-            <if test="password != null and password != ''">
-                ,password = #{password}
-            </if>
-
-            <if test="name != null and name != ''">
-                ,name = #{name}
-            </if>
-        </set>
+        set username = #{username},
+            password = #{password},
+            name     = #{name}
         where id = #{id}
     </update>
 
