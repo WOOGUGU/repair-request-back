@@ -147,13 +147,9 @@ function addMember() {
 function updateMember() {
     var userId = $("#userId").val();
     var uname = $("#uname").val();
-    var oldPassword = $("#oldPassword").val();
-    var newPassword = $("#newPassword").val();
-    if (oldPassword !== "") {
-        oldPassword = hexMD5(oldPassword).toUpperCase();
-    }
-    if (newPassword !== "") {
-        newPassword = hexMD5(newPassword).toUpperCase();
+    var password = $("#password").val();
+    if (password !== "") {
+        password = hexMD5(password).toUpperCase();
     }
     var name = $("#name").val();
     $.ajax({
@@ -165,8 +161,7 @@ function updateMember() {
         data: {
             "userId": userId,
             "username": uname,
-            "oldPassword": oldPassword,
-            "newPassword": newPassword,
+            "password": password,
             "name": name,
             "roleType": $('#roleType input[name="status"]:checked ').val()
         },
