@@ -36,6 +36,9 @@ public interface OrderDao {
     // 查找某用户发起的所有工单
     List<Order> selectAllOrderOfUser(String username);
 
+    // 查找某维修员被分配的所有工单
+    List<Order> selectAllOrderOfRepairman(String username);
+
     // 取消工单 用户接口
     Integer cancelOrder(Order order);
 

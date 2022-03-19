@@ -38,6 +38,9 @@ public interface OrderService {
     // 查找某用户发起的所有工单
     List<Order> selectAllOrderOfUser(String username) throws DataHasNotExistedException;
 
+    // 查找某维修员被分配的所有工单
+    List<Order> selectAllOrderOfRepairman(String username) throws DataHasNotExistedException;
+
     // 取消工单 用户接口
     Order cancelOrder(Integer orderId, String username) throws DataHasNotExistedException, IllegalOperationException;
 
