@@ -354,7 +354,7 @@ function toCheckOrder() {
             var tr = obj.data;
             window.localStorage.setItem("orderId", tr.id);
             window.localStorage.setItem("progress", tr.progress);
-            window.location.href = "http://localhost:8090/updateOrder.html";
+            window.location.href = "/updateOrder.html";
         })
     });
 }
@@ -367,19 +367,19 @@ function toDelegateOrder() {
             var tr = obj.data;
             window.localStorage.setItem("orderId", tr.id);
             window.localStorage.setItem("progress", tr.progress);
-            window.location.href = "http://localhost:8090/sendRepairman.html";
+            window.location.href = "/sendRepairman.html";
         })
     });
 }
 
 // 工单列表跳转
 function backToOrderList() {
-    window.location.href = "http://localhost:8090/orderList.html";
+    window.location.href = "/orderList.html";
 }
 
 // 返回待处理工单列表
 function backToProcessedOrderList() {
-    window.location.href = "http://localhost:8090/delegateOrder.html";
+    window.location.href = "/delegateOrder.html";
 }
 
 // 分配维修员
@@ -400,7 +400,7 @@ function sendRepairman() {
             } else {
                 alert("发生未知错误，请重试");
             }
-            window.location.href = "http://localhost:8090/delegateOrder.html";
+            window.location.href = "/delegateOrder.html";
         },
         error: function () {
             alert("发生未知错误，请重试");
@@ -426,7 +426,7 @@ function checkOrder() {
             } else {
                 alert("发生未知错误，请重试");
             }
-            window.location.href = "http://localhost:8090/orderList.html";
+            window.location.href = "/orderList.html";
         },
         error: function () {
             alert("发生未知错误，请重试");

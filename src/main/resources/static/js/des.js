@@ -207,12 +207,12 @@ function toUpdateDes() {
         table.on('tool(des)', function (obj) {
             var tr = obj.data;
             window.localStorage.setItem("desId", tr.id);
-            window.location.href = "http://localhost:8090/updateDes.html";
+            window.location.href = "/updateDes.html";
         })
     });
 }
 
 // 返回故障描述列表
 function backToDesList() {
-    window.location.href = "http://localhost:8090/desList.html";
+    window.location.href = "/desList.html";
 }

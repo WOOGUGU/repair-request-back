@@ -141,11 +141,11 @@ function toUpdateSlide() {
         table.on('tool(slide)', function (obj) {
             var tr = obj.data;
             window.localStorage.setItem("slideId", tr.id);
-            window.location.href = "http://localhost:8090/updateSlide.html";
+            window.location.href = "/updateSlide.html";
         })
     });
 }
 
 function backToSlideList() {
-    window.location.href = "http://localhost:8090/slideList.html";
+    window.location.href = "/slideList.html";
 }

@@ -207,12 +207,12 @@ function toUpdateTime() {
         table.on('tool(time)', function (obj) {
             var tr = obj.data;
             window.localStorage.setItem("timeId", tr.id);
-            window.location.href = "http://localhost:8090/updateTime.html";
+            window.location.href = "/updateTime.html";
         })
     });
 }
 
 // 返回报修位置列表
 function backToTimeList() {
-    window.location.href = "http://localhost:8090/timeList.html";
+    window.location.href = "/timeList.html";
 }

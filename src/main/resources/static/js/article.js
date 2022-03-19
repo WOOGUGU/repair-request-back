@@ -219,12 +219,12 @@ function toUpdateArticle() {
         table.on('tool(article)', function (obj) {
             var tr = obj.data;
             window.localStorage.setItem("articleId", tr.id);
-            window.location.href = "http://localhost:8090/updateArticle.html";
+            window.location.href = "/updateArticle.html";
         })
     });
 }
 
 // 返回文章列表
 function backToArticleList() {
-    window.location.href = "http://localhost:8090/articleList.html";
+    window.location.href = "/articleList.html";
 }

@@ -140,5 +140,5 @@ function delFeedback() {
 }
 
 function backToFeedbackList() {
-    window.location.href = "http://localhost:8090/feedbackList.html";
+    window.location.href = "/feedbackList.html";
 }

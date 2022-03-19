@@ -632,7 +632,7 @@
 //             var tr = obj.data;
 //             window.localStorage.setItem("orderId", tr.id);
 //             window.localStorage.setItem("progress", tr.progress);
-//             window.location.href = "http://localhost:8090/updateOrder.html";
+//             window.location.href = "/updateOrder.html";
 //         })
 //     });
 // }
@@ -655,7 +655,7 @@
 //             } else {
 //                 alert("发生未知错误，请重试");
 //             }
-//             window.location.href = "http://localhost:8090/orderList.html";
+//             window.location.href = "/orderList.html";
 //         },
 //         error: function () {
 //             alert("发生未知错误，请重试");

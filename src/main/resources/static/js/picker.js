@@ -216,12 +216,12 @@ function toUpdateLocation() {
         table.on('tool(location)', function (obj) {
             var tr = obj.data;
             window.localStorage.setItem("pickerId", tr.id);
-            window.location.href = "http://localhost:8090/updateLocation.html";
+            window.location.href = "/updateLocation.html";
         })
     });
 }
 
 // 返回报修位置列表
 function backToLocationList() {
-    window.location.href = "http://localhost:8090/locationList.html";
+    window.location.href = "/locationList.html";
 }

@@ -221,7 +221,7 @@ function updateNotice() {
 
 // 返回通知列表
 function backToNoticeList() {
-    window.location.href = "http://localhost:8090/noticeList.html";
+    window.location.href = "/noticeList.html";
 }
 
 // 跳转到修改通知页面
@@ -231,7 +231,7 @@ function toUpdateNotice() {
         table.on('tool(notice)', function (obj) {
             var tr = obj.data;
             window.localStorage.setItem("noticeId", tr.id);
-            window.location.href = "http://localhost:8090/updateNotice.html";
+            window.location.href = "/updateNotice.html";
         })
     });
 }

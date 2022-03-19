@@ -225,8 +225,8 @@ function norUserToUpdateMember() {
         table.on('tool(user)', function (obj) {
             var tr = obj.data;
             window.localStorage.setItem("toOperateUserId", tr.id);
-            window.localStorage.setItem("lastLocation", "http://localhost:8090/userList.html");
-            window.location.href = "http://localhost:8090/updateMember.html";
+            window.localStorage.setItem("lastLocation", "/userList.html");
+            window.location.href = "/updateMember.html";
         })
     });
 }
@@ -238,8 +238,8 @@ function adminToUpdateMember() {
         table.on('tool(admin)', function (obj) {
             var tr = obj.data;
             window.localStorage.setItem("toOperateUserId", tr.id);
-            window.localStorage.setItem("lastLocation", "http://localhost:8090/adminList.html");
-            window.location.href = "http://localhost:8090/updateMember.html";
+            window.localStorage.setItem("lastLocation", "/adminList.html");
+            window.location.href = "/updateMember.html";
         })
     });
 }
@@ -251,8 +251,8 @@ function repairmanToUpdateMember() {
         table.on('tool(repairman)', function (obj) {
             var tr = obj.data;
             window.localStorage.setItem("toOperateUserId", tr.id);
-            window.localStorage.setItem("lastLocation", "http://localhost:8090/repairmanList.html");
-            window.location.href = "http://localhost:8090/updateMember.html";
+            window.localStorage.setItem("lastLocation", "/repairmanList.html");
+            window.location.href = "/updateMember.html";
         })
     });
 }

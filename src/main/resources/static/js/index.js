@@ -597,7 +597,7 @@ function logout() {
         success: function (res) {
             if (res.userMsg !== "") {
                 alert(res.userMsg);
-                window.location.href = "http://localhost:8090/login.html";
+                window.location.href = "/login.html";
             } else {
                 alert("发生未知错误，请重试");
             }
