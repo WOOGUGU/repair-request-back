@@ -46,4 +46,7 @@ public interface OrderService {
 
     // 分配维修员
     Integer sendRepairman(Integer orderId, String solver) throws DataHasNotExistedException;
+
+    // 维修人员确定完成工单
+    Integer finishOrder(Integer id) throws DataHasNotExistedException;
 }

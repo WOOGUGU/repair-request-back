@@ -170,4 +170,17 @@ public class OrderServiceImpl implements OrderService {
             return orderDao.sendRepairman(orderId, solver, timeDistribution);
         }
     }
+
+    // 维修人员确定完成工单
+    @Override
+    public Integer finishOrder(Integer orderId) throws DataHasNotExistedException {
+        // 查找数据库中是否存在此用户
+        if (ObjectUtils.isEmpty(orderDao.selectOrderById(orderId))) {
+            throw new DataHasNotExistedException("Order has not existed");
+        } else {
+            // 如果用户存在就修改工单状态
+            orderDao.checkOrder(orderId, 2);
+            return 0;
+        }
+    }
 }

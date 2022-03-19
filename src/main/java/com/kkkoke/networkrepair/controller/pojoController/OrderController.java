@@ -195,4 +195,13 @@ public class OrderController {
         orderService.sendRepairman(orderId, solver);
         return ApiResult.success("分配成功");
     }
+
+    @ApiOperation(value = "维修人员确定完成工单")
+    @ApiImplicitParam(name = "orderId", value = "工单id", required = true, paramType = "query")
+    @Secured({"ROLE_admin", "ROLE_repairman"})
+    @PostMapping("/finishOrder")
+    public ApiResult finishOrder(@NotNull(message = "orderId can not be null") Integer orderId) throws DataHasNotExistedException {
+        orderService.finishOrder(orderId);
+        return ApiResult.success("处理成功");
+    }
 }
