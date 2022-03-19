@@ -7,9 +7,10 @@ import com.qcloud.cos.model.COSObjectSummary;
 import io.swagger.annotations.*;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotBlank;
-import java.io.InputStream;
+import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 
@@ -95,8 +96,12 @@ public class TencentCOSController {
             @ApiImplicitParam(name = "fileStream", value = "二进制文件流", required = true, paramType = "query")})
     @Secured({"ROLE_admin"})
     @PostMapping("/upLoadFileStream")
-    public ApiResult upLoadFileStream(String bucket, String fileKey, InputStream fileStream) {
-        TencentCOSUtil.upLoadFileStream(bucket, fileKey, fileStream);
+    public ApiResult upLoadFileStream(String bucket, String fileKey, MultipartFile fileStream) {
+        try {
+            TencentCOSUtil.upLoadFileStream(bucket, fileKey, fileStream.getInputStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return ApiResult.success("上传成功");
     }
 }
