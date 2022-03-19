@@ -151,6 +151,12 @@
         where username = #{username};
     </select>
 
+    <select id="selectAllOrderOfRepairman" resultMap="orderMap">
+        select *
+        from `order`
+        where solver = #{username};
+    </select>
+
     <update id="cancelOrder">
         update `order`
         set progress = #{progress}

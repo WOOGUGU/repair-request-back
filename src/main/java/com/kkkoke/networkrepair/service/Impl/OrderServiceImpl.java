@@ -131,6 +131,18 @@ public class OrderServiceImpl implements OrderService {
         }
     }
 
+    // 查找某维修员被分配的所有工单
+    @Override
+    public List<Order> selectAllOrderOfRepairman(String username) throws DataHasNotExistedException {
+        List<Order> orders = orderDao.selectAllOrderOfRepairman(username);
+        // 判断查询结果是否为空
+        if (ObjectUtils.isEmpty(orders)) {
+            throw new DataHasNotExistedException("Order has not existed");
+        } else {
+            return orders;
+        }
+    }
+
     // 取消工单 用户接口
     @Override
     public Order cancelOrder(Integer orderId, String username) throws DataHasNotExistedException, IllegalOperationException {

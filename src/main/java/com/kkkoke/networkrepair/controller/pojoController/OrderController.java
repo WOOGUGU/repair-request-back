@@ -165,6 +165,15 @@ public class OrderController {
         return ApiResult.success(orders, "查找成功");
     }
 
+    @ApiOperation(value = "查找某维修员被分配的所有工单")
+    @ApiImplicitParam(name = "username", value = "用户名", required = true, paramType = "query")
+    @Secured({"ROLE_admin", "ROLE_repairman"})
+    @GetMapping("/selectAllOrderOfRepairman")
+    public ApiResult selectAllOrderOfRepairman(@NotBlank(message = "username can not be null") String username) throws DataHasNotExistedException {
+        List<Order> orders = orderService.selectAllOrderOfRepairman(username);
+        return ApiResult.success(orders, "查找成功");
+    }
+
     @ApiOperation(value = "取消报修工单 用户接口")
     @ApiImplicitParams({@ApiImplicitParam(name = "orderId", value = "工单id", required = true, paramType = "query"),
             @ApiImplicitParam(name = "username", value = "用户名", required = true, paramType = "query")})
