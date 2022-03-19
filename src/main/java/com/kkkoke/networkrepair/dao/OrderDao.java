@@ -43,5 +43,5 @@ public interface OrderDao {
     Integer cancelOrder(Order order);
 
     // 分配维修员
-    Integer sendRepairman(Integer id, String solver);
+    Integer sendRepairman(Integer id, String solver, String timeDistribution);
 }

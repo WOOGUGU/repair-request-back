@@ -166,7 +166,8 @@ public class OrderServiceImpl implements OrderService {
         if (ObjectUtils.isEmpty(orderDao.selectOrderById(orderId))) {
             throw new DataHasNotExistedException("Order has not existed");
         } else {
-            return orderDao.sendRepairman(orderId, solver);
+            String timeDistribution = LocalDateTime.now().toString();
+            return orderDao.sendRepairman(orderId, solver, timeDistribution);
         }
     }
 }
