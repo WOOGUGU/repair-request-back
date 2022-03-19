@@ -3,35 +3,177 @@
 <mapper namespace="com.kkkoke.networkrepair.dao.OrderDao">
     <insert id="addOrder" parameterType="com.kkkoke.networkrepair.pojo.Order">
         insert into `order`(username, sender, tel, type, des, position, time_subscribe, time_start)
-        values(#{username}, #{sender}, #{tel}, #{type}, #{des}, #{position}, #{timeSubscribe}, #{timeStart})
+        values (#{username}, #{sender}, #{tel}, #{type}, #{des}, #{position}, #{timeSubscribe}, #{timeStart})
     </insert>
 
-    <delete id="deleteOrder" parameterType="long">
-        delete from `order`
+    <delete id="deleteOrder" parameterType="int">
+        delete
+        from `order`
         where id = #{id}
     </delete>
 
-    <select id="selectOrderById" parameterType="long" resultMap="orderMap">
-        select * from `order`
+    <select id="selectOrderById" parameterType="int" resultMap="orderMap">
+        select *
+        from `order`
         where id = #{id}
     </select>
 
     <select id="selectAllOrder" resultMap="orderMap">
-        select * from `order`
+        select *
+        from `order`
     </select>
 
     <update id="updateOrder">
         update `order`
-        set sender = #{sender}, tel = #{tel}, type = #{type}, des = #{des}, position = #{position},
-            time_subscribe = #{timeSubscribe}, solver = #{solver}, time_start = #{timeStart},
-            time_distribution = #{timeDistribution}, progress = #{progress}, feedback = #{feedback}, time_end = #{timeEnd}
+        <set>
+            <if test="sender != null and sender != ''">
+                sender = #{sender}
+            </if>
+
+            <if test="tel != null and tel != ''">
+                ,tel = #{tel}
+            </if>
+
+            <if test="type != null and type != ''">
+                ,`type` = #{type}
+            </if>
+
+            <if test="des != null and des != ''">
+                ,des = #{des}
+            </if>
+
+            <if test="position != null and position != ''">
+                ,`position` = #{position}
+            </if>
+
+            <if test="timeSubscribe != null and timeSubscribe != ''">
+                ,time_subscribe = #{timeSubscribe}
+            </if>
+
+            <if test="solver != null and solver != ''">
+                ,solver = #{solver}
+            </if>
+
+            <if test="timeStart != null and timeStart != ''">
+                ,time_start = #{timeStart}
+            </if>
+
+            <if test="timeDistribution != null and timeDistribution != ''">
+                ,time_distribution = #{timeDistribution}
+            </if>
+
+            <if test="progress != null and progress != ''">
+                ,progress = #{progress}
+            </if>
+
+            <if test="feedback != null and feedback != ''">
+                ,feedback = #{feedback}
+            </if>
+
+            <if test="timeEnd != null and timeEnd != ''">
+                ,time_end = #{timeEnd}
+            </if>
+        </set>
         where id = #{id}
     </update>
 
+    <update id="checkOrder">
+        update `order`
+        set progress = #{progress}
+        where id = #{id}
+    </update>
+
+    <select id="selectOrder" resultMap="orderMap">
+        select *
+        from `order`
+        <where>
+            <if test="id != null and id != ''">
+                id = #{id}
+            </if>
+
+            <if test="username != null and username != ''">
+                and username = #{username}
+            </if>
+
+            <if test="sender != null and sender != ''">
+                and sender = #{sender}
+            </if>
+
+            <if test="tel != null and tel != ''">
+                and tel = #{tel}
+            </if>
+
+            <if test="sender != null and sender != ''">
+                and sender = #{sender}
+            </if>
+
+            <if test="type != null and type != ''">
+                and type = #{type}
+            </if>
+
+            <if test="des != null and des != ''">
+                and des = #{des}
+            </if>
+
+            <if test="position != null and position != ''">
+                and position = #{position}
+            </if>
+
+            <if test="timeSubscribe != null and timeSubscribe != ''">
+                and time_subscribe = #{timeSubscribe}
+            </if>
+
+            <if test="progress != null and progress != ''">
+                and progress = #{progress}
+            </if>
+
+            <if test="timeStart != null and timeStart != ''">
+                and time_start = #{timeStart}
+            </if>
+
+            <if test="timeDistribution != null and timeDistribution != ''">
+                and time_distribution = #{timeDistribution}
+            </if>
+
+            <if test="feedback != null and feedback != ''">
+                and feedback = #{feedback}
+            </if>
+
+            <if test="timeDistribution != null and timeDistribution != ''">
+                and time_distribution = #{timeDistribution}
+            </if>
+        </where>
+    </select>
+
     <select id="selectAllOrderOfUser" resultMap="orderMap">
-        select * from `order`
+        select *
+        from `order`
         where username = #{username};
     </select>
+
+    <select id="selectAllOrderOfRepairman" resultMap="orderMap">
+        select *
+        from `order`
+        where solver = #{name};
+    </select>
+
+    <update id="cancelOrder">
+        update `order`
+        set progress = #{progress}
+        where id = #{id}
+    </update>
+
+    <update id="updateOrderFeedback">
+        update `order`
+        set feedback = #{feedback}
+        where id = #{id}
+    </update>
+
+    <update id="sendRepairman">
+        update `order`
+        set solver = #{solver} time_distribution = #{timeDistribution}
+        where id = #{id}
+    </update>
 
     <resultMap id="orderMap" type="com.kkkoke.networkrepair.pojo.Order">
         <id property="id" column="id"/>

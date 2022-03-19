@@ -1,213 +1,139 @@
 package com.kkkoke.networkrepair.controller.pojoController;
 
-import com.alibaba.fastjson.JSONObject;
-import com.auth0.jwt.interfaces.Claim;
+import com.kkkoke.networkrepair.exception.PasswordWrongException;
+import com.kkkoke.networkrepair.exception.UserHasExistedException;
+import com.kkkoke.networkrepair.exception.UserHasNotExistedException;
 import com.kkkoke.networkrepair.pojo.User;
+import com.kkkoke.networkrepair.result.ResultCode;
 import com.kkkoke.networkrepair.service.UserService;
-import com.kkkoke.networkrepair.statusAndDataResult.StatusAndDataFeedback;
-import com.kkkoke.networkrepair.util.token.JwtToken;
-import com.kkkoke.networkrepair.util.token.TokenVerify;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import com.kkkoke.networkrepair.result.ApiResult;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.util.ObjectUtils;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import java.util.List;
+
+/**
+ * @author kkkoke
+ */
+@Api(tags = "用户管理")
+@Slf4j
+@Validated
+@RequestMapping("/v2/user")
 @RestController
 public class UserController {
+
     private final UserService userService;
-    private final TokenVerify tokenVerify;
 
-    public UserController(UserService userService, @Qualifier("adminTokenVerifyImpl") TokenVerify tokenVerify) {
+    @Autowired
+    public UserController(UserService userService) {
         this.userService = userService;
-        this.tokenVerify = tokenVerify;
     }
 
-    // 添加用户
+    @ApiOperation(value = "添加用户")
+    @ApiImplicitParams({@ApiImplicitParam(name = "username", value = "用户名", required = true, paramType = "query"),
+            @ApiImplicitParam(name = "password", value = "密码（已加密）", required = true, paramType = "query"),
+            @ApiImplicitParam(name = "name", value = "用户真实姓名", required = true, paramType = "query")})
+    @Secured({"ROLE_admin"})
     @PostMapping("/addUser")
-    public StatusAndDataFeedback addUser(@RequestBody JSONObject userJson) {
-        // 判断前端传过来的参数是否为空
-        if (Objects.equals(userJson.toJSONString(), "{}")) {
-            return new StatusAndDataFeedback(null, "Incomplete_data");
-        }
-        // 从json字符串中获取要添加的数据
-        String username = (String) userJson.get("username");
-        String password = (String) userJson.get("password");
-        String name = (String) userJson.get("name");
-        String token = (String) userJson.get("token");
-        // 验证token的正确性
-        if (tokenVerify.verify(token)) {
-            // token验证成功，查看数据库中是否已经存在此用户
-            if (Objects.equals(userService.selectUserByUsername(username), null)) {
-                // 创建添加的user对象
-                User user = new User(username, password, name);
-                // 调用service层添加用户
-                userService.addUser(user);
-                // 返回给前端添加的用户数据及处理的状态值
-                return new StatusAndDataFeedback(user, "handle_success");
-            }
-            else {
-                // 数据库中已经存在此数据
-                return new StatusAndDataFeedback(null, "data_exist");
-            }
-        }
-        else {
-            // token验证失败，返回错误码
-            return new StatusAndDataFeedback(null, "wrong_token");
-        }
+    public ApiResult addUser(@NotBlank(message = "username can not be null") String username, @NotBlank(message = "password can not be null") String password,
+                             @NotBlank(message = "name can not be null") String name, @NotNull(message = "roleType can not be null") Integer roleType) throws UserHasExistedException {
+        userService.addUser(username, password, name, roleType);
+        return ApiResult.success("用户添加成功");
     }
 
-    // 通过用户名删除用户
+    @ApiOperation(value = "通过用户名删除用户")
+    @ApiImplicitParam(name = "userId", value = "用户Id", required = true, paramType = "query")
+    @Secured({"ROLE_admin"})
     @PostMapping("/deleteUser")
-    public StatusAndDataFeedback deleteUser(@RequestBody JSONObject idJson) {
-        // 判断前端传过来的参数是否为空
-        if (Objects.equals(idJson.toJSONString(), "{}")) {
-            return new StatusAndDataFeedback(null, "Incomplete_data");
+    public ApiResult deleteUser(Integer userId, String username) throws UserHasNotExistedException {
+        if (ObjectUtils.isEmpty(userId) && ObjectUtils.isEmpty(username)) {
+            return ApiResult.fail(ResultCode.MISSING_PARAM, "用户Id和用户名不能同时为空", ApiResult.MISSING_PARAM);
         }
-        // 从json字符串中获取要添加的数据
-        Long id = Long.parseLong((String) idJson.get("id"));
-        String token = (String) idJson.get("token");
-        // 验证token的正确性
-        if (tokenVerify.verify(token)) {
-            // token验证成功，查询数据库，查看要删除的用户是否存在
-            if (Objects.equals(userService.selectUserById(id), null)) {
-                return new StatusAndDataFeedback(null, "data_not_exist");
-            }
-            else {
-                // 调用service层删除用户
-                userService.deleteUser(id);
-            }
-
-            return new StatusAndDataFeedback(null, "handle_success");
-        }
-        else {
-            // token验证失败，返回错误码
-            return new StatusAndDataFeedback(null, "wrong_token");
-        }
+        userService.deleteUser(userId, username);
+        return ApiResult.success("用户删除成功");
     }
 
-    // 通过用户名查找用户
-    @PostMapping("/selectUserByUsername")
-    public StatusAndDataFeedback selectUserByUsername(@RequestBody JSONObject usernameJson) {
-        // 判断前端传过来的参数是否为空
-        if (Objects.equals(usernameJson.toJSONString(), "{}")) {
-            return new StatusAndDataFeedback(null, "Incomplete_data");
-        }
-        // 从json字符串中获取要添加的数据
-        String username = (String) usernameJson.get("username");
-        String token = (String) usernameJson.get("token");
-        // 验证token的正确性
-        if (tokenVerify.verify(token)) {
-            // token验证成功，根据用户名查找用户
-            User user = userService.selectUserByUsername(username);
-            // 判断查询结果是否为空
-            if (Objects.equals(userService.selectUserByUsername(username), null)) {
-                return new StatusAndDataFeedback(null, "data_not_exist");
-            }
-            else {
-                return new StatusAndDataFeedback(user, "handle_success");
-            }
-        }
-        else {
-            // token验证失败，返回错误码
-            return new StatusAndDataFeedback(null, "wrong_token");
-        }
+    @ApiOperation(value = "通过用户名查找用户")
+    @ApiImplicitParam(name = "username", value = "用户名", required = true, paramType = "query")
+    @Secured({"ROLE_admin", "ROLE_repairman"})
+    @GetMapping("/selectUserByUsername")
+    public ApiResult selectUserByUsername(@NotBlank(message = "username can not be null") String username) throws UserHasNotExistedException {
+        User user = userService.selectUserByUsername(username);
+        return ApiResult.success(user, "查找成功");
     }
 
-    // 通过id查找用户
-    @PostMapping("/selectUserById")
-    public StatusAndDataFeedback selectUserById(@RequestBody JSONObject idJson) {
-        // 判断前端传过来的参数是否为空
-        if (Objects.equals(idJson.toJSONString(), "{}")) {
-            return new StatusAndDataFeedback(null, "Incomplete_data");
-        }
-        // 从json字符串中获取要添加的数据
-        Long id = Long.parseLong((String) idJson.get("id"));
-        String token = (String) idJson.get("token");
-        // 验证token的正确性
-        if (tokenVerify.verify(token)) {
-            // token验证成功，根据用户传入的id查询对应的用户
-            User user = userService.selectUserById(id);
-            // 判断查询结果是否为空
-            if (Objects.equals(userService.selectUserById(id).getId(), id)) {
-                return new StatusAndDataFeedback(user, "handle_success");
-            }
-            else {
-                return new StatusAndDataFeedback(null, "data_not_exist");
-            }
-        }
-        else {
-            // token验证失败，返回错误码
-            return new StatusAndDataFeedback(null, "wrong_token");
-        }
+    @ApiOperation(value = "通过id查找用户")
+    @ApiImplicitParam(name = "userId", value = "用户Id", required = true, paramType = "query")
+    @Secured({"ROLE_admin", "ROLE_repairman"})
+    @GetMapping("/selectUserById")
+    public ApiResult selectUserById(@NotNull(message = "userId can not be null") Integer userId) throws UserHasNotExistedException {
+        User user = userService.selectUserById(userId);
+        return ApiResult.success(user, "查找成功");
     }
 
-    // 查找所有用户
-    @PostMapping("/selectAllUser")
-    public StatusAndDataFeedback selectAllUser(@RequestBody JSONObject tokenJson) {
-        // 判断前端传过来的参数是否为空
-        if (Objects.equals(tokenJson.toJSONString(), "{}")) {
-            return new StatusAndDataFeedback(null, "Incomplete_data");
-        }
-        // 获取tokenJson中的数据
-        String token = (String) tokenJson.get("token"); // 待验证的token
-        // 验证token的正确性
-        if (tokenVerify.verify(token)) {
-            // token验证成功，使用username查询该用户所发布的所有工单
-            try {
-                Map<String, Claim> jwt = JwtToken.verifyToken(token);
-                String username = jwt.get("username").asString();
-                List<User> users = userService.selectAllUser();
-                // 判断查询结果是否为空
-                if (users.isEmpty()) {
-                    return new StatusAndDataFeedback(null, "data_not_exist");
-                }
-                else {
-                    return new StatusAndDataFeedback(users, "handle_success");
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                return new StatusAndDataFeedback(null, "exception_happen");
-            }
-        }
-        else {
-            // token验证失败，返回错误码
-            return new StatusAndDataFeedback(null, "wrong_token");
-        }
+    @ApiOperation(value = "搜索用户 后台搜索接口")
+    @ApiImplicitParams({@ApiImplicitParam(name = "username", value = "用户名", required = false, paramType = "query"),
+            @ApiImplicitParam(name = "userId", value = "用户Id", required = false, paramType = "query"),
+            @ApiImplicitParam(name = "name", value = "用户真实姓名", required = false, paramType = "query")})
+    @Secured({"ROLE_admin", "ROLE_repairman"})
+    @GetMapping("/selectUser")
+    public ApiResult selectUser(Integer userId, String username, String name) throws UserHasNotExistedException {
+        List<User> users = userService.selectUser(userId, username, name);
+        return ApiResult.success(users, "查找成功");
     }
 
-    // 修改用户信息
+    @ApiOperation(value = "查找所有用户")
+    @Secured({"ROLE_admin", "ROLE_repairman"})
+    @GetMapping("/selectAllUser")
+    public ApiResult selectAllUser() throws UserHasNotExistedException {
+        List<User> users = userService.selectAllUser();
+        return ApiResult.success(users, "查找成功");
+    }
+
+    @ApiOperation(value = "查找所有管理员")
+    @Secured("ROLE_admin")
+    @GetMapping("/selectAllAdmin")
+    public ApiResult selectAllAdmin() throws UserHasNotExistedException {
+        List<User> admins = userService.selectAllAdmin();
+        return ApiResult.success(admins, "查找成功");
+    }
+
+    @ApiOperation(value = "查找所有维修员")
+    @Secured("ROLE_admin")
+    @GetMapping("/selectAllRepairman")
+    public ApiResult selectAllRepairman() throws UserHasNotExistedException {
+        List<User> admins = userService.selectAllRepairman();
+        return ApiResult.success(admins, "查找成功");
+    }
+
+    @ApiOperation(value = "查找所有普通用户")
+    @Secured("ROLE_admin")
+    @GetMapping("/selectAllNorUser")
+    public ApiResult selectAllNorUser() throws UserHasNotExistedException {
+        List<User> admins = userService.selectAllNorUser();
+        return ApiResult.success(admins, "查找成功");
+    }
+
+    @ApiOperation(value = "修改用户信息")
+    @ApiImplicitParams({@ApiImplicitParam(name = "userId", value = "用户Id", required = true, paramType = "query"),
+            @ApiImplicitParam(name = "username", value = "用户名", required = false, paramType = "query"),
+            @ApiImplicitParam(name = "password", value = "密码（已加密）", required = false, paramType = "query"),
+            @ApiImplicitParam(name = "name", value = "用户真实姓名", required = false, paramType = "query")})
+    @Secured({"ROLE_admin"})
     @PostMapping("/updateUser")
-    public StatusAndDataFeedback updateUser(@RequestBody JSONObject userJson) {
-        // 判断前端传过来的参数是否为空
-        if (Objects.equals(userJson.toJSONString(), "{}")) {
-            return new StatusAndDataFeedback(null, "Incomplete_data");
-        }
-        // 从json字符串中获取要添加的数据
-        Long id = Long.parseLong((String) userJson.get("id"));
-        String username = (String) userJson.get("username");
-        String password = (String) userJson.get("password");
-        String name = (String) userJson.get("name");
-        String token = (String) userJson.get("token");
-        // 验证token的正确性
-        if (tokenVerify.verify(token)) {
-            // token验证成功，创建要修改的user对象
-            User user = new User(id, username, password, name);
-            // 查找数据库中是否存在此用户
-            if (Objects.equals(userService.selectUserById(user.getId()), null)) {
-                return new StatusAndDataFeedback(user, "data_not_exist");
-            }
-            else {
-                // 如果管理员存在就更新数据
-                userService.updateUser(user);
-                return new StatusAndDataFeedback(user, "handle_success");
-            }
-        }
-        else {
-            // token验证失败，返回错误码
-            return new StatusAndDataFeedback(null, "wrong_token");
-        }
+    public ApiResult updateUser(@NotNull(message = "userId can not be null") Integer userId, String username, String password,
+                                String name, Integer roleType) throws UserHasNotExistedException, PasswordWrongException {
+        userService.updateUser(userId, username, password, name, roleType);
+        return ApiResult.success("用户修改成功");
     }
 }

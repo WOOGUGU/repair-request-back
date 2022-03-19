@@ -22,6 +22,9 @@ public interface PickerLocationDao {
     // 根据position查找报修地点
     PickerLocation selectPickerLocationByPosition(String position);
 
+    // 查找报修地点 后台接口
+    List<PickerLocation> selectLocationForBackend(Integer id, String area, String position);
+
     // 查找所有报修地点
     List<PickerLocation> selectAllPickerLocation();
 

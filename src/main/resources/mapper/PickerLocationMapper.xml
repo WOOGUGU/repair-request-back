@@ -3,36 +3,60 @@
 <mapper namespace="com.kkkoke.networkrepair.dao.PickerLocationDao">
     <insert id="addPickerLocation" parameterType="com.kkkoke.networkrepair.pojo.PickerLocation">
         insert into location(area, position)
-        values(#{area}, #{position})
+        values (#{area}, #{position})
     </insert>
 
     <delete id="deletePickerLocation" parameterType="int">
-        delete from location
+        delete
+        from location
         where id = #{id}
     </delete>
 
     <select id="selectPickerLocation" parameterType="int" resultMap="pickerLocationMap">
-        select * from location
+        select *
+        from location
         where id = #{id}
     </select>
 
     <select id="selectPickerLocationByArea" resultMap="pickerLocationMap">
-        select * from location
+        select *
+        from location
         where area = #{area}
     </select>
 
     <select id="selectPickerLocationByPosition" resultMap="pickerLocationMap">
-        select * from location
+        select *
+        from location
         where position = #{position}
     </select>
 
+    <select id="selectLocationForBackend" resultMap="pickerLocationMap">
+        select *
+        from location
+        <where>
+            <if test="id != null and id != ''">
+                id = #{id}
+            </if>
+
+            <if test="area != null and area != ''">
+                and area = #{area}
+            </if>
+
+            <if test="position != null and position != ''">
+                and position = #{position}
+            </if>
+        </where>
+    </select>
+
     <select id="selectAllPickerLocation" resultMap="pickerLocationMap">
-        select * from location
+        select *
+        from location
     </select>
 
     <update id="updatePickerLocation">
         update location
-        set area = #{area}, position = #{position}
+        set area     = #{area},
+            position = #{position}
         where id = #{id}
     </update>
 
