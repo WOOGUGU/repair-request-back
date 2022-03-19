@@ -1,10 +1,12 @@
 package com.kkkoke.networkrepair.controller.tencentCOSController;
 
 import com.kkkoke.networkrepair.result.ApiResult;
+import com.kkkoke.networkrepair.service.SlideService;
 import com.kkkoke.networkrepair.util.TencentCOSUtil;
 import com.qcloud.cos.model.Bucket;
 import com.qcloud.cos.model.COSObjectSummary;
 import io.swagger.annotations.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,6 +20,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/v2/cos")
 public class TencentCOSController {
+
+    @Autowired
+    private SlideService slideService;
 
     @ApiOperation(value = "创建存储桶")
     @ApiImplicitParam(name = "bucketName", value = "桶名 注意不能有大写的字母", required = true, paramType = "query")
@@ -93,12 +98,15 @@ public class TencentCOSController {
     @ApiOperation(value = "上传流类型")
     @ApiImplicitParams({@ApiImplicitParam(name = "bucket", value = "存储桶名称", required = true, paramType = "query"),
             @ApiImplicitParam(name = "fileKey", value = "文件key", required = true, paramType = "query"),
-            @ApiImplicitParam(name = "fileStream", value = "二进制文件流", required = true, paramType = "query")})
+            @ApiImplicitParam(name = "fileStream", value = "二进制文件流", required = true, paramType = "query"),
+            @ApiImplicitParam(name = "author", value = "文件上传者", required = true, paramType = "query")})
     @Secured({"ROLE_admin"})
     @PostMapping("/upLoadFileStream")
-    public ApiResult upLoadFileStream(String bucket, String fileKey, MultipartFile fileStream) {
+    public ApiResult upLoadFileStream(String bucket, String fileKey, MultipartFile fileStream, String author) {
         try {
             TencentCOSUtil.upLoadFileStream(bucket, fileKey, fileStream.getInputStream());
+            URL url = TencentCOSUtil.getObjectUrl(bucket, fileKey);
+            slideService.uploadSlide(url.toString(), author);
         } catch (IOException e) {
             e.printStackTrace();
         }

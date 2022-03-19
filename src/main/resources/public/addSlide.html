@@ -19,13 +19,13 @@
 <div class="layui-fluid">
     <div class="layui-row">
         <form class="layui-form">
-            <div class="layui-form-item">
-                <label for="author" class="layui-form-label">
-                    <span class="x-red">*</span>上传者</label>
-                <div class="layui-input-inline">
-                    <input type="text" id="author" required="" autocomplete="off" class="layui-input">
-                </div>
-            </div>
+            <!--            <div class="layui-form-item">-->
+            <!--                <label for="author" class="layui-form-label">-->
+            <!--                    <span class="x-red">*</span>上传者</label>-->
+            <!--                <div class="layui-input-inline">-->
+            <!--                    <input type="text" id="author" required="" autocomplete="off" class="layui-input">-->
+            <!--                </div>-->
+            <!--            </div>-->
             <div class="layui-form-item">
                 <!--                <button type="button" class="layui-btn" id="slide" style="margin-left:55px;" onclick="uploadFileStream()">-->
                 <!--                    <i class="layui-icon">&#xe67c;</i>上传图片-->
@@ -78,6 +78,7 @@
         var formData = new FormData();
         formData.append("fileStream", $("#file")[0].files[0]);
         formData.append('bucket', 'slide');
+        formData.append('author', localStorage.getItem('name'));
         //获取上传文件的扩展名
         var filevalue = $("#file")[0].files[0].name;
         var index = filevalue.lastIndexOf('.');
