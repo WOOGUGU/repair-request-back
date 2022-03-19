@@ -171,7 +171,8 @@
 
     <update id="sendRepairman">
         update `order`
-        set solver = #{solver} time_distribution = #{timeDistribution}
+        set solver            = #{solver},
+            time_distribution = #{timeDistribution}
         where id = #{id}
     </update>
 
