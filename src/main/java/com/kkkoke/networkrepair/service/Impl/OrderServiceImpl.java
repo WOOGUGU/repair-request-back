@@ -133,8 +133,8 @@ public class OrderServiceImpl implements OrderService {
 
     // 查找某维修员被分配的所有工单
     @Override
-    public List<Order> selectAllOrderOfRepairman(String username) throws DataHasNotExistedException {
-        List<Order> orders = orderDao.selectAllOrderOfRepairman(username);
+    public List<Order> selectAllOrderOfRepairman(String name) throws DataHasNotExistedException {
+        List<Order> orders = orderDao.selectAllOrderOfRepairman(name);
         // 判断查询结果是否为空
         if (ObjectUtils.isEmpty(orders)) {
             throw new DataHasNotExistedException("Order has not existed");

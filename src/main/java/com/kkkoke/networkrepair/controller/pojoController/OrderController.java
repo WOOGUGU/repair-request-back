@@ -169,8 +169,8 @@ public class OrderController {
     @ApiImplicitParam(name = "username", value = "用户名", required = true, paramType = "query")
     @Secured({"ROLE_admin", "ROLE_repairman"})
     @GetMapping("/selectAllOrderOfRepairman")
-    public ApiResult selectAllOrderOfRepairman(@NotBlank(message = "username can not be null") String username) throws DataHasNotExistedException {
-        List<Order> orders = orderService.selectAllOrderOfRepairman(username);
+    public ApiResult selectAllOrderOfRepairman(@NotBlank(message = "username can not be null") String name) throws DataHasNotExistedException {
+        List<Order> orders = orderService.selectAllOrderOfRepairman(name);
         return ApiResult.success(orders, "查找成功");
     }
 
