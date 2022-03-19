@@ -154,7 +154,7 @@
     <select id="selectAllOrderOfRepairman" resultMap="orderMap">
         select *
         from `order`
-        where solver = #{username};
+        where solver = #{name};
     </select>
 
     <update id="cancelOrder">
