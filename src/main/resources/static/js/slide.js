@@ -10,9 +10,6 @@ layui.use(['table', 'form', 'layer'], function () {
         , height: 600
         , url: '/v2/slide/selectAllSlide'
         , method: 'get'
-        , headers: {
-            "Cookie": document.cookie
-        }
         , where: {}
         , cols: [
             [ //表头
@@ -57,9 +54,6 @@ layui.use(['table', 'form', 'layer'], function () {
         table.reload('tableSix', {
             method: 'get'
             , url: '/v2/slide/selectSlide'
-            , headers: {
-                "Cookie": document.cookie
-            }
             , where: {
                 'slideId': $('#slideId').val(),
                 'author': $('#author').val(),
@@ -108,9 +102,6 @@ function delSlide() {
                     $.ajax({
                         url: '/v2/slide/deleteSlide',
                         type: 'post',
-                        headers: {
-                            "Cookie": document.cookie
-                        },
                         data: {
                             "slideId": tr.id
                         },

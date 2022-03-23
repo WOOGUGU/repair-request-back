@@ -10,9 +10,6 @@ layui.use(['table', 'form', 'layer'], function () {
         , height: 600
         , url: '/v2/feedback/selectFeedback'
         , method: 'get'
-        , headers: {
-            "Cookie": document.cookie
-        }
         , where: {}
         , cols: [
             [ //表头
@@ -62,9 +59,6 @@ layui.use(['table', 'form', 'layer'], function () {
         table.reload('tableFeedback', {
             method: 'get'
             , url: '/v2/feedback/selectFeedback'
-            , headers: {
-                "Cookie": document.cookie
-            }
             , where: {
                 'feedbackId': $('#feedbackId').val(),
                 'tel': $('#tel').val()
@@ -113,9 +107,6 @@ function delFeedback() {
                     $.ajax({
                         url: '/v2/feedback/deleteFeedback',
                         type: 'post',
-                        headers: {
-                            "Cookie": document.cookie
-                        },
                         data: {
                             "feedbackId": tr.id
                         },

@@ -19,7 +19,7 @@
 <div class="layui-fluid">
     <div class="layui-row">
         <div class="layui-btn-container">
-            <button class="layui-btn layui-btn-primary layui-btn-sm" onclick="backToProcessedOrderList()">返回</button>
+            <button class="layui-btn layui-btn-primary layui-btn-sm" onclick="backToOrderList()">返回</button>
         </div>
         <form class="layui-form">
             <div class="layui-form-item">
@@ -88,9 +88,6 @@
         $.ajax({
             url: '/v2/user/selectAllRepairman',
             type: 'get',
-            headers: {
-                "Cookie": document.cookie
-            },
             data: {},
             success: function (res) {
                 //动态渲染下拉框

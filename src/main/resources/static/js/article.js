@@ -10,9 +10,6 @@ layui.use(['table', 'form', 'layer'], function () {
         , height: 600
         , url: '/v2/article/selectAllArticle'
         , method: 'get'
-        , headers: {
-            "Cookie": document.cookie
-        }
         , where: {}
         , cols: [
             [ //表头
@@ -63,9 +60,6 @@ layui.use(['table', 'form', 'layer'], function () {
         table.reload('tableFive', {
             method: 'get'
             , url: '/v2/article/selectArticle'
-            , headers: {
-                "Cookie": document.cookie
-            }
             , where: {
                 'articleId': $('#articleId').val(),
                 'author': $('#author').val(),
@@ -115,9 +109,6 @@ function addArticle() {
         $.ajax({
             url: '/v2/article/addArticle',
             type: 'post',
-            headers: {
-                "Cookie": document.cookie
-            },
             data: {
                 "contentPath": contentPath,
                 "author": author,
@@ -151,9 +142,6 @@ function delArticle() {
                     $.ajax({
                         url: '/v2/article/deleteArticle',
                         type: 'post',
-                        headers: {
-                            "Cookie": document.cookie
-                        },
                         data: {
                             "articleId": tr.id
                         },
@@ -189,9 +177,6 @@ function updateArticle() {
         $.ajax({
             url: '/v2/article/updateArticle',
             type: 'post',
-            headers: {
-                "Cookie": document.cookie
-            },
             data: {
                 "articleId": articleId,
                 "contentPath": contentPath,

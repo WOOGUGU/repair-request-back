@@ -10,9 +10,6 @@ layui.use(['table', 'form', 'layer'], function () {
         , height: 600
         , url: '/v2/user/selectAllUser'
         , method: 'get'
-        , headers: {
-            "Cookie": document.cookie
-        }
         , where: {}
         , cols: [
             [ //表头
@@ -66,9 +63,6 @@ layui.use(['table', 'form', 'layer'], function () {
         table.reload('tableThree', {
             method: 'get'
             , url: '/v2/user/selectUser'
-            , headers: {
-                "Cookie": document.cookie
-            }
             , where: {
                 'role': $("#role").val(),
                 'userId': $('#userId').val(),
@@ -120,9 +114,6 @@ function addMember() {
         $.ajax({
             url: '/v2/user/addUser',
             type: 'post',
-            headers: {
-                "Cookie": document.cookie
-            },
             data: {
                 "username": uname,
                 "password": passwd,
@@ -155,9 +146,6 @@ function updateMember() {
     $.ajax({
         url: '/v2/user/updateUser',
         type: 'post',
-        headers: {
-            "Cookie": document.cookie
-        },
         data: {
             "userId": userId,
             "username": uname,
@@ -192,9 +180,6 @@ function delMember() {
                     $.ajax({
                         url: '/v2/user/deleteUser',
                         type: 'post',
-                        headers: {
-                            "Cookie": document.cookie
-                        },
                         data: {
                             "userId": tr.id
                         },
@@ -274,9 +259,6 @@ layui.use(['table', 'form', 'layer'], function () {
         , height: 600
         , url: '/v2/user/selectAllAdmin'
         , method: 'get'
-        , headers: {
-            "Cookie": document.cookie
-        }
         , where: {}
         , cols: [
             [ //表头
@@ -330,9 +312,6 @@ layui.use(['table', 'form', 'layer'], function () {
         table.reload('tableOne', {
             method: 'get'
             , url: '/v2/user/selectUser'
-            , headers: {
-                "Cookie": document.cookie
-            }
             , where: {
                 'userId': $('#userId').val(),
                 'username': $('#username').val(),
@@ -380,9 +359,6 @@ layui.use(['table', 'form', 'layer'], function () {
         , height: 600
         , url: '/v2/user/selectAllRepairman'
         , method: 'get'
-        , headers: {
-            "Cookie": document.cookie
-        }
         , where: {}
         , cols: [
             [ //表头
@@ -436,9 +412,6 @@ layui.use(['table', 'form', 'layer'], function () {
         table.reload('tableTwo', {
             method: 'get'
             , url: '/v2/user/selectUser'
-            , headers: {
-                "Cookie": document.cookie
-            }
             , where: {
                 'userId': $('#userId').val(),
                 'username': $('#username').val(),

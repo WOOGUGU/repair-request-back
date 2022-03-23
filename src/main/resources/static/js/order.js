@@ -10,9 +10,6 @@ layui.use(['table', 'form', 'layer'], function () {
         , height: 600
         , url: '/v2/order/selectAllOrder'
         , method: 'get'
-        , headers: {
-            "Cookie": document.cookie
-        }
         , where: {}
         , cols: [
             [ //表头
@@ -46,7 +43,7 @@ layui.use(['table', 'form', 'layer'], function () {
                 , {field: 'timeDistribution', title: '分配时间', width: 250}
                 , {field: 'timeEnd', title: '解决时间', width: 250}
                 , {field: 'feedback', title: '用户反馈', width: 250}
-                , {title: '操作', align: 'center', width: 100, toolbar: '#order'}
+                , {title: '操作', align: 'center', width: 180, toolbar: '#order'}
             ]
         ]
         , id: 'tableFour'
@@ -83,9 +80,6 @@ layui.use(['table', 'form', 'layer'], function () {
         table.reload('tableFour', {
             method: 'get'
             , url: '/v2/order/selectOrder'
-            , headers: {
-                "Cookie": document.cookie
-            }
             , where: {
                 'orderId': $('#orderId').val(),
                 'username': $('#username').val(),
@@ -144,9 +138,6 @@ layui.use(['table', 'form', 'layer'], function () {
         , height: 600
         , url: '/v2/order/selectOrder'
         , method: 'get'
-        , headers: {
-            "Cookie": document.cookie
-        }
         , where: {
             'progress': 1
         }
@@ -219,9 +210,6 @@ layui.use(['table', 'form', 'layer'], function () {
         table.reload('table', {
             method: 'get'
             , url: '/v2/order/selectOrder'
-            , headers: {
-                "Cookie": document.cookie
-            }
             , where: {
                 'orderId': $('#orderId').val(),
                 'username': $('#username').val(),
@@ -283,9 +271,6 @@ function addOrder() {
         $.ajax({
             url: '/v2/user/addUser',
             type: 'post',
-            headers: {
-                "Cookie": document.cookie
-            },
             data: {
                 "username": uname,
                 "password": passwd,
@@ -322,9 +307,6 @@ function updateOrder() {
         $.ajax({
             url: '/v2/order/updateOrder',
             type: 'post',
-            headers: {
-                "Cookie": document.cookie
-            },
             data: {
                 "userId": userId,
                 "username": uname,
@@ -354,7 +336,7 @@ function toCheckOrder() {
             var tr = obj.data;
             window.localStorage.setItem("orderId", tr.id);
             window.localStorage.setItem("progress", tr.progress);
-            window.location.href = "/updateOrder.html";
+            window.location.href = "/sendRepairman.html";
         })
     });
 }
@@ -387,38 +369,9 @@ function sendRepairman() {
     $.ajax({
         url: '/v2/order/sendRepairman',
         type: 'post',
-        headers: {
-            "Cookie": document.cookie
-        },
         data: {
             "orderId": window.localStorage.getItem("orderId"),
             "solver": $('#solver').val()
-        },
-        success: function (res) {
-            if (res.userMsg !== "") {
-                alert(res.userMsg);
-            } else {
-                alert("发生未知错误，请重试");
-            }
-            window.location.href = "/delegateOrder.html";
-        },
-        error: function () {
-            alert("发生未知错误，请重试");
-        }
-    });
-}
-
-// 审核工单
-function checkOrder() {
-    $.ajax({
-        url: '/v2/order/checkOrder',
-        type: 'post',
-        headers: {
-            "Cookie": document.cookie
-        },
-        data: {
-            "orderId": window.localStorage.getItem("orderId"),
-            "progress": $('#progress').val()
         },
         success: function (res) {
             if (res.userMsg !== "") {
@@ -434,6 +387,39 @@ function checkOrder() {
     });
 }
 
+// 审核工单不通过
+function rejectOrder() {
+    layui.use('layer', function () {
+        var $ = layui.jquery;
+        // 删除操作
+        layui.use(['table'], function () {
+            var table = layui.table;
+            table.on('tool(order)', function (obj) {
+                var tr = obj.data;
+                $.ajax({
+                    url: '/v2/order/checkOrder',
+                    type: 'post',
+                    data: {
+                        "orderId": tr.id,
+                        "progress": 4
+                    },
+                    success: function (res) {
+                        if (res.userMsg !== "") {
+                            alert(res.userMsg);
+                        } else {
+                            alert("发生未知错误，请重试");
+                        }
+                        window.location.href = "/orderList.html";
+                    },
+                    error: function () {
+                        alert("发生未知错误，请重试");
+                    }
+                });
+            })
+        });
+    })
+}
+
 // 删除工单
 function delOrder() {
     if ($("#orderId").val() === "") {
@@ -443,9 +429,6 @@ function delOrder() {
     $.ajax({
         url: '/v2/order/deleteOrder',
         type: 'post',
-        headers: {
-            "Cookie": document.cookie
-        },
         data: {
             "orderId": $("#orderId").val()
         },
