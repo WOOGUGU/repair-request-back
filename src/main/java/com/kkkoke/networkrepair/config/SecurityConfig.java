@@ -106,7 +106,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/v2/api-docs", "/swagger-resources/configuration/ui",
                         "/swagger-resources", "/swagger-resources/configuration/security",
                         "/swagger-ui.html", "/webjars/**", "/login.html", "/css/**", "/font/**",
-                        "/fonts/**", "/images/**", "/js/**", "/lib/**", "/error/**", "/v2/slide/selectAllSlide", "/v2/article/selectAllArticle").permitAll() // 开放资源
+                        "/fonts/**", "/images/**", "/js/**", "/lib/**", "/error/**", "/v2/slide/selectAllSlide",
+                        "/v2/article/selectAllArticle", "v2/notice/selectAllNotice").permitAll() // 开放资源
                 .anyRequest().authenticated()
             .and()
             .exceptionHandling()
