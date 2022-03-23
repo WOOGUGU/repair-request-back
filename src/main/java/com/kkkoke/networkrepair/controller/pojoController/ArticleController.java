@@ -71,7 +71,7 @@ public class ArticleController {
     }
 
     @ApiOperation(value = "查看所有文章")
-    @Secured({"ROLE_admin", "ROLE_user", "ROLE_repairman"})
+//    @Secured({"ROLE_admin", "ROLE_user", "ROLE_repairman"})
     @GetMapping("/selectAllArticle")
     public ApiResult selectAllArticle() throws DataHasNotExistedException {
         List<Article> articles = articleService.selectAllArticle();
