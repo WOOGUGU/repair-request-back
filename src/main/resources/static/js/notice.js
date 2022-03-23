@@ -101,7 +101,7 @@ function addNotice() {
     var content = $("#content").val();
     var author = $("#author").val();
     if (content === "" || content === "") {
-        alert("通知网址不能为空");
+        alert("通知不能为空");
         return;
     } else if (author === "") {
         alert("发布者不能为空");
@@ -175,7 +175,7 @@ function updateNotice() {
         alert("通知Id不能为空");
         return;
     } else if (content === "") {
-        alert("通知网址不能为空");
+        alert("通知不能为空");
         return;
     } else if (author === "") {
         alert("发布者不能为空");
