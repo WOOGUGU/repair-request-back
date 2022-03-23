@@ -34,7 +34,7 @@ import java.util.Map;
 public class InnerController {
 
     @ApiOperation(value = "获取当前时间")
-    @Secured({"ROLE_admin", "ROLE_uer", "ROLE_repairman"})
+    @Secured({"ROLE_admin", "ROLE_user", "ROLE_repairman"})
     @GetMapping("/getTime")
     public ApiResult getTime() {
         String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
@@ -47,7 +47,7 @@ public class InnerController {
     }
 
     @ApiOperation(value = "JSESSIONID是否失效")
-    @Secured({"ROLE_admin", "ROLE_uer", "ROLE_repairman"})
+    @Secured({"ROLE_admin", "ROLE_user", "ROLE_repairman"})
     @GetMapping("/isExpired")
     public ApiResult isExpired(HttpServletRequest httpServletRequest) {
         Principal userPrincipal = httpServletRequest.getUserPrincipal();
