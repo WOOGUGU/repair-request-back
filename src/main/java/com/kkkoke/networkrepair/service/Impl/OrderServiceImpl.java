@@ -162,6 +162,7 @@ public class OrderServiceImpl implements OrderService {
             throw new DataHasNotExistedException("Order has not existed");
         } else {
             String timeDistribution = LocalDateTime.now().toString();
+            orderDao.checkOrder(orderId, 1);
             return orderDao.sendRepairman(orderId, solver, timeDistribution);
         }
     }
