@@ -176,6 +176,7 @@ public class OrderServiceImpl implements OrderService {
         } else {
             // 如果用户存在就修改工单状态
             orderDao.checkOrder(orderId, 2);
+            orderDao.updateTimeEnd(orderId, LocalDateTime.now().toString());
             return 0;
         }
     }
