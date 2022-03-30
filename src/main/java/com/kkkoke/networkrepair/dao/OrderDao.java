@@ -45,6 +45,6 @@ public interface OrderDao {
     // 分配维修员
     Integer sendRepairman(Integer id, String solver, String timeDistribution);
 
-    // 维修人员确定完成工单
-    Integer finishOrder(Integer id, Integer progress);
+    // 修改工单解决时间
+    Integer updateTimeEnd(Integer id, String timeEnd);
 }
