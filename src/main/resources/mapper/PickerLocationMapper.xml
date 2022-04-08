@@ -39,11 +39,11 @@
             </if>
 
             <if test="area != null and area != ''">
-                and area = #{area}
+                and area like concat('%', #{area}, '%')
             </if>
 
             <if test="position != null and position != ''">
-                and position = #{position}
+                and position like concat('%', #{position}, '%')
             </if>
         </where>
     </select>

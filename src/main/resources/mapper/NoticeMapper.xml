@@ -38,7 +38,7 @@
             </if>
 
             <if test="author != null and author != ''">
-                and author = #{author}
+                and author like concat('%', #{author}, '%')
             </if>
 
             <if test="displayStatus != null and displayStatus != ''">

@@ -92,38 +92,38 @@
             </if>
 
             <if test="username != null and username != ''">
-                and username = #{username}
+                and username like concat('%', #{username}, '%')
             </if>
 
             <if test="sender != null and sender != ''">
-                and sender = #{sender}
+                and sender like concat('%', #{sender}, '%')
             </if>
 
             <if test="tel != null and tel != ''">
-                and tel = #{tel}
+                and tel like concat('%', #{tel}, '%')
             </if>
 
             <if test="sender != null and sender != ''">
-                and sender = #{sender}
+                and sender like concat('%', #{sender}, '%')
             </if>
 
             <if test="type != null and type != ''">
-                and type = #{type}
+                and type like concat('%', #{type}, '%')
             </if>
 
             <if test="des != null and des != ''">
-                and des = #{des}
+                and des like concat('%', #{des}, '%')
             </if>
 
             <if test="position != null and position != ''">
-                and position = #{position}
+                and position like concat('%', #{position}, '%')
             </if>
 
             <if test="timeSubscribe != null and timeSubscribe != ''">
                 and time_subscribe = #{timeSubscribe}
             </if>
 
-            <if test="progress != null and progress != ''">
+            <if test="progress != null">
                 and progress = #{progress}
             </if>
 
@@ -136,7 +136,7 @@
             </if>
 
             <if test="feedback != null and feedback != ''">
-                and feedback = #{feedback}
+                and feedback like concat('%', #{feedback}, '%')
             </if>
 
             <if test="timeDistribution != null and timeDistribution != ''">

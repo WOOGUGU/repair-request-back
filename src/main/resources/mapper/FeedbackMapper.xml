@@ -37,7 +37,7 @@
             </if>
 
             <if test="tel != null and tel != ''">
-                and f.tel = #{tel}
+                and f.tel like concat('%', #{tel}, '%')
             </if>
         </where>
     </select>
