@@ -84,11 +84,12 @@ public class UserController {
     @ApiOperation(value = "搜索用户 后台搜索接口")
     @ApiImplicitParams({@ApiImplicitParam(name = "username", value = "用户名", required = false, paramType = "query"),
             @ApiImplicitParam(name = "userId", value = "用户Id", required = false, paramType = "query"),
-            @ApiImplicitParam(name = "name", value = "用户真实姓名", required = false, paramType = "query")})
+            @ApiImplicitParam(name = "name", value = "用户真实姓名", required = false, paramType = "query"),
+            @ApiImplicitParam(name = "roleId", value = "用户的权限Id", required = true, paramType = "query")})
     @Secured({"ROLE_admin", "ROLE_repairman"})
     @GetMapping("/selectUser")
-    public ApiResult selectUser(Integer userId, String username, String name) throws UserHasNotExistedException {
-        List<User> users = userService.selectUser(userId, username, name);
+    public ApiResult selectUser(Integer userId, String username, String name, @NotNull(message = "roleId can not be null") Integer roleId) throws UserHasNotExistedException {
+        List<User> users = userService.selectUser(userId, username, name, roleId);
         return ApiResult.success(users, "查找成功");
     }
 

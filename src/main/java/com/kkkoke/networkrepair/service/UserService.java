@@ -22,7 +22,7 @@ public interface UserService {
     User selectUserById(Integer userId) throws UserHasNotExistedException;
 
     // 搜索用户 后台搜索接口
-    List<User> selectUser(Integer id, String username, String name) throws UserHasNotExistedException;
+    List<User> selectUser(Integer id, String username, String name, Integer roleId) throws UserHasNotExistedException;
 
     // 查找所有用户
     List<User> selectAllUser() throws UserHasNotExistedException;

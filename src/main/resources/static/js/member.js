@@ -64,7 +64,7 @@ layui.use(['table', 'form', 'layer'], function () {
             method: 'get'
             , url: '/v2/user/selectUser'
             , where: {
-                'role': $("#role").val(),
+                'roleId': 3,
                 'userId': $('#userId').val(),
                 'username': $('#username').val(),
                 'name': $('#name').val()
@@ -116,7 +116,7 @@ function addMember() {
             type: 'post',
             data: {
                 "username": uname,
-                "password": passwd,
+                "password": hexMD5(passwd).toUpperCase(),
                 "name": name,
                 "roleType": $('#roleType input[name="status"]:checked ').val()
             },
@@ -313,6 +313,7 @@ layui.use(['table', 'form', 'layer'], function () {
             method: 'get'
             , url: '/v2/user/selectUser'
             , where: {
+                'roleId': 2,
                 'userId': $('#userId').val(),
                 'username': $('#username').val(),
                 'name': $('#name').val()
@@ -413,6 +414,7 @@ layui.use(['table', 'form', 'layer'], function () {
             method: 'get'
             , url: '/v2/user/selectUser'
             , where: {
+                'roleId': 1,
                 'userId': $('#userId').val(),
                 'username': $('#username').val(),
                 'name': $('#name').val()

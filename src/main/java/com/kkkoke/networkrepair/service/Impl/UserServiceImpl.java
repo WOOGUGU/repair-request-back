@@ -79,8 +79,8 @@ public class UserServiceImpl implements UserService {
 
     // 搜索用户 后台搜索接口
     @Override
-    public List<User> selectUser(Integer userId, String username, String name) throws UserHasNotExistedException {
-        return userDao.selectUser(userId, username, name);
+    public List<User> selectUser(Integer userId, String username, String name, Integer roleId) throws UserHasNotExistedException {
+        return userDao.selectUser(userId, username, name, roleId);
     }
 
     // 查找所有用户
