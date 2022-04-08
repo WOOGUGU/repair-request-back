@@ -10,9 +10,6 @@ layui.use(['table', 'form', 'layer'], function () {
         , height: 600
         , url: '/v2/picker/selectAllPickerDes'
         , method: 'get'
-        , headers: {
-            "Cookie": document.cookie
-        }
         , where: {}
         , cols: [
             [ //表头
@@ -103,9 +100,6 @@ function addDes() {
         $.ajax({
             url: '/v2/picker/addPicker',
             type: 'post',
-            headers: {
-                "Cookie": document.cookie
-            },
             data: {
                 "type": 'des',
                 "value": des
@@ -138,9 +132,6 @@ function updateDes() {
         $.ajax({
             url: '/v2/picker/updatePicker',
             type: 'post',
-            headers: {
-                "Cookie": document.cookie
-            },
             data: {
                 "pickerId": pickerId,
                 "type": 'des',
@@ -174,9 +165,6 @@ function delDes() {
                     $.ajax({
                         url: '/v2/picker/deletePickerById',
                         type: 'post',
-                        headers: {
-                            "Cookie": document.cookie
-                        },
                         data: {
                             "pickerId": tr.id
                         },

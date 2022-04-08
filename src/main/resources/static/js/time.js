@@ -10,9 +10,6 @@ layui.use(['table', 'form', 'layer'], function () {
         , height: 600
         , url: '/v2/picker/selectAllPickerTime'
         , method: 'get'
-        , headers: {
-            "Cookie": document.cookie
-        }
         , where: {}
         , cols: [
             [ //表头
@@ -103,9 +100,6 @@ function addTime() {
         $.ajax({
             url: '/v2/picker/addPicker',
             type: 'post',
-            headers: {
-                "Cookie": document.cookie
-            },
             data: {
                 "type": 'time',
                 "value": time
@@ -138,9 +132,6 @@ function updateTime() {
         $.ajax({
             url: '/v2/picker/updatePicker',
             type: 'post',
-            headers: {
-                "Cookie": document.cookie
-            },
             data: {
                 "pickerId": pickerId,
                 "type": 'time',
@@ -174,9 +165,6 @@ function delTime() {
                     $.ajax({
                         url: '/v2/picker/deletePickerById',
                         type: 'post',
-                        headers: {
-                            "Cookie": document.cookie
-                        },
                         data: {
                             "pickerId": tr.id
                         },

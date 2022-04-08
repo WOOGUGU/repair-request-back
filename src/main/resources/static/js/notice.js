@@ -10,9 +10,6 @@ layui.use(['table', 'form', 'layer'], function () {
         , height: 600
         , url: '/v2/notice/selectAllNotice'
         , method: 'get'
-        , headers: {
-            "Cookie": document.cookie
-        }
         , where: {}
         , cols: [
             [ //表头
@@ -64,9 +61,6 @@ layui.use(['table', 'form', 'layer'], function () {
         table.reload('tableSeven', {
             method: 'get'
             , url: '/v2/notice/selectNotice'
-            , headers: {
-                "Cookie": document.cookie
-            }
             , where: {
                 'noticeId': $('#noticeId').val(),
                 'author': $('#author').val(),
@@ -107,7 +101,7 @@ function addNotice() {
     var content = $("#content").val();
     var author = $("#author").val();
     if (content === "" || content === "") {
-        alert("通知网址不能为空");
+        alert("通知不能为空");
         return;
     } else if (author === "") {
         alert("发布者不能为空");
@@ -116,9 +110,6 @@ function addNotice() {
         $.ajax({
             url: '/v2/notice/addNotice',
             type: 'post',
-            headers: {
-                "Cookie": document.cookie
-            },
             data: {
                 "content": content,
                 "author": author,
@@ -152,9 +143,6 @@ function delNotice() {
                     $.ajax({
                         url: '/v2/notice/deleteNotice',
                         type: 'post',
-                        headers: {
-                            "Cookie": document.cookie
-                        },
                         data: {
                             "noticeId": tr.id
                         },
@@ -187,7 +175,7 @@ function updateNotice() {
         alert("通知Id不能为空");
         return;
     } else if (content === "") {
-        alert("通知网址不能为空");
+        alert("通知不能为空");
         return;
     } else if (author === "") {
         alert("发布者不能为空");
@@ -196,9 +184,6 @@ function updateNotice() {
         $.ajax({
             url: '/v2/notice/updateNotice',
             type: 'post',
-            headers: {
-                "Cookie": document.cookie
-            },
             data: {
                 "noticeId": noticeId,
                 "content": content,

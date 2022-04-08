@@ -88,9 +88,6 @@
             type: 'post',
             processData: false,
             contentType: false,
-            headers: {
-                "Cookie": document.cookie
-            },
             data: formData,
             success: function (res) {
                 if (res.userMsg !== "") {

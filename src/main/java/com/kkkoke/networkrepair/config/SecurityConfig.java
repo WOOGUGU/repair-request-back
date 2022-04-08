@@ -88,10 +88,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             response.setContentType("application/json;charset=UTF-8");
             response.setStatus(HttpStatus.OK.value());
             if (exception.getMessage().equals("username has not existed")) {
-                String result = new ObjectMapper().writeValueAsString(ApiResult.fail(ResultCode.USERNAME_INVALID,null, "用户名不存在，请重试", ApiResult.USER_WRONG));
+                String result = new ObjectMapper().writeValueAsString(ApiResult.fail(ResultCode.USERNAME_INVALID, null, "用户名不存在，请重试", ApiResult.USER_WRONG));
                 response.getWriter().println(result);
             } else {
-                String result = new ObjectMapper().writeValueAsString(ApiResult.fail(ResultCode.PASSWORD_WRONG,null, "密码错误，请重试", ApiResult.PASSWORD_WRONG));
+                String result = new ObjectMapper().writeValueAsString(ApiResult.fail(ResultCode.PASSWORD_WRONG, null, "密码错误，请重试", ApiResult.PASSWORD_WRONG));
                 response.getWriter().println(result);
             }
         })); // 认证失败处理
@@ -106,32 +106,33 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/v2/api-docs", "/swagger-resources/configuration/ui",
                         "/swagger-resources", "/swagger-resources/configuration/security",
                         "/swagger-ui.html", "/webjars/**", "/login.html", "/css/**", "/font/**",
-                        "/fonts/**", "/images/**", "/js/**", "/lib/**", "/error/**").permitAll() // 开放资源
+                        "/fonts/**", "/images/**", "/js/**", "/lib/**", "/error/**", "/v2/slide/selectAllSlide",
+                        "/v2/article/selectAllArticle", "/v2/notice/selectAllNotice").permitAll() // 开放资源
                 .anyRequest().authenticated()
-            .and()
-            .exceptionHandling()
-            .authenticationEntryPoint(((request, response, authException) -> {
-                response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
-                response.setStatus(HttpStatus.UNAUTHORIZED.value());
-                String result = new ObjectMapper().writeValueAsString(ApiResult.fail(ResultCode.UNAUTHENTICATED,null, "请登录之后再访问该资源", ApiResult.UNAUTHENTICATED));
-                response.getWriter().println(result);
-            }))
-            .and().rememberMe().tokenValiditySeconds(Integer.parseInt(propertiesUtil.getTokenExpiredTime())) // 设置token过期时间为7天
-            .and()
-            .logout()
+                .and()
+                .exceptionHandling()
+                .authenticationEntryPoint(((request, response, authException) -> {
+                    response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
+                    response.setStatus(HttpStatus.UNAUTHORIZED.value());
+                    String result = new ObjectMapper().writeValueAsString(ApiResult.fail(ResultCode.UNAUTHENTICATED, null, "请登录之后再访问该资源", ApiResult.UNAUTHENTICATED));
+                    response.getWriter().println(result);
+                }))
+                .and().rememberMe().tokenValiditySeconds(Integer.parseInt(propertiesUtil.getTokenExpiredTime())) // 设置token过期时间为7天
+                .and()
+                .logout()
 //                .logoutUrl("/logout")
-            .logoutRequestMatcher(new OrRequestMatcher(
-                    new AntPathRequestMatcher("/doLogout", HttpMethod.DELETE.name()),
-                    new AntPathRequestMatcher("/doLogout", HttpMethod.GET.name())
-            ))
-            .logoutSuccessHandler(((request, response, authentication) -> {
-                response.setContentType("application/json;charset=UTF-8");
-                response.setStatus(HttpStatus.OK.value());
-                String result = new ObjectMapper().writeValueAsString(ApiResult.success(authentication.getPrincipal(), "注销成功", ApiResult.LOGOUT_SUCCESS));
-                response.getWriter().println(result);
-            }))
-            .and()
-            .csrf().disable();
+                .logoutRequestMatcher(new OrRequestMatcher(
+                        new AntPathRequestMatcher("/doLogout", HttpMethod.DELETE.name()),
+                        new AntPathRequestMatcher("/doLogout", HttpMethod.GET.name())
+                ))
+                .logoutSuccessHandler(((request, response, authentication) -> {
+                    response.setContentType("application/json;charset=UTF-8");
+                    response.setStatus(HttpStatus.OK.value());
+                    String result = new ObjectMapper().writeValueAsString(ApiResult.success(authentication.getPrincipal(), "注销成功", ApiResult.LOGOUT_SUCCESS));
+                    response.getWriter().println(result);
+                }))
+                .and()
+                .csrf().disable();
 
         // 设置访问同源头
         http.headers().frameOptions().sameOrigin();

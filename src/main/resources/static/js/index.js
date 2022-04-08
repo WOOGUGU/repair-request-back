@@ -590,9 +590,6 @@ function logout() {
     $.ajax({
         url: '/doLogout',
         type: 'get',
-        headers: {
-            "Cookie": document.cookie
-        },
         data: {},
         success: function (res) {
             if (res.userMsg !== "") {

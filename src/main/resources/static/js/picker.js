@@ -10,9 +10,6 @@ layui.use(['table', 'form', 'layer'], function () {
         , height: 600
         , url: '/v2/picker/selectLocationForBackend'
         , method: 'get'
-        , headers: {
-            "Cookie": document.cookie
-        }
         , where: {}
         , cols: [
             [ //表头
@@ -56,9 +53,6 @@ layui.use(['table', 'form', 'layer'], function () {
         table.reload('tableLocation', {
             method: 'get'
             , url: '/v2/picker/selectLocationForBackend'
-            , headers: {
-                "Cookie": document.cookie
-            }
             , where: {
                 'pickerId': $('#pickerId').val(),
                 'area': $('#area').val(),
@@ -108,9 +102,6 @@ function addLocation() {
         $.ajax({
             url: '/v2/picker/addPickerLocation',
             type: 'post',
-            headers: {
-                "Cookie": document.cookie
-            },
             data: {
                 "area": area,
                 "position": position
@@ -147,9 +138,6 @@ function updateLocation() {
         $.ajax({
             url: '/v2/picker/updatePickerLocation',
             type: 'post',
-            headers: {
-                "Cookie": document.cookie
-            },
             data: {
                 "pickerId": pickerId,
                 "area": area,
@@ -183,9 +171,6 @@ function delLocation() {
                     $.ajax({
                         url: '/v2/picker/deletePickerLocation',
                         type: 'post',
-                        headers: {
-                            "Cookie": document.cookie
-                        },
                         data: {
                             "pickerId": tr.id
                         },

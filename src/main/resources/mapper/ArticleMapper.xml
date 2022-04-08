@@ -36,6 +36,7 @@
     <select id="selectAllArticle" resultMap="articleMap">
         select *
         from article
+        order by update_time desc
     </select>
     <select id="selectArticleById" parameterType="int" resultMap="articleMap">
         select *

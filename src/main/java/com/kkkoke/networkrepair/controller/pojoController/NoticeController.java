@@ -89,7 +89,6 @@ public class NoticeController {
     }
 
     @ApiOperation(value = "查找所有通知")
-    @Secured({"ROLE_admin", "ROLE_user", "ROLE_repairman"})
     @GetMapping("/selectAllNotice")
     public ApiResult selectAllNotice() throws DataHasNotExistedException {
         List<Notice> notices = noticeService.selectAllNotice();

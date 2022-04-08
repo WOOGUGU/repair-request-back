@@ -83,7 +83,6 @@ public class SlideController {
     }
 
     @ApiOperation(value = "查找所有轮播图")
-    @Secured({"ROLE_admin", "ROLE_user", "ROLE_repairman"})
     @GetMapping("/selectAllSlide")
     public ApiResult selectAllSlide() throws DataHasNotExistedException {
         List<Slide> slides = slideService.selectAllSlide();
