@@ -9,6 +9,7 @@ layui.use(['table', 'form', 'layer'], function () {
         elem: '#userData'
         , height: 600
         , url: '/v2/user/selectAllUser'
+        , even: true
         , method: 'get'
         , where: {}
         , cols: [
@@ -258,6 +259,7 @@ layui.use(['table', 'form', 'layer'], function () {
         elem: '#adminData'
         , height: 600
         , url: '/v2/user/selectAllAdmin'
+        , even: true
         , method: 'get'
         , where: {}
         , cols: [
@@ -359,6 +361,7 @@ layui.use(['table', 'form', 'layer'], function () {
         elem: '#repairmanData'
         , height: 600
         , url: '/v2/user/selectAllRepairman'
+        , even: true
         , method: 'get'
         , where: {}
         , cols: [

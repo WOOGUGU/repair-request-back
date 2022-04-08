@@ -55,8 +55,8 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<Order> selectOrder(Integer orderId, String username, String sender, String tel, String type,
                                    String des, String position, String timeSubscribe, Integer progress, String solver,
-                                   String timeStart, String timeDistribution, String timeEnd, String feedback) throws DataHasNotExistedException {
-        return orderDao.selectOrder(orderId, username, sender, tel, type, des, position, timeSubscribe, progress, solver, timeStart, timeDistribution, timeEnd, feedback);
+                                   String timeStart, String timeDistribution, String timeEnd, String feedback, Integer stars) throws DataHasNotExistedException {
+        return orderDao.selectOrder(orderId, username, sender, tel, type, des, position, timeSubscribe, progress, solver, timeStart, timeDistribution, timeEnd, feedback, stars);
     }
 
     // 查找所有报修工单
@@ -74,10 +74,10 @@ public class OrderServiceImpl implements OrderService {
     // 修改报修工单
     @Override
     public Order updateOrder(Integer orderId, String username, String sender, String tel, String type,
-                               String des, String position, String timeSubscribe, Integer progress,
-                               String solver, String timeStart, String timeDistribution, String timeEnd, String feedback) throws DataHasNotExistedException {
+                             String des, String position, String timeSubscribe, Integer progress,
+                             String solver, String timeStart, String timeDistribution, String timeEnd, String feedback, Integer stars) throws DataHasNotExistedException {
         // 创建要修改的order对象
-        Order order = new Order(orderId, username, sender, tel, type, des, position, timeSubscribe, progress, solver, timeStart, timeDistribution, timeEnd, feedback);
+        Order order = new Order(orderId, username, sender, tel, type, des, position, timeSubscribe, progress, solver, timeStart, timeDistribution, timeEnd, feedback, stars);
         // 查找数据库中是否存在此用户
         if (ObjectUtils.isEmpty(orderDao.selectOrderById(orderId))) {
             throw new DataHasNotExistedException("Order has not existed");
@@ -90,13 +90,13 @@ public class OrderServiceImpl implements OrderService {
 
     // 修改报修工单
     @Override
-    public Integer updateOrderFeedback(Integer orderId, String feedback) throws DataHasNotExistedException {
+    public Integer updateOrderFeedback(Integer orderId, String feedback, Integer stars) throws DataHasNotExistedException {
         // 查找数据库中是否存在此用户
         if (ObjectUtils.isEmpty(orderDao.selectOrderById(orderId))) {
             throw new DataHasNotExistedException("Order has not existed");
         } else {
             // 如果用户存在就更新数据
-            orderDao.updateOrderFeedback(orderId, feedback);
+            orderDao.updateOrderFeedback(orderId, feedback, stars);
             return 0;
         }
     }

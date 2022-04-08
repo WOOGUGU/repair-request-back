@@ -9,6 +9,7 @@ layui.use(['table', 'form', 'layer'], function () {
         elem: '#noticeData'
         , height: 600
         , url: '/v2/notice/selectAllNotice'
+        , even: true
         , method: 'get'
         , where: {}
         , cols: [

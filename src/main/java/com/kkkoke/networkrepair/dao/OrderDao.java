@@ -19,7 +19,7 @@ public interface OrderDao {
     // 查找报修工单 后台接口
     List<Order> selectOrder(Integer id, String username, String sender, String tel, String type,
                             String des, String position, String timeSubscribe, Integer progress, String solver,
-                            String timeStart, String timeDistribution, String timeEnd, String feedback);
+                            String timeStart, String timeDistribution, String timeEnd, String feedback, Integer stars);
 
     // 审核工单
     Integer checkOrder(Integer id, Integer progress);
@@ -31,7 +31,7 @@ public interface OrderDao {
     Integer updateOrder(Order order);
 
     // 提交报修工单反馈
-    Integer updateOrderFeedback(Integer id, String feedback);
+    Integer updateOrderFeedback(Integer id, String feedback, Integer stars);
 
     // 查找某用户发起的所有工单
     List<Order> selectAllOrderOfUser(String username);

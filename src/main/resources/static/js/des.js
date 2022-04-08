@@ -9,6 +9,7 @@ layui.use(['table', 'form', 'layer'], function () {
         elem: '#desData'
         , height: 600
         , url: '/v2/picker/selectAllPickerDes'
+        , even: true
         , method: 'get'
         , where: {}
         , cols: [

@@ -9,6 +9,7 @@ layui.use(['table', 'form', 'layer'], function () {
         elem: '#articleData'
         , height: 600
         , url: '/v2/article/selectAllArticle'
+        , even: true
         , method: 'get'
         , where: {}
         , cols: [

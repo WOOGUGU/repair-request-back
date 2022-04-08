@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kkkoke.networkrepair.dao.OrderDao">
     <insert id="addOrder" parameterType="com.kkkoke.networkrepair.pojo.Order">
-        insert into `order`(username, sender, tel, type, des, position, time_subscribe, time_start)
-        values (#{username}, #{sender}, #{tel}, #{type}, #{des}, #{position}, #{timeSubscribe}, #{timeStart})
+        insert into `order`(username, sender, tel, type, des, position, time_subscribe, time_start, stars)
+        values (#{username}, #{sender}, #{tel}, #{type}, #{des}, #{position}, #{timeSubscribe}, #{timeStart}, #{stars})
     </insert>
 
     <delete id="deleteOrder" parameterType="int">
@@ -72,6 +72,10 @@
 
             <if test="timeEnd != null and timeEnd != ''">
                 ,time_end = #{timeEnd}
+            </if>
+
+            <if test="stars != null and stars != ''">
+                ,stars = #{stars}
             </if>
         </set>
         where id = #{id}
@@ -142,6 +146,10 @@
             <if test="timeDistribution != null and timeDistribution != ''">
                 and time_distribution = #{timeDistribution}
             </if>
+
+            <if test="stars != null and stars != ''">
+                and stars = #{stars}
+            </if>
         </where>
     </select>
 
@@ -165,7 +173,8 @@
 
     <update id="updateOrderFeedback">
         update `order`
-        set feedback = #{feedback}
+        set feedback = #{feedback},
+            stars    = #{stars}
         where id = #{id}
     </update>
 
@@ -196,5 +205,6 @@
         <result property="progress" column="progress"/>
         <result property="feedback" column="feedback"/>
         <result property="timeEnd" column="time_end"/>
+        <result property="stars" column="stars"/>
     </resultMap>
 </mapper>

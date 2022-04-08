@@ -9,6 +9,7 @@ layui.use(['table', 'form', 'layer'], function () {
         elem: '#slideData'
         , height: 600
         , url: '/v2/slide/selectAllSlide'
+        , even: true
         , method: 'get'
         , where: {}
         , cols: [
