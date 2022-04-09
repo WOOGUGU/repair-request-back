@@ -215,17 +215,17 @@ function toCheckOrder() {
 }
 
 // 委派维修员
-function toDelegateOrder() {
-    layui.use(['table'], function () {
-        var table = layui.table;
-        table.on('tool(processedOrder)', function (obj) {
-            var tr = obj.data;
-            window.localStorage.setItem("orderId", tr.id);
-            window.localStorage.setItem("progress", tr.progress);
-            window.location.href = "/sendRepairman.html";
-        })
-    });
-}
+// function toDelegateOrder() {
+//     layui.use(['table'], function () {
+//         var table = layui.table;
+//         table.on('tool(processedOrder)', function (obj) {
+//             var tr = obj.data;
+//             window.localStorage.setItem("orderId", tr.id);
+//             window.localStorage.setItem("progress", tr.progress);
+//             window.location.href = "/sendRepairman.html";
+//         })
+//     });
+// }
 
 // 工单列表跳转
 function backToOrderList() {

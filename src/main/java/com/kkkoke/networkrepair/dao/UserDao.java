@@ -27,7 +27,7 @@ public interface UserDao {
     User selectUserById(Integer id);
 
     // 搜索用户 后台搜索接口
-    List<User> selectUser(Integer id, String username, String name, Integer roleId);
+    List<User> selectUser(Integer id, String username, String name, Integer roleId, String tel);
 
     // 查找所有用户
     List<User> selectAllUser();

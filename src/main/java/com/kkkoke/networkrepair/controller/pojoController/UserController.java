@@ -42,12 +42,13 @@ public class UserController {
     @ApiOperation(value = "添加用户")
     @ApiImplicitParams({@ApiImplicitParam(name = "username", value = "用户名", required = true, paramType = "query"),
             @ApiImplicitParam(name = "password", value = "密码（已加密）", required = true, paramType = "query"),
-            @ApiImplicitParam(name = "name", value = "用户真实姓名", required = true, paramType = "query")})
+            @ApiImplicitParam(name = "name", value = "用户真实姓名", required = true, paramType = "query"),
+            @ApiImplicitParam(name = "tel", value = "用户联系方式", required = true, paramType = "query")})
     @Secured({"ROLE_admin"})
     @PostMapping("/addUser")
-    public ApiResult addUser(@NotBlank(message = "username can not be null") String username, @NotBlank(message = "password can not be null") String password,
-                             @NotBlank(message = "name can not be null") String name, @NotNull(message = "roleType can not be null") Integer roleType) throws UserHasExistedException {
-        userService.addUser(username, password, name, roleType);
+    public ApiResult addUser(@NotBlank(message = "username can not be null") String username, @NotBlank(message = "password can not be null") String password, @NotBlank(message = "name can not be null") String name,
+                             @NotNull(message = "roleType can not be null") Integer roleType, @NotBlank(message = "tel can not be null") String tel) throws UserHasExistedException {
+        userService.addUser(username, password, name, roleType, tel);
         return ApiResult.success("用户添加成功");
     }
 
@@ -85,11 +86,12 @@ public class UserController {
     @ApiImplicitParams({@ApiImplicitParam(name = "username", value = "用户名", required = false, paramType = "query"),
             @ApiImplicitParam(name = "userId", value = "用户Id", required = false, paramType = "query"),
             @ApiImplicitParam(name = "name", value = "用户真实姓名", required = false, paramType = "query"),
-            @ApiImplicitParam(name = "roleId", value = "用户的权限Id", required = true, paramType = "query")})
+            @ApiImplicitParam(name = "roleId", value = "用户的权限Id", required = true, paramType = "query"),
+            @ApiImplicitParam(name = "tel", value = "用户联系方式", required = false, paramType = "query")})
     @Secured({"ROLE_admin", "ROLE_repairman"})
     @GetMapping("/selectUser")
-    public ApiResult selectUser(Integer userId, String username, String name, @NotNull(message = "roleId can not be null") Integer roleId) throws UserHasNotExistedException {
-        List<User> users = userService.selectUser(userId, username, name, roleId);
+    public ApiResult selectUser(Integer userId, String username, String name, @NotNull(message = "roleId can not be null") Integer roleId, String tel) throws UserHasNotExistedException {
+        List<User> users = userService.selectUser(userId, username, name, roleId, tel);
         return ApiResult.success(users, "查找成功");
     }
 
@@ -129,12 +131,13 @@ public class UserController {
     @ApiImplicitParams({@ApiImplicitParam(name = "userId", value = "用户Id", required = true, paramType = "query"),
             @ApiImplicitParam(name = "username", value = "用户名", required = false, paramType = "query"),
             @ApiImplicitParam(name = "password", value = "密码（已加密）", required = false, paramType = "query"),
-            @ApiImplicitParam(name = "name", value = "用户真实姓名", required = false, paramType = "query")})
+            @ApiImplicitParam(name = "name", value = "用户真实姓名", required = false, paramType = "query"),
+            @ApiImplicitParam(name = "tel", value = "用户联系方式", required = false, paramType = "query")})
     @Secured({"ROLE_admin"})
     @PostMapping("/updateUser")
     public ApiResult updateUser(@NotNull(message = "userId can not be null") Integer userId, String username, String password,
-                                String name, Integer roleType) throws UserHasNotExistedException, PasswordWrongException {
-        userService.updateUser(userId, username, password, name, roleType);
+                                String name, Integer roleType, String tel) throws UserHasNotExistedException, PasswordWrongException {
+        userService.updateUser(userId, username, password, name, roleType, tel);
         return ApiResult.success("用户修改成功");
     }
 }

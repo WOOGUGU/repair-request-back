@@ -40,13 +40,29 @@
         </div>
       </div>
       <div class="layui-form-item">
+        <label for="tel" class="layui-form-label">
+          <span class="x-red">*</span>联系方式</label>
+        <div class="layui-input-inline">
+          <input type="text" id="tel" required="" lay-verify="pass" autocomplete="off" class="layui-input">
+        </div>
+      </div>
+      <div class="layui-form-item">
         <div class="layui-input-block" id="roleType">
-          <input type="radio" name="status" value="3" title="普通用户" checked="checked"><div class="layui-unselect layui-form-radio layui-form-radioed"><i class="layui-anim layui-icon"></i><div>普通用户</div></div>
-          <input type="radio" name="status" value="2" title="管理员"><div class="layui-unselect layui-form-radio"><i class="layui-anim layui-icon"></i><div>管理员</div></div>
-          <input type="radio" name="status" value="1" title="维修员"><div class="layui-unselect layui-form-radio"><i class="layui-anim layui-icon"></i><div>维修员</div></div>
+          <input type="radio" name="status" value="3" title="普通用户" checked="checked">
+          <div class="layui-unselect layui-form-radio layui-form-radioed"><i class="layui-anim layui-icon"></i>
+            <div>普通用户</div>
+          </div>
+          <input type="radio" name="status" value="2" title="管理员">
+          <div class="layui-unselect layui-form-radio"><i class="layui-anim layui-icon"></i>
+            <div>管理员</div>
+          </div>
+          <input type="radio" name="status" value="1" title="维修员">
+          <div class="layui-unselect layui-form-radio"><i class="layui-anim layui-icon"></i>
+            <div>维修员</div>
+          </div>
         </div>
         <label for="roleType" class="layui-form-label"></label>
-<!--        <button class="layui-btn" lay-submit lay-filter="formDemo"><i class="layui-icon"></i>添加</button>-->
+        <!--        <button class="layui-btn" lay-submit lay-filter="formDemo"><i class="layui-icon"></i>添加</button>-->
       </div>
     </form>
     <button class="layui-btn" onclick="addMember()" style="margin-left:30px"><i class="layui-icon"></i>添加</button>

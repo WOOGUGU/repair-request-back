@@ -31,17 +31,25 @@
                 <div class="layui-card-body ">
                     <form class="layui-form layui-col-space5">
                         <div class="layui-inline layui-show-xs-block">
-                            <input type="text" id="userId" name="userId"  placeholder="用户编号" autocomplete="off" class="layui-input">
+                            <input type="text" id="userId" name="userId" placeholder="用户编号" autocomplete="off"
+                                   class="layui-input">
                         </div>
                         <div class="layui-inline layui-show-xs-block">
-                            <input type="text" id="username" name="username"  placeholder="用户名" autocomplete="off" class="layui-input">
+                            <input type="text" id="username" name="username" placeholder="用户名" autocomplete="off"
+                                   class="layui-input">
                         </div>
                         <div class="layui-inline layui-show-xs-block">
-                            <input type="text" id="name" name="name"  placeholder="真实姓名" autocomplete="off" class="layui-input">
+                            <input type="text" id="name" name="name" placeholder="真实姓名" autocomplete="off"
+                                   class="layui-input">
                         </div>
                         <div class="layui-inline layui-show-xs-block">
-<!--                            <div class="layui-btn" lay-filter="search" onclick="searchMember()"><i class="layui-icon">&#xe615;</i></div>-->
-                            <div class="layui-btn" lay-filter="search" id="searchAdmin"><i class="layui-icon">&#xe615;</i></div>
+                            <input type="text" id="tel" name="tel" placeholder="联系方式" autocomplete="off"
+                                   class="layui-input">
+                        </div>
+                        <div class="layui-inline layui-show-xs-block">
+                            <!--                            <div class="layui-btn" lay-filter="search" onclick="searchMember()"><i class="layui-icon">&#xe615;</i></div>-->
+                            <div class="layui-btn" lay-filter="search" id="searchAdmin"><i
+                                    class="layui-icon">&#xe615;</i></div>
                         </div>
                     </form>
                 </div>
@@ -50,7 +58,7 @@
                         <script type="text/html" id="admin">
                             <a class="layui-btn layui-btn-normal" lay-event="admin"
                                onclick="adminToUpdateMember()">修改</a>
-                            <a class="layui-btn layui-btn-danger" lay-event="admin" onclick="delMember()">删除</a>
+                            <a class="layui-btn layui-btn-danger" lay-event="admin" onclick="delAdmin()">删除</a>
                         </script>
                     </table>
                 </div>
