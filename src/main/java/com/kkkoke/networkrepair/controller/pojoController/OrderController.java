@@ -135,7 +135,8 @@ public class OrderController {
     }
 
     @ApiOperation(value = "提交报修工单反馈")
-    @ApiImplicitParams({@ApiImplicitParam(name = "feedback", value = "用户反馈", required = false, paramType = "query"),
+    @ApiImplicitParams({@ApiImplicitParam(name = "orderId", value = "工单id", required = true, paramType = "query"),
+            @ApiImplicitParam(name = "feedback", value = "用户反馈", required = false, paramType = "query"),
             @ApiImplicitParam(name = "stars", value = "用户反馈", required = false, paramType = "query")})
     @Secured({"ROLE_admin", "ROLE_user"})
     @PostMapping("/updateOrderFeedback")

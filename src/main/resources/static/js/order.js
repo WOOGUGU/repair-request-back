@@ -201,8 +201,8 @@ function updateOrder() {
     }
 }
 
-// 审核工单跳转
-function toCheckOrder() {
+// 分配维修员页面跳转
+function toSendRepairman() {
     layui.use(['table'], function () {
         var table = layui.table;
         table.on('tool(order)', function (obj) {

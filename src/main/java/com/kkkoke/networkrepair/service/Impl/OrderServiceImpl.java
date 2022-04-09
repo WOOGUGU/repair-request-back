@@ -76,13 +76,54 @@ public class OrderServiceImpl implements OrderService {
     public Order updateOrder(Integer orderId, String username, String sender, String tel, String type,
                              String des, String position, String timeSubscribe, Integer progress,
                              String solver, String timeStart, String timeDistribution, String timeEnd, String feedback, Integer stars) throws DataHasNotExistedException {
-        // 创建要修改的order对象
-        Order order = new Order(orderId, username, sender, tel, type, des, position, timeSubscribe, progress, solver, timeStart, timeDistribution, timeEnd, feedback, stars);
+        Order order = orderDao.selectOrderById(orderId);
         // 查找数据库中是否存在此用户
-        if (ObjectUtils.isEmpty(orderDao.selectOrderById(orderId))) {
+        if (ObjectUtils.isEmpty(order)) {
             throw new DataHasNotExistedException("Order has not existed");
         } else {
             // 如果用户存在就更新数据
+            if (!ObjectUtils.isEmpty(username)) {
+                order.setUsername(username);
+            }
+            if (!ObjectUtils.isEmpty(sender)) {
+                order.setSender(sender);
+            }
+            if (!ObjectUtils.isEmpty(tel)) {
+                order.setTel(tel);
+            }
+            if (!ObjectUtils.isEmpty(type)) {
+                order.setType(type);
+            }
+            if (!ObjectUtils.isEmpty(des)) {
+                order.setDes(des);
+            }
+            if (!ObjectUtils.isEmpty(position)) {
+                order.setPosition(position);
+            }
+            if (!ObjectUtils.isEmpty(timeSubscribe)) {
+                order.setTimeSubscribe(timeSubscribe);
+            }
+            if (!ObjectUtils.isEmpty(progress)) {
+                order.setProgress(progress);
+            }
+            if (!ObjectUtils.isEmpty(solver)) {
+                order.setSolver(solver);
+            }
+            if (!ObjectUtils.isEmpty(timeStart)) {
+                order.setTimeStart(timeStart);
+            }
+            if (!ObjectUtils.isEmpty(timeDistribution)) {
+                order.setTimeDistribution(timeDistribution);
+            }
+            if (!ObjectUtils.isEmpty(timeEnd)) {
+                order.setTimeEnd(timeEnd);
+            }
+            if (!ObjectUtils.isEmpty(feedback)) {
+                order.setFeedback(feedback);
+            }
+            if (!ObjectUtils.isEmpty(stars)) {
+                order.setStars(stars);
+            }
             orderDao.updateOrder(order);
             return order;
         }
@@ -105,10 +146,20 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Integer checkOrder(Integer orderId, Integer progress) throws DataHasNotExistedException {
         // 查找数据库中是否存在此用户
-        if (ObjectUtils.isEmpty(orderDao.selectOrderById(orderId))) {
+        Order order = orderDao.selectOrderById(orderId);
+        if (ObjectUtils.isEmpty(order)) {
             throw new DataHasNotExistedException("Order has not existed");
         } else {
             // 如果用户存在就修改工单状态
+            orderDao.checkOrder(orderId, progress);
+            if (progress == 4) {
+                order.setTimeDistribution(null);
+                order.setSolver(null);
+                order.setTimeEnd(null);
+                order.setFeedback(null);
+                order.setStars(0);
+                orderDao.updateOrder(order);
+            }
             orderDao.checkOrder(orderId, progress);
             return 0;
         }

@@ -25,59 +25,19 @@
 
     <update id="updateOrder">
         update `order`
-        <set>
-            <if test="sender != null and sender != ''">
-                sender = #{sender}
-            </if>
-
-            <if test="tel != null and tel != ''">
-                ,tel = #{tel}
-            </if>
-
-            <if test="type != null and type != ''">
-                ,`type` = #{type}
-            </if>
-
-            <if test="des != null and des != ''">
-                ,des = #{des}
-            </if>
-
-            <if test="position != null and position != ''">
-                ,`position` = #{position}
-            </if>
-
-            <if test="timeSubscribe != null and timeSubscribe != ''">
-                ,time_subscribe = #{timeSubscribe}
-            </if>
-
-            <if test="solver != null and solver != ''">
-                ,solver = #{solver}
-            </if>
-
-            <if test="timeStart != null and timeStart != ''">
-                ,time_start = #{timeStart}
-            </if>
-
-            <if test="timeDistribution != null and timeDistribution != ''">
-                ,time_distribution = #{timeDistribution}
-            </if>
-
-            <if test="progress != null and progress != ''">
-                ,progress = #{progress}
-            </if>
-
-            <if test="feedback != null and feedback != ''">
-                ,feedback = #{feedback}
-            </if>
-
-            <if test="timeEnd != null and timeEnd != ''">
-                ,time_end = #{timeEnd}
-            </if>
-
-            <if test="stars != null and stars != ''">
-                ,stars = #{stars}
-            </if>
-        </set>
+        set sender            = #{sender},
+            tel               = #{tel},
+            `type`            = #{type},
+            des               = #{des},
+            `position`        = #{position},
+            time_subscribe    = #{timeSubscribe},
+            solver            = #{solver},
+            time_start        = #{timeStart},
+            time_distribution = #{timeDistribution},
+            progress          = #{progress},
+            feedback          = #{feedback},
+            time_end          = #{timeEnd},
+            stars             = #{stars}
         where id = #{id}
     </update>
 
