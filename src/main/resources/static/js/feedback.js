@@ -9,6 +9,7 @@ layui.use(['table', 'form', 'layer'], function () {
         elem: '#feedbackData'
         , height: 600
         , url: '/v2/feedback/selectFeedback'
+        , even: true
         , method: 'get'
         , where: {}
         , cols: [

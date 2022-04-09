@@ -83,6 +83,16 @@
                                 <option value="4">审核不通过</option>
                             </select>
                         </div>
+                        <div class="layui-input-inline layui-show-xs-block">
+                            <select name="stars" id="stars">
+                                <option value="">满意星级</option>
+                                <option value="1">1星</option>
+                                <option value="2">2星</option>
+                                <option value="3">3星</option>
+                                <option value="4">4星</option>
+                                <option value="5">5星</option>
+                            </select>
+                        </div>
                         <div class="layui-inline layui-show-xs-block">
                             <!--                            <div class="layui-btn" lay-filter="search" onclick="searchMember()"><i class="layui-icon">&#xe615;</i></div>-->
                             <div class="layui-btn" lay-filter="search" id="searchOrder"><i
@@ -93,7 +103,7 @@
                 <div class="layui-card-body layui-table-main layui-table-body">
                     <table id="orderData" class="layui-table layui-form" lay-filter="order">
                         <script type="text/html" id="order">
-                            <a class="layui-btn layui-btn-normal" lay-event="order" onclick="toCheckOrder()">分配</a>
+                            <a class="layui-btn layui-btn-normal" lay-event="order" onclick="toSendRepairman()">分配</a>
                             <a class="layui-btn layui-btn-danger" lay-event="order" onclick="rejectOrder()">拒绝</a>
                         </script>
                     </table>

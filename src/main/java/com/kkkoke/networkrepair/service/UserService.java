@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface UserService {
     // 添加用户
-    User addUser(String username, String password, String name, Integer roleType) throws UserHasExistedException;
+    User addUser(String username, String password, String name, Integer roleType, String tel) throws UserHasExistedException;
 
     // 删除用户
     int deleteUser(Integer userId, String username) throws UserHasNotExistedException;
@@ -22,7 +22,7 @@ public interface UserService {
     User selectUserById(Integer userId) throws UserHasNotExistedException;
 
     // 搜索用户 后台搜索接口
-    List<User> selectUser(Integer id, String username, String name) throws UserHasNotExistedException;
+    List<User> selectUser(Integer id, String username, String name, Integer roleId, String tel) throws UserHasNotExistedException;
 
     // 查找所有用户
     List<User> selectAllUser() throws UserHasNotExistedException;
@@ -37,7 +37,7 @@ public interface UserService {
     List<User> selectAllNorUser() throws UserHasNotExistedException;;
 
     // 修改用户信息
-    User updateUser(Integer userId, String username, String password, String name, Integer roleType) throws UserHasNotExistedException, PasswordWrongException;
+    User updateUser(Integer userId, String username, String password, String name, Integer roleType, String tel) throws UserHasNotExistedException, PasswordWrongException;
 
     // 内部调用 根据⽤户名查询⽤户
     User loadUserByUsername(String username);

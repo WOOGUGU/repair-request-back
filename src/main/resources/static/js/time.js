@@ -9,6 +9,7 @@ layui.use(['table', 'form', 'layer'], function () {
         elem: '#timeData'
         , height: 600
         , url: '/v2/picker/selectAllPickerTime'
+        , even: true
         , method: 'get'
         , where: {}
         , cols: [

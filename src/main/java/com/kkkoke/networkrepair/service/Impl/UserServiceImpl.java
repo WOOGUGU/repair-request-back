@@ -25,12 +25,12 @@ public class UserServiceImpl implements UserService {
 
     // 添加用户
     @Override
-    public User addUser(String username, String password, String name, Integer roleType) throws UserHasExistedException {
+    public User addUser(String username, String password, String name, Integer roleType, String tel) throws UserHasExistedException {
         // 查看数据库中是否已经存在此用户
         if (ObjectUtils.isEmpty(userDao.selectUserByUsername(username))) {
             // 对密码进行BCrypt加密
             String hashPasswd = BCrypt.hashpw(password, BCrypt.gensalt());
-            User user = new User(username, hashPasswd, name);
+            User user = new User(username, hashPasswd, name, tel);
             userDao.addUser(user);
             userDao.setRole(userDao.selectUserByUsername(username).getId(), roleType);
             return user;
@@ -79,8 +79,8 @@ public class UserServiceImpl implements UserService {
 
     // 搜索用户 后台搜索接口
     @Override
-    public List<User> selectUser(Integer userId, String username, String name) throws UserHasNotExistedException {
-        return userDao.selectUser(userId, username, name);
+    public List<User> selectUser(Integer userId, String username, String name, Integer roleId, String tel) throws UserHasNotExistedException {
+        return userDao.selectUser(userId, username, name, roleId, tel);
     }
 
     // 查找所有用户
@@ -137,7 +137,7 @@ public class UserServiceImpl implements UserService {
 
     // 修改用户信息
     @Override
-    public User updateUser(Integer userId, String username, String password, String name, Integer roleType) throws UserHasNotExistedException, PasswordWrongException {
+    public User updateUser(Integer userId, String username, String password, String name, Integer roleType, String tel) throws UserHasNotExistedException, PasswordWrongException {
         User user = userDao.selectUserById(userId);
         // 查找数据库中是否存在此用户
         if (ObjectUtils.isEmpty(user)) {
@@ -154,6 +154,9 @@ public class UserServiceImpl implements UserService {
             }
             if (!ObjectUtils.isEmpty(name)) {
                 user.setName(name);
+            }
+            if (!ObjectUtils.isEmpty(tel)) {
+                user.setTel(tel);
             }
             userDao.updateUser(user);
             if (!ObjectUtils.isEmpty(roleType)) {

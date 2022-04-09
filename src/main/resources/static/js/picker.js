@@ -9,6 +9,7 @@ layui.use(['table', 'form', 'layer'], function () {
         elem: '#locationData'
         , height: 600
         , url: '/v2/picker/selectLocationForBackend'
+        , even: true
         , method: 'get'
         , where: {}
         , cols: [
