@@ -200,4 +200,17 @@ public class ExceptionController {
         log.info("PasswordWrongException.errMsg:{}", e.getMessage());
         return ApiResult.fail(ResultCode.PASSWORD_WRONG, "旧密码错误，请重新输入", ApiResult.PASSWORD_WRONG);
     }
+
+    /**
+     * 表单数据异常
+     *
+     * @param e 异常
+     * @return ApiResult
+     */
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(IllegalFormDataException.class)
+    public ApiResult illegalFormDataException(IllegalFormDataException e) {
+        log.info("IllegalFormDataException.errMsg:{}", e.getMessage());
+        return ApiResult.fail(ResultCode.ILLegal_FORMDATA, e.getMessage(), ApiResult.ILLegal_FORMDATA);
+    }
 }

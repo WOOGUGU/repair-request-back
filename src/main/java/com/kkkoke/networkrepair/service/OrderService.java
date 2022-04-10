@@ -1,6 +1,7 @@
 package com.kkkoke.networkrepair.service;
 
 import com.kkkoke.networkrepair.exception.DataHasNotExistedException;
+import com.kkkoke.networkrepair.exception.IllegalFormDataException;
 import com.kkkoke.networkrepair.exception.IllegalOperationException;
 import com.kkkoke.networkrepair.pojo.Order;
 import java.util.List;
@@ -8,7 +9,7 @@ import java.util.List;
 public interface OrderService {
     // 增加报修工单
     Order addOrder(String username, String sender, String tel, String type,
-                   String des, String position, String timeSubscribe);
+                   String des, String position, String timeSubscribe) throws IllegalFormDataException;
 
     // 通过id删除报修工单
     int deleteOrder(Integer orderId) throws DataHasNotExistedException;

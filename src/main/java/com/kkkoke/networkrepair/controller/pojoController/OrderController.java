@@ -1,6 +1,7 @@
 package com.kkkoke.networkrepair.controller.pojoController;
 
 import com.kkkoke.networkrepair.exception.DataHasNotExistedException;
+import com.kkkoke.networkrepair.exception.IllegalFormDataException;
 import com.kkkoke.networkrepair.exception.IllegalOperationException;
 import com.kkkoke.networkrepair.pojo.Order;
 import com.kkkoke.networkrepair.service.OrderService;
@@ -52,7 +53,7 @@ public class OrderController {
     public ApiResult addOrder(@NotBlank(message = "username can not be null") String username, @NotBlank(message = "sender can not be null") String sender,
                               @NotBlank(message = "tel can not be null") String tel, @NotBlank(message = "type can not be null") String type,
                               @NotBlank(message = "des can not be null") String des, @NotBlank(message = "position can not be null") String position,
-                              @NotBlank(message = "timeSubscribe can not be null") String timeSubscribe) {
+                              @NotBlank(message = "timeSubscribe can not be null") String timeSubscribe) throws IllegalFormDataException {
         orderService.addOrder(username, sender, tel, type, des, position, timeSubscribe);
         return ApiResult.success("工单添加成功");
     }

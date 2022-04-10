@@ -2,6 +2,7 @@ package com.kkkoke.networkrepair.service.Impl;
 
 import com.kkkoke.networkrepair.dao.OrderDao;
 import com.kkkoke.networkrepair.exception.DataHasNotExistedException;
+import com.kkkoke.networkrepair.exception.IllegalFormDataException;
 import com.kkkoke.networkrepair.exception.IllegalOperationException;
 import com.kkkoke.networkrepair.pojo.Order;
 import com.kkkoke.networkrepair.service.OrderService;
@@ -9,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -20,9 +23,16 @@ public class OrderServiceImpl implements OrderService {
     // 增加报修工单
     @Override
     public Order addOrder(String username, String sender, String tel, String type,
-                          String des, String position, String timeSubscribe) {
+                          String des, String position, String timeSubscribe) throws IllegalFormDataException {
         String timeStart = LocalDateTime.now().toString();
+        LocalDate now = LocalDate.now();
+        LocalDate after = LocalDate.now().plusDays(3);
+        LocalDate tempTime = LocalDate.parse(timeSubscribe.split(" ")[0], DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        if (tempTime.isBefore(now) || tempTime.isEqual(now) || tempTime.isAfter(after)) {
+            throw new IllegalFormDataException("预约时间过近，无法及时处理");
+        }
         Order order = new Order(username, sender, tel, type, des, position, timeSubscribe, timeStart);
+
         orderDao.addOrder(order);
         return order;
     }
@@ -157,7 +167,7 @@ public class OrderServiceImpl implements OrderService {
                 order.setSolver(null);
                 order.setTimeEnd(null);
                 order.setFeedback(null);
-                order.setStars(0);
+                order.setStars(null);
                 orderDao.updateOrder(order);
             }
             orderDao.checkOrder(orderId, progress);

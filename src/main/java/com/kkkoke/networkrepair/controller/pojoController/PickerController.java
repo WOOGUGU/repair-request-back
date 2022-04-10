@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
@@ -180,11 +179,11 @@ public class PickerController {
     public ApiResult selectAllPicker() throws DataHasNotExistedException {
         HashMap<String, List<PickerResult>> pickers = pickerService.selectAllPicker();
         HashMap<String, Object> result = new HashMap<>();
-        String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        String after = LocalDate.now().plusDays(3).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        String start = LocalDate.now().plusDays(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        String end = LocalDate.now().plusDays(3).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         result.put("picker", pickers);
-        result.put("now", now);
-        result.put("after", after);
+        result.put("start", start);
+        result.put("end", end);
         return ApiResult.success(result, "查找成功");
     }
 

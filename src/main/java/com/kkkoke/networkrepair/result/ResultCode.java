@@ -104,4 +104,6 @@ public class ResultCode {
     public static final String EXPIRED_SESSION = "F300";
 
     public static final String EFFECTIVE_SESSION = "F400";
+
+    public static final String ILLegal_FORMDATA = "F500";
 }
