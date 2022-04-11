@@ -213,4 +213,17 @@ public class ExceptionController {
         log.info("IllegalFormDataException.errMsg:{}", e.getMessage());
         return ApiResult.fail(ResultCode.ILLegal_FORMDATA, e.getMessage(), ApiResult.ILLegal_FORMDATA);
     }
+
+    /**
+     * 请求次数超限制
+     *
+     * @param e 异常
+     * @return ApiResult
+     */
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(RequestLimitException.class)
+    public ApiResult requestLimitException(RequestLimitException e) {
+        log.info("RequestLimitException.errMsg:{}", e.getMessage());
+        return ApiResult.fail(ResultCode.REQUEST_OVER_LIMIT, e.getMessage(), ApiResult.REQUEST_OVER_LIMIT);
+    }
 }
