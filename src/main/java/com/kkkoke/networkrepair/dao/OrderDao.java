@@ -22,7 +22,7 @@ public interface OrderDao {
                             String timeStart, String timeDistribution, String timeEnd, String feedback, Integer stars);
 
     // 审核工单
-    Integer checkOrder(Integer id, Integer progress);
+    Integer checkOrder(Integer id, Integer progress, String remark);
 
     // 查找所有报修工单
     List<Order> selectAllOrder();

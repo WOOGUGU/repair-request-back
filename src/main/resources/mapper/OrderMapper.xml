@@ -43,7 +43,8 @@
 
     <update id="checkOrder">
         update `order`
-        set progress = #{progress}
+        set progress = #{progress},
+            remark   = #{remark}
         where id = #{id}
     </update>
 
@@ -166,5 +167,6 @@
         <result property="feedback" column="feedback"/>
         <result property="timeEnd" column="time_end"/>
         <result property="stars" column="stars"/>
+        <result property="remark" column="remark"/>
     </resultMap>
 </mapper>

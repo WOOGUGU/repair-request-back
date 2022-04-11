@@ -45,6 +45,7 @@ layui.use(['table', 'form', 'layer'], function () {
                 , {field: 'timeEnd', title: '解决时间', width: 250}
                 , {field: 'feedback', title: '用户反馈', width: 250}
                 , {field: 'stars', title: '满意星级', width: 150}
+                , {field: 'remark', title: '备注', width: 150}
                 , {title: '操作', align: 'center', width: 180, toolbar: '#order'}
             ]
         ]
@@ -214,19 +215,6 @@ function toSendRepairman() {
     });
 }
 
-// 委派维修员
-// function toDelegateOrder() {
-//     layui.use(['table'], function () {
-//         var table = layui.table;
-//         table.on('tool(processedOrder)', function (obj) {
-//             var tr = obj.data;
-//             window.localStorage.setItem("orderId", tr.id);
-//             window.localStorage.setItem("progress", tr.progress);
-//             window.location.href = "/sendRepairman.html";
-//         })
-//     });
-// }
-
 // 工单列表跳转
 function backToOrderList() {
     window.location.href = "/orderList.html";
@@ -264,12 +252,14 @@ function rejectOrder() {
             var table = layui.table;
             table.on('tool(order)', function (obj) {
                 var tr = obj.data;
+                var info = prompt("请输入审核不通过的原因：");
                 $.ajax({
                     url: '/v2/order/checkOrder',
                     type: 'post',
                     data: {
                         "orderId": tr.id,
-                        "progress": 4
+                        "progress": 4,
+                        "remark": info
                     },
                     success: function (res) {
                         if (res.userMsg !== "") {
