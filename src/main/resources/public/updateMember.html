@@ -90,8 +90,12 @@
     s.parentNode.insertBefore(hm, s);
 })();</script>
 <script>
-    // 当前用户id渲染
+    // 当前用户信息渲染
     document.getElementById("userId").value = localStorage.getItem("toOperateUserId");
+    document.getElementById("uname").value = localStorage.getItem("operateUsername");
+    document.getElementById("password").value = localStorage.getItem("operatePassword");
+    document.getElementById("tel").value = localStorage.getItem("operateTel");
+    document.getElementById("name").value = localStorage.getItem("operateName");
 </script>
 </body>
 </html>

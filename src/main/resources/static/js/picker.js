@@ -202,6 +202,8 @@ function toUpdateLocation() {
         table.on('tool(location)', function (obj) {
             var tr = obj.data;
             window.localStorage.setItem("pickerId", tr.id);
+            window.localStorage.setItem("area", tr.area);
+            window.localStorage.setItem("position", tr.position);
             window.location.href = "/updateLocation.html";
         })
     });

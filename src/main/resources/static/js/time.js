@@ -196,6 +196,7 @@ function toUpdateTime() {
         table.on('tool(time)', function (obj) {
             var tr = obj.data;
             window.localStorage.setItem("timeId", tr.id);
+            window.localStorage.setItem("time", tr.picker);
             window.location.href = "/updateTime.html";
         })
     });

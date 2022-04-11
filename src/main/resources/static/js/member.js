@@ -293,7 +293,11 @@ function norUserToUpdateMember() {
         table.on('tool(user)', function (obj) {
             var tr = obj.data;
             window.localStorage.setItem("toOperateUserId", tr.id);
-            window.localStorage.setItem("lastLocation", "/userList.html");
+            window.localStorage.setItem("operateUsername", tr.username);
+            window.localStorage.setItem("operatePassword", tr.password);
+            window.localStorage.setItem("operateTel", tr.tel);
+            window.localStorage.setItem("operateName", tr.name);
+            window.localStorage.setItem("operateLastLocation", "/userList.html");
             window.location.href = "/updateMember.html";
         })
     });
@@ -306,6 +310,10 @@ function adminToUpdateMember() {
         table.on('tool(admin)', function (obj) {
             var tr = obj.data;
             window.localStorage.setItem("toOperateUserId", tr.id);
+            window.localStorage.setItem("operateUsername", tr.username);
+            window.localStorage.setItem("operatePassword", tr.password);
+            window.localStorage.setItem("operateTel", tr.tel);
+            window.localStorage.setItem("operateName", tr.name);
             window.localStorage.setItem("lastLocation", "/adminList.html");
             window.location.href = "/updateMember.html";
         })
@@ -319,6 +327,10 @@ function repairmanToUpdateMember() {
         table.on('tool(repairman)', function (obj) {
             var tr = obj.data;
             window.localStorage.setItem("toOperateUserId", tr.id);
+            window.localStorage.setItem("operateUsername", tr.username);
+            window.localStorage.setItem("operatePassword", tr.password);
+            window.localStorage.setItem("operateTel", tr.tel);
+            window.localStorage.setItem("operateName", tr.name);
             window.localStorage.setItem("lastLocation", "/repairmanList.html");
             window.location.href = "/updateMember.html";
         })
