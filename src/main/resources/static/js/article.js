@@ -17,8 +17,11 @@ layui.use(['table', 'form', 'layer'], function () {
                 {field: 'id', title: '编号', width: 50, sort: true, fixed: 'left'}
                 , {field: 'createTime', title: '创建时间', width: 250}
                 , {field: 'updateTime', title: '修改时间', width: 250}
-                , {field: 'contentPath', title: '内容路径', width: 250}
+                , {field: 'contentPath', title: '内容路径', width: 300}
                 , {field: 'author', title: '作者', width: 250}
+                , {field: 'title', title: '标题', width: 250}
+                , {field: 'des', title: '摘要', width: 250}
+                , {field: 'coverPath', title: '封面路径', width: 300}
                 , {
                 field: 'displayStatus', title: '状态', width: 250, templet: function (d) {
                     return d.displayStatus === 1 ? '展示' : '隐藏';
@@ -64,7 +67,9 @@ layui.use(['table', 'form', 'layer'], function () {
             , where: {
                 'articleId': $('#articleId').val(),
                 'author': $('#author').val(),
-                'displayStatus': $('#displayStatus').val()
+                'displayStatus': $('#displayStatus').val(),
+                'title': $('#title').val(),
+                'des': $('#des').val()
             }
             , page: {
                 curr: 1
@@ -171,6 +176,9 @@ function updateArticle() {
     var articleId = $("#articleId").val();
     var contentPath = $("#contentPath").val();
     var author = $("#author").val();
+    var title = $("#title").val();
+    var des = $("#des").val();
+    var coverPath = $("#coverPath").val();
     if (articleId === "") {
         alert("文章Id不能为空");
         return;
@@ -182,7 +190,10 @@ function updateArticle() {
                 "articleId": articleId,
                 "contentPath": contentPath,
                 "author": author,
-                "displayStatus": $('#displayStatus input[name="status"]:checked ').val()
+                "displayStatus": $('#displayStatus input[name="status"]:checked ').val(),
+                "title": title,
+                "des": des,
+                "coverPath": coverPath
             },
             success: function (res) {
                 if (res.userMsg !== "") {
@@ -205,6 +216,11 @@ function toUpdateArticle() {
         table.on('tool(article)', function (obj) {
             var tr = obj.data;
             window.localStorage.setItem("articleId", tr.id);
+            window.localStorage.setItem("contentPath", tr.contentPath);
+            window.localStorage.setItem("author", tr.author);
+            window.localStorage.setItem("title", tr.title);
+            window.localStorage.setItem("des", tr.des);
+            window.localStorage.setItem("coverPath", tr.coverPath);
             window.location.href = "/updateArticle.html";
         })
     });
