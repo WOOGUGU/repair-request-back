@@ -253,6 +253,12 @@ function rejectOrder() {
             table.on('tool(order)', function (obj) {
                 var tr = obj.data;
                 var info = prompt("请输入审核不通过的原因：");
+                if (info == null) {
+                    return;
+                } else if (info == '') {
+                    alert("请输入原因后重试");
+                    return;
+                }
                 $.ajax({
                     url: '/v2/order/checkOrder',
                     type: 'post',
