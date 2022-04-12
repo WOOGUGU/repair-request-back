@@ -1,10 +1,12 @@
 package com.kkkoke.networkrepair.controller.pojoController;
 
 import com.kkkoke.networkrepair.exception.DataHasNotExistedException;
+import com.kkkoke.networkrepair.exception.IllegalFormDataException;
 import com.kkkoke.networkrepair.exception.IllegalOperationException;
 import com.kkkoke.networkrepair.pojo.Order;
 import com.kkkoke.networkrepair.service.OrderService;
 import com.kkkoke.networkrepair.result.ApiResult;
+import com.kkkoke.networkrepair.util.annotation.RequestLimit;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -47,12 +49,13 @@ public class OrderController {
             @ApiImplicitParam(name = "des", value = "故障描述", required = true, paramType = "query"),
             @ApiImplicitParam(name = "position", value = "故障位置", required = true, paramType = "query"),
             @ApiImplicitParam(name = "timeSubscribe", value = "工单预约上门时间", required = true, paramType = "query")})
+    @RequestLimit(count = 5, time = 60000)
     @Secured({"ROLE_admin", "ROLE_user", "ROLE_repairman"})
     @PostMapping("/addOrder")
     public ApiResult addOrder(@NotBlank(message = "username can not be null") String username, @NotBlank(message = "sender can not be null") String sender,
                               @NotBlank(message = "tel can not be null") String tel, @NotBlank(message = "type can not be null") String type,
                               @NotBlank(message = "des can not be null") String des, @NotBlank(message = "position can not be null") String position,
-                              @NotBlank(message = "timeSubscribe can not be null") String timeSubscribe) {
+                              @NotBlank(message = "timeSubscribe can not be null") String timeSubscribe) throws IllegalFormDataException {
         orderService.addOrder(username, sender, tel, type, des, position, timeSubscribe);
         return ApiResult.success("工单添加成功");
     }
@@ -89,14 +92,15 @@ public class OrderController {
             @ApiImplicitParam(name = "timeStart", value = "工单发起时间", required = false, paramType = "query"),
             @ApiImplicitParam(name = "timeDistribution", value = "工单分配时间", required = false, paramType = "query"),
             @ApiImplicitParam(name = "timeEnd", value = "工单解决时间", required = false, paramType = "query"),
+            @ApiImplicitParam(name = "feedback", value = "用户反馈", required = false, paramType = "query"),
             @ApiImplicitParam(name = "feedback", value = "用户反馈", required = false, paramType = "query")})
     @Secured("ROLE_admin")
     @GetMapping("/selectOrder")
     public ApiResult selectOrder(Integer orderId, String username, String sender, String tel, String type,
                                  String des, String position, String timeSubscribe, Integer progress, String solver, String timeStart, String timeDistribution,
-                                 String timeEnd, String feedback) throws DataHasNotExistedException {
+                                 String timeEnd, String feedback, Integer stars) throws DataHasNotExistedException {
         List<Order> orders = orderService.selectOrder(orderId, username, sender, tel, type, des, position, timeSubscribe, progress,
-                solver, timeStart, timeDistribution, timeEnd, feedback);
+                solver, timeStart, timeDistribution, timeEnd, feedback, stars);
         return ApiResult.success(orders, "查找成功");
     }
 
@@ -124,32 +128,37 @@ public class OrderController {
             @ApiImplicitParam(name = "timeEnd", value = "工单解决时间", required = false, paramType = "query"),
             @ApiImplicitParam(name = "feedback", value = "用户反馈", required = false, paramType = "query")})
     @Secured("ROLE_admin")
+    @RequestLimit(count = 5, time = 60000)
     @PostMapping("/updateOrder")
     public ApiResult updateOrder(@NotNull(message = "orderId can not be null") Integer orderId, String username, String sender, String tel, String type,
                                  String des, String position, String timeSubscribe, Integer progress, String solver, String timeStart, String timeDistribution,
-                                 String timeEnd, String feedback) throws DataHasNotExistedException {
+                                 String timeEnd, String feedback, Integer stars) throws DataHasNotExistedException {
         orderService.updateOrder(orderId, username, sender, tel, type, des, position, timeSubscribe, progress,
-                solver, timeStart, timeDistribution, timeEnd, feedback);
+                solver, timeStart, timeDistribution, timeEnd, feedback, stars);
         return ApiResult.success("更新成功");
     }
 
     @ApiOperation(value = "提交报修工单反馈")
-    @ApiImplicitParam(name = "feedback", value = "用户反馈", required = false, paramType = "query")
+    @ApiImplicitParams({@ApiImplicitParam(name = "orderId", value = "工单id", required = true, paramType = "query"),
+            @ApiImplicitParam(name = "feedback", value = "用户反馈", required = false, paramType = "query"),
+            @ApiImplicitParam(name = "stars", value = "用户反馈", required = false, paramType = "query")})
     @Secured({"ROLE_admin", "ROLE_user"})
+    @RequestLimit(count = 5, time = 60000)
     @PostMapping("/updateOrderFeedback")
     public ApiResult updateOrderFeedback(@NotNull(message = "orderId can not be null") Integer orderId,
-                                         @NotBlank(message = "feedback can not be null") @Size(min = 1, max = 100) String feedback) throws DataHasNotExistedException {
-        orderService.updateOrderFeedback(orderId, feedback);
+                                         @NotBlank(message = "feedback can not be null") @Size(min = 1, max = 100) String feedback, Integer stars) throws DataHasNotExistedException {
+        orderService.updateOrderFeedback(orderId, feedback, stars);
         return ApiResult.success("更新成功");
     }
 
     @ApiOperation(value = "审核工单")
     @ApiImplicitParams({@ApiImplicitParam(name = "orderId", value = "工单id", required = true, paramType = "query"),
-            @ApiImplicitParam(name = "progress", value = "-2：审核不通过，-1：用户取消，0：待审核，1：待处理，2：已处理", required = false, paramType = "query")})
+            @ApiImplicitParam(name = "progress", value = "-2：审核不通过，-1：用户取消，0：待审核，1：待处理，2：已处理", required = false, paramType = "query"),
+            @ApiImplicitParam(name = "remark", value = "备注", required = true, paramType = "query"),})
     @Secured({"ROLE_admin"})
     @PostMapping("/checkOrder")
-    public ApiResult checkOrder(@NotNull(message = "orderId can not be null") Integer orderId, Integer progress) throws DataHasNotExistedException {
-        orderService.checkOrder(orderId, progress);
+    public ApiResult checkOrder(@NotNull(message = "orderId can not be null") Integer orderId, Integer progress, String remark) throws DataHasNotExistedException {
+        orderService.checkOrder(orderId, progress, remark);
         return ApiResult.success("处理成功");
     }
 
@@ -175,6 +184,7 @@ public class OrderController {
     @ApiImplicitParams({@ApiImplicitParam(name = "orderId", value = "工单id", required = true, paramType = "query"),
             @ApiImplicitParam(name = "username", value = "用户名", required = true, paramType = "query")})
     @Secured({"ROLE_admin", "ROLE_user"})
+    @RequestLimit(count = 5, time = 60000)
     @PostMapping("/cancelOrder")
     public ApiResult cancelOrder(@NotNull(message = "orderId can not be null") Integer orderId,
                                  @NotBlank(message = "username can not be null") String username) throws DataHasNotExistedException, IllegalOperationException {

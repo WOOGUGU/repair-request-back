@@ -6,6 +6,7 @@ import com.kkkoke.networkrepair.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
+import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -15,12 +16,19 @@ public class ArticleServiceImpl implements ArticleService {
     @Autowired
     private ArticleDao articleDao;
 
+    @Autowired
+    private RestTemplate restTemplate;
+
     //添加文章
     @Override
     public Article addArticle(String contentPath, String author, Integer displayStatus) {
         String createTime = LocalDateTime.now().toString();
         String updateTime = LocalDateTime.now().toString();
-        Article article = new Article(createTime, updateTime, contentPath, author, displayStatus);
+        String result = restTemplate.getForObject(contentPath, String.class);
+        String title = result.split("msg_title")[1].split("'")[1];
+        String des = result.split("msg_desc")[1].split("\"")[1];
+        String coverPath = result.split("cdn_url_235_1")[1].split("\"")[1];
+        Article article = new Article(createTime, updateTime, contentPath, author, displayStatus, title, des, coverPath);
         articleDao.addArticle(article);
         return article;
     }
@@ -38,14 +46,15 @@ public class ArticleServiceImpl implements ArticleService {
 
     //修改文章
     @Override
-    public Integer updateArticle(Integer articleId, String contentPath, String author, Integer displayStatus) throws DataHasNotExistedException {
+    public Integer updateArticle(Integer articleId, String contentPath, String author, Integer displayStatus,
+                                 String title, String des, String coverPath) throws DataHasNotExistedException {
         String updateTime = LocalDateTime.now().toString();
         // 查找数据库中是否存在此文章
         if (ObjectUtils.isEmpty(articleDao.selectArticleById(articleId))) {
             throw new DataHasNotExistedException("Article has not existed");
         } else {
             // 如果用户存在就更新数据
-            articleDao.updateArticle(articleId, updateTime, contentPath, author, displayStatus);
+            articleDao.updateArticle(articleId, updateTime, contentPath, author, displayStatus, title, des, coverPath);
             return 0;
         }
     }
@@ -116,8 +125,8 @@ public class ArticleServiceImpl implements ArticleService {
 
     //查找文章 后台接口
     @Override
-    public List<Article> selectArticle(Integer articleId, String author, Integer displayStatus) throws DataHasNotExistedException {
-        List<Article> articles = articleDao.selectArticle(articleId, author, displayStatus);
+    public List<Article> selectArticle(Integer articleId, String author, Integer displayStatus, String title, String des) throws DataHasNotExistedException {
+        List<Article> articles = articleDao.selectArticle(articleId, author, displayStatus, title, des);
         // 判断查询结果是否为空
         if (ObjectUtils.isEmpty(articles)) {
             throw new DataHasNotExistedException("Article has not existed");

@@ -9,12 +9,13 @@ layui.use(['table', 'form', 'layer'], function () {
         elem: '#noticeData'
         , height: 600
         , url: '/v2/notice/selectAllNotice'
+        , even: true
         , method: 'get'
         , where: {}
         , cols: [
             [ //表头
                 {field: 'id', title: '编号', width: 50, sort: true, fixed: 'left'}
-                , {field: 'content', title: '公告网址', width: 250}
+                , {field: 'content', title: '通知内容', width: 250}
                 , {field: 'author', title: '发布者', width: 250}
                 , {field: 'createTime', title: '创建时间', width: 250}
                 , {field: 'announceTime', title: '发布时间', width: 250}
@@ -216,6 +217,8 @@ function toUpdateNotice() {
         table.on('tool(notice)', function (obj) {
             var tr = obj.data;
             window.localStorage.setItem("noticeId", tr.id);
+            window.localStorage.setItem("noticeContent", tr.content);
+            window.localStorage.setItem("noticeAuthor", tr.author);
             window.location.href = "/updateNotice.html";
         })
     });

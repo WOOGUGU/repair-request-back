@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kkkoke.networkrepair.dao.UserDao">
     <insert id="addUser" parameterType="com.kkkoke.networkrepair.pojo.User">
-        insert into user(username, password, name)
-        values (#{username}, #{password}, #{name})
+        insert into user(username, password, name, tel)
+        values (#{username}, #{password}, #{name}, #{tel})
     </insert>
 
     <insert id="setRole" parameterType="int">
@@ -67,6 +67,10 @@
             <if test="name != null and name != ''">
                 and u.name like concat('%', #{name}, '%')
             </if>
+
+            <if test="tel != null and tel != ''">
+                and u.tel like concat('%', #{tel}, '%')
+            </if>
         </where>
     </select>
 
@@ -74,7 +78,8 @@
         update user
         set username = #{username},
             password = #{password},
-            name     = #{name}
+            name     = #{name},
+            tel      = #{tel}
         where id = #{id}
     </update>
 
@@ -91,21 +96,27 @@
     </select>
 
     <select id="selectAllAdmin" resultMap="userMap">
-        select u.id, u.name, u.username
-        from `user` u, user_role ur
-        where ur.rid = 2 and u.id = ur.uid
+        select u.id, u.name, u.username, u.tel
+        from `user` u,
+             user_role ur
+        where ur.rid = 2
+          and u.id = ur.uid
     </select>
 
     <select id="selectAllRepairman" resultMap="userMap">
-        select u.id, u.name, u.username
-        from `user` u, user_role ur
-        where ur.rid = 1 and u.id = ur.uid
+        select u.id, u.name, u.username, u.tel
+        from `user` u,
+             user_role ur
+        where ur.rid = 1
+          and u.id = ur.uid
     </select>
 
     <select id="selectAllNorUser" resultMap="userMap">
-        select u.id, u.name, u.username
-        from `user` u, user_role ur
-        where ur.rid = 3 and u.id = ur.uid
+        select u.id, u.name, u.username, u.tel
+        from `user` u,
+             user_role ur
+        where ur.rid = 3
+          and u.id = ur.uid
     </select>
 
     <resultMap id="userMap" type="com.kkkoke.networkrepair.pojo.User">
@@ -113,6 +124,7 @@
         <result property="username" column="username"/>
         <result property="password" column="password"/>
         <result property="name" column="name"/>
+        <result property="tel" column="tel"/>
     </resultMap>
 
     <resultMap id="userRole" type="com.kkkoke.networkrepair.pojo.Role">

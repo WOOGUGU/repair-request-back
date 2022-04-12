@@ -19,11 +19,25 @@ public class PropertiesUtil {
     @Value("${slideImgPath}")
     private String slideImgPath;
 
+    @Value("${startTime}")
+    private Integer startTime;
+
+    @Value("${endTime}")
+    private Integer endTime;
+
     public String getTokenExpiredTime() {
         return tokenExpiredTime;
     }
 
     public String getSlideImgPath() {
         return slideImgPath;
+    }
+
+    public Integer getStartTime() {
+        return startTime;
+    }
+
+    public Integer getEndTime() {
+        return endTime;
     }
 }

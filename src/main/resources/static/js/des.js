@@ -9,6 +9,7 @@ layui.use(['table', 'form', 'layer'], function () {
         elem: '#desData'
         , height: 600
         , url: '/v2/picker/selectAllPickerDes'
+        , even: true
         , method: 'get'
         , where: {}
         , cols: [
@@ -195,6 +196,7 @@ function toUpdateDes() {
         table.on('tool(des)', function (obj) {
             var tr = obj.data;
             window.localStorage.setItem("desId", tr.id);
+            window.localStorage.setItem("des", tr.picker);
             window.location.href = "/updateDes.html";
         })
     });

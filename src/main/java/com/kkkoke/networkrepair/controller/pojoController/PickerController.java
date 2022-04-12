@@ -9,6 +9,7 @@ import com.kkkoke.networkrepair.result.ResultCode;
 import com.kkkoke.networkrepair.service.PickerLocationService;
 import com.kkkoke.networkrepair.service.PickerService;
 import com.kkkoke.networkrepair.result.ApiResult;
+import com.kkkoke.networkrepair.util.PropertiesUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -22,7 +23,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
@@ -38,12 +38,13 @@ import java.util.List;
 public class PickerController {
     private final PickerLocationService pickerLocationService;
     private final PickerService pickerService;
+    private final PropertiesUtil propertiesUtil;
 
     @Autowired
-    public PickerController(PickerLocationService pickerLocationService,
-                            PickerService pickerService) {
+    public PickerController(PickerLocationService pickerLocationService, PickerService pickerService, PropertiesUtil propertiesUtil) {
         this.pickerLocationService = pickerLocationService;
         this.pickerService = pickerService;
+        this.propertiesUtil = propertiesUtil;
     }
 
     @ApiOperation(value = "增加报修地点")
@@ -180,11 +181,11 @@ public class PickerController {
     public ApiResult selectAllPicker() throws DataHasNotExistedException {
         HashMap<String, List<PickerResult>> pickers = pickerService.selectAllPicker();
         HashMap<String, Object> result = new HashMap<>();
-        String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        String after = LocalDate.now().plusDays(3).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        String start = LocalDate.now().plusDays(propertiesUtil.getStartTime()).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        String end = LocalDate.now().plusDays(propertiesUtil.getEndTime()).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         result.put("picker", pickers);
-        result.put("now", now);
-        result.put("after", after);
+        result.put("start", start);
+        result.put("end", end);
         return ApiResult.success(result, "查找成功");
     }
 

@@ -2,6 +2,7 @@ package com.kkkoke.networkrepair.service.Impl;
 
 import com.kkkoke.networkrepair.dao.OrderDao;
 import com.kkkoke.networkrepair.exception.DataHasNotExistedException;
+import com.kkkoke.networkrepair.exception.IllegalFormDataException;
 import com.kkkoke.networkrepair.exception.IllegalOperationException;
 import com.kkkoke.networkrepair.pojo.Order;
 import com.kkkoke.networkrepair.service.OrderService;
@@ -9,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -20,9 +23,16 @@ public class OrderServiceImpl implements OrderService {
     // 增加报修工单
     @Override
     public Order addOrder(String username, String sender, String tel, String type,
-                          String des, String position, String timeSubscribe) {
+                          String des, String position, String timeSubscribe) throws IllegalFormDataException {
         String timeStart = LocalDateTime.now().toString();
+        LocalDate now = LocalDate.now();
+        LocalDate after = LocalDate.now().plusDays(3);
+        LocalDate tempTime = LocalDate.parse(timeSubscribe.split(" ")[0], DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        if (tempTime.isBefore(now) || tempTime.isEqual(now) || tempTime.isAfter(after)) {
+            throw new IllegalFormDataException("预约时间过近，无法及时处理");
+        }
         Order order = new Order(username, sender, tel, type, des, position, timeSubscribe, timeStart);
+
         orderDao.addOrder(order);
         return order;
     }
@@ -55,8 +65,8 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<Order> selectOrder(Integer orderId, String username, String sender, String tel, String type,
                                    String des, String position, String timeSubscribe, Integer progress, String solver,
-                                   String timeStart, String timeDistribution, String timeEnd, String feedback) throws DataHasNotExistedException {
-        return orderDao.selectOrder(orderId, username, sender, tel, type, des, position, timeSubscribe, progress, solver, timeStart, timeDistribution, timeEnd, feedback);
+                                   String timeStart, String timeDistribution, String timeEnd, String feedback, Integer stars) throws DataHasNotExistedException {
+        return orderDao.selectOrder(orderId, username, sender, tel, type, des, position, timeSubscribe, progress, solver, timeStart, timeDistribution, timeEnd, feedback, stars);
     }
 
     // 查找所有报修工单
@@ -74,15 +84,56 @@ public class OrderServiceImpl implements OrderService {
     // 修改报修工单
     @Override
     public Order updateOrder(Integer orderId, String username, String sender, String tel, String type,
-                               String des, String position, String timeSubscribe, Integer progress,
-                               String solver, String timeStart, String timeDistribution, String timeEnd, String feedback) throws DataHasNotExistedException {
-        // 创建要修改的order对象
-        Order order = new Order(orderId, username, sender, tel, type, des, position, timeSubscribe, progress, solver, timeStart, timeDistribution, timeEnd, feedback);
+                             String des, String position, String timeSubscribe, Integer progress,
+                             String solver, String timeStart, String timeDistribution, String timeEnd, String feedback, Integer stars) throws DataHasNotExistedException {
+        Order order = orderDao.selectOrderById(orderId);
         // 查找数据库中是否存在此用户
-        if (ObjectUtils.isEmpty(orderDao.selectOrderById(orderId))) {
+        if (ObjectUtils.isEmpty(order)) {
             throw new DataHasNotExistedException("Order has not existed");
         } else {
             // 如果用户存在就更新数据
+            if (!ObjectUtils.isEmpty(username)) {
+                order.setUsername(username);
+            }
+            if (!ObjectUtils.isEmpty(sender)) {
+                order.setSender(sender);
+            }
+            if (!ObjectUtils.isEmpty(tel)) {
+                order.setTel(tel);
+            }
+            if (!ObjectUtils.isEmpty(type)) {
+                order.setType(type);
+            }
+            if (!ObjectUtils.isEmpty(des)) {
+                order.setDes(des);
+            }
+            if (!ObjectUtils.isEmpty(position)) {
+                order.setPosition(position);
+            }
+            if (!ObjectUtils.isEmpty(timeSubscribe)) {
+                order.setTimeSubscribe(timeSubscribe);
+            }
+            if (!ObjectUtils.isEmpty(progress)) {
+                order.setProgress(progress);
+            }
+            if (!ObjectUtils.isEmpty(solver)) {
+                order.setSolver(solver);
+            }
+            if (!ObjectUtils.isEmpty(timeStart)) {
+                order.setTimeStart(timeStart);
+            }
+            if (!ObjectUtils.isEmpty(timeDistribution)) {
+                order.setTimeDistribution(timeDistribution);
+            }
+            if (!ObjectUtils.isEmpty(timeEnd)) {
+                order.setTimeEnd(timeEnd);
+            }
+            if (!ObjectUtils.isEmpty(feedback)) {
+                order.setFeedback(feedback);
+            }
+            if (!ObjectUtils.isEmpty(stars)) {
+                order.setStars(stars);
+            }
             orderDao.updateOrder(order);
             return order;
         }
@@ -90,26 +141,35 @@ public class OrderServiceImpl implements OrderService {
 
     // 修改报修工单
     @Override
-    public Integer updateOrderFeedback(Integer orderId, String feedback) throws DataHasNotExistedException {
+    public Integer updateOrderFeedback(Integer orderId, String feedback, Integer stars) throws DataHasNotExistedException {
         // 查找数据库中是否存在此用户
         if (ObjectUtils.isEmpty(orderDao.selectOrderById(orderId))) {
             throw new DataHasNotExistedException("Order has not existed");
         } else {
             // 如果用户存在就更新数据
-            orderDao.updateOrderFeedback(orderId, feedback);
+            orderDao.updateOrderFeedback(orderId, feedback, stars);
             return 0;
         }
     }
 
     // 审核工单
     @Override
-    public Integer checkOrder(Integer orderId, Integer progress) throws DataHasNotExistedException {
+    public Integer checkOrder(Integer orderId, Integer progress, String remark) throws DataHasNotExistedException {
         // 查找数据库中是否存在此用户
-        if (ObjectUtils.isEmpty(orderDao.selectOrderById(orderId))) {
+        Order order = orderDao.selectOrderById(orderId);
+        if (ObjectUtils.isEmpty(order)) {
             throw new DataHasNotExistedException("Order has not existed");
         } else {
             // 如果用户存在就修改工单状态
-            orderDao.checkOrder(orderId, progress);
+            if (progress == 4) {
+                order.setTimeDistribution(null);
+                order.setSolver(null);
+                order.setTimeEnd(null);
+                order.setFeedback(null);
+                order.setStars(null);
+                orderDao.updateOrder(order);
+            }
+            orderDao.checkOrder(orderId, progress, remark);
             return 0;
         }
     }
@@ -162,7 +222,7 @@ public class OrderServiceImpl implements OrderService {
             throw new DataHasNotExistedException("Order has not existed");
         } else {
             String timeDistribution = LocalDateTime.now().toString();
-            orderDao.checkOrder(orderId, 1);
+            orderDao.checkOrder(orderId, 1, "");
             return orderDao.sendRepairman(orderId, solver, timeDistribution);
         }
     }
@@ -170,12 +230,12 @@ public class OrderServiceImpl implements OrderService {
     // 维修人员确定完成工单
     @Override
     public Integer finishOrder(Integer orderId) throws DataHasNotExistedException {
-        // 查找数据库中是否存在此用户
+        // 查找数据库中是否存在此工单
         if (ObjectUtils.isEmpty(orderDao.selectOrderById(orderId))) {
             throw new DataHasNotExistedException("Order has not existed");
         } else {
-            // 如果用户存在就修改工单状态
-            orderDao.checkOrder(orderId, 2);
+            // 如果工单存在就修改工单状态
+            orderDao.checkOrder(orderId, 2, "");
             orderDao.updateTimeEnd(orderId, LocalDateTime.now().toString());
             return 0;
         }

@@ -9,6 +9,7 @@ layui.use(['table', 'form', 'layer'], function () {
         elem: '#timeData'
         , height: 600
         , url: '/v2/picker/selectAllPickerTime'
+        , even: true
         , method: 'get'
         , where: {}
         , cols: [
@@ -195,6 +196,7 @@ function toUpdateTime() {
         table.on('tool(time)', function (obj) {
             var tr = obj.data;
             window.localStorage.setItem("timeId", tr.id);
+            window.localStorage.setItem("time", tr.picker);
             window.location.href = "/updateTime.html";
         })
     });

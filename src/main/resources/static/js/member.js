@@ -8,7 +8,8 @@ layui.use(['table', 'form', 'layer'], function () {
     table.render({
         elem: '#userData'
         , height: 600
-        , url: '/v2/user/selectAllUser'
+        , url: '/v2/user/selectAllNorUser'
+        , even: true
         , method: 'get'
         , where: {}
         , cols: [
@@ -21,6 +22,7 @@ layui.use(['table', 'form', 'layer'], function () {
                     return d.password == '*' ? '**********' : '**********';
                 }
             }
+                , {field: 'tel', title: '联系方式', width: 250}
                 , {
                 field: 'roles', title: '权限', width: 250, templet: function (d) {
                     return d.roles == '' ? '普通用户' : '普通用户';
@@ -67,7 +69,8 @@ layui.use(['table', 'form', 'layer'], function () {
                 'roleId': 3,
                 'userId': $('#userId').val(),
                 'username': $('#username').val(),
-                'name': $('#name').val()
+                'name': $('#name').val(),
+                'tel': $('#tel').val()
             }
             , page: {
                 curr: 1
@@ -104,12 +107,15 @@ function addMember() {
     var uname = $("#uname").val();
     var passwd = $("#passwd").val();
     var name = $("#name").val();
+    var tel = $("#tel").val();
     if (uname === "" || passwd === "") {
         alert("用户名或密码不能为空");
         return;
     } else if (name === "") {
         alert("真实姓名不能为空");
         return;
+    } else if (tel === "") {
+        alert("联系方式不能为空");
     } else {
         $.ajax({
             url: '/v2/user/addUser',
@@ -118,7 +124,8 @@ function addMember() {
                 "username": uname,
                 "password": hexMD5(passwd).toUpperCase(),
                 "name": name,
-                "roleType": $('#roleType input[name="status"]:checked ').val()
+                "roleType": $('#roleType input[name="status"]:checked ').val(),
+                "tel": tel
             },
             success: function (res) {
                 if (res.userMsg !== "") {
@@ -139,6 +146,7 @@ function updateMember() {
     var userId = $("#userId").val();
     var uname = $("#uname").val();
     var password = $("#password").val();
+    var tel = $("#tel").val();
     if (password !== "") {
         password = hexMD5(password).toUpperCase();
     }
@@ -151,7 +159,8 @@ function updateMember() {
             "username": uname,
             "password": password,
             "name": name,
-            "roleType": $('#roleType input[name="status"]:checked ').val()
+            "roleType": $('#roleType input[name="status"]:checked ').val(),
+            "tel": tel
         },
         success: function (res) {
             if (res.userMsg !== "") {
@@ -166,14 +175,88 @@ function updateMember() {
     });
 }
 
-// 删除用户
-function delMember() {
+// 删除普通用户
+function delNorUser() {
     layui.use('layer', function () {
         var $ = layui.jquery;
         // 删除操作
         layui.use(['table'], function () {
             var table = layui.table;
             table.on('tool(user)', function (obj) {
+                var tr = obj.data;
+                var msg = "您真的确定要删除吗？";
+                if (confirm(msg) === true) {
+                    $.ajax({
+                        url: '/v2/user/deleteUser',
+                        type: 'post',
+                        data: {
+                            "userId": tr.id
+                        },
+                        success: function (res) {
+                            if (res.userMsg !== "") {
+                                alert(res.userMsg);
+                                location.reload();
+                            } else {
+                                alert("发生未知错误，请重试");
+                            }
+                        },
+                        error: function () {
+                            alert("发生未知错误，请重试");
+                        }
+                    });
+                } else {
+                    return false;
+                }
+            })
+        });
+    })
+}
+
+// 删除管理员
+function delAdmin() {
+    layui.use('layer', function () {
+        var $ = layui.jquery;
+        // 删除操作
+        layui.use(['table'], function () {
+            var table = layui.table;
+            table.on('tool(admin)', function (obj) {
+                var tr = obj.data;
+                var msg = "您真的确定要删除吗？";
+                if (confirm(msg) === true) {
+                    $.ajax({
+                        url: '/v2/user/deleteUser',
+                        type: 'post',
+                        data: {
+                            "userId": tr.id
+                        },
+                        success: function (res) {
+                            if (res.userMsg !== "") {
+                                alert(res.userMsg);
+                                location.reload();
+                            } else {
+                                alert("发生未知错误，请重试");
+                            }
+                        },
+                        error: function () {
+                            alert("发生未知错误，请重试");
+                        }
+                    });
+                } else {
+                    return false;
+                }
+            })
+        });
+    })
+}
+
+// 删除维修员
+function delRepairman() {
+    layui.use('layer', function () {
+        var $ = layui.jquery;
+        // 删除操作
+        layui.use(['table'], function () {
+            var table = layui.table;
+            table.on('tool(repairman)', function (obj) {
                 var tr = obj.data;
                 var msg = "您真的确定要删除吗？";
                 if (confirm(msg) === true) {
@@ -210,7 +293,11 @@ function norUserToUpdateMember() {
         table.on('tool(user)', function (obj) {
             var tr = obj.data;
             window.localStorage.setItem("toOperateUserId", tr.id);
-            window.localStorage.setItem("lastLocation", "/userList.html");
+            window.localStorage.setItem("operateUsername", tr.username);
+            window.localStorage.setItem("operatePassword", tr.password);
+            window.localStorage.setItem("operateTel", tr.tel);
+            window.localStorage.setItem("operateName", tr.name);
+            window.localStorage.setItem("operateLastLocation", "/userList.html");
             window.location.href = "/updateMember.html";
         })
     });
@@ -223,6 +310,10 @@ function adminToUpdateMember() {
         table.on('tool(admin)', function (obj) {
             var tr = obj.data;
             window.localStorage.setItem("toOperateUserId", tr.id);
+            window.localStorage.setItem("operateUsername", tr.username);
+            window.localStorage.setItem("operatePassword", tr.password);
+            window.localStorage.setItem("operateTel", tr.tel);
+            window.localStorage.setItem("operateName", tr.name);
             window.localStorage.setItem("lastLocation", "/adminList.html");
             window.location.href = "/updateMember.html";
         })
@@ -236,6 +327,10 @@ function repairmanToUpdateMember() {
         table.on('tool(repairman)', function (obj) {
             var tr = obj.data;
             window.localStorage.setItem("toOperateUserId", tr.id);
+            window.localStorage.setItem("operateUsername", tr.username);
+            window.localStorage.setItem("operatePassword", tr.password);
+            window.localStorage.setItem("operateTel", tr.tel);
+            window.localStorage.setItem("operateName", tr.name);
             window.localStorage.setItem("lastLocation", "/repairmanList.html");
             window.location.href = "/updateMember.html";
         })
@@ -258,6 +353,7 @@ layui.use(['table', 'form', 'layer'], function () {
         elem: '#adminData'
         , height: 600
         , url: '/v2/user/selectAllAdmin'
+        , even: true
         , method: 'get'
         , where: {}
         , cols: [
@@ -270,6 +366,7 @@ layui.use(['table', 'form', 'layer'], function () {
                     return d.password == '*' ? '**********' : '**********';
                 }
             }
+                , {field: 'tel', title: '联系方式', width: 250}
                 , {
                 field: 'roles', title: '权限', width: 250, templet: function (d) {
                     return d.roles == '' ? '管理员' : '管理员';
@@ -316,7 +413,8 @@ layui.use(['table', 'form', 'layer'], function () {
                 'roleId': 2,
                 'userId': $('#userId').val(),
                 'username': $('#username').val(),
-                'name': $('#name').val()
+                'name': $('#name').val(),
+                'tel': $('#tel').val()
             }
             , page: {
                 curr: 1
@@ -359,6 +457,7 @@ layui.use(['table', 'form', 'layer'], function () {
         elem: '#repairmanData'
         , height: 600
         , url: '/v2/user/selectAllRepairman'
+        , even: true
         , method: 'get'
         , where: {}
         , cols: [
@@ -371,6 +470,7 @@ layui.use(['table', 'form', 'layer'], function () {
                     return d.password == '*' ? '**********' : '**********';
                 }
             }
+                , {field: 'tel', title: '联系方式', width: 250}
                 , {
                 field: 'roles', title: '权限', width: 250, templet: function (d) {
                     return d.roles == '' ? '维修员' : '维修员';
@@ -417,7 +517,8 @@ layui.use(['table', 'form', 'layer'], function () {
                 'roleId': 1,
                 'userId': $('#userId').val(),
                 'username': $('#username').val(),
-                'name': $('#name').val()
+                'name': $('#name').val(),
+                'tel': $('#tel').val()
             }
             , page: {
                 curr: 1

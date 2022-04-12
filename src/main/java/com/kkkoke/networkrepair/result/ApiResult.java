@@ -36,7 +36,7 @@ public class ApiResult {
     public final static String DATA_NOT_EXIST = "data not exist"; // 数据库中不存在此数据
     public final static String DATA_EXIST = "data exist"; // 数据库中已经存在此数据
     public final static String USER_WRONG = "user wrong"; // 此用户不存在
-    public final static String PASSWORD_WRONG = "password wrong"; // 密码错误
+    public final static String PWD_WRONG = "password wrong"; // 密码错误
     public final static String LOGIN_SUCCESS = "login success"; // 登录成功
     public final static String EXCEPTION_HAPPEN = "exception happen"; // 出现异常
     public final static String WRONG_TOKEN = "wrong token"; // token错误
@@ -52,6 +52,8 @@ public class ApiResult {
     public final static String PARAM_LENGTH_ERROR = "param length error"; // 参数长度错误
     public final static String EXPIRED_SESSION = "expired session"; // session过期
     public final static String EFFECTIVE_SESSION = "effective session"; // session有效
+    public final static String ILLegal_FORMDATA = "illegal form data"; // 非法的表单数据
+    public final static String REQUEST_OVER_LIMIT = "request over limit"; // 请求次数超限制
 
     public static ApiResult fail(String code, String userMsg, String errMsg) {
         return new ApiResult(code, null, userMsg, errMsg);

@@ -52,8 +52,9 @@
     s.parentNode.insertBefore(hm, s);
 })();</script>
 <script>
-    // 当前轮播图id渲染
+    // 当前轮播图信息渲染
     document.getElementById("slideId").value = localStorage.getItem("slideId");
+    document.getElementById("author").value = localStorage.getItem("slideAuthor");
 
     layui.use('upload', function () {
         var upload = layui.upload;

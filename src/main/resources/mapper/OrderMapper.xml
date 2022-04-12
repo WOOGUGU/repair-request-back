@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kkkoke.networkrepair.dao.OrderDao">
     <insert id="addOrder" parameterType="com.kkkoke.networkrepair.pojo.Order">
-        insert into `order`(username, sender, tel, type, des, position, time_subscribe, time_start)
-        values (#{username}, #{sender}, #{tel}, #{type}, #{des}, #{position}, #{timeSubscribe}, #{timeStart})
+        insert into `order`(username, sender, tel, type, des, position, time_subscribe, time_start, stars)
+        values (#{username}, #{sender}, #{tel}, #{type}, #{des}, #{position}, #{timeSubscribe}, #{timeStart}, #{stars})
     </insert>
 
     <delete id="deleteOrder" parameterType="int">
@@ -25,61 +25,26 @@
 
     <update id="updateOrder">
         update `order`
-        <set>
-            <if test="sender != null and sender != ''">
-                sender = #{sender}
-            </if>
-
-            <if test="tel != null and tel != ''">
-                ,tel = #{tel}
-            </if>
-
-            <if test="type != null and type != ''">
-                ,`type` = #{type}
-            </if>
-
-            <if test="des != null and des != ''">
-                ,des = #{des}
-            </if>
-
-            <if test="position != null and position != ''">
-                ,`position` = #{position}
-            </if>
-
-            <if test="timeSubscribe != null and timeSubscribe != ''">
-                ,time_subscribe = #{timeSubscribe}
-            </if>
-
-            <if test="solver != null and solver != ''">
-                ,solver = #{solver}
-            </if>
-
-            <if test="timeStart != null and timeStart != ''">
-                ,time_start = #{timeStart}
-            </if>
-
-            <if test="timeDistribution != null and timeDistribution != ''">
-                ,time_distribution = #{timeDistribution}
-            </if>
-
-            <if test="progress != null and progress != ''">
-                ,progress = #{progress}
-            </if>
-
-            <if test="feedback != null and feedback != ''">
-                ,feedback = #{feedback}
-            </if>
-
-            <if test="timeEnd != null and timeEnd != ''">
-                ,time_end = #{timeEnd}
-            </if>
-        </set>
+        set sender            = #{sender},
+            tel               = #{tel},
+            `type`            = #{type},
+            des               = #{des},
+            `position`        = #{position},
+            time_subscribe    = #{timeSubscribe},
+            solver            = #{solver},
+            time_start        = #{timeStart},
+            time_distribution = #{timeDistribution},
+            progress          = #{progress},
+            feedback          = #{feedback},
+            time_end          = #{timeEnd},
+            stars             = #{stars}
         where id = #{id}
     </update>
 
     <update id="checkOrder">
         update `order`
-        set progress = #{progress}
+        set progress = #{progress},
+            remark   = #{remark}
         where id = #{id}
     </update>
 
@@ -92,38 +57,38 @@
             </if>
 
             <if test="username != null and username != ''">
-                and username = #{username}
+                and username like concat('%', #{username}, '%')
             </if>
 
             <if test="sender != null and sender != ''">
-                and sender = #{sender}
+                and sender like concat('%', #{sender}, '%')
             </if>
 
             <if test="tel != null and tel != ''">
-                and tel = #{tel}
+                and tel like concat('%', #{tel}, '%')
             </if>
 
             <if test="sender != null and sender != ''">
-                and sender = #{sender}
+                and sender like concat('%', #{sender}, '%')
             </if>
 
             <if test="type != null and type != ''">
-                and type = #{type}
+                and type like concat('%', #{type}, '%')
             </if>
 
             <if test="des != null and des != ''">
-                and des = #{des}
+                and des like concat('%', #{des}, '%')
             </if>
 
             <if test="position != null and position != ''">
-                and position = #{position}
+                and position like concat('%', #{position}, '%')
             </if>
 
             <if test="timeSubscribe != null and timeSubscribe != ''">
                 and time_subscribe = #{timeSubscribe}
             </if>
 
-            <if test="progress != null and progress != ''">
+            <if test="progress != null">
                 and progress = #{progress}
             </if>
 
@@ -136,11 +101,15 @@
             </if>
 
             <if test="feedback != null and feedback != ''">
-                and feedback = #{feedback}
+                and feedback like concat('%', #{feedback}, '%')
             </if>
 
             <if test="timeDistribution != null and timeDistribution != ''">
                 and time_distribution = #{timeDistribution}
+            </if>
+
+            <if test="stars != null and stars != ''">
+                and stars = #{stars}
             </if>
         </where>
     </select>
@@ -165,7 +134,8 @@
 
     <update id="updateOrderFeedback">
         update `order`
-        set feedback = #{feedback}
+        set feedback = #{feedback},
+            stars    = #{stars}
         where id = #{id}
     </update>
 
@@ -196,5 +166,7 @@
         <result property="progress" column="progress"/>
         <result property="feedback" column="feedback"/>
         <result property="timeEnd" column="time_end"/>
+        <result property="stars" column="stars"/>
+        <result property="remark" column="remark"/>
     </resultMap>
 </mapper>

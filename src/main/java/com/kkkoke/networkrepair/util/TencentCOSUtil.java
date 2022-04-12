@@ -13,6 +13,7 @@ import com.qcloud.cos.region.Region;
 import com.qcloud.cos.transfer.TransferManager;
 import com.qcloud.cos.transfer.TransferManagerConfiguration;
 import com.qcloud.cos.transfer.Upload;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -24,6 +25,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+@Slf4j
 public class TencentCOSUtil {
 
     // 同时注意bucketName不能有大写字母
@@ -92,16 +94,16 @@ public class TencentCOSUtil {
                 result.add(cosObjectSummary);
                 // 文件的路径key
                 String key = cosObjectSummary.getKey();
-                System.out.println(key);
+                log.info("key:" + key);
                 // 文件的etag
                 String etag = cosObjectSummary.getETag();
-                System.out.println(etag);
+                log.info("etag:" + etag);
                 // 文件的长度
                 long fileSize = cosObjectSummary.getSize();
-                System.out.println(fileSize);
+                log.info("fileSize:" + fileSize);
                 // 文件的存储类型
                 String storageClasses = cosObjectSummary.getStorageClass();
-                System.out.println(storageClasses);
+                log.info("storageClasses:" + storageClasses);
             }
 
             String nextMarker = objectListing.getNextMarker();
@@ -174,7 +176,7 @@ public class TencentCOSUtil {
         // 存储桶的命名格式为 BucketName-APPID，此处填写的存储桶名称必须为此格式
         // 对象键(Key)是对象在存储桶中的唯一标识。详情请参见 [对象键](https://cloud.tencent.com/document/product/436/13324)
         URL url = cosclient.getObjectUrl(bucketName, key);
-        System.out.println(cosclient.getObjectUrl(bucketName, key));
+        log.info(String.valueOf(cosclient.getObjectUrl(bucketName, key)));
         return url;
     }
 

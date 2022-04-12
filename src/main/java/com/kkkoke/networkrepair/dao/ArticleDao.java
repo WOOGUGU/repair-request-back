@@ -14,7 +14,7 @@ public interface ArticleDao {
     int deleteArticle(Integer id);
 
     // 修改文章
-    int updateArticle(Integer id, String updateTime, String contentPath, String author, Integer displayStatus);
+    int updateArticle(Integer id, String updateTime, String contentPath, String author, Integer displayStatus, String title, String des, String coverPath);
 
     // 查看所有文章
     List<Article> selectAllArticle();
@@ -32,6 +32,6 @@ public interface ArticleDao {
     List<Article> selectArticleByAuthor(String author);
 
     //查找文章 后台接口
-    List<Article> selectArticle(Integer id, String author, Integer displayStatus);
+    List<Article> selectArticle(Integer id, String author, Integer displayStatus, String title, String des);
 }
 

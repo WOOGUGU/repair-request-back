@@ -198,6 +198,32 @@ public class ExceptionController {
     @ExceptionHandler(PasswordWrongException.class)
     public ApiResult passwordWrongException(PasswordWrongException e) {
         log.info("PasswordWrongException.errMsg:{}", e.getMessage());
-        return ApiResult.fail(ResultCode.PASSWORD_WRONG, "旧密码错误，请重新输入", ApiResult.PASSWORD_WRONG);
+        return ApiResult.fail(ResultCode.PWD_WRONG, "旧密码错误，请重新输入", ApiResult.PWD_WRONG);
+    }
+
+    /**
+     * 表单数据异常
+     *
+     * @param e 异常
+     * @return ApiResult
+     */
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(IllegalFormDataException.class)
+    public ApiResult illegalFormDataException(IllegalFormDataException e) {
+        log.info("IllegalFormDataException.errMsg:{}", e.getMessage());
+        return ApiResult.fail(ResultCode.ILLegal_FORMDATA, e.getMessage(), ApiResult.ILLegal_FORMDATA);
+    }
+
+    /**
+     * 请求次数超限制
+     *
+     * @param e 异常
+     * @return ApiResult
+     */
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(RequestLimitException.class)
+    public ApiResult requestLimitException(RequestLimitException e) {
+        log.info("RequestLimitException.errMsg:{}", e.getMessage());
+        return ApiResult.fail(ResultCode.REQUEST_OVER_LIMIT, e.getMessage(), ApiResult.REQUEST_OVER_LIMIT);
     }
 }

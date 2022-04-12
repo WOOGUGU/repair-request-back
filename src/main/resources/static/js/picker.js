@@ -9,6 +9,7 @@ layui.use(['table', 'form', 'layer'], function () {
         elem: '#locationData'
         , height: 600
         , url: '/v2/picker/selectLocationForBackend'
+        , even: true
         , method: 'get'
         , where: {}
         , cols: [
@@ -201,6 +202,8 @@ function toUpdateLocation() {
         table.on('tool(location)', function (obj) {
             var tr = obj.data;
             window.localStorage.setItem("pickerId", tr.id);
+            window.localStorage.setItem("area", tr.area);
+            window.localStorage.setItem("position", tr.position);
             window.location.href = "/updateLocation.html";
         })
     });
