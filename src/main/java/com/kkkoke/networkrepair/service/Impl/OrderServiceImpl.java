@@ -154,14 +154,13 @@ public class OrderServiceImpl implements OrderService {
 
     // 审核工单
     @Override
-    public Integer checkOrder(Integer orderId, Integer progress) throws DataHasNotExistedException {
+    public Integer checkOrder(Integer orderId, Integer progress, String remark) throws DataHasNotExistedException {
         // 查找数据库中是否存在此用户
         Order order = orderDao.selectOrderById(orderId);
         if (ObjectUtils.isEmpty(order)) {
             throw new DataHasNotExistedException("Order has not existed");
         } else {
             // 如果用户存在就修改工单状态
-            orderDao.checkOrder(orderId, progress);
             if (progress == 4) {
                 order.setTimeDistribution(null);
                 order.setSolver(null);
@@ -170,7 +169,7 @@ public class OrderServiceImpl implements OrderService {
                 order.setStars(null);
                 orderDao.updateOrder(order);
             }
-            orderDao.checkOrder(orderId, progress);
+            orderDao.checkOrder(orderId, progress, remark);
             return 0;
         }
     }
@@ -223,7 +222,7 @@ public class OrderServiceImpl implements OrderService {
             throw new DataHasNotExistedException("Order has not existed");
         } else {
             String timeDistribution = LocalDateTime.now().toString();
-            orderDao.checkOrder(orderId, 1);
+            orderDao.checkOrder(orderId, 1, "");
             return orderDao.sendRepairman(orderId, solver, timeDistribution);
         }
     }
@@ -231,12 +230,12 @@ public class OrderServiceImpl implements OrderService {
     // 维修人员确定完成工单
     @Override
     public Integer finishOrder(Integer orderId) throws DataHasNotExistedException {
-        // 查找数据库中是否存在此用户
+        // 查找数据库中是否存在此工单
         if (ObjectUtils.isEmpty(orderDao.selectOrderById(orderId))) {
             throw new DataHasNotExistedException("Order has not existed");
         } else {
-            // 如果用户存在就修改工单状态
-            orderDao.checkOrder(orderId, 2);
+            // 如果工单存在就修改工单状态
+            orderDao.checkOrder(orderId, 2, "");
             orderDao.updateTimeEnd(orderId, LocalDateTime.now().toString());
             return 0;
         }

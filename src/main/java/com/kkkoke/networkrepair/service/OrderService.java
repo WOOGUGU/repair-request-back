@@ -31,7 +31,7 @@ public interface OrderService {
                       String solver, String timeStart, String timeDistribution, String timeEnd, String feedback, Integer stars) throws DataHasNotExistedException;
 
     // 审核工单
-    Integer checkOrder(Integer orderId, Integer progress) throws DataHasNotExistedException;
+    Integer checkOrder(Integer orderId, Integer progress, String remark) throws DataHasNotExistedException;
 
     // 提交报修工单反馈
     Integer updateOrderFeedback(Integer orderId, String feedback, Integer stars) throws DataHasNotExistedException;

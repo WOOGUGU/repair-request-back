@@ -91,7 +91,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 String result = new ObjectMapper().writeValueAsString(ApiResult.fail(ResultCode.USERNAME_INVALID, null, "用户名不存在，请重试", ApiResult.USER_WRONG));
                 response.getWriter().println(result);
             } else {
-                String result = new ObjectMapper().writeValueAsString(ApiResult.fail(ResultCode.PASSWORD_WRONG, null, "密码错误，请重试", ApiResult.PASSWORD_WRONG));
+                String result = new ObjectMapper().writeValueAsString(ApiResult.fail(ResultCode.PWD_WRONG, null, "密码错误，请重试", ApiResult.PWD_WRONG));
                 response.getWriter().println(result);
             }
         })); // 认证失败处理

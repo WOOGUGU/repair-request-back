@@ -18,7 +18,7 @@ layui.use(['table', 'form', 'layer'], function () {
                 , {field: 'imgPath', title: '图片路径', width: 500}
                 , {field: 'author', title: '上传者', width: 250}
                 , {field: 'submitTime', title: '上传时间', width: 250}
-                , {title: '操作', align: 'center', width: 180, toolbar: '#slide'}
+                , {title: '操作', align: 'center', width: 100, toolbar: '#slide'}
             ]
         ]
         , id: 'tableSix'
@@ -133,6 +133,7 @@ function toUpdateSlide() {
         table.on('tool(slide)', function (obj) {
             var tr = obj.data;
             window.localStorage.setItem("slideId", tr.id);
+            window.localStorage.setItem("slideAuthor", tr.author);
             window.location.href = "/updateSlide.html";
         })
     });

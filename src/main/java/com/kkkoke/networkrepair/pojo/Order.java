@@ -23,12 +23,12 @@ public class Order {
     private String timeEnd; // 工单解决时间
     private String feedback; // 用户反馈
     private Integer stars; // 工单完成后的评价星级
-
+    private String remark; // 备注
 
     // 不带id的报修工单构造函数
     public Order(String username, String sender, String tel, String type, String des, String position,
                  String timeSubscribe, Integer progress, String solver, String timeStart,
-                 String timeDistribution, String timeEnd, String feedback, Integer stars) {
+                 String timeDistribution, String timeEnd, String feedback, Integer stars, String remark) {
         this.username = username;
         this.sender = sender;
         this.tel = tel;
@@ -43,6 +43,7 @@ public class Order {
         this.timeEnd = timeEnd;
         this.feedback = feedback;
         this.stars = stars;
+        this.remark = remark;
     }
 
     // 添加工单时的构造函数

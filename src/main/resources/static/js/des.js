@@ -196,6 +196,7 @@ function toUpdateDes() {
         table.on('tool(des)', function (obj) {
             var tr = obj.data;
             window.localStorage.setItem("desId", tr.id);
+            window.localStorage.setItem("des", tr.picker);
             window.location.href = "/updateDes.html";
         })
     });
