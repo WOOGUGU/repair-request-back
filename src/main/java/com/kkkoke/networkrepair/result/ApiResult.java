@@ -36,7 +36,7 @@ public class ApiResult {
     public final static String DATA_NOT_EXIST = "data not exist"; // 数据库中不存在此数据
     public final static String DATA_EXIST = "data exist"; // 数据库中已经存在此数据
     public final static String USER_WRONG = "user wrong"; // 此用户不存在
-    public final static String PASSWORD_WRONG = "password wrong"; // 密码错误
+    public final static String PWD_WRONG = "password wrong"; // 密码错误
     public final static String LOGIN_SUCCESS = "login success"; // 登录成功
     public final static String EXCEPTION_HAPPEN = "exception happen"; // 出现异常
     public final static String WRONG_TOKEN = "wrong token"; // token错误

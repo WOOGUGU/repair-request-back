@@ -11,7 +11,7 @@ public class ResultCode {
 
     public static final String USERNAME_INVALID = "A0201";
 
-    public static final String PASSWORD_WRONG = "A0202";
+    public static final String PWD_WRONG = "A0202";
 
     public static final String INVALID_OPERATION = "A0414";
 

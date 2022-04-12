@@ -198,7 +198,7 @@ public class ExceptionController {
     @ExceptionHandler(PasswordWrongException.class)
     public ApiResult passwordWrongException(PasswordWrongException e) {
         log.info("PasswordWrongException.errMsg:{}", e.getMessage());
-        return ApiResult.fail(ResultCode.PASSWORD_WRONG, "旧密码错误，请重新输入", ApiResult.PASSWORD_WRONG);
+        return ApiResult.fail(ResultCode.PWD_WRONG, "旧密码错误，请重新输入", ApiResult.PWD_WRONG);
     }
 
     /**
