@@ -1,10 +1,12 @@
 package com.kkkoke.networkrepair.service.Impl;
 
 import com.kkkoke.networkrepair.dao.OrderDao;
+import com.kkkoke.networkrepair.dao.UserDao;
 import com.kkkoke.networkrepair.exception.DataHasNotExistedException;
 import com.kkkoke.networkrepair.exception.IllegalFormDataException;
 import com.kkkoke.networkrepair.exception.IllegalOperationException;
 import com.kkkoke.networkrepair.pojo.Order;
+import com.kkkoke.networkrepair.pojo.User;
 import com.kkkoke.networkrepair.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,8 +19,13 @@ import java.util.List;
 
 @Service
 public class OrderServiceImpl implements OrderService {
-    @Autowired
-    private OrderDao orderDao;
+    private final OrderDao orderDao;
+    private final UserDao userDao;
+
+    public OrderServiceImpl(OrderDao orderDao, UserDao userDao) {
+        this.orderDao = orderDao;
+        this.userDao = userDao;
+    }
 
     // 增加报修工单
     @Override
@@ -222,8 +229,9 @@ public class OrderServiceImpl implements OrderService {
             throw new DataHasNotExistedException("Order has not existed");
         } else {
             String timeDistribution = LocalDateTime.now().toString();
+            User repairman = userDao.selectUserByUsername(solver);
             orderDao.checkOrder(orderId, 1, "");
-            return orderDao.sendRepairman(orderId, solver, timeDistribution);
+            return orderDao.sendRepairman(orderId, solver + " " + repairman.getTel(), timeDistribution);
         }
     }
 

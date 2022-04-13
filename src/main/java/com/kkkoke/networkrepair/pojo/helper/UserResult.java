@@ -15,13 +15,15 @@ public class UserResult implements Serializable, UserDetails {
     private String username; // 用户名/账号
     private String password; // 用户密码
     private String name; // 用户真实姓名
+    private String tel; // 用户联系方式
     private List<GrantedAuthority> authorities; // 关系属性  用来存储当前用户所有角色信息
 
-    public UserResult(Integer id, String username, String password, String name, List<GrantedAuthority> authorities) {
+    public UserResult(Integer id, String username, String password, String name, String tel, List<GrantedAuthority> authorities) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.name = name;
+        this.tel = tel;
         this.authorities = authorities;
     }
 

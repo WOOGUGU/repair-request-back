@@ -117,7 +117,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     String result = new ObjectMapper().writeValueAsString(ApiResult.fail(ResultCode.UNAUTHENTICATED, null, "请登录之后再访问该资源", ApiResult.UNAUTHENTICATED));
                     response.getWriter().println(result);
                 }))
-                .and().rememberMe().tokenValiditySeconds(Integer.parseInt(propertiesUtil.getTokenExpiredTime())) // 设置token过期时间为7天
+                .and().rememberMe().tokenValiditySeconds(Integer.parseInt(propertiesUtil.getTokenExpiredTime())) // 设置token过期时间
                 .and()
                 .logout()
 //                .logoutUrl("/logout")
