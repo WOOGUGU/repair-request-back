@@ -1,5 +1,8 @@
 server:
   port: 8090
+  servlet:
+    session:
+      timeout: 604800s  # 设置sessoin过期时间 7天
 
 spring:
   datasource:
@@ -39,11 +42,3 @@ logging:
   file:
     path: /home/projects/baoxiu/log
 #    path: /Users/kkkoke/IdeaProjects/network-repair/log
-
-#cos:
-#  baseUrl: images-1257191112.cos.ap-nanjing.myqcloud.com
-#  accessKey: AKIDWt0rRmqd8ON6YjfKipfDVWGjvqUshHbf
-#  secretKey: oLaZHjvpSotiGYZJn0waz80buxkGVUCe
-#  regionName: ap-nanjing
-#  bucketName: images-1257191112
-#  folderPrefix: /files
