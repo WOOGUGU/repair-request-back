@@ -108,6 +108,7 @@ function addMember() {
     var passwd = $("#passwd").val();
     var name = $("#name").val();
     var tel = $("#tel").val();
+    let pattern = /^1(3\d|4[5-9]|5[0-35-9]|6[567]|7[0-8]|8\d|9[0-35-9])\d{8}$/;
     if (uname === "" || passwd === "") {
         alert("用户名或密码不能为空");
         return;
@@ -116,6 +117,10 @@ function addMember() {
         return;
     } else if (tel === "") {
         alert("联系方式不能为空");
+        return;
+    } else if (!pattern.test(tel)) {
+        alert("请输入正确的手机号");
+        return;
     } else {
         $.ajax({
             url: '/v2/user/addUser',
@@ -147,10 +152,15 @@ function updateMember() {
     var uname = $("#uname").val();
     var password = $("#password").val();
     var tel = $("#tel").val();
+    var name = $("#name").val();
     if (password !== "") {
         password = hexMD5(password).toUpperCase();
     }
-    var name = $("#name").val();
+    let pattern = /^1(3\d|4[5-9]|5[0-35-9]|6[567]|7[0-8]|8\d|9[0-35-9])\d{8}$/;
+    if (!pattern.test(tel)) {
+        alert("请输入正确的手机号");
+        return;
+    }
     $.ajax({
         url: '/v2/user/updateUser',
         type: 'post',
