@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kkkoke.networkrepair.dao.ArticleDao">
+    <insert id="addArticle" parameterType="com.kkkoke.networkrepair.pojo.Article">
+        insert into article(create_time, update_time, content_path, author, display_status, title, des, cover_path)
+        values (#{createTime}, #{updateTime}, #{contentPath}, #{author}, #{displayStatus}, #{title}, #{des},
+                #{coverPath})
+    </insert>
+
+    <delete id="deleteArticle" parameterType="int">
+        delete
+        from article
+        where id = #{id}
+    </delete>
+
+    <update id="updateArticle">
+        update article
+        set update_time    = #{updateTime},
+            content_path   = #{contentPath},
+            author         = #{author},
+            display_status = #{displayStatus},
+            title          = #{title},
+            des            = #{des},
+            cover_path     = #{coverPath}
+        where id = #{id}
+    </update>
+
+    <select id="selectAllArticle" resultMap="articleMap">
+        select *
+        from article
+        order by update_time desc
+    </select>
+
+    <select id="selectArticleById" parameterType="int" resultMap="articleMap">
+        select *
+        from article
+        where id = #{id}
+    </select>
+
+    <select id="selectArticleByCreateTime" parameterType="String" resultMap="articleMap">
+        select *
+        from article
+        where create_time = #{createTime}
+    </select>
+
+    <select id="selectArticleByUpdateTime" parameterType="String" resultMap="articleMap">
+        select *
+        from article
+        where update_time = #{updateTime}
+    </select>
+
+    <select id="selectArticleByAuthor" parameterType="String" resultMap="articleMap">
+        select *
+        from article
+        where author = #{author}
+    </select>
+
+    <select id="selectArticle" resultMap="articleMap">
+        select *
+        from article
+        <where>
+            <if test="id != null and id != ''">
+                id = #{id}
+            </if>
+
+            <if test="author != null and author != ''">
+                and author like concat('%', #{author}, '%')
+            </if>
+
+            <if test="displayStatus != null and displayStatus != ''">
+                and display_status = #{displayStatus}
+            </if>
+
+            <if test="title != null and title != ''">
+                and title like concat('%', #{title}, '%')
+            </if>
+
+            <if test="des != null and des != ''">
+                and des like concat('%', #{des}, '%')
+            </if>
+        </where>
+    </select>
+
+    <resultMap id="articleMap" type="com.kkkoke.networkrepair.pojo.Article">
+        <id property="id" column="id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="contentPath" column="content_path"/>
+        <result property="author" column="author"/>
+        <result property="displayStatus" column="display_status"/>
+        <result property="title" column="title"/>
+        <result property="des" column="des"/>
+        <result property="coverPath" column="cover_path"/>
+    </resultMap>
+</mapper>

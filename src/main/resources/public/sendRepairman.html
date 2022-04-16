@@ -57,6 +57,7 @@
     s.parentNode.insertBefore(hm, s);
 })();</script>
 </body>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     // 工单id渲染
     document.getElementById("orderId").value = localStorage.getItem("orderId");
@@ -97,7 +98,12 @@
                 });
             },
             error: function (res) {
-                alert("出现异常，请重试");
+                Swal.fire({
+                    icon: 'error',
+                    title: '发送失败',
+                    text: '出现异常，请重试',
+                })
+                //alert("出现异常，请重试");
             }
         });
     });

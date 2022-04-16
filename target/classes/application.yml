@@ -1,0 +1,44 @@
+server:
+  port: 8090
+  servlet:
+    session:
+      timeout: 604800s  # 设置sessoin过期时间 7天
+
+spring:
+  datasource:
+    username: root
+#    password: 123456
+    password: MySQL8.0
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://liangtianyi.com:3306/networkrepair?serverTimezone=UTC&characterEncoding=UTF-8
+    hikari:
+      minimum-idle: 8
+      maximum-pool-size: 20
+      auto-commit: true
+      idle-timeout: 30000
+      pool-name: DatebookHikariCP
+      max-lifetime: 1800000
+      connection-timeout: 3000000
+      connection-test-query: select 1
+  jpa:
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: update
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+        format_sql: true
+    show-sql: true
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+
+#配置日志
+logging:
+  #配置日志文件路径
+  level:
+    com.kkkoke.networkrepair.dao: debug #日志打印 sql 语句
+    org.springfromework.web: debug
+    org.hibernate: error
+  file:
+    path: /home/projects/baoxiu/log
+#    path: /Users/kkkoke/IdeaProjects/network-repair/log

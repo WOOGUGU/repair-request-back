@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kkkoke.networkrepair.dao.OrderDao">
+    <insert id="addOrder" parameterType="com.kkkoke.networkrepair.pojo.Order">
+        insert into `order`(username, sender, tel, type, des, position, time_subscribe, time_start, stars)
+        values (#{username}, #{sender}, #{tel}, #{type}, #{des}, #{position}, #{timeSubscribe}, #{timeStart}, #{stars})
+    </insert>
+
+    <delete id="deleteOrder" parameterType="int">
+        delete
+        from `order`
+        where id = #{id}
+    </delete>
+
+    <select id="selectOrderById" parameterType="int" resultMap="orderMap">
+        select *
+        from `order`
+        where id = #{id}
+    </select>
+
+    <select id="selectAllOrder" resultMap="orderMap">
+        select *
+        from `order`
+    </select>
+
+    <update id="updateOrder">
+        update `order`
+        set sender            = #{sender},
+            tel               = #{tel},
+            `type`            = #{type},
+            des               = #{des},
+            `position`        = #{position},
+            time_subscribe    = #{timeSubscribe},
+            solver            = #{solver},
+            time_start        = #{timeStart},
+            time_distribution = #{timeDistribution},
+            progress          = #{progress},
+            feedback          = #{feedback},
+            time_end          = #{timeEnd},
+            stars             = #{stars}
+        where id = #{id}
+    </update>
+
+    <update id="checkOrder">
+        update `order`
+        set progress = #{progress},
+            remark   = #{remark}
+        where id = #{id}
+    </update>
+
+    <select id="selectOrder" resultMap="orderMap">
+        select *
+        from `order`
+        <where>
+            <if test="id != null and id != ''">
+                id = #{id}
+            </if>
+
+            <if test="username != null and username != ''">
+                and username like concat('%', #{username}, '%')
+            </if>
+
+            <if test="sender != null and sender != ''">
+                and sender like concat('%', #{sender}, '%')
+            </if>
+
+            <if test="tel != null and tel != ''">
+                and tel like concat('%', #{tel}, '%')
+            </if>
+
+            <if test="sender != null and sender != ''">
+                and sender like concat('%', #{sender}, '%')
+            </if>
+
+            <if test="type != null and type != ''">
+                and type like concat('%', #{type}, '%')
+            </if>
+
+            <if test="des != null and des != ''">
+                and des like concat('%', #{des}, '%')
+            </if>
+
+            <if test="position != null and position != ''">
+                and position like concat('%', #{position}, '%')
+            </if>
+
+            <if test="timeSubscribe != null and timeSubscribe != ''">
+                and time_subscribe = #{timeSubscribe}
+            </if>
+
+            <if test="progress != null">
+                and progress = #{progress}
+            </if>
+
+            <if test="timeStart != null and timeStart != ''">
+                and time_start = #{timeStart}
+            </if>
+
+            <if test="timeDistribution != null and timeDistribution != ''">
+                and time_distribution = #{timeDistribution}
+            </if>
+
+            <if test="feedback != null and feedback != ''">
+                and feedback like concat('%', #{feedback}, '%')
+            </if>
+
+            <if test="timeDistribution != null and timeDistribution != ''">
+                and time_distribution = #{timeDistribution}
+            </if>
+
+            <if test="stars != null and stars != ''">
+                and stars = #{stars}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectAllOrderOfUser" resultMap="orderMap">
+        select *
+        from `order`
+        where username = #{username};
+    </select>
+
+    <select id="selectAllOrderOfRepairman" resultMap="orderMap">
+        select *
+        from `order`
+        where solver = #{name};
+    </select>
+
+    <update id="cancelOrder">
+        update `order`
+        set progress = #{progress}
+        where id = #{id}
+    </update>
+
+    <update id="updateOrderFeedback">
+        update `order`
+        set feedback = #{feedback},
+            stars    = #{stars}
+        where id = #{id}
+    </update>
+
+    <update id="updateTimeEnd">
+        update `order`
+        set time_end = #{timeEnd}
+        where id = #{id}
+    </update>
+
+    <update id="sendRepairman">
+        update `order`
+        set solver            = #{solver},
+            time_distribution = #{timeDistribution}
+        where id = #{id}
+    </update>
+
+    <resultMap id="orderMap" type="com.kkkoke.networkrepair.pojo.Order">
+        <id property="id" column="id"/>
+        <result property="sender" column="sender"/>
+        <result property="tel" column="tel"/>
+        <result property="type" column="type"/>
+        <result property="des" column="des"/>
+        <result property="position" column="position"/>
+        <result property="timeSubscribe" column="time_subscribe"/>
+        <result property="solver" column="solver"/>
+        <result property="timeStart" column="time_start"/>
+        <result property="timeDistribution" column="time_distribution"/>
+        <result property="progress" column="progress"/>
+        <result property="feedback" column="feedback"/>
+        <result property="timeEnd" column="time_end"/>
+        <result property="stars" column="stars"/>
+        <result property="remark" column="remark"/>
+    </resultMap>
+</mapper>

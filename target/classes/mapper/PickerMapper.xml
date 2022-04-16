@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kkkoke.networkrepair.dao.PickerDao">
+    <insert id="addPicker" parameterType="com.kkkoke.networkrepair.pojo.Picker">
+        insert into `picker`(type , value)
+        values(#{type}, #{value})
+    </insert>
+
+    <delete id="deletePickerById" parameterType="int">
+        delete from `picker`
+        where id = #{id}
+    </delete>
+
+    <delete id="deletePickerByValue" parameterType="string">
+        delete from `picker`
+        where value = #{value}
+    </delete>
+
+    <select id="selectPickerById" resultMap="pickerMap">
+        select * from `picker`
+        where id = #{id}
+    </select>
+
+    <select id="selectPickerByValue" resultMap="pickerMap">
+        select * from `picker`
+        where value = #{value}
+    </select>
+
+    <select id="selectAllPickerTime" resultMap="pickerResultMap">
+        select id, value from `picker`
+        where type = 'time'
+    </select>
+
+    <select id="selectAllPickerDes" resultMap="pickerResultMap">
+        select id, value from `picker`
+        where type = 'des'
+    </select>
+
+    <update id="updatePicker">
+        update `picker`
+        set type = #{type}, value = #{value}
+        where id = #{id}
+    </update>
+
+    <resultMap id="pickerMap" type="com.kkkoke.networkrepair.pojo.Picker">
+        <id property="id" column="id"/>
+        <result property="time" column="time"/>
+        <result property="type" column="type"/>
+    </resultMap>
+
+    <resultMap id="pickerResultMap" type="com.kkkoke.networkrepair.pojo.helper.PickerResult">
+        <id property="id" column="id"/>
+        <result property="picker" column="value"/>
+    </resultMap>
+</mapper>

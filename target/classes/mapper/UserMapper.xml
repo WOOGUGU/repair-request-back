@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kkkoke.networkrepair.dao.UserDao">
+    <insert id="addUser" parameterType="com.kkkoke.networkrepair.pojo.User">
+        insert into user(username, password, name, tel)
+        values (#{username}, #{password}, #{name}, #{tel})
+    </insert>
+
+    <insert id="setRole" parameterType="int">
+        insert into user_role(uid, rid)
+        values (#{userId}, #{roleType})
+    </insert>
+
+    <update id="updateRole" parameterType="int">
+        update user_role
+        set rid = #{roleType}
+        where uid = #{userId}
+    </update>
+
+    <delete id="deleteUser">
+        delete
+        from user
+        <where>
+            <if test="id != null and id != ''">
+                id = #{id}
+            </if>
+
+            <if test="username != null and username != ''">
+                and username = #{username}
+            </if>
+        </where>
+    </delete>
+
+    <select id="selectUserByUsername" parameterType="string" resultType="com.kkkoke.networkrepair.pojo.User">
+        select *
+        from user
+        where username = #{username}
+    </select>
+
+    <select id="selectUserById" parameterType="int" resultType="com.kkkoke.networkrepair.pojo.User">
+        select *
+        from user
+        where id = #{id}
+    </select>
+
+    <select id="selectAllUser" resultMap="userMap">
+        select *
+        from user
+    </select>
+
+    <select id="selectUser" resultMap="userMap">
+        select u.*
+        from user u join user_role ur
+        <where>
+            <if test="roleId != null and roleId != ''">
+                ur.rid = #{roleId} and u.id = ur.uid
+            </if>
+
+            <if test="id != null and id != ''">
+                and u.id = #{id}
+            </if>
+
+            <if test="username != null and username != ''">
+                and u.username like concat('%', #{username}, '%')
+            </if>
+
+            <if test="name != null and name != ''">
+                and u.name like concat('%', #{name}, '%')
+            </if>
+
+            <if test="tel != null and tel != ''">
+                and u.tel like concat('%', #{tel}, '%')
+            </if>
+        </where>
+    </select>
+
+    <update id="updateUser">
+        update user
+        set username = #{username},
+            password = #{password},
+            name     = #{name},
+            tel      = #{tel}
+        where id = #{id}
+    </update>
+
+    <select id="loadUserByUsername" resultMap="userMap">
+        select *
+        from user
+        where username = #{username}
+    </select>
+
+    <select id="getRolesByUid" resultMap="userRole">
+        select r.id, r.name, r.name_zh nameZh
+        from role r, user_role ur
+        where r.id = ur.rid and ur.uid = #{uid}
+    </select>
+
+    <select id="selectAllAdmin" resultMap="userMap">
+        select u.id, u.name, u.username, u.tel
+        from `user` u,
+             user_role ur
+        where ur.rid = 2
+          and u.id = ur.uid
+    </select>
+
+    <select id="selectAllRepairman" resultMap="userMap">
+        select u.id, u.name, u.username, u.tel
+        from `user` u,
+             user_role ur
+        where ur.rid = 1
+          and u.id = ur.uid
+    </select>
+
+    <select id="selectAllNorUser" resultMap="userMap">
+        select u.id, u.name, u.username, u.tel
+        from `user` u,
+             user_role ur
+        where ur.rid = 3
+          and u.id = ur.uid
+    </select>
+
+    <resultMap id="userMap" type="com.kkkoke.networkrepair.pojo.User">
+        <id property="id" column="id"/>
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
+        <result property="name" column="name"/>
+        <result property="tel" column="tel"/>
+    </resultMap>
+
+    <resultMap id="userRole" type="com.kkkoke.networkrepair.pojo.Role">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="nameZh" column="nameZh"/>
+    </resultMap>
+</mapper>
