@@ -23,8 +23,7 @@ public class ExceptionController {
     /**
      * Token过期
      *
-     * @param e
-     *            异常
+     * @param e 异常
      * @return ApiResult
      */
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
@@ -37,8 +36,7 @@ public class ExceptionController {
     /**
      * Token错误
      *
-     * @param e
-     *            异常
+     * @param e 异常
      * @return ApiResult
      */
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
@@ -51,8 +49,7 @@ public class ExceptionController {
     /**
      * 缺失query参数
      *
-     * @param e
-     *            异常
+     * @param e 异常
      * @return ApiResult
      */
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -65,8 +62,7 @@ public class ExceptionController {
     /**
      * 用户已经存在
      *
-     * @param e
-     *            异常
+     * @param e 异常
      * @return ApiResult
      */
     @ResponseStatus(HttpStatus.OK)
@@ -79,8 +75,7 @@ public class ExceptionController {
     /**
      * 用户不存在
      *
-     * @param e
-     *            异常
+     * @param e 异常
      * @return ApiResult
      */
     @ResponseStatus(HttpStatus.OK)
@@ -93,8 +88,7 @@ public class ExceptionController {
     /**
      * 数据已经存在
      *
-     * @param e
-     *            异常
+     * @param e 异常
      * @return ApiResult
      */
     @ResponseStatus(HttpStatus.OK)
@@ -107,8 +101,7 @@ public class ExceptionController {
     /**
      * 数据不存在
      *
-     * @param e
-     *            异常
+     * @param e 异常
      * @return ApiResult
      */
     @ResponseStatus(HttpStatus.OK)
@@ -121,8 +114,7 @@ public class ExceptionController {
     /**
      * 参数错误
      *
-     * @param e
-     *            异常
+     * @param e 异常
      * @return ApiResult
      */
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -135,8 +127,7 @@ public class ExceptionController {
     /**
      * 访问受限
      *
-     * @param e
-     *            异常
+     * @param e 异常
      * @return ApiResult
      */
     @ResponseStatus(HttpStatus.FORBIDDEN)
@@ -149,8 +140,7 @@ public class ExceptionController {
     /**
      * 请求方式不符合
      *
-     * @param e
-     *            异常
+     * @param e 异常
      * @return ApiResult
      */
     @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
@@ -163,8 +153,7 @@ public class ExceptionController {
     /**
      * 登录时用户名不存在
      *
-     * @param e
-     *            异常
+     * @param e 异常
      * @return ApiResult
      */
     @ResponseStatus(HttpStatus.OK)
@@ -177,8 +166,7 @@ public class ExceptionController {
     /**
      * 非法操作
      *
-     * @param e
-     *            异常
+     * @param e 异常
      * @return ApiResult
      */
     @ResponseStatus(HttpStatus.OK)
