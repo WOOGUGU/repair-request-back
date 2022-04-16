@@ -117,7 +117,7 @@
             //重置下拉框
             $select.empty();
             $.each(datas, function (index, item) {
-                var $option = $('<option value="' + item[prop.name] + '">' + item[prop.name] + '</option>');
+                var $option = $('<option value="' + item[prop.username] + '">' + item[prop.name] + '</option>');
                 $select.append($option);
             });
             form.render('select');
