@@ -1,3 +1,4 @@
+document.write('<script src="//cdn.jsdelivr.net/npm/sweetalert2@11" type="text/javascript" charset="utf-8"></script>');
 ;!function (win) {
     "use strict";
     var doc = document
@@ -606,10 +607,20 @@ function logout() {
         data: {},
         success: function (res) {
             if (res.userMsg !== "") {
-                alert(res.userMsg);
+                Swal.fire({
+                    icon: 'success',
+                    title: '注销成功',
+                    text: res.userMsg,
+                })
+                // alert(res.userMsg);
                 window.location.href = "/login.html";
             } else {
-                alert("发生未知错误，请重试");
+                Swal.fire({
+                    icon: 'error',
+                    title: '注销失败',
+                    text: '发生未知错误，请重试',
+                })
+                // alert("发生未知错误，请重试");
             }
         },
         error: function () {
