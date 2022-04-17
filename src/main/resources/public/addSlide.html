@@ -48,6 +48,7 @@
     var s = document.getElementsByTagName("script")[0];
     s.parentNode.insertBefore(hm, s);
 })();</script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     // layui.use('upload', function () {
     //     var upload = layui.upload;
@@ -91,13 +92,28 @@
             data: formData,
             success: function (res) {
                 if (res.userMsg !== "") {
-                    alert(res.userMsg);
+                    Swal.fire({
+                        icon: 'success',
+                        title: '上传成功',
+                        text: res.userMsg,
+                    })
+                    //alert(res.userMsg);
                 } else {
-                    alert("发生未知错误，请重试");
+                    Swal.fire({
+                        icon: 'error',
+                        title: '上传失败',
+                        text: '发生未知错误，请重试',
+                    })
+                    // alert("发生未知错误，请重试");
                 }
             },
             error: function () {
-                alert("发生未知错误，请重试");
+                Swal.fire({
+                    icon: 'error',
+                    title: '上传失败',
+                    text: '发生未知错误，请重试',
+                })
+                //alert("发生未知错误，请重试");
             }
         });
     }

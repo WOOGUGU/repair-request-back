@@ -1,3 +1,4 @@
+document.write('<script src="//cdn.jsdelivr.net/npm/sweetalert2@11" type="text/javascript" charset="utf-8"></script>');
 // 普通用户数据表格渲染
 layui.use(['table', 'form', 'layer'], function () {
     var table = layui.table;
@@ -110,16 +111,36 @@ function addMember() {
     var tel = $("#tel").val();
     let pattern = /^1(3\d|4[5-9]|5[0-35-9]|6[567]|7[0-8]|8\d|9[0-35-9])\d{8}$/;
     if (uname === "" || passwd === "") {
-        alert("用户名或密码不能为空");
+        Swal.fire({
+            icon: 'error',
+            title: '添加失败',
+            text: '用户名或密码不能为空',
+        })
+        // alert("用户名或密码不能为空");
         return;
     } else if (name === "") {
-        alert("真实姓名不能为空");
+        Swal.fire({
+            icon: 'error',
+            title: '添加失败',
+            text: '真实姓名不能为空',
+        })
+        //alert("真实姓名不能为空");
         return;
     } else if (tel === "") {
-        alert("联系方式不能为空");
+        Swal.fire({
+            icon: 'error',
+            title: '添加失败',
+            text: '联系方式不能为空',
+        })
+        //alert("联系方式不能为空");
         return;
     } else if (!pattern.test(tel)) {
-        alert("请输入正确的手机号");
+        Swal.fire({
+            icon: 'error',
+            title: '添加失败',
+            text: '请输入正确的手机号',
+        })
+        // alert("请输入正确的手机号");
         return;
     } else {
         $.ajax({
@@ -134,13 +155,28 @@ function addMember() {
             },
             success: function (res) {
                 if (res.userMsg !== "") {
-                    alert(res.userMsg);
+                    Swal.fire({
+                        icon: 'success',
+                        title: '添加成功',
+                        text: res.userMsg,
+                    })
+                    //alert(res.userMsg);
                 } else {
-                    alert("发生未知错误，请重试");
+                    Swal.fire({
+                        icon: 'error',
+                        title: '添加失败',
+                        text: '发生未知错误，请重试',
+                    })
+                    // alert("发生未知错误，请重试");
                 }
             },
             error: function () {
-                alert("发生未知错误，请重试");
+                Swal.fire({
+                    icon: 'error',
+                    title: '添加失败',
+                    text: '发生未知错误，请重试',
+                })
+                //alert("发生未知错误，请重试");
             }
         });
     }
@@ -158,7 +194,12 @@ function updateMember() {
     }
     let pattern = /^1(3\d|4[5-9]|5[0-35-9]|6[567]|7[0-8]|8\d|9[0-35-9])\d{8}$/;
     if (!pattern.test(tel)) {
-        alert("请输入正确的手机号");
+        Swal.fire({
+            icon: 'error',
+            title: '修改失败',
+            text: '请填写正确的手机号',
+        })
+        //alert("请输入正确的手机号");
         return;
     }
     $.ajax({
@@ -174,13 +215,28 @@ function updateMember() {
         },
         success: function (res) {
             if (res.userMsg !== "") {
-                alert(res.userMsg);
+                Swal.fire({
+                    icon: 'success',
+                    title: '修改成功',
+                    text: res.userMsg,
+                })
+                //alert(res.userMsg);
             } else {
-                alert("发生未知错误，请重试");
+                Swal.fire({
+                    icon: 'error',
+                    title: '修改失败',
+                    text: '发生未知错误，请重试',
+                })
+                //alert("发生未知错误，请重试");
             }
         },
         error: function () {
-            alert("发生未知错误，请重试");
+            Swal.fire({
+                icon: 'error',
+                title: '修改失败',
+                text: '发生未知错误，请重试',
+            })
+            //alert("发生未知错误，请重试");
         }
     });
 }
@@ -204,14 +260,29 @@ function delNorUser() {
                         },
                         success: function (res) {
                             if (res.userMsg !== "") {
-                                alert(res.userMsg);
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: '删除成功',
+                                    text: res.userMsg,
+                                })
+                                //alert(res.userMsg);
                                 location.reload();
                             } else {
-                                alert("发生未知错误，请重试");
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: '删除失败',
+                                    text: '发生未知错误，请重试',
+                                })
+                                //alert("发生未知错误，请重试");
                             }
                         },
                         error: function () {
-                            alert("发生未知错误，请重试");
+                            Swal.fire({
+                                icon: 'error',
+                                title: '删除失败',
+                                text: '发生未知错误，请重试',
+                            })
+                            //alert("发生未知错误，请重试");
                         }
                     });
                 } else {
@@ -241,14 +312,29 @@ function delAdmin() {
                         },
                         success: function (res) {
                             if (res.userMsg !== "") {
-                                alert(res.userMsg);
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: '删除成功',
+                                    text: res.userMsg,
+                                })
+                                // alert(res.userMsg);
                                 location.reload();
                             } else {
-                                alert("发生未知错误，请重试");
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: '删除失败',
+                                    text: '发生未知错误，请重试',
+                                })
+                                // alert("发生未知错误，请重试");
                             }
                         },
                         error: function () {
-                            alert("发生未知错误，请重试");
+                            Swal.fire({
+                                icon: 'error',
+                                title: '删除失败',
+                                text: '发生未知错误，请重试',
+                            })
+                            //alert("发生未知错误，请重试");
                         }
                     });
                 } else {
@@ -278,14 +364,29 @@ function delRepairman() {
                         },
                         success: function (res) {
                             if (res.userMsg !== "") {
-                                alert(res.userMsg);
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: '删除成功',
+                                    text: res.userMsg,
+                                })
+                                // alert(res.userMsg);
                                 location.reload();
                             } else {
-                                alert("发生未知错误，请重试");
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: '删除失败',
+                                    text: '发生未知错误，请重试',
+                                })
+                                // alert("发生未知错误，请重试");
                             }
                         },
                         error: function () {
-                            alert("发生未知错误，请重试");
+                            Swal.fire({
+                                icon: 'error',
+                                title: '删除失败',
+                                text: '发生未知错误，请重试',
+                            })
+                            //alert("发生未知错误，请重试");
                         }
                     });
                 } else {

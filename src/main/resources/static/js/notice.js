@@ -1,3 +1,4 @@
+document.write('<script src="//cdn.jsdelivr.net/npm/sweetalert2@11" type="text/javascript" charset="utf-8"></script>');
 // 通知数据表格渲染
 layui.use(['table', 'form', 'layer'], function () {
     var table = layui.table;
@@ -102,10 +103,20 @@ function addNotice() {
     var content = $("#content").val();
     var author = $("#author").val();
     if (content === "" || content === "") {
-        alert("通知不能为空");
+        Swal.fire({
+            icon: 'error',
+            title: '添加失败',
+            text: '通知不能为空',
+        })
+        // alert("通知不能为空");
         return;
     } else if (author === "") {
-        alert("发布者不能为空");
+        Swal.fire({
+            icon: 'error',
+            title: '添加失败',
+            text: '发布者不能为空',
+        })
+        // alert("发布者不能为空");
         return;
     } else {
         $.ajax({
@@ -118,13 +129,28 @@ function addNotice() {
             },
             success: function (res) {
                 if (res.userMsg !== "") {
-                    alert(res.userMsg);
+                    Swal.fire({
+                        icon: 'success',
+                        title: '添加成功',
+                        text: res.userMsg,
+                    })
+                    //  alert(res.userMsg);
                 } else {
-                    alert("发生未知错误，请重试");
+                    Swal.fire({
+                        icon: 'error',
+                        title: '添加失败',
+                        text: '发生未知错误，请重试',
+                    })
+                    //  alert("发生未知错误，请重试");
                 }
             },
             error: function () {
-                alert("发生未知错误，请重试");
+                Swal.fire({
+                    icon: 'error',
+                    title: '添加失败',
+                    text: '发生未知错误，请重试',
+                })
+                //alert("发生未知错误，请重试");
             }
         });
     }
@@ -149,14 +175,29 @@ function delNotice() {
                         },
                         success: function (res) {
                             if (res.userMsg !== "") {
-                                alert(res.userMsg);
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: '修改成功',
+                                    text: res.userMsg,
+                                })
+                                // alert(res.userMsg);
                                 location.reload();
                             } else {
-                                alert("发生未知错误，请重试");
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: '删除失败',
+                                    text: '发生未知错误，请重试',
+                                })
+                                // alert("发生未知错误，请重试");
                             }
                         },
                         error: function () {
-                            alert("发生未知错误，请重试");
+                            Swal.fire({
+                                icon: 'error',
+                                title: '删除失败',
+                                text: '发生未知错误，请重试',
+                            })
+                            //  alert("发生未知错误，请重试");
                         }
                     });
                 } else {
@@ -173,13 +214,28 @@ function updateNotice() {
     var content = $("#content").val();
     var author = $("#author").val();
     if (noticeId === "") {
-        alert("通知Id不能为空");
+        Swal.fire({
+            icon: 'error',
+            title: '修改失败',
+            text: '通知Id不能为空',
+        })
+        //alert("通知Id不能为空");
         return;
     } else if (content === "") {
-        alert("通知不能为空");
+        Swal.fire({
+            icon: 'error',
+            title: '修改失败',
+            text: '通知不能为空',
+        })
+        //alert("通知不能为空");
         return;
     } else if (author === "") {
-        alert("发布者不能为空");
+        Swal.fire({
+            icon: 'error',
+            title: '修改失败',
+            text: '发布者不能为空',
+        })
+        // alert("发布者不能为空");
         return;
     } else {
         $.ajax({
@@ -193,13 +249,28 @@ function updateNotice() {
             },
             success: function (res) {
                 if (res.userMsg !== "") {
-                    alert(res.userMsg);
+                    Swal.fire({
+                        icon: 'success',
+                        title: '修改成功',
+                        text: res.userMsg,
+                    })
+                    //  alert(res.userMsg);
                 } else {
-                    alert("发生未知错误，请重试");
+                    Swal.fire({
+                        icon: 'error',
+                        title: '修改失败',
+                        text: '发生未知错误，请重试',
+                    })
+                    //alert("发生未知错误，请重试");
                 }
             },
             error: function () {
-                alert("发生未知错误，请重试");
+                Swal.fire({
+                    icon: 'error',
+                    title: '修改失败',
+                    text: '发生未知错误，请重试',
+                })
+                // alert("发生未知错误，请重试");
             }
         });
     }
