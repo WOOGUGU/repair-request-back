@@ -1,3 +1,4 @@
+document.write('<script src="//cdn.jsdelivr.net/npm/sweetalert2@11" type="text/javascript" charset="utf-8"></script>');
 // 工单数据表格渲染
 layui.use(['table', 'form', 'layer'], function () {
     var table = layui.table;
@@ -136,10 +137,20 @@ function addOrder() {
     var passwd = $("#passwd").val();
     var name = $("#name").val();
     if (uname === "" || passwd === "") {
-        alert("用户名或密码不能为空");
+        Swal.fire({
+            icon: 'error',
+            title: '增加失败',
+            text: '用户名或密码不能为空',
+        })
+        //alert("用户名或密码不能为空");
         return;
     } else if (name === "") {
-        alert("真实姓名不能为空");
+        Swal.fire({
+            icon: 'error',
+            title: '增加失败',
+            text: '真实姓名不能为空',
+        })
+        // alert("真实姓名不能为空");
         return;
     } else {
         $.ajax({
@@ -153,13 +164,28 @@ function addOrder() {
             },
             success: function (res) {
                 if (res.userMsg !== "") {
-                    alert(res.userMsg);
+                    Swal.fire({
+                        icon: 'success',
+                        title: '增加成功',
+                        text: res.userMsg,
+                    })
+                    // alert(res.userMsg);
                 } else {
-                    alert("发生未知错误，请重试");
+                    Swal.fire({
+                        icon: 'error',
+                        title: '增加失败',
+                        text: '发生未知错误，请重试',
+                    })
+                    //alert("发生未知错误，请重试");
                 }
             },
             error: function () {
-                alert("发生未知错误，请重试");
+                Swal.fire({
+                    icon: 'error',
+                    title: '增加失败',
+                    text: '用户名或密码不能为空',
+                })
+                // alert("发生未知错误，请重试");
             }
         });
     }
@@ -172,10 +198,20 @@ function updateOrder() {
     var passwd = $("#passwd").val();
     var name = $("#name").val();
     if (uname === "" || passwd === "") {
-        alert("用户名或密码不能为空");
+        Swal.fire({
+            icon: 'error',
+            title: '修改失败',
+            text: '用户名或密码不能为空',
+        })
+        //alert("用户名或密码不能为空");
         return;
     } else if (name === "") {
-        alert("真实姓名不能为空");
+        Swal.fire({
+            icon: 'error',
+            title: '修改失败',
+            text: '真实姓名不能为空',
+        })
+        //alert("真实姓名不能为空");
         return;
     } else {
         $.ajax({
@@ -190,13 +226,28 @@ function updateOrder() {
             },
             success: function (res) {
                 if (res.userMsg !== "") {
-                    alert(res.userMsg);
+                    Swal.fire({
+                        icon: 'success',
+                        title: '修改成功',
+                        text: res.userMsg,
+                    })
+                    // alert(res.userMsg);
                 } else {
-                    alert("发生未知错误，请重试");
+                    Swal.fire({
+                        icon: 'error',
+                        title: '修改失败',
+                        text: '发生未知错误，请重试',
+                    })
+                    //   alert("发生未知错误，请重试");
                 }
             },
             error: function () {
-                alert("发生未知错误，请重试");
+                Swal.fire({
+                    icon: 'error',
+                    title: '修改失败',
+                    text: '发生未知错误，请重试',
+                })
+                //  alert("发生未知错误，请重试");
             }
         });
     }
@@ -231,14 +282,29 @@ function sendRepairman() {
         },
         success: function (res) {
             if (res.userMsg !== "") {
-                alert(res.userMsg);
+                Swal.fire({
+                    icon: 'success',
+                    title: '分配成功',
+                    text: res.userMsg,
+                })
+                //alert(res.userMsg);
             } else {
-                alert("发生未知错误，请重试");
+                Swal.fire({
+                    icon: 'error',
+                    title: '分配失败',
+                    text: '发生未知错误，请重试',
+                })
+                //  alert("发生未知错误，请重试");
             }
             window.location.href = "/orderList.html";
         },
         error: function () {
-            alert("发生未知错误，请重试");
+            Swal.fire({
+                icon: 'error',
+                title: '修改失败',
+                text: '发生未知错误，请重试',
+            })
+            //alert("发生未知错误，请重试");
         }
     });
 }
@@ -256,7 +322,12 @@ function rejectOrder() {
                 if (info == null) {
                     return;
                 } else if (info == '') {
-                    alert("请输入原因后重试");
+                    Swal.fire({
+                        icon: 'error',
+                        title: '审核失败',
+                        text: '请输入原因后重试',
+                    })
+                    //  alert("请输入原因后重试");
                     return;
                 }
                 $.ajax({
@@ -269,14 +340,29 @@ function rejectOrder() {
                     },
                     success: function (res) {
                         if (res.userMsg !== "") {
-                            alert(res.userMsg);
+                            Swal.fire({
+                                icon: 'success',
+                                title: '审核成功',
+                                text: res.userMsg,
+                            })
+                            // alert(res.userMsg);
                         } else {
-                            alert("发生未知错误，请重试");
+                            Swal.fire({
+                                icon: 'error',
+                                title: '审核失败',
+                                text: '发生未知错误，请重试',
+                            })
+                            // alert("发生未知错误，请重试");
                         }
                         window.location.href = "/orderList.html";
                     },
                     error: function () {
-                        alert("发生未知错误，请重试");
+                        Swal.fire({
+                            icon: 'error',
+                            title: '审核失败',
+                            text: '发生未知错误，请重试',
+                        })
+                        //   alert("发生未知错误，请重试");
                     }
                 });
             })
@@ -287,7 +373,12 @@ function rejectOrder() {
 // 删除工单
 function delOrder() {
     if ($("#orderId").val() === "") {
-        alert("orderId不能为空");
+        Swal.fire({
+            icon: 'error',
+            title: '删除失败',
+            text: 'orderId不能为空',
+        })
+        // alert("orderId不能为空");
         return;
     }
     $.ajax({
@@ -298,13 +389,28 @@ function delOrder() {
         },
         success: function (res) {
             if (res.userMsg !== "") {
-                alert(res.userMsg);
+                Swal.fire({
+                    icon: 'success',
+                    title: '删除成功',
+                    text: res.userMsg,
+                })
+                //  alert(res.userMsg);
             } else {
-                alert("发生未知错误，请重试");
+                Swal.fire({
+                    icon: 'error',
+                    title: '删除失败',
+                    text: '发生未知错误，请重试',
+                })
+                //  alert("发生未知错误，请重试");
             }
         },
         error: function () {
-            alert("发生未知错误，请重试");
+            Swal.fire({
+                icon: 'error',
+                title: '删除失败',
+                text: '发生未知错误，请重试',
+            })
+            //  alert("发生未知错误，请重试");
         }
     });
 }

@@ -1,3 +1,4 @@
+document.write('<script src="//cdn.jsdelivr.net/npm/sweetalert2@11" type="text/javascript" charset="utf-8"></script>');
 // 文章数据表格渲染
 layui.use(['table', 'form', 'layer'], function () {
     var table = layui.table;
@@ -106,10 +107,20 @@ function addArticle() {
     var contentPath = $("#contentPath").val();
     var author = $("#author").val();
     if (contentPath === "" || contentPath === "") {
-        alert("文章网址不能为空");
+        Swal.fire({
+            icon: 'error',
+            title: '添加失败',
+            text: '文章网址不能为空',
+        })
+        // alert("文章网址不能为空");
         return;
     } else if (author === "") {
-        alert("文章作者不能为空");
+        Swal.fire({
+            icon: 'error',
+            title: '添加失败',
+            text: '文章作者不能为空',
+        })
+        //alert("文章作者不能为空");
         return;
     } else {
         $.ajax({
@@ -122,13 +133,28 @@ function addArticle() {
             },
             success: function (res) {
                 if (res.userMsg !== "") {
-                    alert(res.userMsg);
+                    Swal.fire({
+                        icon: 'success',
+                        title: '添加成功',
+                        text: res.userMsg,
+                    })
+                    //alert(res.userMsg);
                 } else {
-                    alert("发生未知错误，请重试");
+                    Swal.fire({
+                        icon: 'error',
+                        title: '添加失败',
+                        text: '发生未知错误，请重试',
+                    })
+                    // alert("发生未知错误，请重试");
                 }
             },
             error: function () {
-                alert("发生未知错误，请重试");
+                Swal.fire({
+                    icon: 'error',
+                    title: '添加失败',
+                    text: '发生未知错误，请重试',
+                })
+                // alert("发生未知错误，请重试");
             }
         });
     }
@@ -153,14 +179,29 @@ function delArticle() {
                         },
                         success: function (res) {
                             if (res.userMsg !== "") {
-                                alert(res.userMsg);
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: '删除失败',
+                                    text: res.userMsg,
+                                })
+                                //alert(res.userMsg);
                                 location.reload();
                             } else {
-                                alert("发生未知错误，请重试");
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: '删除失败',
+                                    text: '发生未知错误，请重试',
+                                })
+                                // alert("发生未知错误，请重试");
                             }
                         },
                         error: function () {
-                            alert("发生未知错误，请重试");
+                            Swal.fire({
+                                icon: 'error',
+                                title: '删除失败',
+                                text: '发生未知错误，请重试',
+                            })
+                            //alert("发生未知错误，请重试");
                         }
                     });
                 } else {
@@ -180,7 +221,12 @@ function updateArticle() {
     var des = $("#des").val();
     var coverPath = $("#coverPath").val();
     if (articleId === "") {
-        alert("文章Id不能为空");
+        Swal.fire({
+            icon: 'error',
+            title: '修改失败',
+            text: '文章Id不能为空',
+        })
+        // alert("文章Id不能为空");
         return;
     } else {
         $.ajax({
@@ -197,13 +243,28 @@ function updateArticle() {
             },
             success: function (res) {
                 if (res.userMsg !== "") {
-                    alert(res.userMsg);
+                    Swal.fire({
+                        icon: 'success',
+                        title: '修改成功',
+                        text: res.userMsg,
+                    })
+                    //alert(res.userMsg);
                 } else {
-                    alert("发生未知错误，请重试");
+                    Swal.fire({
+                        icon: 'error',
+                        title: '修改失败',
+                        text: '发生未知错误，请重试',
+                    })
+                    //alert("发生未知错误，请重试");
                 }
             },
             error: function () {
-                alert("发生未知错误，请重试");
+                Swal.fire({
+                    icon: 'error',
+                    title: '修改失败',
+                    text: '发生未知错误，请重试',
+                })
+                //alert("发生未知错误，请重试");
             }
         });
     }

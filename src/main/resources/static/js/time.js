@@ -1,3 +1,4 @@
+document.write('<script src="//cdn.jsdelivr.net/npm/sweetalert2@11" type="text/javascript" charset="utf-8"></script>');
 // 报修时间段数据表格渲染
 layui.use(['table', 'form', 'layer'], function () {
     var table = layui.table;
@@ -95,7 +96,12 @@ layui.use(['table', 'form', 'layer'], function () {
 function addTime() {
     var time = $("#time").val();
     if (time === "") {
-        alert("报修时间不能为空");
+        Swal.fire({
+            icon: 'error',
+            title: '增加失败',
+            text: '报修时间不能为空',
+        })
+        //alert("报修时间不能为空");
         return;
     } else {
         $.ajax({
@@ -107,13 +113,28 @@ function addTime() {
             },
             success: function (res) {
                 if (res.userMsg !== "") {
-                    alert(res.userMsg);
+                    Swal.fire({
+                        icon: 'success',
+                        title: '增加成功',
+                        text: res.userMsg,
+                    })
+                    //alert(res.userMsg);
                 } else {
-                    alert("发生未知错误，请重试");
+                    Swal.fire({
+                        icon: 'error',
+                        title: '增加失败',
+                        text: '发生未知错误，请重试',
+                    })
+                    // alert("发生未知错误，请重试");
                 }
             },
             error: function () {
-                alert("发生未知错误，请重试");
+                Swal.fire({
+                    icon: 'error',
+                    title: '增加失败',
+                    text: '发生未知错误，请重试',
+                })
+                // alert("发生未知错误，请重试");
             }
         });
     }
@@ -124,10 +145,20 @@ function updateTime() {
     var pickerId = $("#pickerId").val();
     var time = $("#time").val();
     if (pickerId === "") {
-        alert("报修时间id不能为空");
+        Swal.fire({
+            icon: 'error',
+            title: '增加失败',
+            text: '报修时间id不能为空',
+        })
+        //alert("报修时间id不能为空");
         return;
     } else if (time === "") {
-        alert("报修时间不能为空");
+        Swal.fire({
+            icon: 'error',
+            title: '修改失败',
+            text: '报修时间不能为空',
+        })
+        // alert("报修时间不能为空");
         return;
     } else {
         $.ajax({
@@ -140,13 +171,28 @@ function updateTime() {
             },
             success: function (res) {
                 if (res.userMsg !== "") {
-                    alert(res.userMsg);
+                    Swal.fire({
+                        icon: 'success',
+                        title: '修改成功',
+                        text: res.userMsg,
+                    })
+                    // alert(res.userMsg);
                 } else {
-                    alert("发生未知错误，请重试");
+                    Swal.fire({
+                        icon: 'error',
+                        title: '修改失败',
+                        text: '发生未知错误，请重试',
+                    })
+                    // alert("发生未知错误，请重试");
                 }
             },
             error: function () {
-                alert("发生未知错误，请重试");
+                Swal.fire({
+                    icon: 'error',
+                    title: '修改失败',
+                    text: '发生未知错误，请重试',
+                })
+                // alert("发生未知错误，请重试");
             }
         });
     }
@@ -171,14 +217,29 @@ function delTime() {
                         },
                         success: function (res) {
                             if (res.userMsg !== "") {
-                                alert(res.userMsg);
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: '删除成功',
+                                    text: res.userMsg,
+                                })
+                                // alert(res.userMsg);
                                 location.reload();
                             } else {
-                                alert("发生未知错误，请重试");
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: '删除失败',
+                                    text: '发生未知错误，请重试',
+                                })
+                                //alert("发生未知错误，请重试");
                             }
                         },
                         error: function () {
-                            alert("发生未知错误，请重试");
+                            Swal.fire({
+                                icon: 'error',
+                                title: '删除失败',
+                                text: '发生未知错误，请重试',
+                            })
+                            // alert("发生未知错误，请重试");
                         }
                     });
                 } else {

@@ -41,37 +41,88 @@
 </body>
 <script type="text/javascript" src="/js/jquery.js"></script>
 <script type="text/javascript" src="/js/index.js"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     $("#button").click(
         function () {
-            $.ajax({
-                url: '/doLogin',
-                type: 'post',
-                data: {
-                    "uname": $("#name").val(),
-                    "passwd": hexMD5($("#pwd").val()).toUpperCase()
-                },
-                success: function (res) {
-                    if (res.code === "00000") {
-                        alert(res.userMsg);
-                        localStorage.username = res.data.username;
-                        localStorage.userId = res.data.id;
-                        localStorage.name = res.data.name;
-                        location.assign("index.html");
-                    } else if (res.code === "A0202") {
-                        alert(res.userMsg);
-                    } else if (res.code === "A0201") {
-                        alert(res.userMsg);
-                    } else {
-                        alert("发生未知错误，请重试");
+            if ($("#name").val() === "") {
+                Swal.fire({
+                    icon: 'error',
+                    title: '登录失败',
+                    text: '用户名不能为空',
+                    // footer: '<a href="">Why do I have this issue?</a>'
+                })
+            } else if ($("#pwd").val() === "") {
+                Swal.fire({
+                    icon: 'error',
+                    title: '登录失败',
+                    text: '密码不能为空',
+                    // footer: '<a href="">Why do I have this issue?</a>'
+                })
+            } else if ($("#name").val() === "" && $("#pwd").val() === "") {
+                Swal.fire({
+                    icon: 'error',
+                    title: '登录失败',
+                    text: '表单不能为空',
+                    // footer: '<a href="">Why do I have this issue?</a>'
+                })
+            } else {
+                $.ajax({
+                    url: '/doLogin',
+                    type: 'post',
+                    data: {
+                        "uname": $("#name").val(),
+                        "passwd": hexMD5($("#pwd").val()).toUpperCase()   //加密操作
+                    },
+                    success: function (res) {
+                        if (res.code === "00000") {
+                            localStorage.username = res.data.username;
+                            localStorage.userId = res.data.id;
+                            localStorage.name = res.data.name;
+                            location.assign("index.html");
+                            //alert(res.userMsg);
+                        } else if (res.code === "A0202") {
+                            Swal.fire({
+                                icon: 'error',
+                                title: '登录失败',
+                                text: res.userMsg,
+                                // footer: '<a href="">Why do I have this issue?</a>'
+                            })
+                            //alert(res.userMsg);
+                        } else if (res.code === "A0201") {
+                            Swal.fire({
+                                icon: 'error',
+                                title: '登录失败',
+                                text: res.userMsg,
+                                // footer: '<a href="">Why do I have this issue?</a>'
+                            })
+                            //alert(res.userMsg);
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: '登录失败',
+                                text: '发生未知错误，请重试',
+                                // footer: '<a href="">Why do I have this issue?</a>'
+                            })
+                        }
+                    },
+                    error: function () {
+                        Swal.fire({
+                            icon: 'error',
+                            title: '登录失败',
+                            text: '发生未知错误，请重试',
+                            // footer: '<a href="">Why do I have this issue?</a>'
+                        })
                     }
-                },
-                error: function () {
-                    alert("出现异常，请重试");
-                }
-            })
-        })
-
+                })
+            }
+        }
+    )
+    $('body').keydown(function (event) {
+        if (event.keyCode === 13) {    //enter 键值 为13
+            $('#button').click();
+        }
+    })
     //请求令牌
     // function queryToken(name,pwd)
     // {
