@@ -44,6 +44,7 @@ public class UserServiceImpl implements UserService {
         if (ObjectUtils.isEmpty(userDao.selectUserById(userId)) && ObjectUtils.isEmpty(userDao.selectUserByUsername(username))) {
             throw new UserHasNotExistedException("User has not existed");
         } else {
+            userDao.deleteRole(userId);
             return userDao.deleteUser(userId, username);
         }
     }

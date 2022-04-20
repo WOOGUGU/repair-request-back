@@ -17,6 +17,12 @@
         where uid = #{userId}
     </update>
 
+    <delete id="deleteRole" parameterType="int">
+        delete
+        from user_role
+        where uid = #{userId}
+    </delete>
+
     <delete id="deleteUser">
         delete
         from user
