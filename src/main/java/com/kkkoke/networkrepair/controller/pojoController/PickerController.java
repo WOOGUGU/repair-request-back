@@ -5,10 +5,10 @@ import com.kkkoke.networkrepair.exception.DataHasNotExistedException;
 import com.kkkoke.networkrepair.pojo.Picker;
 import com.kkkoke.networkrepair.pojo.PickerLocation;
 import com.kkkoke.networkrepair.pojo.helper.PickerResult;
+import com.kkkoke.networkrepair.result.ApiResult;
 import com.kkkoke.networkrepair.result.ResultCode;
 import com.kkkoke.networkrepair.service.PickerLocationService;
 import com.kkkoke.networkrepair.service.PickerService;
-import com.kkkoke.networkrepair.result.ApiResult;
 import com.kkkoke.networkrepair.util.PropertiesUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -18,7 +18,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -212,7 +215,7 @@ public class PickerController {
     @Secured({"ROLE_admin"})
     @PostMapping("/updatePicker")
     public ApiResult updatePicker(@NotNull(message = "pickerId can not be null") Integer pickerId, @NotBlank(message = "type can not be null") String type,
-                                      @NotBlank(message = "value can not be null") String value) throws DataHasNotExistedException {
+                                  @NotBlank(message = "value can not be null") String value) throws DataHasNotExistedException {
         pickerService.updatePicker(pickerId, type, value);
         return ApiResult.success("更新成功");
     }
