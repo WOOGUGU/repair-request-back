@@ -54,6 +54,7 @@ public class ApiResult {
     public final static String EFFECTIVE_SESSION = "effective session"; // session有效
     public final static String ILLegal_FORMDATA = "illegal form data"; // 非法的表单数据
     public final static String REQUEST_OVER_LIMIT = "request over limit"; // 请求次数超限制
+    public final static String UNSUPPORTED_METHOD = "unsupported method"; // 不支持的请求方式
 
     public static ApiResult fail(String code, String userMsg, String errMsg) {
         return new ApiResult(code, null, userMsg, errMsg);

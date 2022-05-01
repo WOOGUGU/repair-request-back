@@ -231,7 +231,7 @@ public class OrderServiceImpl implements OrderService {
             String timeDistribution = LocalDateTime.now().toString();
             User repairman = userDao.selectUserByUsername(solver);
             orderDao.checkOrder(orderId, 1, "");
-            return orderDao.sendRepairman(orderId, solver + " " + repairman.getTel(), timeDistribution);
+            return orderDao.sendRepairman(orderId, repairman.getName() + " " + repairman.getTel(), timeDistribution);
         }
     }
 
