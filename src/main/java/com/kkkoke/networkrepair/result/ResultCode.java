@@ -13,6 +13,8 @@ public class ResultCode {
 
     public static final String PWD_WRONG = "A0202";
 
+    public static final String UNSUPPORTED_METHOD = "A0203";
+
     public static final String INVALID_OPERATION = "A0414";
 
     public static final String EXPIRED_TOKEN = "D0001";

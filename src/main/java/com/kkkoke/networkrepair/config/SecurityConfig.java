@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kkkoke.networkrepair.result.ApiResult;
 import com.kkkoke.networkrepair.result.ResultCode;
 import com.kkkoke.networkrepair.service.Impl.UserDetailsServiceImpl;
-import com.kkkoke.networkrepair.util.PropertiesUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -29,12 +28,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsServiceImpl userDetailsServiceImpl;
 
-    private final PropertiesUtil propertiesUtil;
-
     @Autowired
-    public SecurityConfig(UserDetailsServiceImpl userDetailsServiceImpl, PropertiesUtil propertiesUtil) {
+    public SecurityConfig(UserDetailsServiceImpl userDetailsServiceImpl) {
         this.userDetailsServiceImpl = userDetailsServiceImpl;
-        this.propertiesUtil = propertiesUtil;
     }
 
     //配置密码加密算法
@@ -89,6 +85,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             response.setStatus(HttpStatus.OK.value());
             if (exception.getMessage().equals("username has not existed")) {
                 String result = new ObjectMapper().writeValueAsString(ApiResult.fail(ResultCode.USERNAME_INVALID, null, "用户名不存在，请重试", ApiResult.USER_WRONG));
+                response.getWriter().println(result);
+            } else if (exception.getMessage().equals("Authentication method not supported: GET")) {
+                String result = new ObjectMapper().writeValueAsString(ApiResult.fail(ResultCode.USERNAME_INVALID, null, "请求方式不支持，请重试", ApiResult.USER_WRONG));
                 response.getWriter().println(result);
             } else {
                 String result = new ObjectMapper().writeValueAsString(ApiResult.fail(ResultCode.PWD_WRONG, null, "密码错误，请重试", ApiResult.PWD_WRONG));
