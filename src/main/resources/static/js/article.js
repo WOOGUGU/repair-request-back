@@ -180,8 +180,8 @@ function delArticle() {
                         success: function (res) {
                             if (res.userMsg !== "") {
                                 Swal.fire({
-                                    icon: 'error',
-                                    title: '删除失败',
+                                    icon: 'success',
+                                    title: '删除成功',
                                     text: res.userMsg,
                                 })
                                 //alert(res.userMsg);
