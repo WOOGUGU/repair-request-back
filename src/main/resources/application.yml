@@ -1,5 +1,5 @@
 server:
-  port: 8090
+  port: 8848
   servlet:
     session:
       timeout: 604800s  # 设置sessoin过期时间 7天
