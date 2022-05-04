@@ -28,6 +28,10 @@ spring:
         dialect: org.hibernate.dialect.MySQL5InnoDBDialect
         format_sql: true
     show-sql: true
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 300MB
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml
