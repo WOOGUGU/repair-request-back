@@ -1,11 +1,11 @@
 package com.kkkoke.networkrepair.controller.fileController;
 
 import com.kkkoke.networkrepair.result.ApiResult;
-import com.kkkoke.networkrepair.result.ResultCode;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,8 +24,11 @@ import java.util.UUID;
 
 @Api(tags = "文件管理")
 @Slf4j
+@RequestMapping("/v2/article")
 @RestController
 public class FileController {
+
+    private final String imageHome = "/home/projects/wrz-network-repair/images";
 
     @ApiOperation(value = "传单张图片")
     @PostMapping(value = "/fileUpload")
@@ -43,7 +46,8 @@ public class FileController {
         // 新文件名
         fileName = UUID.randomUUID() + suffixName;
         // 上传后的路径
-        String filePath = System.getProperty("user.dir") + "/images/" + fileName;
+//        String filePath = System.getProperty("user.dir") + "/images/" + fileName;
+        String filePath = imageHome + fileName;
         File dest = new File(filePath);
         if (!dest.getParentFile().exists()) {
             dest.getParentFile().mkdirs();
@@ -70,7 +74,8 @@ public class FileController {
             assert fileName != null;
             suffixName = fileName.substring(fileName.lastIndexOf("."));
             fileName = UUID.randomUUID() + suffixName;
-            filePath = System.getProperty("user.dir") + "/images/" + fileName;
+//            filePath = System.getProperty("user.dir") + "/images/" + fileName;
+            filePath = imageHome + fileName;
             java.io.File dest = new java.io.File(filePath);
             if (!dest.getParentFile().exists()) {
                 dest.getParentFile().mkdirs();
