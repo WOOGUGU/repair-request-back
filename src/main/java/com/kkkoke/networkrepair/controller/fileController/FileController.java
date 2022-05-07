@@ -32,7 +32,7 @@ import java.util.UUID;
 @RestController
 public class FileController {
 
-    private final String imageHome = "/home/projects/wrz-network-repair/images";
+        private final String imageHome = "/home/projects/wrz-network-repair/images/";
 
     @ApiOperation(value = "传单张图片")
     @PostMapping(value = "/fileUpload")
@@ -53,7 +53,7 @@ public class FileController {
         assert fileName != null;
         String suffixName = fileName.substring(fileName.lastIndexOf("."));
         // 新文件名
-        fileName = "/" + user.getUsername() + "/" + UUID.randomUUID() + suffixName;
+        fileName = user.getUsername() + "/" + UUID.randomUUID() + suffixName;
         // 上传后的路径
         String filePath = imageHome + fileName;
         File dest = new File(filePath);
@@ -77,6 +77,8 @@ public class FileController {
             @RequestParam(value = "files") MultipartFile[] files,
             HttpServletRequest request
     ) {
+        log.info("long of files: " + files.length);
+
         HttpSession session = request.getSession();
         SecurityContext securityContext = (SecurityContext) session.getAttribute("SPRING_SECURITY_CONTEXT");
         UserResult user = (UserResult) securityContext.getAuthentication().getPrincipal();
@@ -87,7 +89,7 @@ public class FileController {
             fileName = files[i].getOriginalFilename();
             assert fileName != null;
             suffixName = fileName.substring(fileName.lastIndexOf("."));
-            fileName = "/" + user.getUsername() + "/" + UUID.randomUUID() + suffixName;
+            fileName = user.getUsername() + "/" + UUID.randomUUID() + suffixName;
             filePath = imageHome + fileName;
             java.io.File dest = new java.io.File(filePath);
             if (!dest.getParentFile().exists()) {
