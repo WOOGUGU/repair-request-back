@@ -28,7 +28,7 @@ import java.util.UUID;
 
 @Api(tags = "文件管理")
 @Slf4j
-@RequestMapping("/v2/article")
+@RequestMapping("/v2/file")
 @RestController
 public class FileController {
 
@@ -104,6 +104,6 @@ public class FileController {
             log.info("保存图片至==>" + filePath);
             list.add(fileName);
         }
-        return ApiResult.success(list, "获取成功");
+        return ApiResult.success(list, "上传成功");
     }
 }
