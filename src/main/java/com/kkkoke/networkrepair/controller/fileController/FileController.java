@@ -2,6 +2,7 @@ package com.kkkoke.networkrepair.controller.fileController;
 
 import com.kkkoke.networkrepair.result.ApiResult;
 import com.kkkoke.networkrepair.result.ResultCode;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,6 +22,7 @@ import java.util.UUID;
  * @author WOOGUGU
  */
 
+@Api(tags = "文件管理")
 @Slf4j
 @RestController
 public class FileController {
