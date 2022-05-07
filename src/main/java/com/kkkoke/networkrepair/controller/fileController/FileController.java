@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -33,8 +35,11 @@ public class FileController {
     @ApiOperation(value = "传单张图片")
     @PostMapping(value = "/fileUpload")
     public Object fileUpload(
-            @RequestParam(value = "file") MultipartFile file
+            @RequestParam(value = "file") MultipartFile file,
+            @RequestParam(value = "request") HttpServletRequest request
     ) {
+        HttpSession session = request.getSession();
+
         if (file.isEmpty()) {
             log.error("无图片");
         }
@@ -44,7 +49,7 @@ public class FileController {
         assert fileName != null;
         String suffixName = fileName.substring(fileName.lastIndexOf("."));
         // 新文件名
-        fileName = UUID.randomUUID() + suffixName;
+        fileName = "/" + session.getAttribute("username") + "/" + UUID.randomUUID() + suffixName;
         // 上传后的路径
 //        String filePath = System.getProperty("user.dir") + "/images/" + fileName;
         String filePath = imageHome + fileName;
@@ -59,7 +64,7 @@ public class FileController {
         }
         log.info("保存图片至==>" + filePath);
         //返回图片名称
-        return ApiResult.success("/" + fileName, "获取成功");
+        return ApiResult.success(fileName, "获取成功");
     }
 
     @ApiOperation(value = "传多张图片")
