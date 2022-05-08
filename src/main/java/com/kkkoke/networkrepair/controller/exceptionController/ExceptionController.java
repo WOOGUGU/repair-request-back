@@ -199,7 +199,7 @@ public class ExceptionController {
     @ExceptionHandler(IllegalFormDataException.class)
     public ApiResult illegalFormDataException(IllegalFormDataException e) {
         log.info("IllegalFormDataException.errMsg:{}", e.getMessage());
-        return ApiResult.fail(ResultCode.ILLegal_FORMDATA, e.getMessage(), ApiResult.ILLegal_FORMDATA);
+        return ApiResult.fail(ResultCode.ILLEGAL_FORMDATA, e.getMessage(), ApiResult.ILLEGAL_FORMDATA);
     }
 
     /**
