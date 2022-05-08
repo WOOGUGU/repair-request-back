@@ -52,7 +52,7 @@ public class ApiResult {
     public final static String PARAM_LENGTH_ERROR = "param length error"; // 参数长度错误
     public final static String EXPIRED_SESSION = "expired session"; // session过期
     public final static String EFFECTIVE_SESSION = "effective session"; // session有效
-    public final static String ILLegal_FORMDATA = "illegal form data"; // 非法的表单数据
+    public final static String ILLEGAL_FORMDATA = "illegal form data"; // 非法的表单数据
     public final static String REQUEST_OVER_LIMIT = "request over limit"; // 请求次数超限制
     public final static String UNSUPPORTED_METHOD = "unsupported method"; // 不支持的请求方式
 

@@ -29,7 +29,7 @@ public class ExceptionController {
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(TokenExpiredException.class)
     public ApiResult tokenExpiredException(TokenExpiredException e) {
-        log.error("TokenExpiredException.errMsg:{}", e.getMessage());
+        log.info("TokenExpiredException.errMsg:{}", e.getMessage());
         return ApiResult.fail(ResultCode.EXPIRED_TOKEN, "登录已过期，请重新登录", e.getMessage());
     }
 
@@ -42,7 +42,7 @@ public class ExceptionController {
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(TokenErrorException.class)
     public ApiResult tokenErrorException(TokenErrorException e) {
-        log.error("TokenErrorException.errMsg:{}", e.getMessage());
+        log.info("TokenErrorException.errMsg:{}", e.getMessage());
         return ApiResult.fail(ResultCode.ERROR_TOKEN, "登录已过期，请重新登录", e.getMessage());
     }
 
@@ -55,7 +55,7 @@ public class ExceptionController {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MissingServletRequestParameterException.class)
     public ApiResult missingServletRequestParameterException(MissingServletRequestParameterException e) {
-        log.error("MissingServletRequestParameterException.errMsg:{}", e.getMessage());
+        log.info("MissingServletRequestParameterException.errMsg:{}", e.getMessage());
         return ApiResult.fail(ResultCode.MISSING_PARAM, "缺少必要参数，请重试", e.getMessage());
     }
 
@@ -68,7 +68,7 @@ public class ExceptionController {
     @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler(UserHasExistedException.class)
     public ApiResult userHasExistedException(UserHasExistedException e) {
-        log.error("UserHasExistedException.errMsg:{}", e.getMessage());
+        log.info("UserHasExistedException.errMsg:{}", e.getMessage());
         return ApiResult.fail(ResultCode.DATA_EXISTED, "用户已经存在，请重新输入", e.getMessage());
     }
 
@@ -81,7 +81,7 @@ public class ExceptionController {
     @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler(UserHasNotExistedException.class)
     public ApiResult userHasNotExistedException(UserHasNotExistedException e) {
-        log.error("UserHasNotExistedException.errMsg:{}", e.getMessage());
+        log.info("UserHasNotExistedException.errMsg:{}", e.getMessage());
         return ApiResult.fail(ResultCode.DATA_NOT_EXIST, "用户不存在，请重新输入", e.getMessage());
     }
 
@@ -94,7 +94,7 @@ public class ExceptionController {
     @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler(DataHasExistedException.class)
     public ApiResult dataHasExistedException(DataHasExistedException e) {
-        log.error("DataHasExistedException.errMsg:{}", e.getMessage());
+        log.info("DataHasExistedException.errMsg:{}", e.getMessage());
         return ApiResult.fail(ResultCode.DATA_EXISTED, "数据已经存在，请重试", e.getMessage());
     }
 
@@ -107,7 +107,7 @@ public class ExceptionController {
     @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler(DataHasNotExistedException.class)
     public ApiResult dataHasNotExistedException(DataHasNotExistedException e) {
-        log.error("DataHasNotExistedException.errMsg:{}", e.getMessage());
+        log.info("DataHasNotExistedException.errMsg:{}", e.getMessage());
         return ApiResult.fail(ResultCode.DATA_NOT_EXIST, "数据不存在，请重试", e.getMessage());
     }
 
@@ -120,7 +120,7 @@ public class ExceptionController {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(ConstraintViolationException.class)
     public ApiResult constraintViolationException(ConstraintViolationException e) {
-        log.error("ConstraintViolationException.errMsg:{}", e.getMessage());
+        log.info("ConstraintViolationException.errMsg:{}", e.getMessage());
         return ApiResult.fail(ResultCode.PARAM_ERROR, "输入参数错误，请重试", e.getMessage());
     }
 
@@ -133,7 +133,7 @@ public class ExceptionController {
     @ResponseStatus(HttpStatus.FORBIDDEN)
     @ExceptionHandler(AccessDeniedException.class)
     public ApiResult accessDeniedException(AccessDeniedException e) {
-        log.error("AccessDeniedException.errMsg:{}", e.getMessage());
+        log.info("AccessDeniedException.errMsg:{}", e.getMessage());
         return ApiResult.fail(ResultCode.FORBIDDEN, "权限不够，无法访问", ApiResult.FORBIDDEN);
     }
 
@@ -146,7 +146,7 @@ public class ExceptionController {
     @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public ApiResult httpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
-        log.error("HttpRequestMethodNotSupportedException.errMsg:{}", e.getMessage());
+        log.info("HttpRequestMethodNotSupportedException.errMsg:{}", e.getMessage());
         return ApiResult.fail(ResultCode.UNSUPPORTED_HTTP_METHOD, "请求方式不符合，无法访问", ApiResult.UNSUPPORTED_HTTP_METHOD);
     }
 
@@ -159,7 +159,7 @@ public class ExceptionController {
     @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler(UsernameNotFoundException.class)
     public ApiResult usernameNotFoundException(UsernameNotFoundException e) {
-        log.error("UsernameNotFoundException.errMsg:{}", e.getMessage());
+        log.info("UsernameNotFoundException.errMsg:{}", e.getMessage());
         return ApiResult.fail(ResultCode.USERNAME_INVALID, "用户名不存在，请重试", ApiResult.USER_WRONG);
     }
 
@@ -172,7 +172,7 @@ public class ExceptionController {
     @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler(IllegalOperationException.class)
     public ApiResult illegalOperationException(IllegalOperationException e) {
-        log.error("IllegalOperationException.errMsg:{}", e.getMessage());
+        log.info("IllegalOperationException.errMsg:{}", e.getMessage());
         return ApiResult.fail(ResultCode.INVALID_OPERATION, "非法操作", ApiResult.INVALID_OPERATION);
     }
 
@@ -185,7 +185,7 @@ public class ExceptionController {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(PasswordWrongException.class)
     public ApiResult passwordWrongException(PasswordWrongException e) {
-        log.error("PasswordWrongException.errMsg:{}", e.getMessage());
+        log.info("PasswordWrongException.errMsg:{}", e.getMessage());
         return ApiResult.fail(ResultCode.PWD_WRONG, "旧密码错误，请重新输入", ApiResult.PWD_WRONG);
     }
 
@@ -198,8 +198,8 @@ public class ExceptionController {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(IllegalFormDataException.class)
     public ApiResult illegalFormDataException(IllegalFormDataException e) {
-        log.error("IllegalFormDataException.errMsg:{}", e.getMessage());
-        return ApiResult.fail(ResultCode.ILLegal_FORMDATA, e.getMessage(), ApiResult.ILLegal_FORMDATA);
+        log.info("IllegalFormDataException.errMsg:{}", e.getMessage());
+        return ApiResult.fail(ResultCode.ILLEGAL_FORMDATA, e.getMessage(), ApiResult.ILLEGAL_FORMDATA);
     }
 
     /**
@@ -211,7 +211,7 @@ public class ExceptionController {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(RequestLimitException.class)
     public ApiResult requestLimitException(RequestLimitException e) {
-        log.error("RequestLimitException.errMsg:{}", e.getMessage());
+        log.info("RequestLimitException.errMsg:{}", e.getMessage());
         return ApiResult.fail(ResultCode.REQUEST_OVER_LIMIT, e.getMessage(), ApiResult.REQUEST_OVER_LIMIT);
     }
 }
