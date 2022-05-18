@@ -2,8 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kkkoke.networkrepair.dao.OrderDao">
     <insert id="addOrder" parameterType="com.kkkoke.networkrepair.pojo.Order">
-        insert into `order`(username, sender, tel, type, des, position, time_subscribe, time_start, stars)
-        values (#{username}, #{sender}, #{tel}, #{type}, #{des}, #{position}, #{timeSubscribe}, #{timeStart}, #{stars})
+        insert into `order`(username, sender, tel, type, des, position, time_subscribe, time_start, stars, img_path)
+        values (#{username}, #{sender}, #{tel}, #{type}, #{des}, #{position}, #{timeSubscribe}, #{timeStart}, #{stars},
+                #{imgPath})
     </insert>
 
     <delete id="deleteOrder" parameterType="int">
@@ -168,5 +169,6 @@
         <result property="timeEnd" column="time_end"/>
         <result property="stars" column="stars"/>
         <result property="remark" column="remark"/>
+        <result property="imgPath" column="img_path"/>
     </resultMap>
 </mapper>

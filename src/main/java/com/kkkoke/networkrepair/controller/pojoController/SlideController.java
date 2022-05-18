@@ -52,7 +52,6 @@ public class SlideController {
     public ApiResult uploadSlide(MultipartFile file, @NotBlank(message = "author can not be null") String author) {
         String imgPath = FileUploadUtil.fileUpload(file, propertiesUtil.getSlideImgPath());
         slideService.uploadSlide(imgPath, author);
-
         return ApiResult.success("轮播图上传成功");
     }
 

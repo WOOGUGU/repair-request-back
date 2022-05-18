@@ -8,7 +8,6 @@ import com.kkkoke.networkrepair.exception.IllegalOperationException;
 import com.kkkoke.networkrepair.pojo.Order;
 import com.kkkoke.networkrepair.pojo.User;
 import com.kkkoke.networkrepair.service.OrderService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
@@ -30,7 +29,7 @@ public class OrderServiceImpl implements OrderService {
     // 增加报修工单
     @Override
     public Order addOrder(String username, String sender, String tel, String type,
-                          String des, String position, String timeSubscribe) throws IllegalFormDataException {
+                          String des, String position, String timeSubscribe, String imgPath) throws IllegalFormDataException {
         String timeStart = LocalDateTime.now().toString();
         LocalDate now = LocalDate.now();
         LocalDate after = LocalDate.now().plusDays(3);
@@ -38,7 +37,8 @@ public class OrderServiceImpl implements OrderService {
         if (tempTime.isBefore(now) || tempTime.isEqual(now) || tempTime.isAfter(after)) {
             throw new IllegalFormDataException("预约时间过近，无法及时处理");
         }
-        Order order = new Order(username, sender, tel, type, des, position, timeSubscribe, timeStart);
+
+        Order order = new Order(username, sender, tel, type, des, position, timeSubscribe, timeStart, imgPath);
 
         orderDao.addOrder(order);
         return order;
