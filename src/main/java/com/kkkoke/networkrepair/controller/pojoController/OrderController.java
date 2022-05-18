@@ -6,6 +6,7 @@ import com.kkkoke.networkrepair.exception.IllegalOperationException;
 import com.kkkoke.networkrepair.pojo.Order;
 import com.kkkoke.networkrepair.result.ApiResult;
 import com.kkkoke.networkrepair.service.OrderService;
+import com.kkkoke.networkrepair.util.TencentCOSUtil;
 import com.kkkoke.networkrepair.util.annotation.RequestLimit;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -19,10 +20,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -48,15 +53,30 @@ public class OrderController {
             @ApiImplicitParam(name = "type", value = "工单类型", required = true, paramType = "query"),
             @ApiImplicitParam(name = "des", value = "故障描述", required = true, paramType = "query"),
             @ApiImplicitParam(name = "position", value = "故障位置", required = true, paramType = "query"),
-            @ApiImplicitParam(name = "timeSubscribe", value = "工单预约上门时间", required = true, paramType = "query")})
+            @ApiImplicitParam(name = "timeSubscribe", value = "工单预约上门时间", required = true, paramType = "query"),
+            @ApiImplicitParam(name = "fileStreams", value = "上传文件的二进制流", required = false, paramType = "query")})
     @RequestLimit(count = 5, time = 60000)
     @Secured({"ROLE_admin", "ROLE_user", "ROLE_repairman"})
     @PostMapping("/addOrder")
     public ApiResult addOrder(@NotBlank(message = "username can not be null") String username, @NotBlank(message = "sender can not be null") String sender,
                               @NotBlank(message = "tel can not be null") String tel, @NotBlank(message = "type can not be null") String type,
                               @NotBlank(message = "des can not be null") String des, @NotBlank(message = "position can not be null") String position,
-                              @NotBlank(message = "timeSubscribe can not be null") String timeSubscribe) throws IllegalFormDataException {
-        orderService.addOrder(username, sender, tel, type, des, position, timeSubscribe);
+                              @NotBlank(message = "timeSubscribe can not be null") String timeSubscribe, MultipartFile[] fileStreams) throws IllegalFormDataException {
+        List<String> urlList = new ArrayList<>();
+        // 判断fileStreams数组不能为空并且长度大于0
+        if (fileStreams != null && fileStreams.length > 0) {
+            // 循环获取fileStreams数组中得文件
+            for (MultipartFile fileStream : fileStreams) {
+                try {
+                    TencentCOSUtil.upLoadFileStream("imgs-repairnetwork", username + "/" + System.currentTimeMillis() + fileStream.getOriginalFilename().substring(fileStream.getOriginalFilename().lastIndexOf(".")), fileStream.getInputStream());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                URL url = TencentCOSUtil.getObjectUrl("imgs-repairnetwork", username + "/" + System.currentTimeMillis() + fileStream.getOriginalFilename().substring(fileStream.getOriginalFilename().lastIndexOf(".")));
+                urlList.add(url.toString());
+            }
+        }
+        orderService.addOrder(username, sender, tel, type, des, position, timeSubscribe, urlList.toString());
         return ApiResult.success("工单添加成功");
     }
 
