@@ -38,7 +38,8 @@
             progress          = #{progress},
             feedback          = #{feedback},
             time_end          = #{timeEnd},
-            stars             = #{stars}
+            stars             = #{stars},
+            img_path          = #{imgPath}
         where id = #{id}
     </update>
 
