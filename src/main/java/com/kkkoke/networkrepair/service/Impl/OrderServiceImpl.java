@@ -92,13 +92,14 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order updateOrder(Integer orderId, String username, String sender, String tel, String type,
                              String des, String position, String timeSubscribe, Integer progress,
-                             String solver, String timeStart, String timeDistribution, String timeEnd, String feedback, Integer stars) throws DataHasNotExistedException {
+                             String solver, String timeStart, String timeDistribution, String timeEnd,
+                             String feedback, Integer stars, String imgPath) throws DataHasNotExistedException {
         Order order = orderDao.selectOrderById(orderId);
-        // 查找数据库中是否存在此用户
+        // 查找数据库中是否存在此工单
         if (ObjectUtils.isEmpty(order)) {
             throw new DataHasNotExistedException("Order has not existed");
         } else {
-            // 如果用户存在就更新数据
+            // 如果工单存在就更新数据
             if (!ObjectUtils.isEmpty(username)) {
                 order.setUsername(username);
             }
@@ -140,6 +141,9 @@ public class OrderServiceImpl implements OrderService {
             }
             if (!ObjectUtils.isEmpty(stars)) {
                 order.setStars(stars);
+            }
+            if (!ObjectUtils.isEmpty(imgPath)) {
+                order.setImgPath(imgPath);
             }
             orderDao.updateOrder(order);
             return order;

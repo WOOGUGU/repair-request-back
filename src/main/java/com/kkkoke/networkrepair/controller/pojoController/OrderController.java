@@ -67,12 +67,13 @@ public class OrderController {
         if (fileStreams != null && fileStreams.length > 0) {
             // 循环获取fileStreams数组中得文件
             for (MultipartFile fileStream : fileStreams) {
+                String timestamp = String.valueOf(System.currentTimeMillis());
                 try {
-                    TencentCOSUtil.upLoadFileStream("imgs-repairnetwork", username + "/" + System.currentTimeMillis() + fileStream.getOriginalFilename().substring(fileStream.getOriginalFilename().lastIndexOf(".")), fileStream.getInputStream());
+                    TencentCOSUtil.upLoadFileStream("imgs-repairnetwork", username + "/" + timestamp + fileStream.getOriginalFilename().substring(fileStream.getOriginalFilename().lastIndexOf(".")), fileStream.getInputStream());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                URL url = TencentCOSUtil.getObjectUrl("imgs-repairnetwork", username + "/" + System.currentTimeMillis() + fileStream.getOriginalFilename().substring(fileStream.getOriginalFilename().lastIndexOf(".")));
+                URL url = TencentCOSUtil.getObjectUrl("imgs-repairnetwork", username + "/" + timestamp + fileStream.getOriginalFilename().substring(fileStream.getOriginalFilename().lastIndexOf(".")));
                 urlList.add(url.toString());
             }
         }
@@ -152,9 +153,24 @@ public class OrderController {
     @PostMapping("/updateOrder")
     public ApiResult updateOrder(@NotNull(message = "orderId can not be null") Integer orderId, String username, String sender, String tel, String type,
                                  String des, String position, String timeSubscribe, Integer progress, String solver, String timeStart, String timeDistribution,
-                                 String timeEnd, String feedback, Integer stars) throws DataHasNotExistedException {
+                                 String timeEnd, String feedback, Integer stars, MultipartFile[] fileStreams) throws DataHasNotExistedException {
+        List<String> urlList = new ArrayList<>();
+        // 判断fileStreams数组不能为空并且长度大于0
+        if (fileStreams != null && fileStreams.length > 0) {
+            // 循环获取fileStreams数组中得文件
+            for (MultipartFile fileStream : fileStreams) {
+                String timestamp = String.valueOf(System.currentTimeMillis());
+                try {
+                    TencentCOSUtil.upLoadFileStream("imgs-repairnetwork", username + "/" + timestamp + fileStream.getOriginalFilename().substring(fileStream.getOriginalFilename().lastIndexOf(".")), fileStream.getInputStream());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                URL url = TencentCOSUtil.getObjectUrl("imgs-repairnetwork", username + "/" + timestamp + fileStream.getOriginalFilename().substring(fileStream.getOriginalFilename().lastIndexOf(".")));
+                urlList.add(url.toString());
+            }
+        }
         orderService.updateOrder(orderId, username, sender, tel, type, des, position, timeSubscribe, progress,
-                solver, timeStart, timeDistribution, timeEnd, feedback, stars);
+                solver, timeStart, timeDistribution, timeEnd, feedback, stars, urlList.toString());
         return ApiResult.success("更新成功");
     }
 
