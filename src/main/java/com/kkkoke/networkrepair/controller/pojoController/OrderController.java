@@ -6,7 +6,6 @@ import com.kkkoke.networkrepair.exception.IllegalOperationException;
 import com.kkkoke.networkrepair.pojo.Order;
 import com.kkkoke.networkrepair.result.ApiResult;
 import com.kkkoke.networkrepair.service.OrderService;
-import com.kkkoke.networkrepair.util.TencentCOSUtil;
 import com.kkkoke.networkrepair.util.annotation.RequestLimit;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -20,14 +19,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
