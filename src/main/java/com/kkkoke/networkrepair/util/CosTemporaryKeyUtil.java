@@ -64,6 +64,8 @@ public class CosTemporaryKeyUtil {
             res.put("token", response.credentials.sessionToken);
             res.put("startTime", String.valueOf(response.startTime));
             res.put("expiredTime", String.valueOf(response.expiredTime));
+            res.put("bucket", "imgs-repairnetwork-1257191112");
+            res.put("region", "ap-nanjing");
 
             return res;
         } catch (Exception e) {
@@ -72,7 +74,7 @@ public class CosTemporaryKeyUtil {
         }
     }
 
-    public static HashMap<String, String> getCosTemporaryKey(String bucket, String location) {
+    public static HashMap<String, String> getCosTemporaryKey(String bucket, String region) {
         TreeMap<String, Object> config = new TreeMap<String, Object>();
 
         try {
@@ -92,7 +94,7 @@ public class CosTemporaryKeyUtil {
             // 换成您的 bucket
             config.put("bucket", bucket);
             // 换成 bucket 所在地区
-            config.put("region", location);
+            config.put("region", region);
 
             // 这里改成允许的路径前缀，可以根据自己网站的用户登录态判断允许上传的具体路径
             // 列举几种典型的前缀授权场景：
@@ -127,6 +129,8 @@ public class CosTemporaryKeyUtil {
             res.put("token", response.credentials.sessionToken);
             res.put("startTime", String.valueOf(response.startTime));
             res.put("expiredTime", String.valueOf(response.expiredTime));
+            res.put("bucket", bucket);
+            res.put("region", region);
 
             return res;
         } catch (Exception e) {

@@ -124,13 +124,13 @@ public class TencentCOSController {
 
     @ApiOperation(value = "获取对象存储临时密钥")
     @ApiImplicitParams({@ApiImplicitParam(name = "bucket", value = "存储桶名称", required = false, paramType = "query"),
-            @ApiImplicitParam(name = "location", value = "存储桶位置", required = false, paramType = "query")})
+            @ApiImplicitParam(name = "region", value = "存储桶位置", required = false, paramType = "query")})
     @Secured({"ROLE_admin", "ROLE_repairman", "ROLE_user"})
     @GetMapping("/getCosTemporaryKey")
-    public ApiResult getCosTemporaryKey(String bucket, String location) {
+    public ApiResult getCosTemporaryKey(String bucket, String region) {
         HashMap<String, String> cosTemporaryKey;
-        if (!ObjectUtils.isEmpty(bucket) && !ObjectUtils.isEmpty(location)) {
-            cosTemporaryKey = CosTemporaryKeyUtil.getCosTemporaryKey(bucket, location);
+        if (!ObjectUtils.isEmpty(bucket) && !ObjectUtils.isEmpty(region)) {
+            cosTemporaryKey = CosTemporaryKeyUtil.getCosTemporaryKey(bucket, region);
         } else {
             cosTemporaryKey = CosTemporaryKeyUtil.getCosTemporaryKey();
         }
