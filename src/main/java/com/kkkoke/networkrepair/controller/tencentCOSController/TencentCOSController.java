@@ -2,6 +2,7 @@ package com.kkkoke.networkrepair.controller.tencentCOSController;
 
 import com.kkkoke.networkrepair.result.ApiResult;
 import com.kkkoke.networkrepair.service.SlideService;
+import com.kkkoke.networkrepair.util.CosTemporaryKeyUtil;
 import com.kkkoke.networkrepair.util.TencentCOSUtil;
 import com.qcloud.cos.model.Bucket;
 import com.qcloud.cos.model.COSObjectSummary;
@@ -11,6 +12,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.constraints.NotBlank;
 import java.io.IOException;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.List;
 
 @Api(tags = "腾讯云cos")
@@ -117,5 +120,20 @@ public class TencentCOSController {
             e.printStackTrace();
         }
         return ApiResult.success("上传成功");
+    }
+
+    @ApiOperation(value = "获取对象存储临时密钥")
+    @ApiImplicitParams({@ApiImplicitParam(name = "bucket", value = "存储桶名称", required = false, paramType = "query"),
+            @ApiImplicitParam(name = "location", value = "存储桶位置", required = false, paramType = "query")})
+    @Secured({"ROLE_admin", "ROLE_repairman", "ROLE_user"})
+    @GetMapping("/getCosTemporaryKey")
+    public ApiResult getCosTemporaryKey(String bucket, String location) {
+        HashMap<String, String> cosTemporaryKey;
+        if (!ObjectUtils.isEmpty(bucket) && !ObjectUtils.isEmpty(location)) {
+            cosTemporaryKey = CosTemporaryKeyUtil.getCosTemporaryKey(bucket, location);
+        } else {
+            cosTemporaryKey = CosTemporaryKeyUtil.getCosTemporaryKey();
+        }
+        return ApiResult.success(cosTemporaryKey, "获取成功");
     }
 }

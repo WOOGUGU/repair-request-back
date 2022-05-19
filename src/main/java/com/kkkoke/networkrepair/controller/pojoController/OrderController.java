@@ -54,30 +54,15 @@ public class OrderController {
             @ApiImplicitParam(name = "des", value = "故障描述", required = true, paramType = "query"),
             @ApiImplicitParam(name = "position", value = "故障位置", required = true, paramType = "query"),
             @ApiImplicitParam(name = "timeSubscribe", value = "工单预约上门时间", required = true, paramType = "query"),
-            @ApiImplicitParam(name = "fileStreams", value = "上传文件的二进制流", required = false, paramType = "query")})
+            @ApiImplicitParam(name = "imgPath", value = "上传文件的二进制流", required = false, paramType = "query")})
     @RequestLimit(count = 5, time = 60000)
     @Secured({"ROLE_admin", "ROLE_user", "ROLE_repairman"})
     @PostMapping("/addOrder")
     public ApiResult addOrder(@NotBlank(message = "username can not be null") String username, @NotBlank(message = "sender can not be null") String sender,
                               @NotBlank(message = "tel can not be null") String tel, @NotBlank(message = "type can not be null") String type,
                               @NotBlank(message = "des can not be null") String des, @NotBlank(message = "position can not be null") String position,
-                              @NotBlank(message = "timeSubscribe can not be null") String timeSubscribe, MultipartFile[] fileStreams) throws IllegalFormDataException {
-        List<String> urlList = new ArrayList<>();
-        // 判断fileStreams数组不能为空并且长度大于0
-        if (fileStreams != null && fileStreams.length > 0) {
-            // 循环获取fileStreams数组中得文件
-            for (MultipartFile fileStream : fileStreams) {
-                String timestamp = String.valueOf(System.currentTimeMillis());
-                try {
-                    TencentCOSUtil.upLoadFileStream("imgs-repairnetwork", username + "/" + timestamp + fileStream.getOriginalFilename().substring(fileStream.getOriginalFilename().lastIndexOf(".")), fileStream.getInputStream());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                URL url = TencentCOSUtil.getObjectUrl("imgs-repairnetwork", username + "/" + timestamp + fileStream.getOriginalFilename().substring(fileStream.getOriginalFilename().lastIndexOf(".")));
-                urlList.add(url.toString());
-            }
-        }
-        orderService.addOrder(username, sender, tel, type, des, position, timeSubscribe, urlList.toString());
+                              @NotBlank(message = "timeSubscribe can not be null") String timeSubscribe, String imgPath) throws IllegalFormDataException {
+        orderService.addOrder(username, sender, tel, type, des, position, timeSubscribe, imgPath);
         return ApiResult.success("工单添加成功");
     }
 
@@ -153,24 +138,9 @@ public class OrderController {
     @PostMapping("/updateOrder")
     public ApiResult updateOrder(@NotNull(message = "orderId can not be null") Integer orderId, String username, String sender, String tel, String type,
                                  String des, String position, String timeSubscribe, Integer progress, String solver, String timeStart, String timeDistribution,
-                                 String timeEnd, String feedback, Integer stars, MultipartFile[] fileStreams) throws DataHasNotExistedException {
-        List<String> urlList = new ArrayList<>();
-        // 判断fileStreams数组不能为空并且长度大于0
-        if (fileStreams != null && fileStreams.length > 0) {
-            // 循环获取fileStreams数组中得文件
-            for (MultipartFile fileStream : fileStreams) {
-                String timestamp = String.valueOf(System.currentTimeMillis());
-                try {
-                    TencentCOSUtil.upLoadFileStream("imgs-repairnetwork", username + "/" + timestamp + fileStream.getOriginalFilename().substring(fileStream.getOriginalFilename().lastIndexOf(".")), fileStream.getInputStream());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                URL url = TencentCOSUtil.getObjectUrl("imgs-repairnetwork", username + "/" + timestamp + fileStream.getOriginalFilename().substring(fileStream.getOriginalFilename().lastIndexOf(".")));
-                urlList.add(url.toString());
-            }
-        }
+                                 String timeEnd, String feedback, Integer stars, String imgPath) throws DataHasNotExistedException {
         orderService.updateOrder(orderId, username, sender, tel, type, des, position, timeSubscribe, progress,
-                solver, timeStart, timeDistribution, timeEnd, feedback, stars, urlList.toString());
+                solver, timeStart, timeDistribution, timeEnd, feedback, stars, imgPath);
         return ApiResult.success("更新成功");
     }
 
@@ -178,7 +148,7 @@ public class OrderController {
     @ApiImplicitParams({@ApiImplicitParam(name = "orderId", value = "工单id", required = true, paramType = "query"),
             @ApiImplicitParam(name = "feedback", value = "用户反馈", required = false, paramType = "query"),
             @ApiImplicitParam(name = "stars", value = "用户反馈", required = false, paramType = "query")})
-    @Secured({"ROLE_admin", "ROLE_user"})
+    @Secured({"ROLE_admin", "ROLE_repairman"})
     @RequestLimit(count = 5, time = 60000)
     @PostMapping("/updateOrderFeedback")
     public ApiResult updateOrderFeedback(@NotNull(message = "orderId can not be null") Integer orderId,
