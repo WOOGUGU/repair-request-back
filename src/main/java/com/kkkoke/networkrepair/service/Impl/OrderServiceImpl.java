@@ -8,7 +8,6 @@ import com.kkkoke.networkrepair.exception.IllegalOperationException;
 import com.kkkoke.networkrepair.pojo.Order;
 import com.kkkoke.networkrepair.pojo.User;
 import com.kkkoke.networkrepair.service.OrderService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
@@ -30,7 +29,7 @@ public class OrderServiceImpl implements OrderService {
     // 增加报修工单
     @Override
     public Order addOrder(String username, String sender, String tel, String type,
-                          String des, String position, String timeSubscribe) throws IllegalFormDataException {
+                          String des, String position, String timeSubscribe, String imgPath) throws IllegalFormDataException {
         String timeStart = LocalDateTime.now().toString();
         LocalDate now = LocalDate.now();
         LocalDate after = LocalDate.now().plusDays(3);
@@ -38,7 +37,8 @@ public class OrderServiceImpl implements OrderService {
         if (tempTime.isBefore(now) || tempTime.isEqual(now) || tempTime.isAfter(after)) {
             throw new IllegalFormDataException("预约时间过近，无法及时处理");
         }
-        Order order = new Order(username, sender, tel, type, des, position, timeSubscribe, timeStart);
+
+        Order order = new Order(username, sender, tel, type, des, position, timeSubscribe, timeStart, imgPath);
 
         orderDao.addOrder(order);
         return order;
@@ -92,13 +92,14 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order updateOrder(Integer orderId, String username, String sender, String tel, String type,
                              String des, String position, String timeSubscribe, Integer progress,
-                             String solver, String timeStart, String timeDistribution, String timeEnd, String feedback, Integer stars) throws DataHasNotExistedException {
+                             String solver, String timeStart, String timeDistribution, String timeEnd,
+                             String feedback, Integer stars, String imgPath) throws DataHasNotExistedException {
         Order order = orderDao.selectOrderById(orderId);
-        // 查找数据库中是否存在此用户
+        // 查找数据库中是否存在此工单
         if (ObjectUtils.isEmpty(order)) {
             throw new DataHasNotExistedException("Order has not existed");
         } else {
-            // 如果用户存在就更新数据
+            // 如果工单存在就更新数据
             if (!ObjectUtils.isEmpty(username)) {
                 order.setUsername(username);
             }
@@ -140,6 +141,9 @@ public class OrderServiceImpl implements OrderService {
             }
             if (!ObjectUtils.isEmpty(stars)) {
                 order.setStars(stars);
+            }
+            if (!ObjectUtils.isEmpty(imgPath)) {
+                order.setImgPath(imgPath);
             }
             orderDao.updateOrder(order);
             return order;

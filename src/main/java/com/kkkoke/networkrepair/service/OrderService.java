@@ -9,7 +9,7 @@ import java.util.List;
 public interface OrderService {
     // 增加报修工单
     Order addOrder(String username, String sender, String tel, String type,
-                   String des, String position, String timeSubscribe) throws IllegalFormDataException;
+                   String des, String position, String timeSubscribe, String imgPath) throws IllegalFormDataException;
 
     // 通过id删除报修工单
     int deleteOrder(Integer orderId) throws DataHasNotExistedException;
@@ -28,7 +28,8 @@ public interface OrderService {
     // 修改报修工单
     Order updateOrder(Integer orderId, String username, String sender, String tel, String type,
                       String des, String position, String timeSubscribe, Integer progress,
-                      String solver, String timeStart, String timeDistribution, String timeEnd, String feedback, Integer stars) throws DataHasNotExistedException;
+                      String solver, String timeStart, String timeDistribution, String timeEnd,
+                      String feedback, Integer stars, String imgPath) throws DataHasNotExistedException;
 
     // 审核工单
     Integer checkOrder(Integer orderId, Integer progress, String remark) throws DataHasNotExistedException;

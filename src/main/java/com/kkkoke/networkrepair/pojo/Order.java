@@ -24,11 +24,12 @@ public class Order {
     private String feedback; // 用户反馈
     private Integer stars; // 工单完成后的评价星级
     private String remark; // 备注
+    private String imgPath; // 报修图片路径
 
     // 不带id的报修工单构造函数
     public Order(String username, String sender, String tel, String type, String des, String position,
-                 String timeSubscribe, Integer progress, String solver, String timeStart,
-                 String timeDistribution, String timeEnd, String feedback, Integer stars, String remark) {
+                 String timeSubscribe, Integer progress, String solver, String timeStart, String timeDistribution,
+                 String timeEnd, String feedback, Integer stars, String remark, String imgPath) {
         this.username = username;
         this.sender = sender;
         this.tel = tel;
@@ -44,10 +45,11 @@ public class Order {
         this.feedback = feedback;
         this.stars = stars;
         this.remark = remark;
+        this.imgPath = imgPath;
     }
 
     // 添加工单时的构造函数
-    public Order(String username, String sender, String tel, String type, String des, String position, String timeSubscribe, String timeStart) {
+    public Order(String username, String sender, String tel, String type, String des, String position, String timeSubscribe, String timeStart, String imgPath) {
         this.username = username;
         this.sender = sender;
         this.tel = tel;
@@ -56,6 +58,7 @@ public class Order {
         this.position = position;
         this.timeSubscribe = timeSubscribe;
         this.timeStart = timeStart;
+        this.imgPath = imgPath;
     }
 
     public Order(Integer orderId, Integer progress) {
