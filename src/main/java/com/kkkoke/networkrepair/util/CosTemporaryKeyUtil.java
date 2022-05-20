@@ -64,8 +64,6 @@ public class CosTemporaryKeyUtil {
             res.put("token", response.credentials.sessionToken);
             res.put("startTime", String.valueOf(response.startTime));
             res.put("expiredTime", String.valueOf(response.expiredTime));
-            res.put("bucket", "imgs-repairnetwork-1257191112");
-            res.put("region", "ap-nanjing");
 
             return res;
         } catch (Exception e) {
@@ -129,8 +127,6 @@ public class CosTemporaryKeyUtil {
             res.put("token", response.credentials.sessionToken);
             res.put("startTime", String.valueOf(response.startTime));
             res.put("expiredTime", String.valueOf(response.expiredTime));
-            res.put("bucket", bucket);
-            res.put("region", region);
 
             return res;
         } catch (Exception e) {

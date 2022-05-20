@@ -136,4 +136,12 @@ public class TencentCOSController {
         }
         return ApiResult.success(cosTemporaryKey, "获取成功");
     }
+
+    @ApiOperation(value = "获取对象存储的存储桶及位置信息")
+    @Secured({"ROLE_admin", "ROLE_repairman", "ROLE_user"})
+    @GetMapping("/getCosBucketAndRegion")
+    public ApiResult getCosBucketAndRegion() {
+        HashMap<String, String> cosBucketAndRegion = TencentCOSUtil.getCosBucketAndRegion();
+        return ApiResult.success(cosBucketAndRegion, "获取成功");
+    }
 }

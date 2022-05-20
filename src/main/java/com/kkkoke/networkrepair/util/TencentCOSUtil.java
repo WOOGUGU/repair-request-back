@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -237,5 +238,12 @@ public class TencentCOSUtil {
         // 指定参数为 true, 则同时会关闭 transferManager 内部的 COSClient 实例。
         // 指定参数为 false, 则不会关闭 transferManager 内部的 COSClient 实例。
         transferManager.shutdownNow(true);
+    }
+
+    public static HashMap<String, String> getCosBucketAndRegion() {
+        HashMap<String, String> res = new HashMap<>();
+        res.put("bucket", "imgs-repairnetwork-1257191112");
+        res.put("region", "ap-nanjing");
+        return res;
     }
 }
