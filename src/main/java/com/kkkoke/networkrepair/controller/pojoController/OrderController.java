@@ -49,7 +49,7 @@ public class OrderController {
             @ApiImplicitParam(name = "des", value = "故障描述", required = true, paramType = "query"),
             @ApiImplicitParam(name = "position", value = "故障位置", required = true, paramType = "query"),
             @ApiImplicitParam(name = "timeSubscribe", value = "工单预约上门时间", required = true, paramType = "query"),
-            @ApiImplicitParam(name = "imgPath", value = "上传文件的二进制流", required = false, paramType = "query")})
+            @ApiImplicitParam(name = "imgPath", value = "文件在COS的url", required = false, paramType = "query")})
     @RequestLimit(count = 5, time = 60000)
     @Secured({"ROLE_admin", "ROLE_user", "ROLE_repairman"})
     @PostMapping("/addOrder")
