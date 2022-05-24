@@ -44,7 +44,7 @@ layui.use(['table', 'form', 'layer'], function () {
                 , {field: 'timeStart', title: '发起时间', width: 250}
                 , {field: 'timeDistribution', title: '分配时间', width: 250}
                 , {field: 'timeEnd', title: '解决时间', width: 250}
-                , {field: 'feedback', title: '用户反馈', width: 250}
+                , {field: 'feedback', title: '维修反馈', width: 250}
                 , {field: 'stars', title: '满意星级', width: 150}
                 , {field: 'remark', title: '备注', width: 150}
                 , {title: '操作', align: 'center', width: 180, toolbar: '#order'}
