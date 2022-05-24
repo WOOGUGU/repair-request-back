@@ -47,4 +47,7 @@ public interface OrderDao {
 
     // 修改工单解决时间
     Integer updateTimeEnd(Integer id, String timeEnd);
+
+    // 维修员完成工单
+    Integer finishOrder(Integer id, String feedback, Integer progress);
 }
