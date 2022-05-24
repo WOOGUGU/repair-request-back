@@ -241,13 +241,13 @@ public class OrderServiceImpl implements OrderService {
 
     // 维修人员确定完成工单
     @Override
-    public Integer finishOrder(Integer orderId, String feedback) throws DataHasNotExistedException {
+    public Integer finishOrder(Integer orderId, String feedback, Integer progress) throws DataHasNotExistedException {
         // 查找数据库中是否存在此工单
         if (ObjectUtils.isEmpty(orderDao.selectOrderById(orderId))) {
             throw new DataHasNotExistedException("Order has not existed");
         } else {
             // 如果工单存在就修改工单状态
-            orderDao.finishOrder(orderId, feedback, 2);
+            orderDao.finishOrder(orderId, feedback, progress);
             orderDao.updateTimeEnd(orderId, LocalDateTime.now().toString());
             return 0;
         }
