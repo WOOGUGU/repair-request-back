@@ -1,4 +1,4 @@
-document.write('<script src="//cdn.jsdelivr.net/npm/sweetalert2@11" type="text/javascript" charset="utf-8"></script>');
+document.write('<script src="js/sweetalert.min.js" type="text/javascript" charset="utf-8"></script>');
 ;!function (win) {
     "use strict";
     var doc = document
