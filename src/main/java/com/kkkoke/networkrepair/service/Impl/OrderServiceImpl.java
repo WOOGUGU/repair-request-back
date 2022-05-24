@@ -248,7 +248,9 @@ public class OrderServiceImpl implements OrderService {
         } else {
             // 如果工单存在就修改工单状态
             orderDao.finishOrder(orderId, feedback, progress);
-            orderDao.updateTimeEnd(orderId, LocalDateTime.now().toString());
+            if (progress == 2) {
+                orderDao.updateTimeEnd(orderId, LocalDateTime.now().toString());
+            }
             return 0;
         }
     }
