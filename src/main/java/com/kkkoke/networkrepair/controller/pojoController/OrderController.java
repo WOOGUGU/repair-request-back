@@ -205,11 +205,12 @@ public class OrderController {
     }
 
     @ApiOperation(value = "维修人员确定完成工单")
-    @ApiImplicitParam(name = "orderId", value = "工单id", required = true, paramType = "query")
+    @ApiImplicitParams({@ApiImplicitParam(name = "orderId", value = "工单id", required = true, paramType = "query"),
+            @ApiImplicitParam(name = "feedback", value = "维修反馈", required = false, paramType = "query")})
     @Secured({"ROLE_admin", "ROLE_repairman"})
     @PostMapping("/finishOrder")
-    public ApiResult finishOrder(@NotNull(message = "orderId can not be null") Integer orderId) throws DataHasNotExistedException {
-        orderService.finishOrder(orderId);
+    public ApiResult finishOrder(@NotNull(message = "orderId can not be null") Integer orderId, String feedback) throws DataHasNotExistedException {
+        orderService.finishOrder(orderId, feedback);
         return ApiResult.success("处理成功");
     }
 }
