@@ -607,7 +607,7 @@ function logout() {
         data: {},
         success: function (res) {
             if (res.userMsg !== "") {
-                Swal.fire({
+                swal({
                     icon: 'success',
                     title: '注销成功',
                     text: res.userMsg,
@@ -615,7 +615,7 @@ function logout() {
                 // alert(res.userMsg);
                 window.location.href = "/login.html";
             } else {
-                Swal.fire({
+                swal({
                     icon: 'error',
                     title: '注销失败',
                     text: '发生未知错误，请重试',

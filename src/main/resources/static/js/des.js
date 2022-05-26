@@ -96,7 +96,7 @@ layui.use(['table', 'form', 'layer'], function () {
 function addDes() {
     var des = $("#des").val();
     if (des === "") {
-        Swal.fire({
+        swal({
             icon: 'error',
             title: '添加失败',
             text: '故障描述不能为空',
@@ -113,14 +113,14 @@ function addDes() {
             },
             success: function (res) {
                 if (res.userMsg !== "") {
-                    Swal.fire({
+                    swal({
                         icon: 'success',
                         title: '添加成功',
                         text: res.userMsg,
                     })
                     // alert(res.userMsg);
                 } else {
-                    Swal.fire({
+                    swal({
                         icon: 'error',
                         title: '添加失败',
                         text: '发生未知错误，请重试',
@@ -129,7 +129,7 @@ function addDes() {
                 }
             },
             error: function () {
-                Swal.fire({
+                swal({
                     icon: 'error',
                     title: '添加失败',
                     text: '发生未知错误，请重试',
@@ -145,7 +145,7 @@ function updateDes() {
     var pickerId = $("#pickerId").val();
     var des = $("#des").val();
     if (pickerId === "") {
-        Swal.fire({
+        swal({
             icon: 'error',
             title: '修改失败',
             text: '报修时间id不能为空',
@@ -153,7 +153,7 @@ function updateDes() {
         //alert("报修时间id不能为空");
         return;
     } else if (des === "") {
-        Swal.fire({
+        swal({
             icon: 'error',
             title: '修改失败',
             text: '故障描述不能为空',
@@ -171,14 +171,14 @@ function updateDes() {
             },
             success: function (res) {
                 if (res.userMsg !== "") {
-                    Swal.fire({
+                    swal({
                         icon: 'success',
                         title: '修改成功',
                         text: res.userMsg,
                     })
                     //  alert(res.userMsg);
                 } else {
-                    Swal.fire({
+                    swal({
                         icon: 'error',
                         title: '修改失败',
                         text: '发生未知错误，请重试',
@@ -187,7 +187,7 @@ function updateDes() {
                 }
             },
             error: function () {
-                Swal.fire({
+                swal({
                     icon: 'error',
                     title: '修改失败',
                     text: '发生未知错误，请重试',
@@ -217,7 +217,7 @@ function delDes() {
                         },
                         success: function (res) {
                             if (res.userMsg !== "") {
-                                Swal.fire({
+                                swal({
                                     icon: 'success',
                                     title: '删除成功',
                                     text: res.userMsg,
@@ -225,7 +225,7 @@ function delDes() {
                                 //alert(res.userMsg);
                                 location.reload();
                             } else {
-                                Swal.fire({
+                                swal({
                                     icon: 'error',
                                     title: '删除失败',
                                     text: '发生未知错误，请重试',
@@ -234,7 +234,7 @@ function delDes() {
                             }
                         },
                         error: function () {
-                            Swal.fire({
+                            swal({
                                 icon: 'error',
                                 title: '删除失败',
                                 text: '发生未知错误，请重试',

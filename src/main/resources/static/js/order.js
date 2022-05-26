@@ -137,7 +137,7 @@ function addOrder() {
     var passwd = $("#passwd").val();
     var name = $("#name").val();
     if (uname === "" || passwd === "") {
-        Swal.fire({
+        swal({
             icon: 'error',
             title: '增加失败',
             text: '用户名或密码不能为空',
@@ -145,7 +145,7 @@ function addOrder() {
         //alert("用户名或密码不能为空");
         return;
     } else if (name === "") {
-        Swal.fire({
+        swal({
             icon: 'error',
             title: '增加失败',
             text: '真实姓名不能为空',
@@ -164,14 +164,14 @@ function addOrder() {
             },
             success: function (res) {
                 if (res.userMsg !== "") {
-                    Swal.fire({
+                    swal({
                         icon: 'success',
                         title: '增加成功',
                         text: res.userMsg,
                     })
                     // alert(res.userMsg);
                 } else {
-                    Swal.fire({
+                    swal({
                         icon: 'error',
                         title: '增加失败',
                         text: '发生未知错误，请重试',
@@ -180,7 +180,7 @@ function addOrder() {
                 }
             },
             error: function () {
-                Swal.fire({
+                swal({
                     icon: 'error',
                     title: '增加失败',
                     text: '用户名或密码不能为空',
@@ -198,7 +198,7 @@ function updateOrder() {
     var passwd = $("#passwd").val();
     var name = $("#name").val();
     if (uname === "" || passwd === "") {
-        Swal.fire({
+        swal({
             icon: 'error',
             title: '修改失败',
             text: '用户名或密码不能为空',
@@ -206,7 +206,7 @@ function updateOrder() {
         //alert("用户名或密码不能为空");
         return;
     } else if (name === "") {
-        Swal.fire({
+        swal({
             icon: 'error',
             title: '修改失败',
             text: '真实姓名不能为空',
@@ -226,14 +226,14 @@ function updateOrder() {
             },
             success: function (res) {
                 if (res.userMsg !== "") {
-                    Swal.fire({
+                    swal({
                         icon: 'success',
                         title: '修改成功',
                         text: res.userMsg,
                     })
                     // alert(res.userMsg);
                 } else {
-                    Swal.fire({
+                    swal({
                         icon: 'error',
                         title: '修改失败',
                         text: '发生未知错误，请重试',
@@ -242,7 +242,7 @@ function updateOrder() {
                 }
             },
             error: function () {
-                Swal.fire({
+                swal({
                     icon: 'error',
                     title: '修改失败',
                     text: '发生未知错误，请重试',
@@ -282,14 +282,14 @@ function sendRepairman() {
         },
         success: function (res) {
             if (res.userMsg !== "") {
-                Swal.fire({
+                swal({
                     icon: 'success',
                     title: '分配成功',
                     text: res.userMsg,
                 })
                 //alert(res.userMsg);
             } else {
-                Swal.fire({
+                swal({
                     icon: 'error',
                     title: '分配失败',
                     text: '发生未知错误，请重试',
@@ -299,7 +299,7 @@ function sendRepairman() {
             window.location.href = "/orderList.html";
         },
         error: function () {
-            Swal.fire({
+            swal({
                 icon: 'error',
                 title: '修改失败',
                 text: '发生未知错误，请重试',
@@ -322,7 +322,7 @@ function rejectOrder() {
                 if (info == null) {
                     return;
                 } else if (info == '') {
-                    Swal.fire({
+                    swal({
                         icon: 'error',
                         title: '审核失败',
                         text: '请输入原因后重试',
@@ -340,14 +340,14 @@ function rejectOrder() {
                     },
                     success: function (res) {
                         if (res.userMsg !== "") {
-                            Swal.fire({
+                            swal({
                                 icon: 'success',
                                 title: '审核成功',
                                 text: res.userMsg,
                             })
                             // alert(res.userMsg);
                         } else {
-                            Swal.fire({
+                            swal({
                                 icon: 'error',
                                 title: '审核失败',
                                 text: '发生未知错误，请重试',
@@ -357,7 +357,7 @@ function rejectOrder() {
                         window.location.href = "/orderList.html";
                     },
                     error: function () {
-                        Swal.fire({
+                        swal({
                             icon: 'error',
                             title: '审核失败',
                             text: '发生未知错误，请重试',
@@ -373,7 +373,7 @@ function rejectOrder() {
 // 删除工单
 function delOrder() {
     if ($("#orderId").val() === "") {
-        Swal.fire({
+        swal({
             icon: 'error',
             title: '删除失败',
             text: 'orderId不能为空',
@@ -389,14 +389,14 @@ function delOrder() {
         },
         success: function (res) {
             if (res.userMsg !== "") {
-                Swal.fire({
+                swal({
                     icon: 'success',
                     title: '删除成功',
                     text: res.userMsg,
                 })
                 //  alert(res.userMsg);
             } else {
-                Swal.fire({
+                swal({
                     icon: 'error',
                     title: '删除失败',
                     text: '发生未知错误，请重试',
@@ -405,7 +405,7 @@ function delOrder() {
             }
         },
         error: function () {
-            Swal.fire({
+            swal({
                 icon: 'error',
                 title: '删除失败',
                 text: '发生未知错误，请重试',

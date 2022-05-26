@@ -111,7 +111,7 @@ function addMember() {
     var tel = $("#tel").val();
     let pattern = /^1(3\d|4[5-9]|5[0-35-9]|6[567]|7[0-8]|8\d|9[0-35-9])\d{8}$/;
     if (uname === "" || passwd === "") {
-        Swal.fire({
+        swal({
             icon: 'error',
             title: '添加失败',
             text: '用户名或密码不能为空',
@@ -119,7 +119,7 @@ function addMember() {
         // alert("用户名或密码不能为空");
         return;
     } else if (name === "") {
-        Swal.fire({
+        swal({
             icon: 'error',
             title: '添加失败',
             text: '真实姓名不能为空',
@@ -127,7 +127,7 @@ function addMember() {
         //alert("真实姓名不能为空");
         return;
     } else if (tel === "") {
-        Swal.fire({
+        swal({
             icon: 'error',
             title: '添加失败',
             text: '联系方式不能为空',
@@ -135,7 +135,7 @@ function addMember() {
         //alert("联系方式不能为空");
         return;
     } else if (!pattern.test(tel)) {
-        Swal.fire({
+        swal({
             icon: 'error',
             title: '添加失败',
             text: '请输入正确的手机号',
@@ -155,14 +155,14 @@ function addMember() {
             },
             success: function (res) {
                 if (res.userMsg !== "") {
-                    Swal.fire({
+                    swal({
                         icon: 'success',
                         title: '添加成功',
                         text: res.userMsg,
                     })
                     //alert(res.userMsg);
                 } else {
-                    Swal.fire({
+                    swal({
                         icon: 'error',
                         title: '添加失败',
                         text: '发生未知错误，请重试',
@@ -171,7 +171,7 @@ function addMember() {
                 }
             },
             error: function () {
-                Swal.fire({
+                swal({
                     icon: 'error',
                     title: '添加失败',
                     text: '发生未知错误，请重试',
@@ -194,7 +194,7 @@ function updateMember() {
     }
     let pattern = /^1(3\d|4[5-9]|5[0-35-9]|6[567]|7[0-8]|8\d|9[0-35-9])\d{8}$/;
     if (!pattern.test(tel)) {
-        Swal.fire({
+        swal({
             icon: 'error',
             title: '修改失败',
             text: '请填写正确的手机号',
@@ -215,14 +215,14 @@ function updateMember() {
         },
         success: function (res) {
             if (res.userMsg !== "") {
-                Swal.fire({
+                swal({
                     icon: 'success',
                     title: '修改成功',
                     text: res.userMsg,
                 })
                 //alert(res.userMsg);
             } else {
-                Swal.fire({
+                swal({
                     icon: 'error',
                     title: '修改失败',
                     text: '发生未知错误，请重试',
@@ -231,7 +231,7 @@ function updateMember() {
             }
         },
         error: function () {
-            Swal.fire({
+            swal({
                 icon: 'error',
                 title: '修改失败',
                 text: '发生未知错误，请重试',
@@ -260,7 +260,7 @@ function delNorUser() {
                         },
                         success: function (res) {
                             if (res.userMsg !== "") {
-                                Swal.fire({
+                                swal({
                                     icon: 'success',
                                     title: '删除成功',
                                     text: res.userMsg,
@@ -268,7 +268,7 @@ function delNorUser() {
                                 //alert(res.userMsg);
                                 location.reload();
                             } else {
-                                Swal.fire({
+                                swal({
                                     icon: 'error',
                                     title: '删除失败',
                                     text: '发生未知错误，请重试',
@@ -277,7 +277,7 @@ function delNorUser() {
                             }
                         },
                         error: function () {
-                            Swal.fire({
+                            swal({
                                 icon: 'error',
                                 title: '删除失败',
                                 text: '发生未知错误，请重试',
@@ -312,7 +312,7 @@ function delAdmin() {
                         },
                         success: function (res) {
                             if (res.userMsg !== "") {
-                                Swal.fire({
+                                swal({
                                     icon: 'success',
                                     title: '删除成功',
                                     text: res.userMsg,
@@ -320,7 +320,7 @@ function delAdmin() {
                                 // alert(res.userMsg);
                                 location.reload();
                             } else {
-                                Swal.fire({
+                                swal({
                                     icon: 'error',
                                     title: '删除失败',
                                     text: '发生未知错误，请重试',
@@ -329,7 +329,7 @@ function delAdmin() {
                             }
                         },
                         error: function () {
-                            Swal.fire({
+                            swal({
                                 icon: 'error',
                                 title: '删除失败',
                                 text: '发生未知错误，请重试',
@@ -364,7 +364,7 @@ function delRepairman() {
                         },
                         success: function (res) {
                             if (res.userMsg !== "") {
-                                Swal.fire({
+                                swal({
                                     icon: 'success',
                                     title: '删除成功',
                                     text: res.userMsg,
@@ -372,7 +372,7 @@ function delRepairman() {
                                 // alert(res.userMsg);
                                 location.reload();
                             } else {
-                                Swal.fire({
+                                swal({
                                     icon: 'error',
                                     title: '删除失败',
                                     text: '发生未知错误，请重试',
@@ -381,7 +381,7 @@ function delRepairman() {
                             }
                         },
                         error: function () {
-                            Swal.fire({
+                            swal({
                                 icon: 'error',
                                 title: '删除失败',
                                 text: '发生未知错误，请重试',
