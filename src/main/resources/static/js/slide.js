@@ -109,7 +109,7 @@ function delSlide() {
                         },
                         success: function (res) {
                             if (res.userMsg !== "") {
-                                Swal.fire({
+                                swal({
                                     icon: 'success',
                                     title: '删除成功',
                                     text: res.userMsg,
@@ -117,7 +117,7 @@ function delSlide() {
                                 //alert(res.userMsg);
                                 location.reload();
                             } else {
-                                Swal.fire({
+                                swal({
                                     icon: 'error',
                                     title: '删除失败',
                                     text: '发生未知错误，请重试',
@@ -126,7 +126,7 @@ function delSlide() {
                             }
                         },
                         error: function () {
-                            Swal.fire({
+                            swal({
                                 icon: 'error',
                                 title: '删除失败',
                                 text: '发生未知错误，请重试',

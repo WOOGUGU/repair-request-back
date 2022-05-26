@@ -96,7 +96,7 @@ layui.use(['table', 'form', 'layer'], function () {
 function addTime() {
     var time = $("#time").val();
     if (time === "") {
-        Swal.fire({
+        swal({
             icon: 'error',
             title: '增加失败',
             text: '报修时间不能为空',
@@ -113,14 +113,14 @@ function addTime() {
             },
             success: function (res) {
                 if (res.userMsg !== "") {
-                    Swal.fire({
+                    swal({
                         icon: 'success',
                         title: '增加成功',
                         text: res.userMsg,
                     })
                     //alert(res.userMsg);
                 } else {
-                    Swal.fire({
+                    swal({
                         icon: 'error',
                         title: '增加失败',
                         text: '发生未知错误，请重试',
@@ -129,7 +129,7 @@ function addTime() {
                 }
             },
             error: function () {
-                Swal.fire({
+                swal({
                     icon: 'error',
                     title: '增加失败',
                     text: '发生未知错误，请重试',
@@ -145,7 +145,7 @@ function updateTime() {
     var pickerId = $("#pickerId").val();
     var time = $("#time").val();
     if (pickerId === "") {
-        Swal.fire({
+        swal({
             icon: 'error',
             title: '增加失败',
             text: '报修时间id不能为空',
@@ -153,7 +153,7 @@ function updateTime() {
         //alert("报修时间id不能为空");
         return;
     } else if (time === "") {
-        Swal.fire({
+        swal({
             icon: 'error',
             title: '修改失败',
             text: '报修时间不能为空',
@@ -171,14 +171,14 @@ function updateTime() {
             },
             success: function (res) {
                 if (res.userMsg !== "") {
-                    Swal.fire({
+                    swal({
                         icon: 'success',
                         title: '修改成功',
                         text: res.userMsg,
                     })
                     // alert(res.userMsg);
                 } else {
-                    Swal.fire({
+                    swal({
                         icon: 'error',
                         title: '修改失败',
                         text: '发生未知错误，请重试',
@@ -187,7 +187,7 @@ function updateTime() {
                 }
             },
             error: function () {
-                Swal.fire({
+                swal({
                     icon: 'error',
                     title: '修改失败',
                     text: '发生未知错误，请重试',
@@ -217,7 +217,7 @@ function delTime() {
                         },
                         success: function (res) {
                             if (res.userMsg !== "") {
-                                Swal.fire({
+                                swal({
                                     icon: 'success',
                                     title: '删除成功',
                                     text: res.userMsg,
@@ -225,7 +225,7 @@ function delTime() {
                                 // alert(res.userMsg);
                                 location.reload();
                             } else {
-                                Swal.fire({
+                                swal({
                                     icon: 'error',
                                     title: '删除失败',
                                     text: '发生未知错误，请重试',
@@ -234,7 +234,7 @@ function delTime() {
                             }
                         },
                         error: function () {
-                            Swal.fire({
+                            swal({
                                 icon: 'error',
                                 title: '删除失败',
                                 text: '发生未知错误，请重试',

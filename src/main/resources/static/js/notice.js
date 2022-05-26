@@ -103,7 +103,7 @@ function addNotice() {
     var content = $("#content").val();
     var author = $("#author").val();
     if (content === "" || content === "") {
-        Swal.fire({
+        swal({
             icon: 'error',
             title: '添加失败',
             text: '通知不能为空',
@@ -111,7 +111,7 @@ function addNotice() {
         // alert("通知不能为空");
         return;
     } else if (author === "") {
-        Swal.fire({
+        swal({
             icon: 'error',
             title: '添加失败',
             text: '发布者不能为空',
@@ -129,14 +129,14 @@ function addNotice() {
             },
             success: function (res) {
                 if (res.userMsg !== "") {
-                    Swal.fire({
+                    swal({
                         icon: 'success',
                         title: '添加成功',
                         text: res.userMsg,
                     })
                     //  alert(res.userMsg);
                 } else {
-                    Swal.fire({
+                    swal({
                         icon: 'error',
                         title: '添加失败',
                         text: '发生未知错误，请重试',
@@ -145,7 +145,7 @@ function addNotice() {
                 }
             },
             error: function () {
-                Swal.fire({
+                swal({
                     icon: 'error',
                     title: '添加失败',
                     text: '发生未知错误，请重试',
@@ -175,7 +175,7 @@ function delNotice() {
                         },
                         success: function (res) {
                             if (res.userMsg !== "") {
-                                Swal.fire({
+                                swal({
                                     icon: 'success',
                                     title: '修改成功',
                                     text: res.userMsg,
@@ -183,7 +183,7 @@ function delNotice() {
                                 // alert(res.userMsg);
                                 location.reload();
                             } else {
-                                Swal.fire({
+                                swal({
                                     icon: 'error',
                                     title: '删除失败',
                                     text: '发生未知错误，请重试',
@@ -192,7 +192,7 @@ function delNotice() {
                             }
                         },
                         error: function () {
-                            Swal.fire({
+                            swal({
                                 icon: 'error',
                                 title: '删除失败',
                                 text: '发生未知错误，请重试',
@@ -214,7 +214,7 @@ function updateNotice() {
     var content = $("#content").val();
     var author = $("#author").val();
     if (noticeId === "") {
-        Swal.fire({
+        swal({
             icon: 'error',
             title: '修改失败',
             text: '通知Id不能为空',
@@ -222,7 +222,7 @@ function updateNotice() {
         //alert("通知Id不能为空");
         return;
     } else if (content === "") {
-        Swal.fire({
+        swal({
             icon: 'error',
             title: '修改失败',
             text: '通知不能为空',
@@ -230,7 +230,7 @@ function updateNotice() {
         //alert("通知不能为空");
         return;
     } else if (author === "") {
-        Swal.fire({
+        swal({
             icon: 'error',
             title: '修改失败',
             text: '发布者不能为空',
@@ -249,14 +249,14 @@ function updateNotice() {
             },
             success: function (res) {
                 if (res.userMsg !== "") {
-                    Swal.fire({
+                    swal({
                         icon: 'success',
                         title: '修改成功',
                         text: res.userMsg,
                     })
                     //  alert(res.userMsg);
                 } else {
-                    Swal.fire({
+                    swal({
                         icon: 'error',
                         title: '修改失败',
                         text: '发生未知错误，请重试',
@@ -265,7 +265,7 @@ function updateNotice() {
                 }
             },
             error: function () {
-                Swal.fire({
+                swal({
                     icon: 'error',
                     title: '修改失败',
                     text: '发生未知错误，请重试',

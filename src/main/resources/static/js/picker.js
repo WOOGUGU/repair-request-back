@@ -95,7 +95,7 @@ function addLocation() {
     var area = $("#area").val();
     var position = $("#position").val();
     if (area === "") {
-        Swal.fire({
+        swal({
             icon: 'error',
             title: '增加失败',
             text: '报修区域不能为空',
@@ -103,7 +103,7 @@ function addLocation() {
         // alert("报修区域不能为空");
         return;
     } else if (position === "") {
-        Swal.fire({
+        swal({
             icon: 'error',
             title: '增加失败',
             text: '报修位置不能为空',
@@ -120,14 +120,14 @@ function addLocation() {
             },
             success: function (res) {
                 if (res.userMsg !== "") {
-                    Swal.fire({
+                    swal({
                         icon: 'success',
                         title: '增加成功',
                         text: res.userMsg,
                     })
                     // alert(res.userMsg);
                 } else {
-                    Swal.fire({
+                    swal({
                         icon: 'error',
                         title: '增加失败',
                         text: '发生未知错误，请重试',
@@ -136,7 +136,7 @@ function addLocation() {
                 }
             },
             error: function () {
-                Swal.fire({
+                swal({
                     icon: 'error',
                     title: '增加失败',
                     text: '发生未知错误，请重试',
@@ -153,7 +153,7 @@ function updateLocation() {
     var area = $("#area").val();
     var position = $("#position").val();
     if (pickerId === "") {
-        Swal.fire({
+        swal({
             icon: 'error',
             title: '修改失败',
             text: '报修位置id不能为空',
@@ -161,7 +161,7 @@ function updateLocation() {
         // alert("报修位置id不能为空");
         return;
     } else if (area === "") {
-        Swal.fire({
+        swal({
             icon: 'error',
             title: '修改失败',
             text: '报修区域不能为空',
@@ -169,7 +169,7 @@ function updateLocation() {
         //alert("报修区域不能为空");
         return;
     } else if (position === "") {
-        Swal.fire({
+        swal({
             icon: 'error',
             title: '修改失败',
             text: '报修位置不能为空',
@@ -187,14 +187,14 @@ function updateLocation() {
             },
             success: function (res) {
                 if (res.userMsg !== "") {
-                    Swal.fire({
+                    swal({
                         icon: 'success',
                         title: '修改成功',
                         text: res.userMsg,
                     })
                     //alert(res.userMsg);
                 } else {
-                    Swal.fire({
+                    swal({
                         icon: 'error',
                         title: '修改失败',
                         text: '发生未知错误，请重试',
@@ -203,7 +203,7 @@ function updateLocation() {
                 }
             },
             error: function () {
-                Swal.fire({
+                swal({
                     icon: 'error',
                     title: '修改失败',
                     text: '发生未知错误，请重试',
@@ -233,7 +233,7 @@ function delLocation() {
                         },
                         success: function (res) {
                             if (res.userMsg !== "") {
-                                Swal.fire({
+                                swal({
                                     icon: 'success',
                                     title: '删除成功',
                                     text: res.userMsg,
@@ -241,7 +241,7 @@ function delLocation() {
                                 //alert(res.userMsg);
                                 location.reload();
                             } else {
-                                Swal.fire({
+                                swal({
                                     icon: 'error',
                                     title: '删除失败',
                                     text: '发生未知错误，请重试',
@@ -250,7 +250,7 @@ function delLocation() {
                             }
                         },
                         error: function () {
-                            Swal.fire({
+                            swal({
                                 icon: 'error',
                                 title: '删除失败',
                                 text: '发生未知错误，请重试',

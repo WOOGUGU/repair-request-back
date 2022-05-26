@@ -107,7 +107,7 @@ function addArticle() {
     var contentPath = $("#contentPath").val();
     var author = $("#author").val();
     if (contentPath === "" || contentPath === "") {
-        Swal.fire({
+        swal({
             icon: 'error',
             title: '添加失败',
             text: '文章网址不能为空',
@@ -115,7 +115,7 @@ function addArticle() {
         // alert("文章网址不能为空");
         return;
     } else if (author === "") {
-        Swal.fire({
+        swal({
             icon: 'error',
             title: '添加失败',
             text: '文章作者不能为空',
@@ -133,14 +133,14 @@ function addArticle() {
             },
             success: function (res) {
                 if (res.userMsg !== "") {
-                    Swal.fire({
+                    swal({
                         icon: 'success',
                         title: '添加成功',
                         text: res.userMsg,
                     })
                     //alert(res.userMsg);
                 } else {
-                    Swal.fire({
+                    swal({
                         icon: 'error',
                         title: '添加失败',
                         text: '发生未知错误，请重试',
@@ -149,7 +149,7 @@ function addArticle() {
                 }
             },
             error: function () {
-                Swal.fire({
+                swal({
                     icon: 'error',
                     title: '添加失败',
                     text: '发生未知错误，请重试',
@@ -179,7 +179,7 @@ function delArticle() {
                         },
                         success: function (res) {
                             if (res.userMsg !== "") {
-                                Swal.fire({
+                                swal({
                                     icon: 'success',
                                     title: '删除成功',
                                     text: res.userMsg,
@@ -187,7 +187,7 @@ function delArticle() {
                                 //alert(res.userMsg);
                                 location.reload();
                             } else {
-                                Swal.fire({
+                                swal({
                                     icon: 'error',
                                     title: '删除失败',
                                     text: '发生未知错误，请重试',
@@ -196,7 +196,7 @@ function delArticle() {
                             }
                         },
                         error: function () {
-                            Swal.fire({
+                            swal({
                                 icon: 'error',
                                 title: '删除失败',
                                 text: '发生未知错误，请重试',
@@ -221,7 +221,7 @@ function updateArticle() {
     var des = $("#des").val();
     var coverPath = $("#coverPath").val();
     if (articleId === "") {
-        Swal.fire({
+        swal({
             icon: 'error',
             title: '修改失败',
             text: '文章Id不能为空',
@@ -243,14 +243,14 @@ function updateArticle() {
             },
             success: function (res) {
                 if (res.userMsg !== "") {
-                    Swal.fire({
+                    swal({
                         icon: 'success',
                         title: '修改成功',
                         text: res.userMsg,
                     })
                     //alert(res.userMsg);
                 } else {
-                    Swal.fire({
+                    swal({
                         icon: 'error',
                         title: '修改失败',
                         text: '发生未知错误，请重试',
@@ -259,7 +259,7 @@ function updateArticle() {
                 }
             },
             error: function () {
-                Swal.fire({
+                swal({
                     icon: 'error',
                     title: '修改失败',
                     text: '发生未知错误，请重试',
