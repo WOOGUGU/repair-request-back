@@ -58,7 +58,7 @@ public class OrderServiceImpl implements OrderService {
     // 通过工单id查找报修工单
     @Override
     public Order selectOrderById(Integer orderId) throws DataHasNotExistedException {
-        // 根据工单Id查找用户
+        // 根据工单Id查找报修工单
         Order order = orderDao.selectOrderById(orderId);
         // 判断查询结果是否为空
         if (ObjectUtils.isEmpty(order)) {
@@ -153,11 +153,11 @@ public class OrderServiceImpl implements OrderService {
     // 修改报修工单
     @Override
     public Integer updateOrderFeedback(Integer orderId, String feedback, Integer stars) throws DataHasNotExistedException {
-        // 查找数据库中是否存在此用户
+        // 查找数据库中是否存在此报修工单
         if (ObjectUtils.isEmpty(orderDao.selectOrderById(orderId))) {
             throw new DataHasNotExistedException("Order has not existed");
         } else {
-            // 如果用户存在就更新数据
+            // 如果报修工单存在就更新数据
             orderDao.updateOrderFeedback(orderId, feedback, stars);
             return 0;
         }
@@ -166,12 +166,12 @@ public class OrderServiceImpl implements OrderService {
     // 审核工单
     @Override
     public Integer checkOrder(Integer orderId, Integer progress, String remark) throws DataHasNotExistedException {
-        // 查找数据库中是否存在此用户
+        // 查找数据库中是否存在此工单
         Order order = orderDao.selectOrderById(orderId);
         if (ObjectUtils.isEmpty(order)) {
             throw new DataHasNotExistedException("Order has not existed");
         } else {
-            // 如果用户存在就修改工单状态
+            // 如果工单存在就修改工单状态
             if (progress == 4) {
                 order.setTimeDistribution(null);
                 order.setSolver(null);

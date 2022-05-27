@@ -154,7 +154,7 @@ public class OrderController {
 
     @ApiOperation(value = "审核工单")
     @ApiImplicitParams({@ApiImplicitParam(name = "orderId", value = "工单id", required = true, paramType = "query"),
-            @ApiImplicitParam(name = "progress", value = "-2：审核不通过，-1：用户取消，0：待审核，1：待处理，2：已处理", required = false, paramType = "query"),
+            @ApiImplicitParam(name = "progress", value = "0：待审核，1：待处理，2：已处理，3：用户取消，4：审核不通过", required = false, paramType = "query"),
             @ApiImplicitParam(name = "remark", value = "备注", required = true, paramType = "query"),})
     @Secured({"ROLE_admin"})
     @PostMapping("/checkOrder")
