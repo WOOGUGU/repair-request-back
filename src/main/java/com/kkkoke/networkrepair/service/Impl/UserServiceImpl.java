@@ -137,7 +137,7 @@ public class UserServiceImpl implements UserService {
 
     // 修改用户信息
     @Override
-    public User updateUser(Integer userId, String username, String password, String name, Integer roleType, String tel) throws UserHasNotExistedException, PasswordWrongException {
+    public User updateUser(Integer userId, String username, String password, String name, List<Integer> roleType, String tel) throws UserHasNotExistedException, PasswordWrongException {
         User user = userDao.selectUserById(userId);
         // 查找数据库中是否存在此用户
         if (ObjectUtils.isEmpty(user)) {
@@ -160,7 +160,10 @@ public class UserServiceImpl implements UserService {
             }
             userDao.updateUser(user);
             if (!ObjectUtils.isEmpty(roleType)) {
-                userDao.updateRole(userId, roleType);
+                userDao.deleteRole(userId);
+                for (Integer roleId : roleType) {
+                    userDao.setRole(userId, roleId);
+                }
             }
             return user;
         }
