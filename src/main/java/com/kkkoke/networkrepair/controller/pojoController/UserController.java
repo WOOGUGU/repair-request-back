@@ -4,6 +4,7 @@ import com.kkkoke.networkrepair.exception.PasswordWrongException;
 import com.kkkoke.networkrepair.exception.UserHasExistedException;
 import com.kkkoke.networkrepair.exception.UserHasNotExistedException;
 import com.kkkoke.networkrepair.pojo.User;
+import com.kkkoke.networkrepair.pojo.helper.UserDto;
 import com.kkkoke.networkrepair.result.ApiResult;
 import com.kkkoke.networkrepair.result.ResultCode;
 import com.kkkoke.networkrepair.service.UserService;
@@ -16,10 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.util.ObjectUtils;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -131,16 +129,17 @@ public class UserController {
     }
 
     @ApiOperation(value = "修改用户信息")
-    @ApiImplicitParams({@ApiImplicitParam(name = "userId", value = "用户Id", required = true, paramType = "query"),
+    @ApiImplicitParams({@ApiImplicitParam(name = "id", value = "用户Id", required = true, paramType = "query"),
             @ApiImplicitParam(name = "username", value = "用户名", required = false, paramType = "query"),
             @ApiImplicitParam(name = "password", value = "密码（已加密）", required = false, paramType = "query"),
             @ApiImplicitParam(name = "name", value = "用户真实姓名", required = false, paramType = "query"),
+            @ApiImplicitParam(name = "roleTypes", value = "用户权限Id列表", required = false, paramType = "query"),
             @ApiImplicitParam(name = "tel", value = "用户联系方式", required = false, paramType = "query")})
     @Secured({"ROLE_admin"})
     @PostMapping("/updateUser")
-    public ApiResult updateUser(@NotNull(message = "userId can not be null") Integer userId, String username, String password,
-                                String name, Integer roleType, String tel) throws UserHasNotExistedException, PasswordWrongException {
-        userService.updateUser(userId, username, password, name, roleType, tel);
+    public ApiResult updateUser(@RequestBody UserDto userDto) throws UserHasNotExistedException, PasswordWrongException {
+        System.out.println(userDto.toString());
+        userService.updateUser(userDto.getId(), userDto.getUsername(), userDto.getPassword(), userDto.getName(), userDto.getRoleTypes(), userDto.getTel());
         return ApiResult.success("用户修改成功");
     }
 }

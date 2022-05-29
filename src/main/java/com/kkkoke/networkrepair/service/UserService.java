@@ -37,7 +37,7 @@ public interface UserService {
     List<User> selectAllNorUser() throws UserHasNotExistedException;;
 
     // 修改用户信息
-    User updateUser(Integer userId, String username, String password, String name, Integer roleType, String tel) throws UserHasNotExistedException, PasswordWrongException;
+    User updateUser(Integer userId, String username, String password, String name, List<Integer> roleType, String tel) throws UserHasNotExistedException, PasswordWrongException;
 
     // 内部调用 根据⽤户名查询⽤户
     User loadUserByUsername(String username);

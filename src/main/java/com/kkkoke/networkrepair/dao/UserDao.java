@@ -15,7 +15,7 @@ public interface UserDao {
     int setRole(Integer userId, Integer roleType);
 
     // 更新权限
-    int updateRole(Integer userId, Integer roleType);
+    int updateRole(Integer userId, List<Integer> roleType);
 
     // 删除权限
     int deleteRole(Integer userId);
