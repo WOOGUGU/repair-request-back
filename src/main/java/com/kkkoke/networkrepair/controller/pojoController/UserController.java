@@ -1,5 +1,6 @@
 package com.kkkoke.networkrepair.controller.pojoController;
 
+import com.kkkoke.networkrepair.exception.IllegalFormDataException;
 import com.kkkoke.networkrepair.exception.PasswordWrongException;
 import com.kkkoke.networkrepair.exception.UserHasExistedException;
 import com.kkkoke.networkrepair.exception.UserHasNotExistedException;
@@ -44,12 +45,15 @@ public class UserController {
     @ApiImplicitParams({@ApiImplicitParam(name = "username", value = "用户名", required = true, paramType = "query"),
             @ApiImplicitParam(name = "password", value = "密码（已加密）", required = true, paramType = "query"),
             @ApiImplicitParam(name = "name", value = "用户真实姓名", required = true, paramType = "query"),
+            @ApiImplicitParam(name = "roleTypes", value = "权限编号", required = true, paramType = "query"),
             @ApiImplicitParam(name = "tel", value = "用户联系方式", required = true, paramType = "query")})
     @Secured({"ROLE_admin"})
     @PostMapping("/addUser")
-    public ApiResult addUser(@NotBlank(message = "username can not be null") String username, @NotBlank(message = "password can not be null") String password, @NotBlank(message = "name can not be null") String name,
-                             @NotNull(message = "roleType can not be null") Integer roleType, @NotBlank(message = "tel can not be null") String tel) throws UserHasExistedException {
-        userService.addUser(username, password, name, roleType, tel);
+    public ApiResult addUser(@RequestBody UserDto userDto) throws UserHasExistedException, IllegalFormDataException {
+        if (ObjectUtils.isEmpty(userDto)) {
+            throw new IllegalFormDataException("缺少必要的参数");
+        }
+        userService.addUser(userDto.getUsername(), userDto.getPassword(), userDto.getName(), userDto.getRoleTypes(), userDto.getTel());
         return ApiResult.success("用户添加成功");
     }
 
@@ -138,7 +142,6 @@ public class UserController {
     @Secured({"ROLE_admin"})
     @PostMapping("/updateUser")
     public ApiResult updateUser(@RequestBody UserDto userDto) throws UserHasNotExistedException, PasswordWrongException {
-        System.out.println(userDto.toString());
         userService.updateUser(userDto.getId(), userDto.getUsername(), userDto.getPassword(), userDto.getName(), userDto.getRoleTypes(), userDto.getTel());
         return ApiResult.success("用户修改成功");
     }
