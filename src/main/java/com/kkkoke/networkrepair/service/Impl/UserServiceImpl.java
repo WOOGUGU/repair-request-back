@@ -67,6 +67,8 @@ public class UserServiceImpl implements UserService {
     public User selectUserById(Integer userId) throws UserHasNotExistedException {
         // 根据id查找用户
         User user = userDao.selectUserById(userId);
+        user.setPassword(null);
+        user.setRoles(userDao.getRolesByUid(userId));
         // 判断查询结果是否为空
         if (ObjectUtils.isEmpty(user)) {
             throw new UserHasNotExistedException("User has not existed");
