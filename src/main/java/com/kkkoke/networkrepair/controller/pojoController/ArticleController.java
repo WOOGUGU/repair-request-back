@@ -3,6 +3,7 @@ package com.kkkoke.networkrepair.controller.pojoController;
 import com.kkkoke.networkrepair.exception.DataHasNotExistedException;
 import com.kkkoke.networkrepair.pojo.Article;
 import com.kkkoke.networkrepair.result.ApiResult;
+import com.kkkoke.networkrepair.result.ResultPage;
 import com.kkkoke.networkrepair.service.ArticleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -76,9 +77,11 @@ public class ArticleController {
     }
 
     @ApiOperation(value = "查看所有文章")
+    @ApiImplicitParams({@ApiImplicitParam(name = "pageNum", value = "当前页码 默认是1", required = false, paramType = "query"),
+            @ApiImplicitParam(name = "pageSize", value = "每页数量 默认是10", required = false, paramType = "query")})
     @GetMapping("/selectAllArticle")
-    public ApiResult selectAllArticle() throws DataHasNotExistedException {
-        List<Article> articles = articleService.selectAllArticle();
+    public ApiResult selectAllArticle(Integer pageNum, Integer pageSize) throws DataHasNotExistedException {
+        ResultPage<Article> articles = articleService.selectAllArticle(pageNum, pageSize);
         return ApiResult.success(articles, "查找成功");
     }
 
@@ -110,22 +113,26 @@ public class ArticleController {
     }
 
     @ApiOperation(value = "通过作者查找文章")
-    @ApiImplicitParam(name = "author", value = "作者", required = true, paramType = "query")
+    @ApiImplicitParams({@ApiImplicitParam(name = "author", value = "作者", required = true, paramType = "query"),
+            @ApiImplicitParam(name = "pageNum", value = "当前页码 默认是1", required = false, paramType = "query"),
+            @ApiImplicitParam(name = "pageSize", value = "每页数量 默认是10", required = false, paramType = "query")})
     @Secured({"ROLE_admin", "ROLE_user", "ROLE_repairman"})
     @GetMapping("/selectArticleByAuthor")
-    public ApiResult selectArticleByAuthor(@NotBlank(message = "author can not be null") String author) throws DataHasNotExistedException {
-        List<Article> articles = articleService.selectArticleByAuthor(author);
+    public ApiResult selectArticleByAuthor(@NotBlank(message = "author can not be null") String author, Integer pageNum, Integer pageSize) throws DataHasNotExistedException {
+        ResultPage<Article> articles = articleService.selectArticleByAuthor(author, pageNum, pageSize);
         return ApiResult.success(articles, "查找成功");
     }
 
     @ApiOperation(value = "查找文章 后台接口")
     @ApiImplicitParams({@ApiImplicitParam(name = "articleId", value = "文章Id", required = false, paramType = "query"),
             @ApiImplicitParam(name = "author", value = "文章作者", required = false, paramType = "query"),
-            @ApiImplicitParam(name = "displayStatus", value = "文章状态", required = false, paramType = "query")})
+            @ApiImplicitParam(name = "displayStatus", value = "文章状态", required = false, paramType = "query"),
+            @ApiImplicitParam(name = "pageNum", value = "当前页码 默认是1", required = false, paramType = "query"),
+            @ApiImplicitParam(name = "pageSize", value = "每页数量 默认是10", required = false, paramType = "query")})
     @Secured({"ROLE_admin", "ROLE_user", "ROLE_repairman"})
     @GetMapping("/selectArticle")
-    public ApiResult selectArticle(Integer articleId, String author, Integer displayStatus, String title, String des) throws DataHasNotExistedException {
-        List<Article> articles = articleService.selectArticle(articleId, author, displayStatus, title, des);
+    public ApiResult selectArticle(Integer articleId, String author, Integer displayStatus, String title, String des, Integer pageNum, Integer pageSize) throws DataHasNotExistedException {
+        ResultPage<Article> articles = articleService.selectArticle(articleId, author, displayStatus, title, des, pageNum, pageSize);
         return ApiResult.success(articles, "查找成功");
     }
 }

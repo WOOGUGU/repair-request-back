@@ -7,6 +7,7 @@ import com.kkkoke.networkrepair.pojo.PickerLocation;
 import com.kkkoke.networkrepair.pojo.helper.PickerResult;
 import com.kkkoke.networkrepair.result.ApiResult;
 import com.kkkoke.networkrepair.result.ResultCode;
+import com.kkkoke.networkrepair.result.ResultPage;
 import com.kkkoke.networkrepair.service.PickerLocationService;
 import com.kkkoke.networkrepair.service.PickerService;
 import com.kkkoke.networkrepair.util.PropertiesUtil;
@@ -100,11 +101,13 @@ public class PickerController {
     @ApiOperation(value = "查找报修地点 后台接口")
     @ApiImplicitParams({@ApiImplicitParam(name = "pickerId", value = "报修位置id", required = false, paramType = "query"),
             @ApiImplicitParam(name = "area", value = "区域", required = false, paramType = "query"),
-            @ApiImplicitParam(name = "position", value = "位置", required = false, paramType = "query")})
+            @ApiImplicitParam(name = "position", value = "位置", required = false, paramType = "query"),
+            @ApiImplicitParam(name = "pageNum", value = "当前页码 默认是1", required = false, paramType = "query"),
+            @ApiImplicitParam(name = "pageSize", value = "每页数量 默认是10", required = false, paramType = "query")})
     @Secured({"ROLE_admin"})
     @GetMapping("/selectLocationForBackend")
-    public ApiResult selectLocationForBackend(Integer pickerId, String area, String position) {
-        List<PickerLocation> pickerLocations = pickerLocationService.selectLocationForBackend(pickerId, area, position);
+    public ApiResult selectLocationForBackend(Integer pickerId, String area, String position, Integer pageNum, Integer pageSize) {
+        ResultPage<PickerLocation> pickerLocations = pickerLocationService.selectLocationForBackend(pickerId, area, position, pageNum, pageSize);
         return ApiResult.success(pickerLocations, "查找成功");
     }
 

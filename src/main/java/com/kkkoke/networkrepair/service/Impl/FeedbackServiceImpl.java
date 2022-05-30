@@ -1,9 +1,11 @@
 package com.kkkoke.networkrepair.service.Impl;
 
+import com.github.pagehelper.PageHelper;
 import com.kkkoke.networkrepair.dao.FeedbackDao;
 import com.kkkoke.networkrepair.exception.DataHasNotExistedException;
 import com.kkkoke.networkrepair.pojo.Feedback;
 import com.kkkoke.networkrepair.pojo.helper.FeedbackResult;
+import com.kkkoke.networkrepair.result.ResultPage;
 import com.kkkoke.networkrepair.service.FeedbackService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -69,8 +71,16 @@ public class FeedbackServiceImpl implements FeedbackService {
     }
 
     @Override
-    public List<FeedbackResult> selectFeedback(Integer feedbackId, Integer uid, String content, String tel) {
+    public ResultPage<FeedbackResult> selectFeedback(Integer feedbackId, Integer uid, String content, String tel, Integer pageNum, Integer pageSize) {
+        if (ObjectUtils.isEmpty(pageNum)) {
+            pageNum = 1;
+        }
+        if (ObjectUtils.isEmpty(pageSize)) {
+            pageSize = 10;
+        }
+        PageHelper.startPage(pageNum, pageSize);
         Feedback feedback = new Feedback(feedbackId, uid, content, tel);
-        return feedbackDao.selectFeedback(feedback);
+        List<FeedbackResult> feedbackResults = feedbackDao.selectFeedback(feedback);
+        return ResultPage.restPage(feedbackResults);
     }
 }

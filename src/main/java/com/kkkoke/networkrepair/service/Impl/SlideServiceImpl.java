@@ -1,8 +1,10 @@
 package com.kkkoke.networkrepair.service.Impl;
 
+import com.github.pagehelper.PageHelper;
 import com.kkkoke.networkrepair.dao.SlideDao;
 import com.kkkoke.networkrepair.exception.DataHasNotExistedException;
 import com.kkkoke.networkrepair.pojo.Slide;
+import com.kkkoke.networkrepair.result.ResultPage;
 import com.kkkoke.networkrepair.service.SlideService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,19 +49,35 @@ public class SlideServiceImpl implements SlideService {
     }
 
     @Override
-    public List<Slide> selectAllSlide() throws DataHasNotExistedException {
+    public ResultPage<Slide> selectAllSlide(Integer pageNum, Integer pageSize) throws DataHasNotExistedException {
+        if (ObjectUtils.isEmpty(pageNum)) {
+            pageNum = 1;
+        }
+        if (ObjectUtils.isEmpty(pageSize)) {
+            pageSize = 10;
+        }
+        PageHelper.startPage(pageNum, pageSize);
         List<Slide> slides = slideDao.selectAllSlide();
+        ResultPage<Slide> resultPage = ResultPage.restPage(slides);
         // 判断查找的轮播图是否为空
         if (ObjectUtils.isEmpty(slides)) {
             throw new DataHasNotExistedException("Slide has not existed");
         } else {
-            return slides;
+            return resultPage;
         }
     }
 
     @Override
-    public List<Slide> selectSlide(Integer slideId, String author) {
-        return slideDao.selectSlide(slideId, author);
+    public ResultPage<Slide> selectSlide(Integer slideId, String author, Integer pageNum, Integer pageSize) {
+        if (ObjectUtils.isEmpty(pageNum)) {
+            pageNum = 1;
+        }
+        if (ObjectUtils.isEmpty(pageSize)) {
+            pageSize = 10;
+        }
+        PageHelper.startPage(pageNum, pageSize);
+        List<Slide> slides = slideDao.selectSlide(slideId, author);
+        return ResultPage.restPage(slides);
     }
 
     @Override

@@ -1,8 +1,10 @@
 package com.kkkoke.networkrepair.service.Impl;
 
+import com.github.pagehelper.PageHelper;
 import com.kkkoke.networkrepair.dao.NoticeDao;
 import com.kkkoke.networkrepair.exception.DataHasNotExistedException;
 import com.kkkoke.networkrepair.pojo.Notice;
+import com.kkkoke.networkrepair.result.ResultPage;
 import com.kkkoke.networkrepair.service.NoticeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -76,16 +78,32 @@ public class NoticeServiceImpl implements NoticeService {
     }
 
     @Override
-    public List<Notice> selectAllNotice() throws DataHasNotExistedException {
+    public ResultPage<Notice> selectAllNotice(Integer pageNum, Integer pageSize) throws DataHasNotExistedException {
+        if (ObjectUtils.isEmpty(pageNum)) {
+            pageNum = 1;
+        }
+        if (ObjectUtils.isEmpty(pageSize)) {
+            pageSize = 10;
+        }
+        PageHelper.startPage(pageNum, pageSize);
         List<Notice> notices = noticeDao.selectAllNotice();
+        ResultPage<Notice> resultPage = ResultPage.restPage(notices);
         if (ObjectUtils.isEmpty(notices)) {
             throw new DataHasNotExistedException("Notice has not existed");
         }
-        return notices;
+        return resultPage;
     }
 
     @Override
-    public List<Notice> selectNotice(Integer noticeId, String author, Integer displayStatus) throws DataHasNotExistedException {
-        return noticeDao.selectNotice(noticeId, author, displayStatus);
+    public ResultPage<Notice> selectNotice(Integer noticeId, String author, Integer displayStatus, Integer pageNum, Integer pageSize) throws DataHasNotExistedException {
+        if (ObjectUtils.isEmpty(pageNum)) {
+            pageNum = 1;
+        }
+        if (ObjectUtils.isEmpty(pageSize)) {
+            pageSize = 10;
+        }
+        PageHelper.startPage(pageNum, pageSize);
+        List<Notice> notices = noticeDao.selectNotice(noticeId, author, displayStatus);
+        return ResultPage.restPage(notices);
     }
 }

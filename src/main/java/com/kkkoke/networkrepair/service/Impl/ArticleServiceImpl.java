@@ -1,7 +1,9 @@
 package com.kkkoke.networkrepair.service.Impl;
+import com.github.pagehelper.PageHelper;
 import com.kkkoke.networkrepair.dao.ArticleDao;
 import com.kkkoke.networkrepair.exception.DataHasNotExistedException;
 import com.kkkoke.networkrepair.pojo.Article;
+import com.kkkoke.networkrepair.result.ResultPage;
 import com.kkkoke.networkrepair.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -61,13 +63,21 @@ public class ArticleServiceImpl implements ArticleService {
 
     //查看所有文章
     @Override
-    public List<Article> selectAllArticle() throws DataHasNotExistedException {
+    public ResultPage<Article> selectAllArticle(Integer pageNum, Integer pageSize) throws DataHasNotExistedException {
+        if (ObjectUtils.isEmpty(pageNum)) {
+            pageNum = 1;
+        }
+        if (ObjectUtils.isEmpty(pageSize)) {
+            pageSize = 10;
+        }
+        PageHelper.startPage(pageNum, pageSize);
         List<Article> articles = articleDao.selectAllArticle();
+        ResultPage<Article> resultPage = ResultPage.restPage(articles);
         // 判断查询结果是否为空
         if (ObjectUtils.isEmpty(articles)) {
             throw new DataHasNotExistedException("Article has not existed");
         } else {
-            return articles;
+            return resultPage;
         }
     }
 
@@ -112,26 +122,36 @@ public class ArticleServiceImpl implements ArticleService {
 
     //通过作者来查看文章
     @Override
-    public List<Article> selectArticleByAuthor(String author) throws DataHasNotExistedException {
+    public ResultPage<Article> selectArticleByAuthor(String author, Integer pageNum, Integer pageSize) throws DataHasNotExistedException {
+        if (ObjectUtils.isEmpty(pageNum)) {
+            pageNum = 1;
+        }
+        if (ObjectUtils.isEmpty(pageSize)) {
+            pageSize = 10;
+        }
+        PageHelper.startPage(pageNum, pageSize);
         // 根据author查找文章
         List<Article> articles = articleDao.selectArticleByAuthor(author);
+        ResultPage<Article> resultPage = ResultPage.restPage(articles);
         // 判断查询结果是否为空
         if (ObjectUtils.isEmpty(articles)) {
             throw new DataHasNotExistedException("Article has not existed");
         } else {
-            return articles;
+            return resultPage;
         }
     }
 
     //查找文章 后台接口
     @Override
-    public List<Article> selectArticle(Integer articleId, String author, Integer displayStatus, String title, String des) throws DataHasNotExistedException {
-        List<Article> articles = articleDao.selectArticle(articleId, author, displayStatus, title, des);
-        // 判断查询结果是否为空
-        if (ObjectUtils.isEmpty(articles)) {
-            throw new DataHasNotExistedException("Article has not existed");
-        } else {
-            return articles;
+    public ResultPage<Article> selectArticle(Integer articleId, String author, Integer displayStatus, String title, String des, Integer pageNum, Integer pageSize) throws DataHasNotExistedException {
+        if (ObjectUtils.isEmpty(pageNum)) {
+            pageNum = 1;
         }
+        if (ObjectUtils.isEmpty(pageSize)) {
+            pageSize = 10;
+        }
+        PageHelper.startPage(pageNum, pageSize);
+        List<Article> articles = articleDao.selectArticle(articleId, author, displayStatus, title, des);
+        return ResultPage.restPage(articles);
     }
 }

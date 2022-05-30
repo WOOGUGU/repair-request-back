@@ -3,6 +3,7 @@ package com.kkkoke.networkrepair.controller.pojoController;
 import com.kkkoke.networkrepair.exception.DataHasNotExistedException;
 import com.kkkoke.networkrepair.pojo.helper.FeedbackResult;
 import com.kkkoke.networkrepair.result.ApiResult;
+import com.kkkoke.networkrepair.result.ResultPage;
 import com.kkkoke.networkrepair.service.FeedbackService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -70,11 +71,13 @@ public class FeedbackController {
     @ApiImplicitParams({@ApiImplicitParam(name = "feedbackId", value = "反馈id", required = false, paramType = "query"),
             @ApiImplicitParam(name = "uid", value = "用户id", required = false, paramType = "query"),
             @ApiImplicitParam(name = "content", value = "反馈内容", required = false, paramType = "query"),
-            @ApiImplicitParam(name = "tel", value = "联系方式", required = false, paramType = "query")})
+            @ApiImplicitParam(name = "tel", value = "联系方式", required = false, paramType = "query"),
+            @ApiImplicitParam(name = "pageNum", value = "当前页码 默认是1", required = false, paramType = "query"),
+            @ApiImplicitParam(name = "pageSize", value = "每页数量 默认是10", required = false, paramType = "query")})
     @Secured({"ROLE_admin"})
     @GetMapping("/selectFeedback")
-    public ApiResult selectFeedback(Integer feedbackId, Integer uid, String content, String tel) {
-        List<FeedbackResult> feedbackResults = feedbackService.selectFeedback(feedbackId, uid, content, tel);
+    public ApiResult selectFeedback(Integer feedbackId, Integer uid, String content, String tel, Integer pageNum, Integer pageSize) {
+        ResultPage<FeedbackResult> feedbackResults = feedbackService.selectFeedback(feedbackId, uid, content, tel, pageNum, pageSize);
         return ApiResult.success(feedbackResults, "反馈查找成功");
     }
 

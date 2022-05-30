@@ -3,6 +3,7 @@ package com.kkkoke.networkrepair.service;
 import com.kkkoke.networkrepair.exception.DataHasExistedException;
 import com.kkkoke.networkrepair.exception.DataHasNotExistedException;
 import com.kkkoke.networkrepair.pojo.PickerLocation;
+import com.kkkoke.networkrepair.result.ResultPage;
 
 import java.util.List;
 
@@ -23,7 +24,7 @@ public interface PickerLocationService {
     PickerLocation selectPickerLocationByPosition(String position) throws DataHasNotExistedException;
 
     // 查找报修地点 后台接口
-    List<PickerLocation> selectLocationForBackend(Integer pickerId, String area, String position);
+    ResultPage<PickerLocation> selectLocationForBackend(Integer pickerId, String area, String position, Integer pageNum, Integer pageSize);
 
     // 查找所有报修地点
     Object selectAllPickerLocation() throws DataHasNotExistedException;
