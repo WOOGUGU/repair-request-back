@@ -4,10 +4,12 @@ import com.kkkoke.networkrepair.exception.IllegalFormDataException;
 import com.kkkoke.networkrepair.exception.PasswordWrongException;
 import com.kkkoke.networkrepair.exception.UserHasExistedException;
 import com.kkkoke.networkrepair.exception.UserHasNotExistedException;
+import com.kkkoke.networkrepair.pojo.Order;
 import com.kkkoke.networkrepair.pojo.User;
 import com.kkkoke.networkrepair.pojo.helper.UserDto;
 import com.kkkoke.networkrepair.result.ApiResult;
 import com.kkkoke.networkrepair.result.ResultCode;
+import com.kkkoke.networkrepair.result.ResultPage;
 import com.kkkoke.networkrepair.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -92,43 +94,53 @@ public class UserController {
             @ApiImplicitParam(name = "userId", value = "用户Id", required = false, paramType = "query"),
             @ApiImplicitParam(name = "name", value = "用户真实姓名", required = false, paramType = "query"),
             @ApiImplicitParam(name = "roleId", value = "用户的权限Id", required = true, paramType = "query"),
-            @ApiImplicitParam(name = "tel", value = "用户联系方式", required = false, paramType = "query")})
+            @ApiImplicitParam(name = "tel", value = "用户联系方式", required = false, paramType = "query"),
+            @ApiImplicitParam(name = "pageNum", value = "当前页码 默认是1", required = false, paramType = "query"),
+            @ApiImplicitParam(name = "pageSize", value = "每页数量 默认是10", required = false, paramType = "query")})
     @Secured({"ROLE_admin", "ROLE_repairman"})
     @GetMapping("/selectUser")
-    public ApiResult selectUser(Integer userId, String username, String name, @NotNull(message = "roleId can not be null") Integer roleId, String tel) throws UserHasNotExistedException {
-        List<User> users = userService.selectUser(userId, username, name, roleId, tel);
+    public ApiResult selectUser(Integer userId, String username, String name, @NotNull(message = "roleId can not be null") Integer roleId, String tel, Integer pageNum, Integer pageSize) throws UserHasNotExistedException {
+        ResultPage<User> users = userService.selectUser(userId, username, name, roleId, tel, pageNum, pageSize);
         return ApiResult.success(users, "查找成功");
     }
 
     @ApiOperation(value = "查找所有用户")
+    @ApiImplicitParams({@ApiImplicitParam(name = "pageNum", value = "当前页码 默认是1", required = false, paramType = "query"),
+            @ApiImplicitParam(name = "pageSize", value = "每页数量 默认是10", required = false, paramType = "query")})
     @Secured({"ROLE_admin", "ROLE_repairman"})
     @GetMapping("/selectAllUser")
-    public ApiResult selectAllUser() throws UserHasNotExistedException {
-        List<User> users = userService.selectAllUser();
+    public ApiResult selectAllUser(Integer pageNum, Integer pageSize) throws UserHasNotExistedException {
+        ResultPage<User> users = userService.selectAllUser(pageNum, pageSize);
         return ApiResult.success(users, "查找成功");
     }
 
     @ApiOperation(value = "查找所有管理员")
+    @ApiImplicitParams({@ApiImplicitParam(name = "pageNum", value = "当前页码 默认是1", required = false, paramType = "query"),
+            @ApiImplicitParam(name = "pageSize", value = "每页数量 默认是10", required = false, paramType = "query")})
     @Secured("ROLE_admin")
     @GetMapping("/selectAllAdmin")
-    public ApiResult selectAllAdmin() throws UserHasNotExistedException {
-        List<User> admins = userService.selectAllAdmin();
+    public ApiResult selectAllAdmin(Integer pageNum, Integer pageSize) throws UserHasNotExistedException {
+        ResultPage<User> admins = userService.selectAllAdmin(pageNum, pageSize);
         return ApiResult.success(admins, "查找成功");
     }
 
     @ApiOperation(value = "查找所有维修员")
+    @ApiImplicitParams({@ApiImplicitParam(name = "pageNum", value = "当前页码 默认是1", required = false, paramType = "query"),
+            @ApiImplicitParam(name = "pageSize", value = "每页数量 默认是10", required = false, paramType = "query")})
     @Secured("ROLE_admin")
     @GetMapping("/selectAllRepairman")
-    public ApiResult selectAllRepairman() throws UserHasNotExistedException {
-        List<User> admins = userService.selectAllRepairman();
+    public ApiResult selectAllRepairman(Integer pageNum, Integer pageSize) throws UserHasNotExistedException {
+        ResultPage<User> admins = userService.selectAllRepairman(pageNum, pageSize);
         return ApiResult.success(admins, "查找成功");
     }
 
     @ApiOperation(value = "查找所有普通用户")
+    @ApiImplicitParams({@ApiImplicitParam(name = "pageNum", value = "当前页码 默认是1", required = false, paramType = "query"),
+            @ApiImplicitParam(name = "pageSize", value = "每页数量 默认是10", required = false, paramType = "query")})
     @Secured("ROLE_admin")
     @GetMapping("/selectAllNorUser")
-    public ApiResult selectAllNorUser() throws UserHasNotExistedException {
-        List<User> admins = userService.selectAllNorUser();
+    public ApiResult selectAllNorUser(Integer pageNum, Integer pageSize) throws UserHasNotExistedException {
+        ResultPage<User> admins = userService.selectAllNorUser(pageNum, pageSize);
         return ApiResult.success(admins, "查找成功");
     }
 

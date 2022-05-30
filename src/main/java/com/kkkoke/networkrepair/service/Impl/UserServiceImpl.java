@@ -1,11 +1,13 @@
 package com.kkkoke.networkrepair.service.Impl;
 
+import com.github.pagehelper.PageHelper;
 import com.kkkoke.networkrepair.dao.UserDao;
 import com.kkkoke.networkrepair.exception.PasswordWrongException;
 import com.kkkoke.networkrepair.exception.UserHasExistedException;
 import com.kkkoke.networkrepair.exception.UserHasNotExistedException;
 import com.kkkoke.networkrepair.pojo.Role;
 import com.kkkoke.networkrepair.pojo.User;
+import com.kkkoke.networkrepair.result.ResultPage;
 import com.kkkoke.networkrepair.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -82,13 +84,29 @@ public class UserServiceImpl implements UserService {
 
     // 搜索用户 后台搜索接口
     @Override
-    public List<User> selectUser(Integer userId, String username, String name, Integer roleId, String tel) throws UserHasNotExistedException {
-        return userDao.selectUser(userId, username, name, roleId, tel);
+    public ResultPage<User> selectUser(Integer userId, String username, String name, Integer roleId, String tel, Integer pageNum, Integer pageSize) throws UserHasNotExistedException {
+        if (ObjectUtils.isEmpty(pageNum)) {
+            pageNum = 1;
+        }
+        if (ObjectUtils.isEmpty(pageSize)) {
+            pageSize = 10;
+        }
+        PageHelper.startPage(pageNum, pageSize);
+        List<User> users = userDao.selectUser(userId, username, name, roleId, tel);
+        ResultPage<User> resultPage = ResultPage.restPage(users);
+        return resultPage;
     }
 
     // 查找所有用户
     @Override
-    public List<User> selectAllUser() throws UserHasNotExistedException {
+    public ResultPage<User> selectAllUser(Integer pageNum, Integer pageSize) throws UserHasNotExistedException {
+        if (ObjectUtils.isEmpty(pageNum)) {
+            pageNum = 1;
+        }
+        if (ObjectUtils.isEmpty(pageSize)) {
+            pageSize = 10;
+        }
+        PageHelper.startPage(pageNum, pageSize);
         List<User> users = userDao.selectAllUser();
         // 判断查询结果是否为空
         if (ObjectUtils.isEmpty(users)) {
@@ -98,43 +116,67 @@ public class UserServiceImpl implements UserService {
                 List<Role> roles = userDao.getRolesByUid(user.getId());
                 user.setRoles(roles);
             }
-            return users;
+            return ResultPage.restPage(users);
         }
     }
 
     // 查找所有管理员
     @Override
-    public List<User> selectAllAdmin() throws UserHasNotExistedException {
+    public ResultPage<User> selectAllAdmin(Integer pageNum, Integer pageSize) throws UserHasNotExistedException {
+        if (ObjectUtils.isEmpty(pageNum)) {
+            pageNum = 1;
+        }
+        if (ObjectUtils.isEmpty(pageSize)) {
+            pageSize = 10;
+        }
+        PageHelper.startPage(pageNum, pageSize);
         List<User> admins = userDao.selectAllAdmin();
+        ResultPage<User> resultPage = ResultPage.restPage(admins);
         // 判断查询结果是否为空
         if (ObjectUtils.isEmpty(admins)) {
             throw new UserHasNotExistedException("User has not existed");
         } else {
-            return admins;
+            return resultPage;
         }
     }
 
     // 查找所有维修员
     @Override
-    public List<User> selectAllRepairman() throws UserHasNotExistedException {
+    public ResultPage<User> selectAllRepairman(Integer pageNum, Integer pageSize) throws UserHasNotExistedException {
+        if (ObjectUtils.isEmpty(pageNum)) {
+            pageNum = 1;
+        }
+        if (ObjectUtils.isEmpty(pageSize)) {
+            pageSize = 10;
+        }
+        PageHelper.startPage(pageNum, pageSize);
         List<User> repairmans = userDao.selectAllRepairman();
+        ResultPage<User> resultPage = ResultPage.restPage(repairmans);
         // 判断查询结果是否为空
         if (ObjectUtils.isEmpty(repairmans)) {
             throw new UserHasNotExistedException("User has not existed");
         } else {
-            return repairmans;
+            return resultPage;
         }
     }
 
     // 查找所有普通用户
     @Override
-    public List<User> selectAllNorUser() throws UserHasNotExistedException {
+    public ResultPage<User> selectAllNorUser(Integer pageNum, Integer pageSize) throws UserHasNotExistedException {
+        if (ObjectUtils.isEmpty(pageNum)) {
+            pageNum = 1;
+        }
+        if (ObjectUtils.isEmpty(pageSize)) {
+            pageSize = 10;
+        }
+        PageHelper.startPage(pageNum, pageSize);
         List<User> users = userDao.selectAllNorUser();
+        ResultPage<User> resultPage = ResultPage.restPage(users);
         // 判断查询结果是否为空
         if (ObjectUtils.isEmpty(users)) {
             throw new UserHasNotExistedException("User has not existed");
         } else {
-            return users;
+            return resultPage;
         }
     }
 
