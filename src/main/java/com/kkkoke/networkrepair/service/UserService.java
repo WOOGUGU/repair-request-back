@@ -3,8 +3,10 @@ package com.kkkoke.networkrepair.service;
 import com.kkkoke.networkrepair.exception.PasswordWrongException;
 import com.kkkoke.networkrepair.exception.UserHasExistedException;
 import com.kkkoke.networkrepair.exception.UserHasNotExistedException;
+import com.kkkoke.networkrepair.pojo.Order;
 import com.kkkoke.networkrepair.pojo.Role;
 import com.kkkoke.networkrepair.pojo.User;
+import com.kkkoke.networkrepair.result.ResultPage;
 
 import java.util.List;
 
@@ -22,19 +24,23 @@ public interface UserService {
     User selectUserById(Integer userId) throws UserHasNotExistedException;
 
     // 搜索用户 后台搜索接口
-    List<User> selectUser(Integer id, String username, String name, Integer roleId, String tel) throws UserHasNotExistedException;
+    ResultPage<User> selectUser(Integer id, String username, String name, Integer roleId, String tel, Integer pageNum, Integer pageSize) throws UserHasNotExistedException;
 
     // 查找所有用户
-    List<User> selectAllUser() throws UserHasNotExistedException;
+    ResultPage<User> selectAllUser(Integer pageNum, Integer pageSize) throws UserHasNotExistedException;
 
     // 查找所有管理员
-    List<User> selectAllAdmin() throws UserHasNotExistedException;
+    ResultPage<User> selectAllAdmin(Integer pageNum, Integer pageSize) throws UserHasNotExistedException;
 
     // 查找所有维修员
-    List<User> selectAllRepairman() throws UserHasNotExistedException;;
+    ResultPage<User> selectAllRepairman(Integer pageNum, Integer pageSize) throws UserHasNotExistedException;
+
+    ;
 
     // 查找所有普通用户
-    List<User> selectAllNorUser() throws UserHasNotExistedException;;
+    ResultPage<User> selectAllNorUser(Integer pageNum, Integer pageSize) throws UserHasNotExistedException;
+
+    ;
 
     // 修改用户信息
     User updateUser(Integer userId, String username, String password, String name, List<Integer> roleType, String tel) throws UserHasNotExistedException, PasswordWrongException;
