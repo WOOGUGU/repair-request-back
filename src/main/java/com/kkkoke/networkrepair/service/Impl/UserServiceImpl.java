@@ -22,17 +22,18 @@ public class UserServiceImpl implements UserService {
 
     // 添加用户
     @Override
-    public User addUser(String username, String password, String name, List<Integer> roleTypes, String tel) throws UserHasExistedException {
+    public Integer addUser(String username, String password, String name, List<Integer> roleTypes, String tel) throws UserHasExistedException {
         // 查看数据库中是否已经存在此用户
         if (ObjectUtils.isEmpty(userDao.selectUserByUsername(username))) {
             // 对密码进行BCrypt加密
             String hashPasswd = BCrypt.hashpw(password, BCrypt.gensalt());
             User user = new User(username, hashPasswd, name, tel);
             userDao.addUser(user);
+            Integer userId = userDao.selectUserByUsername(username).getId();
             for (Integer roleId : roleTypes) {
-                userDao.setRole(userDao.selectUserByUsername(username).getId(), roleId);
+                userDao.setRole(userId, roleId);
             }
-            return user;
+            return userId;
         } else {
             // 用户已存在
             throw new UserHasExistedException("User has existed");

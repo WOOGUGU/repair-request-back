@@ -6,6 +6,7 @@ import com.kkkoke.networkrepair.result.ApiResult;
 import com.kkkoke.networkrepair.service.SlideService;
 import com.kkkoke.networkrepair.util.FileUploadUtil;
 import com.kkkoke.networkrepair.util.PropertiesUtil;
+import com.kkkoke.networkrepair.util.TencentCOSUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -22,6 +23,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.io.IOException;
+import java.net.URL;
 import java.util.List;
 
 /**
@@ -52,7 +55,26 @@ public class SlideController {
     public ApiResult uploadSlide(MultipartFile file, @NotBlank(message = "author can not be null") String author) {
         String imgPath = FileUploadUtil.fileUpload(file, propertiesUtil.getSlideImgPath());
         slideService.uploadSlide(imgPath, author);
-        return ApiResult.success("轮播图上传成功");
+        return ApiResult.success("上传成功");
+    }
+
+    @ApiOperation(value = "上传轮播图 流类型")
+    @ApiImplicitParams({@ApiImplicitParam(name = "fileStreams", value = "轮播图流数组", required = true, paramType = "query"),
+            @ApiImplicitParam(name = "author", value = "上传者", required = true, paramType = "query")})
+    @Secured({"ROLE_admin"})
+    @PostMapping("/uploadStreamSlide")
+    public ApiResult uploadStreamSlide(MultipartFile[] fileStreams, String author) {
+        try {
+            for (MultipartFile fileStream : fileStreams) {
+                String fileKey = "slide/" + System.currentTimeMillis() + fileStream.getOriginalFilename().substring(fileStream.getOriginalFilename().lastIndexOf("."));
+                TencentCOSUtil.upLoadFileStream("slide", fileKey, fileStream.getInputStream());
+                URL url = TencentCOSUtil.getObjectUrl("slide", fileKey);
+                slideService.uploadSlide(url.toString(), author);
+            }
+        } catch (IOException e) {
+            log.error(e.getMessage());
+        }
+        return ApiResult.success("上传成功");
     }
 
     @ApiOperation(value = "通过id删除轮播图")

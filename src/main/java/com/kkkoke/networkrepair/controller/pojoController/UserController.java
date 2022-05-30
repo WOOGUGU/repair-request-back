@@ -53,8 +53,8 @@ public class UserController {
         if (ObjectUtils.isEmpty(userDto)) {
             throw new IllegalFormDataException("缺少必要的参数");
         }
-        userService.addUser(userDto.getUsername(), userDto.getPassword(), userDto.getName(), userDto.getRoleTypes(), userDto.getTel());
-        return ApiResult.success("用户添加成功");
+        Integer userId = userService.addUser(userDto.getUsername(), userDto.getPassword(), userDto.getName(), userDto.getRoleTypes(), userDto.getTel());
+        return ApiResult.success(userId, "用户添加成功");
     }
 
     @ApiOperation(value = "通过用户名删除用户")

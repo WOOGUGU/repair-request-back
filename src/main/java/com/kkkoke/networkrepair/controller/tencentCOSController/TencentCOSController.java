@@ -10,6 +10,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.util.ObjectUtils;
@@ -22,10 +23,12 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.constraints.NotBlank;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 @Api(tags = "腾讯云cos")
+@Slf4j
 @RestController
 @RequestMapping("/v2/cos")
 public class TencentCOSController {
@@ -107,19 +110,23 @@ public class TencentCOSController {
     @ApiOperation(value = "上传流类型")
     @ApiImplicitParams({@ApiImplicitParam(name = "bucket", value = "存储桶名称", required = true, paramType = "query"),
             @ApiImplicitParam(name = "fileKey", value = "文件key", required = true, paramType = "query"),
-            @ApiImplicitParam(name = "fileStream", value = "二进制文件流", required = true, paramType = "query"),
+            @ApiImplicitParam(name = "fileStreams", value = "二进制文件流", required = true, paramType = "query"),
             @ApiImplicitParam(name = "author", value = "文件上传者", required = true, paramType = "query")})
     @Secured({"ROLE_admin"})
     @PostMapping("/upLoadFileStream")
-    public ApiResult upLoadFileStream(String bucket, String fileKey, MultipartFile fileStream, String author) {
+    public ApiResult upLoadFileStream(String bucket, String fileKey, MultipartFile[] fileStreams, String author) {
+        String urlResult = "";
         try {
-            TencentCOSUtil.upLoadFileStream(bucket, fileKey, fileStream.getInputStream());
-            URL url = TencentCOSUtil.getObjectUrl(bucket, fileKey);
-            slideService.uploadSlide(url.toString(), author);
+            for (MultipartFile fileStream : fileStreams) {
+                String finalFileKey = fileKey + System.currentTimeMillis() + fileStream.getOriginalFilename().substring(fileStream.getOriginalFilename().lastIndexOf("."));
+                TencentCOSUtil.upLoadFileStream(bucket, finalFileKey, fileStream.getInputStream());
+                URL url = TencentCOSUtil.getObjectUrl(bucket, finalFileKey);
+                urlResult = url.toString();
+            }
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         }
-        return ApiResult.success("上传成功");
+        return ApiResult.success(urlResult, "上传成功");
     }
 
     @ApiOperation(value = "获取对象存储临时密钥")
