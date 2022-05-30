@@ -1,5 +1,6 @@
 package com.kkkoke.networkrepair.service.Impl;
 
+import com.github.pagehelper.PageHelper;
 import com.kkkoke.networkrepair.dao.OrderDao;
 import com.kkkoke.networkrepair.dao.UserDao;
 import com.kkkoke.networkrepair.exception.DataHasNotExistedException;
@@ -7,6 +8,7 @@ import com.kkkoke.networkrepair.exception.IllegalFormDataException;
 import com.kkkoke.networkrepair.exception.IllegalOperationException;
 import com.kkkoke.networkrepair.pojo.Order;
 import com.kkkoke.networkrepair.pojo.User;
+import com.kkkoke.networkrepair.result.ResultPage;
 import com.kkkoke.networkrepair.service.OrderService;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
@@ -70,21 +72,38 @@ public class OrderServiceImpl implements OrderService {
 
     // 查找报修工单 后台接口
     @Override
-    public List<Order> selectOrder(Integer orderId, String username, String sender, String tel, String type,
-                                   String des, String position, String timeSubscribe, Integer progress, String solver,
-                                   String timeStart, String timeDistribution, String timeEnd, String feedback, Integer stars) throws DataHasNotExistedException {
-        return orderDao.selectOrder(orderId, username, sender, tel, type, des, position, timeSubscribe, progress, solver, timeStart, timeDistribution, timeEnd, feedback, stars);
+    public ResultPage<Order> selectOrder(Integer orderId, String username, String sender, String tel, String type, String des, String position, String timeSubscribe,
+                                         Integer progress, String solver, String timeStart, String timeDistribution, String timeEnd, String feedback, Integer stars,
+                                         Integer pageNum, Integer pageSize) throws DataHasNotExistedException {
+        if (ObjectUtils.isEmpty(pageNum)) {
+            pageNum = 1;
+        }
+        if (ObjectUtils.isEmpty(pageSize)) {
+            pageSize = 10;
+        }
+        PageHelper.startPage(pageNum, pageSize);
+        List<Order> orders = orderDao.selectOrder(orderId, username, sender, tel, type, des, position, timeSubscribe, progress, solver, timeStart, timeDistribution, timeEnd, feedback, stars);
+        ResultPage<Order> resultPage = ResultPage.restPage(orders);
+        return resultPage;
     }
 
     // 查找所有报修工单
     @Override
-    public List<Order> selectAllOrder() throws DataHasNotExistedException {
+    public ResultPage<Order> selectAllOrder(Integer pageNum, Integer pageSize) throws DataHasNotExistedException {
+        if (ObjectUtils.isEmpty(pageNum)) {
+            pageNum = 1;
+        }
+        if (ObjectUtils.isEmpty(pageSize)) {
+            pageSize = 10;
+        }
+        PageHelper.startPage(pageNum, pageSize);
         List<Order> orders = orderDao.selectAllOrder();
+        ResultPage<Order> resultPage = ResultPage.restPage(orders);
         // 判断查询结果是否为空
         if (ObjectUtils.isEmpty(orders)) {
             throw new DataHasNotExistedException("Order has not existed");
         } else {
-            return orders;
+            return resultPage;
         }
     }
 
@@ -187,25 +206,41 @@ public class OrderServiceImpl implements OrderService {
 
     // 查找某用户发起的所有工单
     @Override
-    public List<Order> selectAllOrderOfUser(String username) throws DataHasNotExistedException {
+    public ResultPage<Order> selectAllOrderOfUser(String username, Integer pageNum, Integer pageSize) throws DataHasNotExistedException {
+        if (ObjectUtils.isEmpty(pageNum)) {
+            pageNum = 1;
+        }
+        if (ObjectUtils.isEmpty(pageSize)) {
+            pageSize = 10;
+        }
+        PageHelper.startPage(pageNum, pageSize);
         List<Order> orders = orderDao.selectAllOrderOfUser(username);
+        ResultPage<Order> resultPage = ResultPage.restPage(orders);
         // 判断查询结果是否为空
         if (ObjectUtils.isEmpty(orders)) {
             throw new DataHasNotExistedException("Order has not existed");
         } else {
-            return orders;
+            return resultPage;
         }
     }
 
     // 查找某维修员被分配的所有工单
     @Override
-    public List<Order> selectAllOrderOfRepairman(String name) throws DataHasNotExistedException {
-        List<Order> orders = orderDao.selectAllOrderOfRepairman(name);
+    public ResultPage<Order> selectAllOrderOfRepairman(String username, Integer pageNum, Integer pageSize) throws DataHasNotExistedException {
+        if (ObjectUtils.isEmpty(pageNum)) {
+            pageNum = 1;
+        }
+        if (ObjectUtils.isEmpty(pageSize)) {
+            pageSize = 10;
+        }
+        PageHelper.startPage(pageNum, pageSize);
+        List<Order> orders = orderDao.selectAllOrderOfRepairman(username);
+        ResultPage<Order> resultPage = ResultPage.restPage(orders);
         // 判断查询结果是否为空
         if (ObjectUtils.isEmpty(orders)) {
             throw new DataHasNotExistedException("Order has not existed");
         } else {
-            return orders;
+            return resultPage;
         }
     }
 
