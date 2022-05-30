@@ -4,6 +4,8 @@ import com.kkkoke.networkrepair.exception.DataHasNotExistedException;
 import com.kkkoke.networkrepair.exception.IllegalFormDataException;
 import com.kkkoke.networkrepair.exception.IllegalOperationException;
 import com.kkkoke.networkrepair.pojo.Order;
+import com.kkkoke.networkrepair.result.ResultPage;
+
 import java.util.List;
 
 public interface OrderService {
@@ -18,12 +20,12 @@ public interface OrderService {
     Order selectOrderById(Integer orderId) throws DataHasNotExistedException;
 
     // 查找报修工单 后台接口
-    List<Order> selectOrder(Integer orderId, String username, String sender, String tel, String type,
-                            String des, String position, String timeSubscribe, Integer progress, String solver,
-                            String timeStart, String timeDistribution, String timeEnd, String feedback, Integer stars) throws DataHasNotExistedException;
+    ResultPage<Order> selectOrder(Integer orderId, String username, String sender, String tel, String type, String des, String position, String timeSubscribe,
+                                  Integer progress, String solver, String timeStart, String timeDistribution, String timeEnd, String feedback, Integer stars,
+                                  Integer pageNum, Integer pageSize) throws DataHasNotExistedException;
 
     // 查找所有报修工单
-    List<Order> selectAllOrder() throws DataHasNotExistedException;
+    ResultPage<Order> selectAllOrder(Integer pageNum, Integer pageSize) throws DataHasNotExistedException;
 
     // 修改报修工单
     Order updateOrder(Integer orderId, String username, String sender, String tel, String type,
@@ -38,10 +40,10 @@ public interface OrderService {
     Integer updateOrderFeedback(Integer orderId, String feedback, Integer stars) throws DataHasNotExistedException;
 
     // 查找某用户发起的所有工单
-    List<Order> selectAllOrderOfUser(String username) throws DataHasNotExistedException;
+    ResultPage<Order> selectAllOrderOfUser(String username, Integer pageNum, Integer pageSize) throws DataHasNotExistedException;
 
     // 查找某维修员被分配的所有工单
-    List<Order> selectAllOrderOfRepairman(String name) throws DataHasNotExistedException;
+    ResultPage<Order> selectAllOrderOfRepairman(String username, Integer pageNum, Integer pageSize) throws DataHasNotExistedException;
 
     // 取消工单 用户接口
     Order cancelOrder(Integer orderId, String username) throws DataHasNotExistedException, IllegalOperationException;

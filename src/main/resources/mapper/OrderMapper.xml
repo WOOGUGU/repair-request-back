@@ -119,13 +119,13 @@
     <select id="selectAllOrderOfUser" resultMap="orderMap">
         select *
         from `order`
-        where username = #{username};
+        where username = #{username}
     </select>
 
     <select id="selectAllOrderOfRepairman" resultMap="orderMap">
         select *
         from `order`
-        where solver = #{name};
+        where solver = #{name}
     </select>
 
     <update id="cancelOrder">
