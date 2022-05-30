@@ -2,6 +2,7 @@ package com.kkkoke.networkrepair.service;
 
 import com.kkkoke.networkrepair.exception.DataHasNotExistedException;
 import com.kkkoke.networkrepair.pojo.Article;
+import com.kkkoke.networkrepair.result.ResultPage;
 
 import java.util.List;
 
@@ -17,7 +18,7 @@ public interface ArticleService {
     Integer updateArticle(Integer articleId, String contentPath, String author, Integer displayStatus, String title, String des, String coverPath) throws DataHasNotExistedException;
 
     // 查看所有文章
-    List<Article> selectAllArticle() throws DataHasNotExistedException;
+    ResultPage<Article> selectAllArticle(Integer pageNum, Integer pageSize) throws DataHasNotExistedException;
 
     // 通过用id查找文章
     Article selectArticleById(Integer articleId) throws DataHasNotExistedException;
@@ -29,8 +30,8 @@ public interface ArticleService {
     Article selectArticleByUpdateTime(String updateTime) throws DataHasNotExistedException;
 
     // 通过作者查找文章
-    List<Article> selectArticleByAuthor(String author) throws DataHasNotExistedException;
+    ResultPage<Article> selectArticleByAuthor(String author, Integer pageNum, Integer pageSize) throws DataHasNotExistedException;
 
     //查找文章 后台接口
-    List<Article> selectArticle(Integer articleId, String author, Integer displayStatus, String title, String des) throws DataHasNotExistedException;
+    ResultPage<Article> selectArticle(Integer articleId, String author, Integer displayStatus, String title, String des, Integer pageNum, Integer pageSize) throws DataHasNotExistedException;
 }

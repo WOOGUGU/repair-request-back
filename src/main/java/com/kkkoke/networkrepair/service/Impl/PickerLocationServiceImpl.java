@@ -1,11 +1,13 @@
 package com.kkkoke.networkrepair.service.Impl;
 
 import com.alibaba.fastjson.JSON;
+import com.github.pagehelper.PageHelper;
 import com.kkkoke.networkrepair.dao.PickerLocationDao;
 import com.kkkoke.networkrepair.exception.DataHasExistedException;
 import com.kkkoke.networkrepair.exception.DataHasNotExistedException;
 import com.kkkoke.networkrepair.pojo.PickerLocation;
 import com.kkkoke.networkrepair.pojo.helper.NameAndPosition;
+import com.kkkoke.networkrepair.result.ResultPage;
 import com.kkkoke.networkrepair.service.PickerLocationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -86,8 +88,16 @@ public class PickerLocationServiceImpl implements PickerLocationService {
 
     // 查找报修地点 后台接口
     @Override
-    public List<PickerLocation> selectLocationForBackend(Integer pickerId, String area, String position) {
-        return pickerLocationDao.selectLocationForBackend(pickerId, area, position);
+    public ResultPage<PickerLocation> selectLocationForBackend(Integer pickerId, String area, String position, Integer pageNum, Integer pageSize) {
+        if (ObjectUtils.isEmpty(pageNum)) {
+            pageNum = 1;
+        }
+        if (ObjectUtils.isEmpty(pageSize)) {
+            pageSize = 10;
+        }
+        PageHelper.startPage(pageNum, pageSize);
+        List<PickerLocation> pickerLocations = pickerLocationDao.selectLocationForBackend(pickerId, area, position);
+        return ResultPage.restPage(pickerLocations);
     }
 
     // 查找所有报修地点

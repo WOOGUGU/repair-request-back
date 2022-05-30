@@ -2,6 +2,7 @@ package com.kkkoke.networkrepair.service;
 
 import com.kkkoke.networkrepair.exception.DataHasNotExistedException;
 import com.kkkoke.networkrepair.pojo.Notice;
+import com.kkkoke.networkrepair.result.ResultPage;
 
 import java.util.List;
 
@@ -22,8 +23,8 @@ public interface NoticeService {
     List<Notice> selectNoticeByAuthor(String author) throws DataHasNotExistedException;
 
     // 查看所有通知
-    List<Notice> selectAllNotice() throws DataHasNotExistedException;
+    ResultPage<Notice> selectAllNotice(Integer pageNum, Integer pageSize) throws DataHasNotExistedException;
 
     // 查看通知 后台接口
-    List<Notice> selectNotice(Integer noticeId, String author, Integer displayStatus) throws DataHasNotExistedException;
+    ResultPage<Notice> selectNotice(Integer noticeId, String author, Integer displayStatus, Integer pageNum, Integer pageSize) throws DataHasNotExistedException;
 }
