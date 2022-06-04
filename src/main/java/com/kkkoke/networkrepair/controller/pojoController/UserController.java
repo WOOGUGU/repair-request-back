@@ -4,7 +4,6 @@ import com.kkkoke.networkrepair.exception.IllegalFormDataException;
 import com.kkkoke.networkrepair.exception.PasswordWrongException;
 import com.kkkoke.networkrepair.exception.UserHasExistedException;
 import com.kkkoke.networkrepair.exception.UserHasNotExistedException;
-import com.kkkoke.networkrepair.pojo.Order;
 import com.kkkoke.networkrepair.pojo.User;
 import com.kkkoke.networkrepair.pojo.helper.UserDto;
 import com.kkkoke.networkrepair.result.ApiResult;
@@ -24,7 +23,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.List;
 
 /**
  * @author kkkoke
