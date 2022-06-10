@@ -27,8 +27,10 @@
     </select>
 
     <select id="selectAllPickerTime" resultMap="pickerResultMap">
-        select id, value from `picker`
+        select id, value
+        from `picker`
         where type = 'time'
+        order by value
     </select>
 
     <select id="selectAllPickerDes" resultMap="pickerResultMap">
